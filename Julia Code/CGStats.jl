@@ -157,7 +157,7 @@ function ConstrainedSample(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,
   H0  = E0 + KineticEnergy(P,C);
 
   s = 0;
-  ObsMean = [0,0];
+  ObsMean = 0;
   while s < S.OrthoSamples
     # Run simulation to generate point with same QCG. (Constrained dynamics)
     for i = 1:S.OrthoSteps
