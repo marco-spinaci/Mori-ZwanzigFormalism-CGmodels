@@ -185,7 +185,7 @@ function ConstrainedSample(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,
   #end
 
   StressMoments ./= S.OrthoSamples
-  return StressMoments
+  return StressMoments,P,Q
 end
 
 function ConstrainedAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
