@@ -4,7 +4,7 @@
 module CGStats
 
 # Include relevant modules
-using Main.LJChain, Parameters, StatsBase, Dates
+using Main.LJChain, Parameters, Statistics, Dates
 
 # Parameter object
 export Simulator
@@ -28,8 +28,8 @@ export ApproxMeanForce, ApproxMeanStresses, ApproxFlucStep, ComputeVEff
   ApproxSteps::Int	= Int(1e5)
   FullTime::Float64	= FullSteps*dt
   ApproxTime::Float64 	= ApproxSteps*dt
-  LagStep		= 400
-  NumLags		= 30
+  LagStep			= 400
+  NumLags			= 30
   MacroSamples::Int	= 50
   OrthoSamples::Int	= Int(1e5)
   Moments::Int		= 2
@@ -157,7 +157,7 @@ function ConstrainedSample(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,
   H0  = E0 + KineticEnergy(P,C);
 
   s = 0;
-  ObsMean = [0,0];
+  ObsMean = 0;
   while s < S.OrthoSamples
     # Run simulation to generate point with same QCG. (Constrained dynamics)
     for i = 1:S.OrthoSteps

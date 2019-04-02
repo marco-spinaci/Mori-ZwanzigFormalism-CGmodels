@@ -10,7 +10,7 @@ __precompile__()
 """
 module LJChain
 
-using Parameters,StatsBase,LinearAlgebra
+using Parameters,Statistics,LinearAlgebra
 
 # Physics functions
 export Chain, LennardJones, LennardJonesPrime, Potential, Forces, Stresses,
@@ -66,7 +66,7 @@ pattern Patt.
 
   # Relative CG projections between identical beads (full and constrained)
   PhiF::Array{Float64,2} 		= kron(Diagonal(ones(NBeads)),[zeros(Float64,length(Patt)-1);1.0])'  # Forces between beads
-  PhiFConstr::Array{Float64,2} 	= kron(Diagonal(ones(NBeads))[1:ConstrainedBeads-1,:],[zeros(Float64,length(Patt)-1);1.0])'  # Forces between constrained beads
+  PhiFConstr::Array{Float64,2} 	= kron(Diagonal(ones(NBeads))[1:ConstrainedBeads-1,:],[zeros(Float64,length(Patt)-1);1.0]')  # Forces between constrained beads
   PsiF			        		= (circshift(Phi,(0,length(Patt)))-Phi)/2.;  # Relative momenta
   PsiFConstr					= (circshift(PhiConstr[1:ConstrainedBeads-1,:],(0,length(Patt)))-PhiConstr[1:ConstrainedBeads-1,:])/2.;  # Relative momenta
 end
