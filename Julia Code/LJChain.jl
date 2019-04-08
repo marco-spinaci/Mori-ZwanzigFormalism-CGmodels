@@ -79,7 +79,7 @@ Lennard-Jones 6-12 potential with minimum at Dist and well depth EpsPatt.
 """
 function LennardJones(Q::Array{Float64,1},Dist::Float64,
 						EpsPatt::Array{Float64,1})
-  U = 4 .*EpsPatt .*((Dist./Q).^12-2*(Dist./Q).^6);
+  U = EpsPatt .*((Dist./Q).^12-2*(Dist./Q).^6);
   return U
 end
 
@@ -90,7 +90,7 @@ Derivative of Lennard-Jones 6-12 potential with minimum at Dist and well depth
 EpsPatt.
 """
 function LennardJonesPrime(Q::Array{Float64,1},Dist::Float64,EpsPatt::Array{Float64,1})
-  G = -48 .*EpsPatt.*(Dist^12 ./(Q.^13)-Dist^6 ./(Q.^7));
+  G = -12 .*EpsPatt.*(Dist^12 ./(Q.^13)-Dist^6 ./(Q.^7));
   return G
 end
 
