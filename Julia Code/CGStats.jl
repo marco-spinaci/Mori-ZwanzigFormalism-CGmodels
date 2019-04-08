@@ -4,7 +4,7 @@
 module CGStats
 
 # Include relevant modules
-using Main.LJChain, Parameters, StatsBase, Dates
+using Main.LJChain, Parameters, Statistics, Dates
 
 # Parameter object
 export Simulator
@@ -28,8 +28,8 @@ export ApproxMeanForce, ApproxMeanStresses, ApproxFlucStep, ComputeVEff
   ApproxSteps::Int	= Int(1e5)
   FullTime::Float64	= FullSteps*dt
   ApproxTime::Float64 	= ApproxSteps*dt
-  LagStep		= 400
-  NumLags		= 30
+  LagStep			= 400
+  NumLags			= 30
   MacroSamples::Int	= 50
   OrthoSamples::Int	= Int(1e5)
   Moments::Int		= 2
