@@ -17,7 +17,7 @@ export Chain, LennardJones, LennardJonesPrime, Potential, Forces, Stresses,
   KineticEnergy
 export InitConds, CGDists
 # Time stepping functions
-export LeapfrogStep, ConstrainedStep, ApproxDynStep
+export LeapfrogStep, ConstrainedStep, ApproxDynStep, LangDynIntegrators, OrnUhlenbeckPart
 
 """
     Chain(Patt,NBeads,SM,LM,SEps,LEps,Dist,Beta,Gamma)
@@ -37,7 +37,6 @@ pattern Patt.
   LEps::Float64 		= 100.0   # Scaling of LJ potential for 1 particles
   Dist::Float64 		= 1.0     # Equilibrium distance for all LJ potentials
   Beta::Float64 		= 1.0	  # Inverse temperature
-  Gamma::Float64		= 1.0	  # Friction coefficient for Langevin dynamics
 
   # The following are inherited from the previous parameters: changing them may break the code.
   NPart::Int 				= length(Patt)*NBeads
@@ -45,13 +44,17 @@ pattern Patt.
   BeadsDist 				= length(Patt)*Dist
   LTotPatt::Array{Int,1} 	= repeat(Patt,NBeads)
   STotPatt::Array{Int,1}	= 1 .-LTotPatt
+
   # Mass parameters
   MassPatt::Array{Float64,1} 	= LM*Patt+SM*(1 .-Patt)
   MassTotPatt::Array{Float64,1} = repeat(MassPatt,NBeads)
   MInv::Array{Float64,2}		= Diagonal(1 ./MassTotPatt)
+  M::Array{Float64,2}           = Diagonal(MassTotPatt)
   MHalf::Array{Float64,2}		= Diagonal(sqrt.(MassTotPatt))
   BeadMass::Float64				= LM*sum(Patt.==1)+SM*sum(Patt.==0)
   EpsPatt::Array{Float64,1} 	= (sqrt.(LEps)*LTotPatt+sqrt.(SEps)*STotPatt).*circshift(sqrt.(LEps)*LTotPatt+sqrt.(SEps)*STotPatt,-1)
+  # Friction coefficient for Langevin dynamics
+  Gamma = Diagonal(ones(NPart))*MInv
   # Full CG Projections
   Phi::Array{Float64,2}	= kron(Diagonal(ones(NBeads)),ones(Float64,length(Patt))')
   Psi 					= kron(Diagonal(ones(NBeads)),MassPatt'./BeadMass)
@@ -184,6 +187,31 @@ function ConstrainedStep(P,Q,F,C,dt)
   FNext = Forces(QNext,C);			# Force evaluation
   PNext = PNext + 0.5*C.ZetaConstr*FNext.*dt;	# B
   return PNext,QNext,FNext
+end
+
+"""
+    (PNext,QNext,FNext) = LangDynIntegrators(P,Q,F,C::Chain,dt)
+
+Computes forward step of Langevin dynamics with timestep dt using Leimkuhler-Matthews
+"BAOAB" integrator; diffusion coefficient is evaluated after performing `half' of the deterministic part of the timestep.
+"""
+function LangDynIntegrators(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Float64,1},C::Chain,dt::Float64)
+  PNext = P + 0.5.*F.*dt 	                     # B
+  QNext = Q + 0.5.*dt.*C.MInv*PNext;             # A
+  PNext = OrnUhlenbeckPart(PNext,C,dt);          # O
+  QNext = QNext+0.5.*dt*C.MInv*PNext;            # A
+  FNext = Forces(QNext,C);                       # Force evaluation
+  PNext = PNext + 0.5.*FNext.*dt;                # B
+  return PNext,QNext,FNext
+end
+
+function OrnUhlenbeckPart(P::Array{Float64,1},C::Chain,dt::Float64)
+ 	# Calculate exact Ornstein-Uhlenbeck step using decomposition
+	c1 = exp(-C.Gamma*dt);
+	c3 = sqrt(1/C.Beta)*sqrt(Diagonal(ones(C.NPart))-c1^2);
+
+	# Generate new momenta and return
+	return c1*P+c3*sqrt.(C.M)*randn(C.NPart);
 end
 
 """

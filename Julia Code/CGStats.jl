@@ -9,7 +9,7 @@ using Main.LJChain, Parameters, Statistics, Dates
 # Parameter object
 export Simulator
 # Functions to output raw trajectory data
-export FullTraj, ConstrainedTraj, ApproximateTraj
+export FullTraj, LangevinFullTraj, ConstrainedTraj, ApproximateTraj
 # High-level function to extract data
 export VEffConstrained, ConstrainedAutocorr, FullAutocorr, ApproximateAutocorr, ConstrainedAutocorrPar, FullAutocorrPar, ApproximateAutocorrPar
 # Orthogonal dynamics sampling
@@ -63,6 +63,39 @@ function FullTraj(P0,Q0,C::Chain,S::Simulator)
   # Do simulation.
   for i = 2:S.FullSteps
     (P,Q,F) = LeapfrogStep(P,Q,F,C,S.dt);
+    Pstore[:,i] = P;
+    Qstore[:,i] = Q;
+    Fstore[:,i] = F;
+  end
+
+  return Pstore,Qstore,Fstore
+end
+
+"""
+    (Pstore,Qstore,Fstore) = LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
+
+    Outputs full trajectory data in matrices (Pstore,Qstore,Fstore).
+"""
+function LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
+  # Report to user.
+  println(Dates.now());
+  println("Running full simulation of Langevin dynamics and storing trajectory.");
+  println("  NPart, number of particles simulated = ",C.NPart);
+  println("  dt, time step size = ",S.dt," seconds.");
+  println("  Total simulation time = ",S.FullTime," seconds.");
+
+  # Set up.
+  P = P0; Q = Q0; F = Forces(Q,C);
+  Pstore = zeros(Float64,C.NPart,S.FullSteps);
+  Qstore = zeros(Float64,C.NPart,S.FullSteps);
+  Fstore = zeros(Float64,C.NPart,S.FullSteps);
+  Pstore[:,1] = P0;
+  Qstore[:,1] = Q0;
+  Fstore[:,1] = F;
+
+  # Do simulation.
+  for i = 2:S.FullSteps
+    (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
     Pstore[:,i] = P;
     Qstore[:,i] = Q;
     Fstore[:,i] = F;
