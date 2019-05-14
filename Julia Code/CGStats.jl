@@ -27,7 +27,7 @@ export ApproxMeanForce, ApproxMeanStresses, ApproxFlucStep, ComputeVEff
   OrthoSteps::Int 	= 1
   ApproxSteps::Int	= Int(1e5)
   FullTime::Float64	= FullSteps*dt
-  ApproxTime::Float64 	= ApproxSteps*dt
+  ApproxTime::Float64 = ApproxSteps*dt
   LagStep			= 400
   NumLags			= 30
   MacroSamples::Int	= 50
@@ -74,18 +74,23 @@ end
 """
     (Pstore,Qstore,Fstore) = LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
 
-    Outputs full trajectory data in matrices (Pstore,Qstore,Fstore).
+    Outputs full trajectory data in matrices (Pstore,Qstore,Fstore) and the mean values of
+	the kinetic energy and the total energy.
 """
 function LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
   # Report to user.
   println(Dates.now());
-  println("Running full simulation of Langevin dynamics and storing trajectory.");
+  println("Running full simulation of Langevin dynamics, storing trajectory and computing");
+  println("the mean values per particle of the kinetic energy and the total energy.");
   println("  NPart, number of particles simulated = ",C.NPart);
+  println("  Beta, temperature parameter = ",C.Beta);
+  println("  Gamma, friction coefficient = ",C.Gamma);
   println("  dt, time step size = ",S.dt," seconds.");
   println("  Total simulation time = ",S.FullTime," seconds.");
 
   # Set up.
   P = P0; Q = Q0; F = Forces(Q,C);
+  K = KineticEnergy(P,C); H = Potential(Q,C) + K;
   Pstore = zeros(Float64,C.NPart,S.FullSteps);
   Qstore = zeros(Float64,C.NPart,S.FullSteps);
   Fstore = zeros(Float64,C.NPart,S.FullSteps);
@@ -99,9 +104,16 @@ function LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
     Pstore[:,i] = P;
     Qstore[:,i] = Q;
     Fstore[:,i] = F;
+	K += KineticEnergy(P,C);
+	H += Potential(Q,C) + K;
   end
 
-  return Pstore,Qstore,Fstore
+  K /= S.FullSteps;
+  H /= S.FullSteps;
+  Kmean = sum(K)/C.NPart;
+  Hmean = sum(H)/C.NPart;
+
+  return Pstore,Qstore,Fstore,Kmean,Hmean
 end
 
 """
@@ -549,8 +561,7 @@ function VEffConstrained(C::Chain,S::Simulator)
   # Set up storage
   RSamples 	= SharedArray{Float64}(S.MacroSamples,C.ConstrainedBeads-1);
   PSamples 	= SharedArray{Float64}(S.MacroSamples,C.ConstrainedBeads-1);
-  MomentSamples = SharedArray{Float64}(S.MacroSamples,C.ConstrainedBeads-1,
-  								S.Moments);
+  MomentSamples = SharedArray{Float64}(S.MacroSamples,C.ConstrainedBeads-1,S.Moments);
 
   # Perform sampling
   np = nprocs()
@@ -870,7 +881,7 @@ end
 """
     F = ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain)
 
-Generates approximate mean stresses based on precomputed data dQvals, Fvals and Chain parameters.
+	Generates approximate mean stresses based on precomputed data dQvals, Fvals and Chain parameters.
 """
 function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},
 				C::Chain,σ::Float64=0.1,N::Int=2)
@@ -903,7 +914,7 @@ end
 """
     F = ApproxMeanForce(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain)
 
-Generates approximate mean forces based on precomputed data dQvals, Fvals and Chain parameters.
+	Generates approximate mean forces based on precomputed data dQvals, Fvals and Chain parameters.
 """
 function ApproxMeanForce(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},
 				C::Chain,σ::Float64=0.1,N::Int=2)
