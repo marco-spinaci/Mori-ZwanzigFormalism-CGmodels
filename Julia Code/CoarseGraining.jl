@@ -1,3 +1,5 @@
+using Distributed
+using DelimitedFiles
 @everywhere include("LJChain.jl")
 @everywhere include("CGStats.jl")
 using Main.LJChain,Main.CGStats
@@ -6,7 +8,7 @@ using Main.LJChain,Main.CGStats
 C=Chain(NBeads=10,SEps=1,LEps=100,SM=1,LM=10,Beta=1,ConstrainedBeads=2)
 # C=Chain(NBeads=10,SEps=100,LEps=.01,SM=.1,LM=10)
 
-S=Simulator(FullSteps=Int(1e4),ApproxSteps=Int(5e4),dt=1e-3,OrthoSamples=1e5,MacroSamples=1000)
+S=Simulator(FullSteps=Int(1e4),ApproxSteps=Int(5e4),dt=1e-3,OrthoSamples=1e5,MacroSamples=10)
 # S=Simulator(FullSteps=Int(1e4),dt=1e-6,OrthoSamples=1e4,MacroSamples=2)
 
 # Generate data
@@ -18,11 +20,11 @@ POut     = open("./PPar.csv","w+");
 VeffOut  = open("./VeffPar.csv","w+");
 FmeanOut = open("./FmeanPar.csv","w+");
 FstdOut  = open("./FstdPar.csv","w+");
-writecsv(ROut,RR);
-writecsv(POut,PP);
-writecsv(VeffOut,Veff);
-writecsv(FmeanOut,Fmean);
-writecsv(FstdOut,Fstd);
+writedlm(ROut,RR);
+writedlm(POut,PP);
+writedlm(VeffOut,Veff);
+writedlm(FmeanOut,Fmean);
+writedlm(FstdOut,Fstd);
 
 ## Read in old data
 #RR = readcsv("./RPar.csv"); RR = reshape(RR,length(RR));
@@ -38,6 +40,6 @@ PApprox,QApprox,FApprox = ApproximateTraj(P0,Q0,RR,Fmean,Fstd,C,S)
 PApproxOut = open("./PApprox.csv","w+");
 QApproxOut = open("./QApprox.csv","w+");
 FApproxOut = open("./FApprox.csv","w+");
-writecsv(PApproxOut,PApprox);
-writecsv(QApproxOut,QApprox);
-writecsv(FApproxOut,FApprox);
+writedlm(PApproxOut,PApprox);
+writedlm(QApproxOut,QApprox);
+writedlm(FApproxOut,FApprox);

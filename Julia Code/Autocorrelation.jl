@@ -34,13 +34,13 @@ Qfull=Q;
 # Use PyPlot to plot autocorrelation of momenta
 A=MomStats.-kron((MomMean.^2)',ones(S.NumLags));
 plot(S.dt*S.LagStep*[0:S.NumLags-1;],A./A[1])
-writecsv(POut, [S.dt*S.LagStep*[0:S.NumLags-1;] A./A[1]]);
+writedlm(POut, [S.dt*S.LagStep*[0:S.NumLags-1;] A./A[1]]);
 savefig("OrthocorrM.svg")
 
 # Use PyPlot to plot autocorrelation of forces
 A=StressStats.-kron((StressMean.^2)',ones(S.NumLags));
 plot(S.dt*S.LagStep*[0:S.NumLags-1;],A./A[1])
-writecsv(FOut,[S.dt*S.LagStep*[0:S.NumLags-1;] A./A[1]]);
+writedlm(FOut,[S.dt*S.LagStep*[0:S.NumLags-1;] A./A[1]]);
 savefig("OrthocorrF.svg")
 
 
@@ -50,11 +50,11 @@ savefig("OrthocorrF.svg")
 
 A=MomStats.-kron((MomMean.^2)',ones(S.NumLags));
 plot(S.dt*S.LagStep*[0:S.NumLags-1;],A./A[1])
-writecsv(PFOut, [S.dt*S.LagStep*[0:S.NumLags-1;] A./A[1]]);
+writedlm(PFOut, [S.dt*S.LagStep*[0:S.NumLags-1;] A./A[1]]);
 savefig("FullcorrM.svg")
 
 # Use PyPlot to plot autocorrelation of forces
 A=StressStats.-kron((StressMean.^2)',ones(S.NumLags));
 plot(S.dt*S.LagStep*[0:S.NumLags-1;],A./A[1])
-writecsv(FFOut,[S.dt*S.LagStep*[0:S.NumLags-1;] A./A[1]]);
+writedlm(FFOut,[S.dt*S.LagStep*[0:S.NumLags-1;] A./A[1]]);
 savefig("FullcorrF.svg")
