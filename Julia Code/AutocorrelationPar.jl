@@ -29,13 +29,13 @@ C=Chain(NBeads=100,SEps=1,LEps=100,SM=10,LM=1,Beta=1,ConstrainedBeads=100)
 
 # Use PyPlot to plot autocorrelation of momenta
 plot(S.dt*S.LagStep*[0:S.NumLags-1;],MomAutocorr)
-writecsv(PFOut, [S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr]);
+writedlm(PFOut, [S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr]);
 close(PFOut)
 savefig("FullcorrM.svg")
 
 # Use PyPlot to plot autocorrelation of forces
 plot(S.dt*S.LagStep*[0:S.NumLags-1;],StressAutocorr)
-writecsv(FFOut,[S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr]);
+writedlm(FFOut,[S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr]);
 close(FFOut)
 savefig("FullcorrF.svg")
 
@@ -48,7 +48,7 @@ savefig("FullcorrF.svg")
 
 # Use PyPlot to plot autocorrelation of forces
 plot(S.dt*S.LagStep*[0:S.NumLags-1;],StressAutocorr)
-writecsv(FOut,[S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr]);
+writedlm(FOut,[S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr]);
 close(FOut)
 savefig("OrthocorrF.svg")
 
@@ -59,12 +59,12 @@ savefig("OrthocorrF.svg")
 
 # Use PyPlot to plot autocorrelation of momenta
 plot(S.Stochdt*S.LagStep*[0:S.NumLags-1;],MomAutocorr)
-writecsv(AppMOut, [S.Stochdt*S.LagStep*[0:S.NumLags-1;] MomAutocorr]);
+writedlm(AppMOut, [S.Stochdt*S.LagStep*[0:S.NumLags-1;] MomAutocorr]);
 close(AppMOut)
 savefig("ApproximatecorrM.svg")
 
 # Use PyPlot to plot autocorrelation of forces
 plot(S.Stochdt*S.LagStep*[0:S.NumLags-1;],StressAutocorr)
-writecsv(AppFOut,[S.Stochdt*S.LagStep*[0:S.NumLags-1;] StressAutocorr]);
+writedlm(AppFOut,[S.Stochdt*S.LagStep*[0:S.NumLags-1;] StressAutocorr]);
 close(AppFOut)
 savefig("ApproximatecorrF.svg")
