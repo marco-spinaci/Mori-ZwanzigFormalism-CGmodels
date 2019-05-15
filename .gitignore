@@ -16,19 +16,4 @@ deps/deps.jl
 Transferability/
 
 # exclude personal scripts o file
-	TestFunc.jl
-
-	# file in Papers/
-	*processes.pdf
-	*Averaging.pdf
-	*Dynamics.pdf
-	*blobs.pdf
-	*theory.pdf
-	*biomolecules.pdf
-	
-	# file in Papers/MD(RATTLE,LangevinDynamics,etc)/
-	*Anywhere?.pdf
-	*equations.pdf
-	*revisited.pdf
-	*System.pdf
-	*Systems.pdf
+TestFunc.jl
