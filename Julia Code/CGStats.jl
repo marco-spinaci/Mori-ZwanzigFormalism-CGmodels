@@ -11,9 +11,9 @@ export Simulator
 # Functions to output raw trajectory data
 export FullTraj, LangevinFullTraj, ConstrainedTraj, ApproximateTraj
 # High-level function to extract data
-export VEffConstrained, ConstrainedAutocorr, FullAutocorr, ApproximateAutocorr, ConstrainedAutocorrPar, FullAutocorrPar, ApproximateAutocorrPar
+export VEffConstrained, VEffConstrainedLangDyn, ConstrainedAutocorr, FullAutocorr, ApproximateAutocorr, ConstrainedAutocorrPar, FullAutocorrPar, ApproximateAutocorrPar
 # Orthogonal dynamics sampling
-export ConstrainedSample
+export ConstrainedSample, ConstrSampleLangDyn
 # Functions to extract approximate dynamics
 export ApproxMeanForce, ApproxMeanStresses, ApproxFlucStep, ComputeVEff
 
@@ -218,9 +218,9 @@ function ConstrainedSample(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,
     # ObsMean += Obs(P,Q,C); ## TODO FIX THIS CALL
   end
 
-  ObsMean /= S.OrthoSamples;
-  Efinal = Potential(Q,C);
-  Hfinal = Efinal + KineticEnergy(P,C);
+  # ObsMean /= S.OrthoSamples;
+  # Efinal = Potential(Q,C);
+  # Hfinal = Efinal + KineticEnergy(P,C);
 
   #println("        Error in momentum constraint = ",maximum(abs(PCG-C.PhiConstr*P)));
   #println("        Error in position constraint = ",maximum(abs(QCG-C.PsiConstr*Q)));
@@ -230,7 +230,50 @@ function ConstrainedSample(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,
   #end
 
   StressMoments ./= S.OrthoSamples
-  return StressMoments #,P,Q  ## TODO double check if we need P and Q
+  return StressMoments,P,Q
+end
+
+function ConstrSampleLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,
+						S::Simulator,Obs=(P,Q,C) -> 0)
+  # Mean Forces
+  StressMoments = zeros(C.ConstrainedBeads-1,S.Moments);
+
+  PCG = C.PhiConstr*P;
+  QCG = C.PsiConstr*Q;
+  E0  = Potential(Q,C);
+  F   = Forces(Q,C);
+  H0  = E0 + KineticEnergy(P,C);
+
+  s = 0;
+  ObsMean = 0;
+  while s < S.OrthoSamples
+    # Run simulation to generate point with same QCG. (Constrained dynamics)
+    for i = 1:S.OrthoSteps
+      (P,Q,F) = LangDynConstrainedStep(P,Q,F,C,S.dt);
+    end
+
+    # Record successful sample.
+    s+=1;
+    SigmaCG = C.PhiFConstr*Stresses(Q,C);
+    for j = 1:S.Moments
+      StressMoments[:,j] += SigmaCG.^j;
+    end
+    # ObsMean += Obs(P,Q,C); ## TODO FIX THIS CALL
+  end
+
+  # ObsMean /= S.OrthoSamples;
+  # Efinal = Potential(Q,C);
+  # Hfinal = Efinal + KineticEnergy(P,C);
+
+  #println("        Error in momentum constraint = ",maximum(abs(PCG-C.PhiConstr*P)));
+  #println("        Error in position constraint = ",maximum(abs(QCG-C.PsiConstr*Q)));
+  #println("        Relative error in energy     = ",abs(Hfinal/H0-1));
+  #if Obs!=0
+  #  println("        Value of observable          = ",ObsMean);
+  #end
+
+  StressMoments ./= S.OrthoSamples
+  return StressMoments,P,Q
 end
 
 function ConstrainedAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
@@ -591,8 +634,64 @@ function VEffConstrained(C::Chain,S::Simulator)
             PSamples[ii,:] = C.PsiFConstr*PP;
             # Print max: if it gets too large, the integrator becomes unstable.
             println("        Maximum distance = ",maximum(RSamples[ii,:]));
-            MomentSamples[ii,:,:] = remotecall_fetch(ConstrainedSample,p,PP,
-            					    QQ,C,S,CGStats.Observables);
+            MomentSamples[ii,:,:] = remotecall_fetch(ConstrainedSample,p,PP,QQ,C,S,CGStats.Observables)[1];
+			# NB:the function "ConstrSampleLangDyn" returns a Tuple and "remotecall_fetch()[1]" returns the first value of this Tuple.
+            println("      Sample ",ii," complete!");
+          end
+        end
+      end
+    end
+  end
+  println(" ...ComputeVEff done!")
+
+  return ComputeVEff(RSamples,PSamples,MomentSamples)
+end
+
+function VEffConstrainedLangDyn(C::Chain,S::Simulator)
+  println("Computing coarse graining through constrained Langevin dynamics ...")
+  if S.dt > 0.1*sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt));
+    warn("Timestep = ",S.dt,
+      " not ≪  shortest timescale = ",sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt)));
+  end
+
+  # Generate initial condition
+  (P,Q,F,H,PCG,QCG) = InitConds(C);
+
+  # Set up storage
+  RSamples 	= SharedArray{Float64}(S.MacroSamples,C.ConstrainedBeads-1);
+  PSamples 	= SharedArray{Float64}(S.MacroSamples,C.ConstrainedBeads-1);
+  MomentSamples = SharedArray{Float64}(S.MacroSamples,C.ConstrainedBeads-1,S.Moments);
+
+  # Perform sampling
+  np = nprocs()
+  ss = 0
+
+  @sync begin
+    while ss < S.MacroSamples
+      for p=1:np
+        if p != myid() || np == 1
+          if ss == S.MacroSamples
+            break
+          end
+          println("    Starting macrosample ", ss+1);
+          for i = 1:S.FullSteps
+            (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt)
+          end
+
+          ss+=1;
+
+          @async begin
+            ii = ss;
+            PP = P;
+            QQ = Q;
+            # Get distances between CG particles
+            println("      Sample ",ii,"  over fine-grained variables...");
+            RSamples[ii,:] = CGDists(QQ,C);
+            PSamples[ii,:] = C.PsiFConstr*PP;
+            # Print max: if it gets too large, the integrator becomes unstable.
+            println("        Maximum distance = ",maximum(RSamples[ii,:]));
+            MomentSamples[ii,:,:] = remotecall_fetch(ConstrSampleLangDyn,p,PP,QQ,C,S,CGStats.Observables)[1];
+			# NB:the function "ConstrSampleLangDyn" returns a Tuple and "remotecall_fetch()[1]" returns the first value of this Tuple.
             println("      Sample ",ii," complete!");
           end
         end
