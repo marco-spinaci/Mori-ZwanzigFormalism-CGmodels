@@ -3,7 +3,7 @@
 *.jl.mem
 deps/deps.jl
 
-# exclude file TEX
+# exclude file TEX in TEX_Notes/
 *.aux
 *.bbl
 *.blg
@@ -15,5 +15,20 @@ deps/deps.jl
 # exclude directory
 Transferability/
 
-# exclude personal scripts
-TestFunc.jl
+# exclude personal scripts o file
+	TestFunc.jl
+
+	# file in Papers/
+	*processes.pdf
+	*Averaging.pdf
+	*Dynamics.pdf
+	*blobs.pdf
+	*theory.pdf
+	*biomolecules.pdf
+	
+	# file in Papers/MD(RATTLE,LangevinDynamics,etc)/
+	*Anywhere?.pdf
+	*equations.pdf
+	*revisited.pdf
+	*System.pdf
+	*Systems.pdf
