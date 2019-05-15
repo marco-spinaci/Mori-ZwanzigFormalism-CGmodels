@@ -17,7 +17,7 @@ export Chain, LennardJones, LennardJonesPrime, Potential, Forces, Stresses,
   KineticEnergy
 export InitConds, CGDists
 # Time stepping functions
-export LeapfrogStep, ConstrainedStep, ApproxDynStep, LangDynIntegrators, OrnUhlenbeckPart
+export LeapfrogStep, ConstrainedStep, ApproxDynStep, LangDynIntegrators, LangDynConstrainedStep, OrnUhlenbeckPart
 
 """
     Chain(Patt,NBeads,SM,LM,SEps,LEps,Dist,Beta,Gamma)
@@ -203,6 +203,23 @@ function LangDynIntegrators(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Flo
   FNext = Forces(QNext,C);                       # Force evaluation
   PNext = PNext + 0.5.*FNext.*dt;                # B
   return PNext,QNext,FNext
+end
+
+"""
+    (PNext,QNext,FNext) = LangDynConstrainedStep(P,Q,F,C::Chain,dt)
+
+Computes forward step of constrained Langevin dynamics with timestep dt using Leimkuhler-Matthews "g-BAOAB" integrator;
+diffusion coefficient is evaluated after performing `half' of the deterministic part of the timestep.
+"""
+function LangDynConstrainedStep(P,Q,F,C,dt)
+	PNext = P + 0.5.*C.ZetaConstr*F.*dt;                                   # B
+	QNext = Q + 0.5.*dt.*C.MInv*PNext;                                     # A
+    FNext = Forces(QNext,C);                                               # Force evaluation
+	PNext = OrnUhlenbeckPart(PNext,C,dt)-C.PsiConstr'C.PhiConstr*FNext;    # O
+	QNext = QNext+0.5.*dt*C.MInv*PNext;                                    # A
+	FNext = Forces(QNext,C);                                               # Force evaluation
+	PNext = PNext + 0.5.*C.ZetaConstr*FNext.*dt;                           # B
+	return PNext,QNext,FNext
 end
 
 function OrnUhlenbeckPart(P::Array{Float64,1},C::Chain,dt::Float64)
