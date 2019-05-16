@@ -23,24 +23,20 @@
   \begin{center}
    {\small 09/04/19}
   \end{center}
-In this work, we simulated the Langevin Dynamics by the BAOAB method. This method was implemented by B. Leimkuhler and C. Matthews \cite{LeimMatt:LAnDynInt}. The aim of their work is to compare Langevin dynamics integrators in term of their invariant distributions and demonstrate a superconvergence property of a certain method in the high friction limit (or in the null mass limit). 
+In this work we simulated the Langevin Dynamics by the BAOAB method, which was derived and analysed by B. Leimkuhler and C. Matthews \cite{LeimMatt:LAnDynInt}. 
 
-The methods that are considered are splitting integrators that decompose the stochastic vector field of Langevin Dynamics into simpler vector fields which can be solved exactly. Nevertheless, the composition method that results cannot be directly related to a stochastic differential equation, but nonetheless the invariant measure associated to the numerical method can be derived, using the Baker-Campbell-Hausdorff (BCH) expansion, as an asymptotic series in two parameters: the stepsize and the coefficient $\gamma^{-1}$. The authors stress that their approach focuses on the truncation error of the invariant distribution, thus the greatest benefit would be seen only when the statistical error is well controlled. Furthermore, they observe that the least biased scheme from the point of wiew of the error introduced in configurational sampling is also as efficient as the alternatives and the most robust with respect the variation of parameters (stepsize and $\gamma^{-1}$), thus they emphasise that there is no price for the improvement in accuracy.
+The aim of their work is to compare Langevin dynamics integrators in term of their invariant distributions and demonstrate a superconvergence property of a certain method in the high friction limit (or in the null mass limit). Numerically they implemented the various methods considered and compared the accuracy of configurational sampling for different values of the friction parameter $\gamma$ and a range of timesteps.
 
-Numerically they implemented the various methods considered and compared the accuracy of configurational sampling for different values of the friction parameter $\gamma$ and a range of timesteps.
-
-Their results show that the best method to sampling of the configurational Gibbs–Boltzmann distribution\footnote{This means the calculation of functions averages of phase space variables of a molecular N-body system modeled at constant temperature.} is the BAOAB method and in the context of molecular dynamics it is a cheap and easy to implement scheme using only a single force vector per timestep:
-\[
-\begin{cases}
- p_{n+1/2}=p_n-\frac{1}{2}\,\nabla U\left(x_n\right)\,dt \\
- x_{n+1/2}=x_n+\frac{1}{2}\,M^{-1}\,p_{n+1/2}\,dt \\
- \hat{p}_{n+1/2}=c_1\,p_{n+1/2}+c_2\,M^{1/2}\,R_{n+1} \\ 
- x_{n+1}=x_{n+1/2}+\frac{1}{2}\,M^{-1}\,\hat{p}_{n+1/2}\,dt \\
- p_{n+1}=\hat{p}_{n+1/2}-\frac{1}{2}\,\nabla U\left(x_{n+1}\right)\,dt \\
-\end{cases}
-\]
-where $R_i$ is an N-vector of iid normal random numbers with mean $0$ and variance $1$, $M$ is the diagonal mass matrix, $dt$ is the timestep, 
-\[ c_1=e^{-\gamma\,dt}\quad\text{and}\quad c_2=\sqrt{\left(1-c_1^2\right)/\beta}  \] are evaluated for a given friction parameter $\gamma$ and a given temperature parameter $\beta=(K_BT)^{-1}$, where $K_B$ is the Boltzmann's constant.
+Their results show that the best method to sample the configurational Gibbs-Boltzmann distribution\footnote{This means the calculation of functions averages of phase space variables of a molecular N-body system modelled at constant temperature.} is the BAOAB method and in the context of molecular dynamics it is a cheap and easy to implement scheme using only a single force vector per timestep:
+\begin{align*}
+ p_{n+1/2} &= p_n-\frac{1}{2}\,\nabla U\left(x_n\right)\,dt\,; \\
+ x_{n+1/2} &= x_n+\frac{1}{2}\,M^{-1}\,p_{n+1/2}\,dt\,; \\
+ \hat{p}_{n+1/2} &= c_1\,p_{n+1/2}+c_2\,M^{1/2}\,R_{n+1}\,; \\ 
+ x_{n+1} &= x_{n+1/2}+\frac{1}{2}\,M^{-1}\,\hat{p}_{n+1/2}\,dt\,; \\
+ p_{n+1} &= \hat{p}_{n+1/2}-\frac{1}{2}\,\nabla U\left(x_{n+1}\right)\,dt\,. \\
+\end{align*}
+Here, $R_i$ is an N-vector of iid normal random numbers with mean $0$ and variance $1$, $M$ is the diagonal mass matrix, $dt$ is the timestep, 
+\[ c_1=e^{-\tilde{\gamma}\,dt}\quad\text{and}\quad c_2=\sqrt{\left(1-c_1^2\right)/\beta}  \] are evaluated for a given friction parameter $\tilde{\gamma}=\gamma\,M^{-1}$ and a given temperature parameter $\beta=(K_BT)^{-1}$, where $K_B$ is the Boltzmann's constant.
 
 
 \subsection{An idea of how the BAOAB method was derived}
@@ -51,34 +47,31 @@ An It\^o stochastic differential equation (SDE) can be written as
   d\mathbf{x}(t)=\mathbf{a} \left[\mathbf{x}(t),t\right] dt+\mathbf{b}\left[\mathbf{x}(t),t\right] d\mathbf{W}(t)\,,
 \]
 where $\mathbf{x}$ are the $n$ stochastic process, $\mathbf{a}(\mathbf{x},t)$ and $\mathbf{b}(\mathbf{x},t)$ are certain know functions, 
-\[
-  d\mathbf{W}\equiv \mathbf{W}(t+dt)-\mathbf{W}(t)=\boldsymbol{\xi}(t)\,dt
-\] 
-is an $n$ variable Wiener process and $\boldsymbol{\xi}(t)$ is the white noise.\\
-This SDE is equivalent an Fokker-Planck equation if the stochastic process described by a conditional probability density $p(\mathbf{x},t\,|\,\mathbf{x_0},t_0)\equiv p$ satisfy 
+$ d\mathbf{W}\equiv \boldsymbol{\xi}(t)\,dt $ is an $n$ variable Wiener process and $\boldsymbol{\xi}(t)$ is the white noise. This SDE corresponds an Fokker-Planck equation if the stochastic process described by a conditional probability density $p(\mathbf{x},t\,|\,\mathbf{x_0},t_0)\equiv p$ satisfy 
 \[
   \partial_t\,p=\mathscr{L}(\mathbf{x},t)\,p
      =-\sum_i\,\partial_i\left[ A_i(\mathbf{x},t)\,p\, \right]+\frac{1}{2}\sum_{ij}\,\partial_i\partial_j\left[ B_{ij}(\mathbf{x},t)\,p\, \right] 
 \]
-where $\mathscr{L}(\mathbf{x},t)$ is a second-order differential operator and the coefficients of RHS are such that $\mathbf{A}(\mathbf{x},t)=\mathbf{a}(\mathbf{x},t)$ and $\underline{\mathbf{B}}(\mathbf{x},t)=\mathbf{b}(\mathbf{x},t)\textbf{b}^T(\mathbf{x},t)$. The Fokker-Planck equation describes diffusion processes, the vector $\mathbf{A}(\mathbf{x},t)$ is know as drift vector and the matrix $\underline{\mathbf{B}}(\mathbf{x},t)$ is know as the diffusion matrix\footnote{The diffusion matrix is positive semidefinite and symmetric as a result of its definition \cite{Gard:HandBookStocMet}.}. 
+where $\mathscr{L}(\mathbf{x},t)$ is a second-order differential operator and the coefficients of RHS are such that $\mathbf{A}(\mathbf{x},t)=\mathbf{a}(\mathbf{x},t)$ and $\underline{\mathbf{B}}(\mathbf{x},t)=\mathbf{b}(\mathbf{x},t)\textbf{b}^T(\mathbf{x},t)$. The Fokker-Planck equation describes diffusion processes, the vector $\mathbf{A}(\mathbf{x},t)$ is know as drift vector and the matrix $\underline{\mathbf{B}}(\mathbf{x},t)$ is know as the diffusion matrix. From its definition this matrix is positive semidefinite and symmetric \cite{Gard:HandBookStocMet}.
 
 Let us consider an Orstein-Uhlenbeck (OU) SDE, that is, an It\^o equation where the coefficients are
 \[
  \mathbf{a}(\mathbf{x})=-k\,\mathbf{x}\quad\text{and}\quad b=\sqrt{D}
 \]
-where $k$ and $D$ are positive parameters. We can easily show in the stationary limit ($t\gg t_0$) that the diffusive parameter $D$ depends on parameters $k$ and $T$: $D=(2k)/\beta$. The idea is to compute average and variance of the solution of the OU-SDE in the stationary limit and then apply the equipartition theorem\footnote{The solution of one dimensional OU-SDE can be computed by the It\^o's formula applied to $y=xe^{k\,t}$\cite{Gard:HandBookStocMet}. We get 
+here $k$ and $D$ are positive parameters. The solution of one dimensional OU-SDE can be computed by the It\^o's formula applied to $y=xe^{k\,t}$\cite{Gard:HandBookStocMet}. We get 
 \[
  x(t)=x_0(t_0)\,e^{-k(t-t_0)}+\sqrt{D}\int_{t_0}^t\,dW(t')e^{-k(t-t')}\,,
 \]
 and the average and variance are respectively:
-\begin{gather*}
- \left\langle x(t)\right\rangle=\left\langle x_0(t_0)\right\rangle\,e^{-k(t-t_0)}\,, \\
- \left\langle \left(x(t)-\left\langle x(t)\right\rangle\right)^2\right\rangle=\left[ Var(x_0)-\frac{D}{2k} \right]e^{-2k(t-t_0)}+\frac{D}{2k}\,.
-\end{gather*}
-}.
+\begin{align*}
+ \left\langle x(t)\right\rangle &= \left\langle x_0(t_0)\right\rangle\,e^{-k(t-t_0)}\,, \\
+ \left\langle \left(x(t)-\left\langle x(t)\right\rangle\right)^2\right\rangle &= \left[ Var(x_0)-\frac{D}{2k} \right]e^{-2k(t-t_0)}+\frac{D}{2k}\,.
+\end{align*}
+We can easily show in the stationary limit ($t\gg t_0$), applying the equipartition theorem, that the diffusive parameter $D$ is equal to $(2k)/\beta$.
+
 
 \subsubsection{Langevin Dynamics}
-Langevin dynamics combines the OU stochastic vector field with a conservative dynamics, so we are assuming that the stochastic force is not affected by the potential:
+Langevin dynamics combines a conservative dynamic with the OU stochastic vector field as a forcing for the momentum, so we are assuming that the stochastic force is not affected by the potential:
 \[
  M\frac{d^2\mathbf{x}}{dt^2}=-\boldsymbol{\nabla} U(\mathbf{x})-\gamma\,\frac{d\mathbf{x}}{dt}+\sqrt{(2\gamma)/\beta}\,\boldsymbol{\xi}(t)
 \]
@@ -117,6 +110,9 @@ and thus determine the Fokker-Planck operator for the Langevin dynamics
 where $\boldsymbol{\Delta}_{p}$ is the mass-weighted Laplacian in the momenta and $\varphi$ is a test function \cite{Risk:TheFPeq}.
 
 \subsubsection{Splitting methods}
+
+\subsection{Some more details about the work of B. Leimkuhler and C. Matthews}
+The methods that are considered are splitting integrators that decompose the stochastic vector field which drives the Langevin Dynamics into simpler vector fields which can be solved exactly. Nevertheless, the composition method that results cannot be directly related to a stochastic differential equation, but nonetheless the invariant measure associated to the numerical method can be derived, using the Baker-Campbell-Hausdorff (BCH) expansion, as an asymptotic series in two parameters: the stepsize and the coefficient $\gamma^{-1}$. The authors stress that their approach focuses on the truncation error of the invariant distribution, thus the greatest benefit would be seen only when the statistical error is well controlled. Furthermore, they observe that the least biased scheme from the point of view of the error introduced in configurational sampling is also as efficient as the alternatives and the most robust with respect the variation of parameters (stepsize and $\gamma^{-1}$), thus they emphasise that there is no price for the improvement in accuracy.
 
 
 \cleardoublepage
