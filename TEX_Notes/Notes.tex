@@ -75,37 +75,37 @@ Langevin dynamics combines a conservative dynamic with the OU stochastic vector 
 \[
  M\frac{d^2\mathbf{x}}{dt^2}=-\boldsymbol{\nabla} U(\mathbf{x})-\gamma\,\frac{d\mathbf{x}}{dt}+\sqrt{(2\gamma)/\beta}\,\boldsymbol{\xi}(t)
 \]
-where we introduced physical quantities: $\mathbf{x}$ is the canonical coordinate of position, $\gamma$ is the friction parameter and $\beta=\left( K_BT \right)^{-1}$ is the temperature parameter. We can rewrite the equation as
+where we introduced physical quantities: $\mathbf{x}$ is the coordinate of position, $\gamma$ is the friction parameter and $\beta=\left( K_BT \right)^{-1}$ is the temperature parameter. We can rewrite the equation as
 \[
 \begin{cases}
  d\mathbf{x}=\mathbf{v}\,dt \\
  Md\mathbf{v}=\left[ -\boldsymbol{\nabla} U(\mathbf{x})-\gamma\,\mathbf{v} \right]\,dt+\sqrt{(2\gamma)/\beta}\,d\mathbf{W}
 \end{cases}
 \]
-and for the canonical coordinates we get 
+and for the canonical coordinates $ \{q(t),p(t):(q,p)\in \mathbb{R}^2\} $ we get 
 \[
 \begin{cases}
- d\mathbf{x}=M^{-1}\,\mathbf{p}\,dt \\
- d\mathbf{p}=\left[ -\boldsymbol{\nabla} U(\mathbf{x})-\tilde{\gamma}\,\mathbf{p} \right]\,dt+\sqrt{(2\tilde{\gamma})/\beta}\,M^{1/2}d\mathbf{W}
+ d\mathbf{q}=M^{-1}\,\mathbf{p}\,dt \\
+ d\mathbf{p}=\left[ -\boldsymbol{\nabla} U(\mathbf{q})-\tilde{\gamma}\,\mathbf{p} \right]\,dt+\sqrt{(2\tilde{\gamma})/\beta}\,M^{1/2}d\mathbf{W}
 \end{cases}
 \]
 where $\tilde{\gamma}=\gamma/M$. From the system of two first-order equations can we compute the drift and diffusion coefficients
 \begin{align*}
- \left(A_{\mathbf{x}}\right)_i &= M^{-1}\,p_i\,;  &  \left(B_{\mathbf{x}\mathbf{x}}\right)_{ij} &= \left(B_{\mathbf{x}\mathbf{p}}\right)_{ij}=0\,; \\
- \left(A_{\mathbf{p}}\right)_i &= \left(-\boldsymbol{\nabla} U(\mathbf{x})-\tilde{\gamma}\,\mathbf{p}\right)_i\,;  &  
+ \left(A_{\mathbf{q}}\right)_i &= M^{-1}\,p_i\,;  &  \left(B_{\mathbf{q}\mathbf{q}}\right)_{ij} &= \left(B_{\mathbf{p}\mathbf{q}}\right)_{ij}=0\,; \\
+ \left(A_{\mathbf{p}}\right)_i &= \left(-\boldsymbol{\nabla} U(\mathbf{q})-\tilde{\gamma}\,\mathbf{p}\right)_i\,;  &  
       \left(B_{\mathbf{p}\mathbf{p}}\right)_{ij} &= \frac{2\tilde{\gamma}}{\beta}\,M\,\delta_{ij}\,;
 \end{align*}
 and thus determine the Fokker-Planck operator for the Langevin dynamics
 \begin{multline*}
- \mathscr{L}_{LD}\,\varphi=-M^{-1}\,\sum_i\,p_i\,\partial_{x_i}\,\varphi\,+ 
-                          \,\boldsymbol{\nabla}U(\mathbf{x})\,\sum_i\,\partial_{p_i}\,\varphi\,+{}\\
+ \mathscr{L}_{LD}\,\varphi=-M^{-1}\,\sum_i\,p_i\,\partial_{q_i}\,\varphi\,+ 
+                          \,\boldsymbol{\nabla}U(\mathbf{q})\,\sum_i\,\partial_{p_i}\,\varphi\,+{}\\
                           +\,\tilde{\gamma}\,\sum_i\,\partial_{p_i}\,p_i\,\varphi\,+
                           \,\tilde{\gamma}\,\sum_i\,\,p_i\,\partial_{p_i}\,\varphi\,+
                           \,\tilde{\gamma}\,K_BT\,\sum_i\,M\,\partial_i^2\,\varphi={}\\
-                          =-M^{-1}\mathbf{p}\cdot\boldsymbol{\nabla}_{x}\,\varphi\,+
-                          \,\boldsymbol{\nabla}U(\mathbf{x})\cdot\boldsymbol{\nabla}_{p}\,\varphi\,+
-                          \,\tilde{\gamma}\,\boldsymbol{\nabla}_{p}(\mathbf{p}\,\varphi)+
-                          \,\tilde{\gamma}\,K_BT\boldsymbol{\Delta}_{p}\,\varphi\,,
+                          =-M^{-1}\mathbf{p}\cdot\boldsymbol{\nabla}_{q}\,\varphi\,+
+                          \,\boldsymbol{\nabla}U(\mathbf{q})\cdot\boldsymbol{\nabla}_{p}\,\varphi\,+
+                          \,\tilde{\gamma}\, \left[ \,\boldsymbol{\nabla}_{p}(\mathbf{p}\,\varphi)+
+                          \,K_BT\boldsymbol{\Delta}_{p}\,\varphi \,\right]\,,
 \end{multline*}
 where $\boldsymbol{\Delta}_{p}$ is the mass-weighted Laplacian in the momenta and $\varphi$ is a test function \cite{Risk:TheFPeq}.
 
