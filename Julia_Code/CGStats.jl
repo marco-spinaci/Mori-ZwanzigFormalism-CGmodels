@@ -79,14 +79,14 @@ end
 """
 function LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
   # Report to user.
-  # println(Dates.now());
-  # println("Running full simulation of Langevin dynamics, storing trajectory and computing");
-  # println("the mean values per particle of the kinetic energy and the total energy.");
-  # println("  NPart, number of particles simulated = ",C.NPart);
-  # println("  Beta, temperature parameter = ",C.Beta);
-  # println("  Gamma, friction coefficient = ",C.Gamma);
-  # println("  dt, time step size = ",S.dt," seconds.");
-  # println("  Total simulation time = ",S.FullTime," seconds.");
+  println(Dates.now());
+  println("Running full simulation of Langevin dynamics, storing trajectory and computing");
+  println("the mean values per particle of the kinetic energy and the total energy.");
+  println("  NPart, number of particles simulated = ",C.NPart);
+  println("  Beta, temperature parameter = ",C.Beta);
+  println("  Gamma, friction coefficient = ",C.Gamma);
+  println("  dt, time step size = ",S.dt," seconds.");
+  println("  Total simulation time = ",S.FullTime," seconds.");
 
   # Set up.
   P = P0; Q = Q0; F = Forces(Q,C);

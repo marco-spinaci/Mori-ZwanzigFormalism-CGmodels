@@ -20,11 +20,11 @@ Q0 = Vector(1.0:1.0:30.0);
 ################################################################################
 # to checks if the function "LangevinFullTraj" works properly
 
-# # to change the values of the BETA parameter
-# BetaSamples = Vector(200:200:1000);
-# # BetaSamples = [exp10(x) for x in -3:0];
-#
-#
+# to change the values of the BETA parameter
+BetaSamples = Vector(200:200:1000);
+# BetaSamples = [exp10(x) for x in -3:0];
+nsamples = length(BetaSamples);
+
 # K = zeros(length(BetaSamples));
 # for i = 1:length(BetaSamples)
 #     C = Chain(Beta=BetaSamples[i,1]);
@@ -32,66 +32,62 @@ Q0 = Vector(1.0:1.0:30.0);
 #     # K[i,1] = Kmean;
 #     K[i,1] = LangevinFullTraj(P0,Q0,C,S)[4];
 # end
-#
-# plot(1 ./BetaSamples,K,
-#     legend = false,
-#     xlabel = "T",
-#     ylabel = "<Kmean>",
-#     title = "<Kmean> per particle vs T");
-# savefig("plotKmeanVST.pdf");
-
-################################################################################
-
-BetaSamples = Vector(200:200:1000);     # to change the values of the Beta parameter
-K = SharedArray{Float64}(length(BetaSamples));
 
 i=0;
 j=0;
 np = nprocs();
-nsamples = length(BetaSamples);
+K = SharedArray{Float64}(length(BetaSamples));
+
 @sync begin
     while j < nsamples
-        global p=0
-        while p<np && j<nsamples
-            global p = p+1
+        for p in 1:np
             if p != myid() || np == 1
-                global j = j+1;
+                if j >= nsamples
+                    break;
+                end
+                global j += 1;
                 println("Start the sample ",j);
-                pp = p
-                jj = j
+                pp = p;
+                jj = j;
                 @async begin
-                    println(" CPU_THREADS ",pp-1,", BSeta=",BetaSamples[jj,1]);
+                    println(" CPU_THREADS ",pp-1,", Worker ",pp,", Beta=",BetaSamples[jj,1]);
                     C = Chain(Beta=BetaSamples[jj,1]);
                     K[jj,1] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[4];
-                    #println(" K= ",K[jj,1]);
                 end
             end
         end
     end
 end
 
-println(K)
+
+plot(1 ./BetaSamples,K,
+    legend = false,
+    xlabel = "T",
+    ylabel = "<Kmean>",
+    title = "<Kmean> per particle vs T");
+savefig("plotKmeanVST.pdf");
+
 
 ################################################################################
 # to compute the autocorrealtion function at varying of the GAMMA parameter
 
-# # to change the values of the Beta parameter
-# GammaSamples = [exp10(x) for x in -5:5:5];
-# # to change the number of ACF to compute
-# nlags = 4000;
-#
-# lags = Vector(0:1:nlags);
-# Autocor = zeros(length(lags),length(GammaSamples));
-# for i = 1:length(GammaSamples)
-#     C = Chain(Gamma=GammaSamples[i,1]);
-#     PFull = LangevinFullTraj(P0,Q0,C,S)[1];
-#     Autocor[:,i] = autocor(PFull[1,:],lags);
-# end
-#
-# plot(lags*S.dt,Autocor,
-#     legend = :topright,
-#     label = ["Gamma = 1e-5","Gamma = 1","Gamma = 1e5"],
-#     xlabel = "t",
-#     ylabel = "Autocorrelation",
-#     title = "Autocorrelation of the momentum");
-# savefig("plotAutocorP.pdf");
+# to change the values of the Beta parameter
+GammaSamples = [exp10(x) for x in -5:5:5];
+# to change the number of ACF to compute
+nlags = 4000;
+
+lags = Vector(0:1:nlags);
+Autocor = zeros(length(lags),length(GammaSamples));
+for i = 1:length(GammaSamples)
+    C = Chain(Gamma=GammaSamples[i,1]);
+    PFull = LangevinFullTraj(P0,Q0,C,S)[1];
+    Autocor[:,i] = autocor(PFull[1,:],lags);
+end
+
+plot(lags*S.dt,Autocor,
+    legend = :topright,
+    label = ["Gamma = 1e-5","Gamma = 1","Gamma = 1e5"],
+    xlabel = "t",
+    ylabel = "Autocorrelation",
+    title = "Autocorrelation of the momentum");
+savefig("plotAutocorP.pdf");
