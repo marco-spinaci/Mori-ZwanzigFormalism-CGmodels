@@ -48,26 +48,29 @@ K = SharedArray{Float64}(length(BetaSamples));
 i=0;
 j=0;
 np = nprocs();
+nsamples = length(BetaSamples);
 @sync begin
-    while i < length(BetaSamples)
-        println("Start the sample ",i+1);
-        for p in 1:np
+    while j < nsamples
+        global p=0
+        while p<np && j<nsamples
+            global p = p+1
             if p != myid() || np == 1
-                if j < length(BetaSamples)
-                    @async begin
-                        global j+=1;
-                        println(" CPU_THREADS ",p-1,", BSeta=",BetaSamples[j,1]);
-                        C = Chain(Beta=BetaSamples[j,1]);
-                        K[j,1] = remotecall_fetch(LangevinFullTraj,p,P0,Q0,C,S)[4];
-                        println(" K= ",K[j,1]);
-                    end
+                global j = j+1;
+                println("Start the sample ",j);
+                pp = p
+                jj = j
+                @async begin
+                    println(" CPU_THREADS ",pp-1,", BSeta=",BetaSamples[jj,1]);
+                    C = Chain(Beta=BetaSamples[jj,1]);
+                    K[jj,1] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[4];
+                    #println(" K= ",K[jj,1]);
                 end
             end
         end
-        global i+=1;
     end
 end
 
+println(K)
 
 ################################################################################
 # to compute the autocorrealtion function at varying of the GAMMA parameter
