@@ -55,13 +55,13 @@ $ d\mathbf{W}\equiv \boldsymbol{\xi}(t)\,dt $ is an $n$ variable Wiener process 
   \partial_t\,p=\mathscr{L}(\mathbf{x},t)\,p
      =-\sum_i\,\partial_i\left[ A_i(\mathbf{x},t)\,p\, \right]+\frac{1}{2}\sum_{ij}\,\partial_i\partial_j\left[ B_{ij}(\mathbf{x},t)\,p\, \right] 
 \]
-where $\mathscr{L}(\mathbf{x},t)$ is a second-order differential operator and the coefficients of RHS are such that $\mathbf{A}(\mathbf{x},t)=\mathbf{a}(\mathbf{x},t)$ and $\underline{\mathbf{B}}(\mathbf{x},t)=\mathbf{b}(\mathbf{x},t)\textbf{b}^T(\mathbf{x},t)$. The Fokker-Planck equation describes diffusion processes, the vector $\mathbf{A}(\mathbf{x},t)$ is know as drift vector and the matrix $\underline{\mathbf{B}}(\mathbf{x},t)$ is know as the diffusion matrix. From its definition this matrix is positive semidefinite and symmetric \cite{Gard:HandBookStocMet}.
+where $\mathscr{L}(\mathbf{x},t)$ is a second-order differential operator and the coefficients of RHS are such that $\mathbf{A}(\mathbf{x},t)=\mathbf{a}(\mathbf{x},t)$ and $\underline{\mathbf{B}}(\mathbf{x},t)=\mathbf{b}(\mathbf{x},t)\textbf{b}^T(\mathbf{x},t)$. The Fokker-Planck equation describes diffusion processes, the vector $\mathbf{A}(\mathbf{x},t)$ is know as drift vector and the matrix $\underline{\mathbf{B}}(\mathbf{x},t)$ is know as the diffusion matrix. From its definition this matrix is positive semidefinite and symmetric \cite{Gardiner2009}.
 
 Let us consider an Orstein-Uhlenbeck (OU) SDE, that is, an It\^o equation where the coefficients are
 \[
  \mathbf{a}(\mathbf{x})=-k\,\mathbf{x}\quad\text{and}\quad b=\sqrt{D}
 \]
-here $k$ and $D$ are positive parameters. The solution of one dimensional OU-SDE can be computed by the It\^o's formula applied to $y=xe^{k\,t}$\cite{Gard:HandBookStocMet}. We get 
+here $k$ and $D$ are positive parameters. The solution of one dimensional OU-SDE can be computed by the It\^o's formula applied to $y=xe^{k\,t}$\cite{Gardiner2009}. We get 
 \[
  x(t)=x_0(t_0)\,e^{-k(t-t_0)}+\sqrt{D}\int_{t_0}^t\,dW(t')e^{-k(t-t')}\,,
 \]
@@ -119,22 +119,29 @@ The methods that are considered are splitting integrators that decompose the sto
 
 \appendix
 \section{Elements of Probability Theory and Stochastic Processes}
+We introduce some basic definition and results from probability theory and stochastic processes. This material can be found in \cite{Pavliotis2014,Williams1991}. 
+
 \begin{defin}[\textbf{Sample Space}]
 The set of all events, such as all the possible outcomes of an experiment, is called sample space and is denoted by $\Omega$.  
 \end{defin}
 
 \begin{defin}[\textbf{$\sigma$-algebra}]
-A collection $\mathscr{F}$ of subset of $\Omega$ is called $\sigma$-algebra on $\Omega$ if
+A collection $\mathscr{F}$ of subset of $\Omega$ is called $\sigma$-algebra on $\Omega$ if\footnote{We use the following convention:
+\[ \mathbb{N}\coloneqq\{1,2,3,\dots\} \subseteq \{0,1,2,3,\dots\}\eqqcolon\mathbb{Z}^+\quad\mathrm{and}\quad\mathbb{R}^+\coloneqq[0,+\infty)\,. \]}
 \begin{compactenum}[(i)] 
 \item $\Omega\in\mathscr{F}$; 
 \item $F\in\mathscr{F}\,\implies\, F^c\coloneqq\,\Omega\setminus F\in\mathscr{F}$;
-\item $F_n\in\mathscr{F},\,n\in\mathbb{N}^*=\{1,2,3,\dots\}\,\implies\,\bigcup_{n\in\mathbb{N}^*}F_n\in\mathscr{F}$.
+\item $F_n\in\mathscr{F},\,n\in\mathbb{N}\,\implies\,\bigcup_{n\in\mathbb{N}}F_n\in\mathscr{F}$.
 \end{compactenum}   
 \end{defin}
 \noindent
-Intuitively, the $\sigma$-algebra contains all the useful information that is available about the random experiment that we are performing.
+Intuitively, the $\sigma$-algebra $\mathscr{F}$ contains all the useful information that is available about the random experiment that we are performing. One of its elements is called a $\mathscr{F}$-measurable subset of $\Omega$ or \emph{event}.
 
-\begin{defin}[\textbf{Probability measure}]
+\begin{defin}[\textbf{Measurable Space}]
+A pair $(\Omega,\mathscr{F})$, where $\Omega$ is a set and $\mathscr{F}$ is a $\sigma$-algebra on $\Omega$, is called measurable space.
+\end{defin}
+
+\begin{defin}[\textbf{Probability Measure}]
 A probability measure $\mathbb{P}$ on the measurable space $(\Omega,\mathscr{F})$ is a function
 \[
 \mathbb{P}:\mathscr{F} \to [0,1];\: F \mapsto \mathbb{P}(F);
@@ -142,8 +149,8 @@ A probability measure $\mathbb{P}$ on the measurable space $(\Omega,\mathscr{F})
 satisfying
 \begin{compactenum}[(i)] 
 \item $\mathbb{P}(\Omega)=1$; 
-\item if $F_n\in\mathscr{F}$ with $F_n\bigcap F_m=\emptyset$ for $n\neq m$ and $n,m\in\mathbb{N}^*,$ then 
-\[ \mathbb{P}\left(\bigcup_{n\in\mathbb{N}^*}F_n\right)=\sum_{n\in\mathbb{N}^*}\mathbb{P}\left(F_n\right)\,.\].
+\item if $F_n\in\mathscr{F}$ with $F_n\bigcap F_m=\emptyset$, $n\neq m$ and $n,m\in\mathbb{N},$ then 
+\[ \mathbb{P}\left(\bigcup_{n\in\mathbb{N}}F_n\right)=\sum_{n\in\mathbb{N}}\mathbb{P}\left(F_n\right)\,.\].
 \end{compactenum}
 \end{defin}
 
@@ -151,12 +158,29 @@ satisfying
 A probability space is a triple $(\Omega,\mathscr{F},\mathbb{P})$ comprising a set $\Omega$, a $\sigma$-algebra $\mathscr{F}$ of subsets of $\Omega$ and a probability measure $\mathbb{P}$ on the measurable space $(\Omega,\mathscr{F})$.
 \end{defin}
 
+\noindent
+Since we are usually interested in the consequence of the outcomes of an experiment, we introduce the notion of random variable that is intuitively a function of the outcomes. We do it following the Williams \cite{Williams1991}, through the definition of measurable function from $(\Omega,\mathscr{F},\mathbb{P})$ to $(\mathbb{R},\mathscr{B}(\mathbb{R}))$\footnote{We will use the notation $\mathscr{B}(\mathbb{R})$ to denote the Borel $\sigma$-algebra of $\mathbb{R}$, the smallest $\sigma$-algebra containing all open sets of $\mathbb{R}$.}. 
+\begin{defin}[\textbf{$\mathscr{F}$-measurable function}]
+Let $(\Omega,\mathscr{F},\mathbb{P})$ and $(\mathbb{R},\mathscr{B}(\mathbb{R}))$ be two measurable spaces. 
+The function $\psi:\Omega\to\mathbb{R}$ is called $\mathscr{F}$-measurable function if 
+\[
+\psi^{-1}(A)\coloneqq\{\omega\in\Omega:\psi(\omega)\in A \}\in\mathscr{F},\quad\forall\, A\in\mathscr{B}(\mathbb{R})\,.
+\]
+\end{defin}
+
+\begin{defin}[\textbf{Random Variable}]
+Let $(\Omega,\mathscr{F},\mathbb{P})$ be a probability space. A random variable is $\mathscr{F}$-measurable function, thus
+\[
+X:\Omega \to\mathbb{R}\,,\quad X^{-1}:\mathscr{B}(\mathbb{R})\to\mathscr{F}\,.
+\]
+\end{defin}
+
 
 \cleardoublepage
 \phantomsection
 \addcontentsline{toc}{chapter}{\bibname}
 \bibliographystyle{plain}
-\bibliography{biblio}
+\bibliography{biblioTESI}
 
 
 \end{document}
