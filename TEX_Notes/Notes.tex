@@ -175,6 +175,19 @@ X:\Omega \to\mathbb{R}\,,\quad X^{-1}:\mathscr{B}(\mathbb{R})\to\mathscr{F}\,.
 \]
 \end{defin}
 
+\noindent
+Every random variable, carried by some probability triple $(\Omega,\mathscr{F},\mathbb{P})$, induces a probability measure $\mathbb{P}_X$ on $(\mathbb{R},\mathscr{B}(\mathbb{R}))$:
+\begin{align*}
+\mathbb{P}_X:\mathscr{B}(\mathbb{R}) &\to [0,1] \\
+B &\mapsto \mathbb{P}_X(B)\coloneqq\mathbb{P}(X\in B)=\mathbb{P}(X^{-1}(B))\,.
+\end{align*}
+The measure $\mathbb{P}_X$ is called \emph{distribution} (or sometimes the \emph{law}) of $X$.
+We can now define the \emph{distribution function} of $X$:
+\begin{align*}
+F_X:\mathbb{R} &\to[0,1] \\ 
+x &\mapsto F_X(x)\coloneqq\mathbb{P}\left( \left\lbrace \omega\in\Omega:X(\omega)\leq x \right\rbrace \right)=\mathbb{P}\left( X\leq x\right)\,.
+\end{align*}
+This function $F_X$ indicates the likelihood that the random variable $X$ is in $(-\infty,x]$
 
 \cleardoublepage
 \phantomsection
