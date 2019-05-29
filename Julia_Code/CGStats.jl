@@ -635,7 +635,7 @@ function VEffConstrained(C::Chain,S::Simulator)
             # Print max: if it gets too large, the integrator becomes unstable.
             println("        Maximum distance = ",maximum(RSamples[ii,:]));
             MomentSamples[ii,:,:] = remotecall_fetch(ConstrainedSample,p,PP,QQ,C,S,CGStats.Observables)[1];
-			# NB:the function "ConstrSampleLangDyn" returns a Tuple and "remotecall_fetch()[1]" returns the first value of this Tuple.
+			# NB:the function "ConstrainedSample" returns a Tuple and "remotecall_fetch()[1]" returns the first value of this Tuple.
             println("      Sample ",ii," complete!");
           end
         end

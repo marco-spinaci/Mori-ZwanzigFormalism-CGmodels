@@ -26,3 +26,7 @@ ii=1;
 p=1;
 MomentSamples[ii,:,:] = remotecall_fetch(ConstrSampleLangDyn,p,P0,Q0,C,S,0)[1];
 # NB:ConstrSampleLangDyn returns a Tuple and remotecall_fetch()[1] returns the first value of this Tuple
+
+############################################################################################################
+
+EpsPatt = (sqrt.(C.LEps)*C.LTotPatt+sqrt.(C.SEps)*C.STotPatt).*circshift(sqrt.(C.LEps)*C.LTotPatt+sqrt.(C.SEps)*C.STotPatt,-1)
