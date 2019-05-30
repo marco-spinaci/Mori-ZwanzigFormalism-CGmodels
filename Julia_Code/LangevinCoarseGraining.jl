@@ -20,31 +20,31 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,Plots
 ###################################################################################################################
 # to generate data to plot the mean force for the system C ([0,1,0], SM(particle 0)=10, LM(particle 1)=1, γ=1, β=1)
 
-S = Simulator();
+#S = Simulator();
 
 # 2 Constrained Beads
-C2 = Chain();
-(RR2,PP,Veff,Fmean2,Fstd) = VEffConstrainedLangDyn(C2,S);
+#C2 = Chain();
+#(RR2,PP,Veff,Fmean2,Fstd) = VEffConstrainedLangDyn(C2,S);
 
 # Write data to file
-open("./Outcomes/R_sC_2cb.csv","w+") do x2
-    writedlm(x2,RR2);
-end
-open("./Outcomes/Fmean_sC_2cb.csv","w+") do f2
-    writedlm(f2,Fmean2);
-end
+#open("./Outcomes/R_sC_2cb.csv","w+") do x2
+#    writedlm(x2,RR2);
+#end
+#open("./Outcomes/Fmean_sC_2cb.csv","w+") do f2
+#    writedlm(f2,Fmean2);
+#end
 
 # 10 Constrained Beads (all Beads)
-C10 = Chain(ConstrainedBeads=10);
-(RR10,PP,Veff,Fmean10,Fstd) = VEffConstrainedLangDyn(C10,S);
+#C10 = Chain(ConstrainedBeads=10);
+#(RR10,PP,Veff,Fmean10,Fstd) = VEffConstrainedLangDyn(C10,S);
 
 # Write data to file
-open("./Outcomes/R_sC_10cb.csv","w+") do x10
-    writedlm(x10,RR10);
-end
-open("./Outcomes/Fmean_sC_10cb.csv","w+") do f10
-    writedlm(f10,Fmean10);
-end
+#open("./Outcomes/R_sC_10cb.csv","w+") do x10
+#    writedlm(x10,RR10);
+#end
+#open("./Outcomes/Fmean_sC_10cb.csv","w+") do f10
+#    writedlm(f10,Fmean10);
+#end
 
 
 #########################################################################################################################
