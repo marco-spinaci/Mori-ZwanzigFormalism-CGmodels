@@ -10,48 +10,42 @@ addprocs(Sys.CPU_THREADS);
 @everywhere include("CGStats.jl")
 using Main.LJChain,Main.CGStats,DelimitedFiles,Plots
 
-#################################################################################################################
+##################################################################################################################
 # Generic system
 
 # C = Chain();
 # S = Simulator(MacroSamples=2);
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
-#################################################################################################################
-# Generate data to plot the mean force for the system C ([0,1,0], SM(particle 0)=10, LM(particle 1)=1, γ=1, β=1)
+###################################################################################################################
+# to generate data to plot the mean force for the system C ([0,1,0], SM(particle 0)=10, LM(particle 1)=1, γ=1, β=1)
 
 S = Simulator();
 
 # 2 Constrained Beads
-C1 = Chain(LEps=10);
-(RR1,PP,Veff,Fmean1,Fstd) = VEffConstrainedLangDyn(C1,S);
-
-# Write data to file
-open("./Outcomes/R_sC_2cb.csv","w+") do x1
-    writedlm(x1,RR1);
-end
-open("./Outcomes/Fmean_sC_2cb.csv","w+") do f1
-    writedlm(f1,Fmean1);
-end
-
-# 10 Constrained Beads (all Beads)
-C2 = Chain(ConstrainedBeads=10,LEps=10);
+C2 = Chain();
 (RR2,PP,Veff,Fmean2,Fstd) = VEffConstrainedLangDyn(C2,S);
 
 # Write data to file
-open("./Outcomes/R_sC_10cb.csv","w+") do x2
+open("./Outcomes/R_sC_2cb.csv","w+") do x2
     writedlm(x2,RR2);
 end
-open("./Outcomes/Fmean_sC_10cb.csv","w+") do f2
+open("./Outcomes/Fmean_sC_2cb.csv","w+") do f2
     writedlm(f2,Fmean2);
 end
 
+# 10 Constrained Beads (all Beads)
+C10 = Chain(ConstrainedBeads=10);
+(RR10,PP,Veff,Fmean10,Fstd) = VEffConstrainedLangDyn(C10,S);
 
-# plot([RR1 RR2],[Fmean1 Fmean2],
-#     legend = false,
-#     seriestype = [:line :scatter],
-#     xlabel = "R",
-#     ylabel = "Mean Force");
-# savefig("MeanForceSystemC.pdf");
+# Write data to file
+open("./Outcomes/R_sC_10cb.csv","w+") do x10
+    writedlm(x10,RR10);
+end
+open("./Outcomes/Fmean_sC_10cb.csv","w+") do f10
+    writedlm(f10,Fmean10);
+end
 
-#################################################################################################################
+
+#########################################################################################################################
+# to generate data to plot mean force, the fluctuating part of the force and the effective potential for the four system
