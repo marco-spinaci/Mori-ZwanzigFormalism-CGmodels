@@ -50,7 +50,7 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,Plots
 #########################################################################################################################
 # to generate data to plot mean force, the fluctuating part of the force and the effective potential for the four system
 
-S = Simulator();
+S = Simulator(MacroSamples=1000);
 
 # system A
 C = Chain(SM=1,LM=10);
