@@ -17,7 +17,7 @@ S = Simulator();
 P0 = zeros(C.NPart);
 Q0 = Vector(1.0:1.0:30.0);
 
-################################################################################
+################################################################################################
 # to checks if the function "LangevinFullTraj" works properly
 
 # to change the values of the BETA parameter
@@ -62,13 +62,17 @@ end
 
 p1 = plot(1 ./BetaSamples,K,
        legend = false,
+       legendfontsize = 5,
+       tickfontsize = 5,
+       guidefontsize = 8,
        xlabel = "T",
        ylabel = "<Kmean>",
-       title = "<Kmean> per particle vs T");
+       title = "<Kmean> per particle vs T",
+       titlefontsize = 7);
 # savefig("plotKmeanVST.pdf");
 
 
-################################################################################
+###################################################################################################
 # to compute the autocorrealtion function at varying of the GAMMA parameter
 
 # to change the values of the Beta parameter
@@ -86,16 +90,20 @@ end
 
 p2 = plot(lags*S.dt,Autocor,
        legend = :topright,
+       legendfontsize = 5,
+       tickfontsize = 5,
+       guidefontsize = 8,
        label = ["Gamma = 1e-5","Gamma = 1","Gamma = 1e5"],
        xlabel = "t",
        ylabel = "Autocorrelation",
-       title = "Autocorrelation of the momentum");
+       title = "Autocorrelation of the momentum",
+       titlefontsize = 7);
 # savefig("plotAutocorP.pdf");
 
 
-################################################################################################
+###################################################################################################
 # to plot the two graphs together
 
 l = @layout [a b];
 plot(p1, p2, layout = l);
-savefig("plotFullTraj(Test&Autocor).pdf");
+savefig("./Outcomes/Plots/plotFullTraj(Test&Autocor).pdf");
