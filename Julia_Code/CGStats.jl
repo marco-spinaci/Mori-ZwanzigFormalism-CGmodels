@@ -592,7 +592,7 @@ end
 # High-level simulation functions #
 ###################################
 function VEffConstrained(C::Chain,S::Simulator)
-  println("Computing coarse graining through constrained dynamics ...")
+  println("Computing coarse graining through constrained dynamics ...");
   if S.dt > 0.1*sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt));
     warn("Timestep = ",S.dt,
       " not ≪  shortest timescale = ",sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt)));
@@ -607,19 +607,19 @@ function VEffConstrained(C::Chain,S::Simulator)
   MomentSamples = SharedArray{Float64}(S.MacroSamples,C.ConstrainedBeads-1,S.Moments);
 
   # Perform sampling
-  np = nprocs()
-  ss = 0
+  np = nprocs();
+  ss = 0;
 
   @sync begin
     while ss < S.MacroSamples
       for p=1:np
         if p != myid() || np == 1
           if ss == S.MacroSamples
-            break
+            break;
           end
           println("    Starting macrosample ", ss+1);
           for i = 1:S.FullSteps
-            (P,Q,F) = LeapfrogStep(P,Q,F,C,S.dt)
+            (P,Q,F) = LeapfrogStep(P,Q,F,C,S.dt);
           end
 
           ss+=1;
@@ -642,7 +642,7 @@ function VEffConstrained(C::Chain,S::Simulator)
       end
     end
   end
-  println(" ...ComputeVEff done!")
+  println(" ...ComputeVEff done!");
 
   return ComputeVEff(RSamples,PSamples,MomentSamples)
 end
@@ -663,8 +663,8 @@ function VEffConstrainedLangDyn(C::Chain,S::Simulator)
   MomentSamples = SharedArray{Float64}(S.MacroSamples,C.ConstrainedBeads-1,S.Moments);
 
   # Perform sampling
-  np = nprocs()
-  ss = 0
+  np = nprocs();
+  ss = 0;
 
   @sync begin
     while ss < S.MacroSamples
@@ -675,7 +675,7 @@ function VEffConstrainedLangDyn(C::Chain,S::Simulator)
           end
           println("    Starting macrosample ", ss+1);
           for i = 1:S.FullSteps
-            (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt)
+            (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
           end
 
           ss+=1;
