@@ -60,12 +60,12 @@ K = SharedArray{Float64}(length(BetaSamples));
 end
 
 
-plot(1 ./BetaSamples,K,
-    legend = false,
-    xlabel = "T",
-    ylabel = "<Kmean>",
-    title = "<Kmean> per particle vs T");
-savefig("plotKmeanVST.pdf");
+p1 = plot(1 ./BetaSamples,K,
+       legend = false,
+       xlabel = "T",
+       ylabel = "<Kmean>",
+       title = "<Kmean> per particle vs T");
+# savefig("plotKmeanVST.pdf");
 
 
 ################################################################################
@@ -84,10 +84,18 @@ for i = 1:length(GammaSamples)
     Autocor[:,i] = autocor(PFull[1,:],lags);
 end
 
-plot(lags*S.dt,Autocor,
-    legend = :topright,
-    label = ["Gamma = 1e-5","Gamma = 1","Gamma = 1e5"],
-    xlabel = "t",
-    ylabel = "Autocorrelation",
-    title = "Autocorrelation of the momentum");
-savefig("plotAutocorP.pdf");
+p2 = plot(lags*S.dt,Autocor,
+       legend = :topright,
+       label = ["Gamma = 1e-5","Gamma = 1","Gamma = 1e5"],
+       xlabel = "t",
+       ylabel = "Autocorrelation",
+       title = "Autocorrelation of the momentum");
+# savefig("plotAutocorP.pdf");
+
+
+################################################################################################
+# to plot the two graphs together
+
+l = @layout [a b];
+plot(p1, p2, layout = l);
+savefig("plotFullTraj(Test&Autocor).pdf");
