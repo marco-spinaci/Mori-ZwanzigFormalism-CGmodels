@@ -3,7 +3,7 @@ include("CGStats.jl")
 
 using Main.LJChain,Main.CGStats,Plots,Statistics
 
-######################################################################
+######################################################################################
 
 # to change the number of samples to compute, i.e. OrthoSamples Value
 
@@ -19,7 +19,8 @@ Os = Int(1);
 
 Fs = Int(1e5);
 
-######################################################################
+######################################################################################
+# to compute the orthogonal dynamics with the constraint dynamics
 
 C = Chain();
 S = Simulator();
@@ -54,11 +55,44 @@ plot(OrthoSamplesTot,VarStress,
     title  = "VarStress vs OrthoSamples");
 savefig("plotVarStressVSOrthoSamples.pdf");
 
+################################################################################################
+# to compute the orthogonal dynamics with the Langevin constraint dynamics
+
+# C = Chain();
+# S = Simulator();
+# # S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
+#
+# (P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
+#
+# (Pstore,Qstore,Fstore) = FullTraj(P0,Q0,C,S);
+#
+# # OrthoSamplesTot = Vector(Oin:Oin:Ofin);
+# StressMoments   = zeros(length(OrthoSamplesTot),2);
+# VarStress       = zeros(length(OrthoSamplesTot));
+#
+# Portho = Pstore[:,end];
+# Qortho = Qstore[:,end];
+#
+# for i = 1:length(OrthoSamplesTot)
+#
+# 	S = Simulator(OrthoSamples=Int(OrthoSamplesTot[i]),OrthoSteps=Os,FullSteps=Fs);
+# 	(StressMoments[i,:],Portho,Qortho) = ConstrSampleLangDyn(Portho,Qortho,C,S);
+# 	VarStress[i,1]  = (1/i)*sum(StressMoments[1:i,2])-((1/i)*sum(StressMoments[1:i,1]))^2;
+#
+# 	global Portho = Portho;
+# 	global Qortho = Qortho;
+# end
+#
+# plot(OrthoSamplesTot,VarStress,
+#     legend = false,
+#     linestyle = :dot;
+#     xlabel = "OrthoSamples",
+#     ylabel = "VarStress",
+#     title  = "VarStress vs OrthoSamples");
+# savefig("plotVarStressLANGDYN_VS_OrthoSamples.pdf");
 
 
-
-
-###############################################################################
+################################################################################################
 
 # Autocorrelation analysis to compute the autocorrelation function and the
 # corrisponding integrated autocorrelation time τ
