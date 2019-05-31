@@ -9,7 +9,7 @@ using Main.LJChain,Main.CGStats,Plots,Statistics
 
 # Oin = Int(1e3);
 # Ofin = Int(1e6);
-OrthoSamplesTot = [exp10(x) for x in 1:7];
+OrthoSamplesTot = [exp10(x) for x in 1:8];
 
 # to change the gap between samples, i.e. OrthoSteps value
 
@@ -50,7 +50,7 @@ for i = 1:length(OrthoSamplesTot)
 	global Qortho = Qortho;
 end
 
-println(" ...VarStress done!");
+println("  ... VarStress done!");
 
 scatter(OrthoSamplesTot,VarStress,
     legend = false,
@@ -73,11 +73,11 @@ S = Simulator();
 
 (P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
 
-(Pstore,Qstore,Fstore,,Kmean,Hmean) = LangevinFullTraj(P0,Q0,C,S);
+(Pstore,Qstore,Fstore,Kmean,Hmean) = LangevinFullTraj(P0,Q0,C,S);
 Portho = Pstore[:,end];
 Qortho = Qstore[:,end];
 
-println("Computing orthogonal dynamics through Langevi constraint dynamics ...");
+println("Computing orthogonal dynamics through Langevin constraint dynamics ...");
 
 # OrthoSamplesTot = Vector(Oin:Oin:Ofin);
 diff = circshift(circshift(OrthoSamplesTot,-1)-OrthoSamplesTot,1);
@@ -95,7 +95,7 @@ for i = 1:length(OrthoSamplesTot)
 	global Qortho = Qortho;
 end
 
-println(" ...VarStress done!");
+println("  ... VarStress done!");
 
 scatter(OrthoSamplesTot,VarStress,
     legend = false,
