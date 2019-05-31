@@ -4,19 +4,17 @@ include("CGStats.jl")
 using Main.LJChain,Main.CGStats,Plots,Statistics
 
 ######################################################################################
+# Set up simulation parameters
 
 # to change the number of samples to compute, i.e. OrthoSamples Value
-
 # Oin = Int(1e3);
 # Ofin = Int(1e6);
 OrthoSamplesTot = [exp10(x) for x in 1:7];
 
 # to change the gap between samples, i.e. OrthoSteps value
-
 Os = Int(1);
 
 # to change the number of FullSteps to compute full dynamics
-
 Fs = Int(1e5);
 
 ######################################################################################
