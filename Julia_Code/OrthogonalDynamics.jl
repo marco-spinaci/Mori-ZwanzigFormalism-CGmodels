@@ -9,7 +9,7 @@ using Main.LJChain,Main.CGStats,Plots,Statistics
 # to change the number of samples to compute, i.e. OrthoSamples Value
 # Oin = Int(1e3);
 # Ofin = Int(1e6);
-OrthoSamplesTot = [exp10(x) for x in 1:7];
+OrthoSamplesTot = [exp10(x) for x in 1:6];
 
 # to change the gap between samples, i.e. OrthoSteps value
 Os = Int(1);
@@ -50,17 +50,21 @@ end
 
 println(" ...VarStress done!");
 
-scatter(OrthoSamplesTot,VarStress,
-    legend = false,
-    markershape = :auto,
-    markercolor = :red,
-    markersize = 2.5,
-    xscale = :log10,
-    xlabel = "OrthoSamples",
-    yscale = :log10,
-    ylabel = "VarStress",
-    title  = "VarStress vs OrthoSamples");
-savefig("plotVarStressVSOrthoSamples.pdf");
+s1 = scatter(OrthoSamplesTot,VarStress,
+         legend = false,
+         markershape = :auto,
+         markercolor = :red,
+         markersize = 2.5,
+		 tickfontsize = 5,
+		 guidefontsize = 8;
+         xscale = :log10,
+         xlabel = "OrthoSamples",
+         yscale = :log10,
+         ylabel = "VarStress",
+         title  = "VarStress vs OrthoSamples
+		 (constraint dynamics)",
+		 titlefontsize = 7);
+# savefig("plotVarStressVSOrthoSamples.pdf");
 
 ################################################################################################
 # to compute the orthogonal dynamics with the Langevin constraint dynamics
@@ -95,19 +99,27 @@ end
 
 println(" ...VarStress done!");
 
-scatter(OrthoSamplesTot,VarStress,
-    legend = false,
-    markershape = :auto,
-    markercolor = :red,
-    markersize = 2.5,
-    xscale = :log10,
-    xlabel = "OrthoSamples",
-    yscale = :log10,
-    ylabel = "VarStress",
-    title  = "VarStress vs OrthoSamples
-	(constraint Langevin dynamics)");
-savefig("plotVarStressLANGDYN_VS_OrthoSamples.pdf");
+s2 = scatter(OrthoSamplesTot,VarStress,
+         legend = false,
+         markershape = :auto,
+         markercolor = :red,
+         markersize = 2.5,
+		 tickfontsize = 5,
+		 guidefontsize = 8,
+         xscale = :log10,
+         xlabel = "OrthoSamples",
+         yscale = :log10,
+         ylabel = "VarStress",
+         title  = "VarStress vs OrthoSamples
+		 (constraint Langevin dynamics)",
+		 titlefontsize = 7);
+# savefig("plotVarStressLANGDYN_VS_OrthoSamples.pdf");
 
+################################################################################################
+
+l = @layout [a b];
+plot(s1, s2, layout = l);
+savefig("plotVarStress_VS_OrthoSamples.pdf");
 
 ################################################################################################
 
