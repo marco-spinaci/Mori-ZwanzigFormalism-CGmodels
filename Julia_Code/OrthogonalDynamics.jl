@@ -9,7 +9,7 @@ using Main.LJChain,Main.CGStats,Plots,Statistics
 
 # Oin = Int(1e3);
 # Ofin = Int(1e6);
-OrthoSamplesTot = [exp10(x) for x in 1:9];
+OrthoSamplesTot = [exp10(x) for x in 1:6];
 
 # to change the gap between samples, i.e. OrthoSteps value
 
@@ -21,6 +21,7 @@ Fs = Int(1e5);
 
 ######################################################################################
 # to compute the orthogonal dynamics with the constraint dynamics
+println("Computing orthogonal dynamics through constraint dynamics ...");
 
 C = Chain();
 S = Simulator();
@@ -31,6 +32,8 @@ S = Simulator();
 (Pstore,Qstore,Fstore) = FullTraj(P0,Q0,C,S);
 
 # OrthoSamplesTot = Vector(Oin:Oin:Ofin);
+diff = circshift(circshift(OrthoSamplesTot,-1)-OrthoSamplesTot,1);
+diff[1] = OrthoSamplesTot[1];
 StressMoments   = zeros(length(OrthoSamplesTot),2);
 VarStress       = zeros(length(OrthoSamplesTot));
 
@@ -39,7 +42,7 @@ Qortho = Qstore[:,end];
 
 for i = 1:length(OrthoSamplesTot)
 
-	S = Simulator(OrthoSamples=Int(OrthoSamplesTot[i]),OrthoSteps=Os,FullSteps=Fs);
+	S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs);
 	(StressMoments[i,:],Portho,Qortho) = ConstrainedSample(Portho,Qortho,C,S);
 	VarStress[i,1]  = (1/i)*sum(StressMoments[1:i,2])-((1/i)*sum(StressMoments[1:i,1]))^2;
 
@@ -47,49 +50,64 @@ for i = 1:length(OrthoSamplesTot)
 	global Qortho = Qortho;
 end
 
-plot(OrthoSamplesTot,VarStress,
+println(" ...VarStress done!");
+
+scatter(OrthoSamplesTot,VarStress,
     legend = false,
-	linestyle = :dot;
+    markershape = :auto,
+    markercolor = :red,
+    markersize = 2.5,
+    xscale = :log10,
     xlabel = "OrthoSamples",
+    yscale = :log10,
     ylabel = "VarStress",
     title  = "VarStress vs OrthoSamples");
 savefig("plotVarStressVSOrthoSamples.pdf");
 
 ################################################################################################
 # to compute the orthogonal dynamics with the Langevin constraint dynamics
+println("Computing orthogonal dynamics through Langevi constraint dynamics ...");
 
-# C = Chain();
-# S = Simulator();
-# # S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
-#
-# (P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
-#
-# (Pstore,Qstore,Fstore) = FullTraj(P0,Q0,C,S);
-#
-# # OrthoSamplesTot = Vector(Oin:Oin:Ofin);
-# StressMoments   = zeros(length(OrthoSamplesTot),2);
-# VarStress       = zeros(length(OrthoSamplesTot));
-#
-# Portho = Pstore[:,end];
-# Qortho = Qstore[:,end];
-#
-# for i = 1:length(OrthoSamplesTot)
-#
-# 	S = Simulator(OrthoSamples=Int(OrthoSamplesTot[i]),OrthoSteps=Os,FullSteps=Fs);
-# 	(StressMoments[i,:],Portho,Qortho) = ConstrSampleLangDyn(Portho,Qortho,C,S);
-# 	VarStress[i,1]  = (1/i)*sum(StressMoments[1:i,2])-((1/i)*sum(StressMoments[1:i,1]))^2;
-#
-# 	global Portho = Portho;
-# 	global Qortho = Qortho;
-# end
-#
-# plot(OrthoSamplesTot,VarStress,
-#     legend = false,
-#     linestyle = :dot;
-#     xlabel = "OrthoSamples",
-#     ylabel = "VarStress",
-#     title  = "VarStress vs OrthoSamples (constraint Langevin dynamics)");
-# savefig("plotVarStressLANGDYN_VS_OrthoSamples.pdf");
+C = Chain();
+S = Simulator();
+# S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
+
+(P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
+
+(Pstore,Qstore,Fstore) = FullTraj(P0,Q0,C,S);
+Portho = Pstore[:,end];
+Qortho = Qstore[:,end];
+
+# OrthoSamplesTot = Vector(Oin:Oin:Ofin);
+diff = circshift(circshift(OrthoSamplesTot,-1)-OrthoSamplesTot,1);
+diff[1] = OrthoSamplesTot[1];
+StressMoments   = zeros(length(OrthoSamplesTot),2);
+VarStress       = zeros(length(OrthoSamplesTot));
+
+for i = 1:length(OrthoSamplesTot)
+
+	S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs);
+	(StressMoments[i,:],Portho,Qortho) = ConstrSampleLangDyn(Portho,Qortho,C,S);
+	VarStress[i,1]  = (1/i)*sum(StressMoments[1:i,2])-((1/i)*sum(StressMoments[1:i,1]))^2;
+
+	global Portho = Portho;
+	global Qortho = Qortho;
+end
+
+println(" ...VarStress done!");
+
+scatter(OrthoSamplesTot,VarStress,
+    legend = false,
+    markershape = :auto,
+    markercolor = :red,
+    markersize = 2.5,
+    xscale = :log10,
+    xlabel = "OrthoSamples",
+    yscale = :log10,
+    ylabel = "VarStress",
+    title  = "VarStress vs OrthoSamples
+	(constraint Langevin dynamics)");
+savefig("plotVarStressLANGDYN_VS_OrthoSamples.pdf");
 
 
 ################################################################################################
