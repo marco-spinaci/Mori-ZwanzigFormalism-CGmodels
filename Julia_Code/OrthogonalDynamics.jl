@@ -88,7 +88,7 @@ savefig("plotVarStressVSOrthoSamples.pdf");
 #     linestyle = :dot;
 #     xlabel = "OrthoSamples",
 #     ylabel = "VarStress",
-#     title  = "VarStress vs OrthoSamples");
+#     title  = "VarStress vs OrthoSamples (constraint Langevin dynamics)");
 # savefig("plotVarStressLANGDYN_VS_OrthoSamples.pdf");
 
 
