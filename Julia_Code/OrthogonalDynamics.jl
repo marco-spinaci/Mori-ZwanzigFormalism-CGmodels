@@ -117,6 +117,7 @@ s2 = scatter(OrthoSamplesTot,VarStress,
 # savefig("plotVarStressLANGDYN_VS_OrthoSamples.pdf");
 
 ################################################################################################
+to plot the two graphs together
 
 l = @layout [a b];
 plot(s1, s2, layout = l);
