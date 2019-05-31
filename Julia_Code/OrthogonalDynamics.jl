@@ -9,7 +9,7 @@ using Main.LJChain,Main.CGStats,Plots,Statistics
 
 # Oin = Int(1e3);
 # Ofin = Int(1e6);
-OrthoSamplesTot = [exp10(x) for x in 1:6];
+OrthoSamplesTot = [exp10(x) for x in 1:7];
 
 # to change the gap between samples, i.e. OrthoSteps value
 
@@ -21,7 +21,6 @@ Fs = Int(1e5);
 
 ######################################################################################
 # to compute the orthogonal dynamics with the constraint dynamics
-println("Computing orthogonal dynamics through constraint dynamics ...");
 
 C = Chain();
 S = Simulator();
@@ -30,15 +29,16 @@ S = Simulator();
 (P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
 
 (Pstore,Qstore,Fstore) = FullTraj(P0,Q0,C,S);
+Portho = Pstore[:,end];
+Qortho = Qstore[:,end];
+
+println("Computing orthogonal dynamics through constraint dynamics ...");
 
 # OrthoSamplesTot = Vector(Oin:Oin:Ofin);
 diff = circshift(circshift(OrthoSamplesTot,-1)-OrthoSamplesTot,1);
 diff[1] = OrthoSamplesTot[1];
 StressMoments   = zeros(length(OrthoSamplesTot),2);
 VarStress       = zeros(length(OrthoSamplesTot));
-
-Portho = Pstore[:,end];
-Qortho = Qstore[:,end];
 
 for i = 1:length(OrthoSamplesTot)
 
@@ -66,7 +66,6 @@ savefig("plotVarStressVSOrthoSamples.pdf");
 
 ################################################################################################
 # to compute the orthogonal dynamics with the Langevin constraint dynamics
-println("Computing orthogonal dynamics through Langevi constraint dynamics ...");
 
 C = Chain();
 S = Simulator();
@@ -74,9 +73,11 @@ S = Simulator();
 
 (P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
 
-(Pstore,Qstore,Fstore) = FullTraj(P0,Q0,C,S);
+(Pstore,Qstore,Fstore,,Kmean,Hmean) = LangevinFullTraj(P0,Q0,C,S);
 Portho = Pstore[:,end];
 Qortho = Qstore[:,end];
+
+println("Computing orthogonal dynamics through Langevi constraint dynamics ...");
 
 # OrthoSamplesTot = Vector(Oin:Oin:Ofin);
 diff = circshift(circshift(OrthoSamplesTot,-1)-OrthoSamplesTot,1);
