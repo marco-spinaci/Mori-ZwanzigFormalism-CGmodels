@@ -9,7 +9,6 @@ using Main.LJChain,Main.CGStats,Plots,Statistics
 # to change the number of samples to compute, i.e. OrthoSamples Value
 # Oin = Int(1e3);
 # Ofin = Int(1e6);
-
 OrthoSamplesTot = [exp10(x) for x in 1:7];
 
 # to change the gap between samples, i.e. OrthoSteps value
@@ -117,7 +116,7 @@ s2 = scatter(OrthoSamplesTot,VarStress,
 # savefig("plotVarStressLANGDYN_VS_OrthoSamples.pdf");
 
 ################################################################################################
-to plot the two graphs together
+# to plot the two graphs together
 
 l = @layout [a b];
 plot(s1, s2, layout = l);
