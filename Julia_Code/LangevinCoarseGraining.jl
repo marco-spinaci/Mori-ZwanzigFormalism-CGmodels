@@ -28,7 +28,7 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,Plots
 # C = Chain();
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
-# Write data to file
+# # Write data to file
 #open("./Outcomes/R_sC_2cb.csv","w+") do x
 #    writedlm(x,RR);
 #end
@@ -36,11 +36,11 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,Plots
 #    writedlm(x,Fmean);
 #end
 
-## 10 Constrained Beads (all Beads)
+# # 10 Constrained Beads (all Beads)
 #C = Chain(ConstrainedBeads=10);
 #(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
-# Write data to file
+# # Write data to file
 #open("./Outcomes/R_sC_10cb.csv","w+") do x
 #    writedlm(x,RR);
 #end
