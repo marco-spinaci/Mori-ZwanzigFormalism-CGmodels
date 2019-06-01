@@ -22,7 +22,7 @@ Q0 = Vector(1.0:1.0:30.0);
 
 # to change the values of the BETA parameter
 #BetaSamples = Vector(200:200:1000);
-BetaSamples = [exp10(x) for x in -3:3];
+BetaSamples = [exp10(x) for x in -5:5];
 nsamples = length(BetaSamples);
 
 # K = zeros(nsamples);
@@ -62,26 +62,26 @@ end
 println(" ...Kmean computed!");
 
 p1 = scatter(1 ./BetaSamples,K,
-       legend = false,
-	   legendfontsize = 5,
-	   markershape = :auto,
-	   markercolor = :red,
-	   markersize = 2.5,
-       tickfontsize = 5,
-       guidefontsize = 8,
-       xscale = :log10,
-       xlabel = "T",
-       yscale = :log10,
-       ylabel = "<Kmean>",
-       title = "<Kmean> per particle vs T",
-       titlefontsize = 7);
+	     legend = false,
+	     legendfontsize = 5,
+	     markershape = :auto,
+	     markercolor = :red,
+	     markersize = 2.5,
+             tickfontsize = 5,
+             guidefontsize = 8,
+             xscale = :log10,
+             xlabel = "T",
+             yscale = :log10,
+             ylabel = "<Kmean>",
+             title = "<Kmean> per particle vs T",
+             titlefontsize = 7);
 savefig("./Outcomes/Plots/plotKmeanVST.pdf");
 
 
 ###################################################################################################
 # to compute the autocorrealtion function at varying of the GAMMA parameter
 
-# to change the values of the Beta parameter
+# to change the values of the Gamma parameter
 GammaSamples = [exp10(x) for x in -5:5];
 nsamples = length(GammaSamples);
 
