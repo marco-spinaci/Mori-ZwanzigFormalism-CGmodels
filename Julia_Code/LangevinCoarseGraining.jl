@@ -25,8 +25,7 @@ nsamples = length(GammaSamples);
 RR = zeros(C.NPart,nsamples);
 Fmean = zeros(C.NPart,nsamples);
 for i = 1:nsamples
-    println("Start the Gamma sample ",i);
-    println("   Gamma=",GammaSamples[i,1]);
+    println("Start the Gamma sample ",i," Gamma=",GammaSamples[i,1]);
     C = Chain(Gamma=GammaSamples[i,1],Beta=1);
     (RR[:,i],PP,Veff,Fmean[:,i],Fstd) = VEffConstrainedLangDyn(C,S);
     println(" ...Fmean computed!");
