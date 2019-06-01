@@ -129,9 +129,13 @@ end
 println(" ...Autocorrelation computed!");
 
 # Write data to file
-open("./Outcomes/AutocorGAMMAfrom1e-5to1e5.csv","w+") do x
-    writedlm(x,Autocor);
+tAutocor = zeros(length(lags),nsamples+1);
+tAutocor[:,1] = lags*S.dt;
+tAutocor[:,2:end] = Autocor; 
+open("./Outcomes/Plots/AutocorGAMMAfrom1e-5to1e5.csv","w+") do x
+    writedlm(x,tAutocor);
 end
+
 
 p2 = plot(lags*S.dt,Autocor,
        legend = :topright,
