@@ -22,10 +22,10 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,Plots
 ###################################################################################################################
 # to generate data to plot the mean force for the system C ([0,1,0], SM(particle 0)=10, LM(particle 1)=1, γ=1, β=1)
 
-S = Simulator(OrthoSamples=Int(1e2),MacroSamples=100);
+S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
 
 # 2 Constrained Beads
-C = Chain();
+C = Chain(Gamma=1000);
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
 # Write data to file
@@ -53,7 +53,7 @@ end
 #########################################################################################################################
 # to generate data to plot mean force, the fluctuating part of the force and the effective potential for the four system
 #
-#S = Simulator(MacroSamples=1000);
+#S = Simulator(OrthoSamples=Int(1e2),MacroSamples=1000);
 #
 ## system A
 #C = Chain(SM=1,LM=10);
