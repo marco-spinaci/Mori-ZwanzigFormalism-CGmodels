@@ -25,7 +25,7 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,Plots
 S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
 
 # 2 Constrained Beads
-C = Chain(Gamma=1000);
+C = Chain(Gamma=10000);
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
 # Write data to file
