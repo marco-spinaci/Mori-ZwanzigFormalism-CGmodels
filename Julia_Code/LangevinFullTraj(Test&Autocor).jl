@@ -61,9 +61,12 @@ end
 
 println(" ...Kmean computed!");
 
-p1 = plot(1 ./BetaSamples,K,
+p1 = scatter(1 ./BetaSamples,K,
        legend = false,
-       legendfontsize = 5,
+	   legendfontsize = 5,
+	   markershape = :auto,
+	   markercolor = :red,
+	   markersize = 2.5,
        tickfontsize = 5,
        guidefontsize = 8,
        xscale = :log10,
