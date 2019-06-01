@@ -22,16 +22,16 @@ C = Chain();
 GammaSamples = [exp10(x) for x in 2:5];
 nsamples = length(GammaSamples);
 
-RR = zeros(C.NPart,nsamples);
-Fmean = zeros(C.NPart,nsamples);
+RR = zeros(S.MacroSamples,nsamples);
+Fmean = zeros(S.MacroSamples,nsamples);
 for i = 1:nsamples
-    println("Start the Gamma sample ",i," Gamma=",GammaSamples[i,1]);
+    println("Start the Gamma sample ",i,", Gamma=",GammaSamples[i,1]);
     C = Chain(Gamma=GammaSamples[i,1],Beta=1);
     (RR[:,i],PP,Veff,Fmean[:,i],Fstd) = VEffConstrainedLangDyn(C,S);
     println(" ...Fmean computed!");
 end
 
-RF = zeros(C.NPart,nsamples*2);
+RF = zeros(S.MacroSamples,nsamples*2);
 RF[:,1:nsamples] = RR;
 RF[:,nsamples+1:end] = Fmean;
 open("./Outcomes/Plots/FvsR_sC_Gamma.csv","w+") do x
