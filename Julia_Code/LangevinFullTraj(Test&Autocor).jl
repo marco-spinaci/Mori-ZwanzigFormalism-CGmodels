@@ -79,11 +79,11 @@ Q0 = Vector(1.0:1.0:30.0);
 # to compute the autocorrealtion function at varying of the GAMMA parameter
 
 # to change the values of the Beta parameter
-GammaSamples = [exp10(x) for x in -5:5];
+GammaSamples = [exp10(x) for x in 0:5];
 nsamples = length(GammaSamples);
 
 # to change the number of ACF to compute
-nlags = 4000;
+nlags = 10000;
 lags = Vector(0:1:nlags);
 
 
@@ -130,7 +130,7 @@ p2 = plot(lags*S.dt,Autocor,
        legendfontsize = 5,
        tickfontsize = 5,
        guidefontsize = 8,
-       label = ["Gamma = 1e-5","Gamma = 1e-4","Gamma = 1e-3","Gamma = 1e-2","Gamma = 1e-1","Gamma = 1","Gamma = 1e1","Gamma = 1e2",
+       label = ["Gamma = 1","Gamma = 1e1","Gamma = 1e2",
 		"Gamma = 1e3","Gamma = 1e4","Gamma = 1e5"],
        xlabel = "t",
        ylabel = "Autocorrelation",
