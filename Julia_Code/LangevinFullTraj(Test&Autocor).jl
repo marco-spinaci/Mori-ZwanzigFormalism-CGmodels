@@ -59,7 +59,7 @@ Q0 = Vector(1.0:1.0:30.0);
 #     end
 # end
 #
-# println("  ... Kmean computed!");
+# println(" ...Kmean computed!");
 #
 # p1 = plot(1 ./BetaSamples,K,
 #        legend = false,
@@ -79,7 +79,7 @@ Q0 = Vector(1.0:1.0:30.0);
 # to compute the autocorrealtion function at varying of the GAMMA parameter
 
 # to change the values of the Beta parameter
-GammaSamples = [exp10(x) for x in 0:5];
+GammaSamples = [exp10(x) for x in -5:5];
 nsamples = length(GammaSamples);
 
 # to change the number of ACF to compute
@@ -123,14 +123,19 @@ Autocor = SharedArray{Float64}(length(lags),nsamples);
     end
 end
 
-println("  ... Autocorrelation computed!");
+println(" ...Autocorrelation computed!");
+
+# Write data to file
+open("./Outcomes/Autocor_GAMMA_1e-5to1e5.csv","w+") do x
+    writedlm(x,Autocor);
+end
 
 p2 = plot(lags*S.dt,Autocor,
        legend = :topright,
        legendfontsize = 5,
        tickfontsize = 5,
        guidefontsize = 8,
-       label = ["Gamma = 1","Gamma = 1e1","Gamma = 1e2",
+       label = ["Gamma = 1e-5","Gamma = 1e-4","Gamma = 1e-3","Gamma = 1e-2","Gamma = 1e-1","Gamma = 1","Gamma = 1e1","Gamma = 1e2",
 		"Gamma = 1e3","Gamma = 1e4","Gamma = 1e5"],
        xlabel = "t",
        ylabel = "Autocorrelation",
