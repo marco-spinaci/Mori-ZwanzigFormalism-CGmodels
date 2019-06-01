@@ -116,7 +116,7 @@ Autocor = SharedArray{Float64}(length(lags),nsamples);
                     println(" CPU_THREADS ",pp-1,", Worker ",pp,", Gamma=",GammaSamples[jj,1]);
                     C = Chain(Gamma=GammaSamples[jj,1]);
                     PFull[:,:,jj] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[1];
-                    Autocor[:,jj] = remotecall_fetch(autocor,pp,PFull[1,:,jj]',lags);
+                    Autocor[:,jj] = remotecall_fetch(autocor,pp,PFull[1,:,jj],lags);
                 end
             end
         end
