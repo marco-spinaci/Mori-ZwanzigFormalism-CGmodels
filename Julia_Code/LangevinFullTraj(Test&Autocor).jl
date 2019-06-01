@@ -19,60 +19,60 @@ Q0 = Vector(1.0:1.0:30.0);
 
 ################################################################################################
 # to checks if the function "LangevinFullTraj" works properly
-#
-# # to change the values of the BETA parameter
-# BetaSamples = Vector(200:200:1000);
-# # BetaSamples = [exp10(x) for x in -3:3];
-# nsamples = length(BetaSamples);
-#
-# # K = zeros(nsamples);
-# # for i = 1:length(BetaSamples)
-# #     C = Chain(Beta=BetaSamples[i,1]);
-# #     # PFull,QFull,FFull,Kmean,Hmean = LangevinFullTraj(P0,Q0,C,S);
-# #     # K[i,1] = Kmean;
-# #     K[i,1] = LangevinFullTraj(P0,Q0,C,S)[4];
-# # end
-#
-# i=0;
-# j=0;
-# np = nprocs();
-# K = SharedArray{Float64}(nsamples);
-#
-# @sync begin
-#     while j < nsamples
-#         for p in 1:np
-#             if p != myid() || np == 1
-#                 if j >= nsamples
-#                     break;
-#                 end
-#                 global j += 1;
-#                 println("Start the Beta sample ",j);
-#                 pp = p;
-#                 jj = j;
-#                 @async begin
-#                     println(" CPU_THREADS ",pp-1,", Worker ",pp,", Beta=",BetaSamples[jj,1]);
-#                     C = Chain(Beta=BetaSamples[jj,1]);
-#                     K[jj,1] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[4];
-#                 end
-#             end
-#         end
-#     end
+
+# to change the values of the BETA parameter
+#BetaSamples = Vector(200:200:1000);
+BetaSamples = [exp10(x) for x in -3:3];
+nsamples = length(BetaSamples);
+
+# K = zeros(nsamples);
+# for i = 1:length(BetaSamples)
+#     C = Chain(Beta=BetaSamples[i,1]);
+#     # PFull,QFull,FFull,Kmean,Hmean = LangevinFullTraj(P0,Q0,C,S);
+#     # K[i,1] = Kmean;
+#     K[i,1] = LangevinFullTraj(P0,Q0,C,S)[4];
 # end
-#
-# println(" ...Kmean computed!");
-#
-# p1 = plot(1 ./BetaSamples,K,
-#        legend = false,
-#        legendfontsize = 5,
-#        tickfontsize = 5,
-#        guidefontsize = 8,
-#        xscale = :log10,
-#        xlabel = "T",
-#        yscale = :log10,
-#        ylabel = "<Kmean>",
-#        title = "<Kmean> per particle vs T",
-#        titlefontsize = 7);
-# savefig("./Outcomes/Plots/plotKmeanVST.pdf");
+
+i=0;
+j=0;
+np = nprocs();
+K = SharedArray{Float64}(nsamples);
+
+@sync begin
+    while j < nsamples
+        for p in 1:np
+            if p != myid() || np == 1
+                if j >= nsamples
+                    break;
+                end
+                global j += 1;
+                println("Start the Beta sample ",j);
+                pp = p;
+                jj = j;
+                @async begin
+                    println(" CPU_THREADS ",pp-1,", Worker ",pp,", Beta=",BetaSamples[jj,1]);
+                    C = Chain(Beta=BetaSamples[jj,1]);
+                    K[jj,1] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[4];
+                end
+            end
+        end
+    end
+end
+
+println(" ...Kmean computed!");
+
+p1 = plot(1 ./BetaSamples,K,
+       legend = false,
+       legendfontsize = 5,
+       tickfontsize = 5,
+       guidefontsize = 8,
+       xscale = :log10,
+       xlabel = "T",
+       yscale = :log10,
+       ylabel = "<Kmean>",
+       title = "<Kmean> per particle vs T",
+       titlefontsize = 7);
+savefig("./Outcomes/Plots/plotKmeanVST.pdf");
 
 
 ###################################################################################################
@@ -126,7 +126,7 @@ end
 println(" ...Autocorrelation computed!");
 
 # Write data to file
-open("./Outcomes/Autocor_GAMMA_1e-5to1e5.csv","w+") do x
+open("./Outcomes/AutocorGAMMAfrom1e-5to1e5.csv","w+") do x
     writedlm(x,Autocor);
 end
 
