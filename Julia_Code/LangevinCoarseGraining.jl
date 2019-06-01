@@ -16,6 +16,7 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,Plots
 # Generic system
 
 S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
+C = Chain();
 
 # to change the values of the Gamma parameter
 GammaSamples = [exp10(x) for x in 2:5];
@@ -23,10 +24,12 @@ nsamples = length(GammaSamples);
 
 RR = zeros(C.NPart,nsamples);
 Fmean = zeros(C.NPart,nsamples);
-
 for i = 1:nsamples
+    println("Start the Gamma sample ",i);
+    println("   Gamma=",GammaSamples[i,1]);
     C = Chain(Gamma=GammaSamples[i,1],Beta=1);
     (RR[:,i],PP,Veff,Fmean[:,i],Fstd) = VEffConstrainedLangDyn(C,S);
+    println(" ...Fmean computed!");
 end
 
 RF = zeros(C.NPart,nsamples*2);
