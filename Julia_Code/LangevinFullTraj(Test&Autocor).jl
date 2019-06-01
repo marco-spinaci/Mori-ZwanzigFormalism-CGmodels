@@ -98,7 +98,7 @@ lags = Vector(0:1:nlags);
 i=0;
 j=0;
 np = nprocs();
-PFull = SharedArray{Float64}(C.NPart,nsamples);
+PFull = SharedArray{Float64}(C.NPart,S.FullSteps,nsamples);
 Autocor = SharedArray{Float64}(length(lags),nsamples);
 
 @sync begin
@@ -115,8 +115,8 @@ Autocor = SharedArray{Float64}(length(lags),nsamples);
                 @async begin
                     println(" CPU_THREADS ",pp-1,", Worker ",pp,", Gamma=",GammaSamples[jj,1]);
                     C = Chain(Gamma=GammaSamples[jj,1]);
-                    PFull[:,jj] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[1];
-                    Autocor[:,jj] = remotecall_fetch(autocor,pp,PFull[:,jj],lags);
+                    PFull[:,:,jj] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[1];
+                    Autocor[:,jj] = remotecall_fetch(autocor,pp,PFull[:,:,jj],lags);
                 end
             end
         end
@@ -131,7 +131,7 @@ p2 = plot(lags*S.dt,Autocor,
        tickfontsize = 5,
        guidefontsize = 8,
        label = ["Gamma = 1e-5","Gamma = 1e-4","Gamma = 1e-3","Gamma = 1e-2","Gamma = 1e-1","Gamma = 1","Gamma = 1e1","Gamma = 1e2",
-       ,"Gamma = 1e3","Gamma = 1e4","Gamma = 1e5"],
+		"Gamma = 1e3","Gamma = 1e4","Gamma = 1e5"],
        xlabel = "t",
        ylabel = "Autocorrelation",
        title = "Autocorrelation of the momentum",
