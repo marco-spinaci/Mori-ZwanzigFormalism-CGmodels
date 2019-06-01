@@ -19,7 +19,7 @@ S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
 C = Chain();
 
 # to change the values of the Gamma parameter
-GammaSamples = [exp10(x) for x in 2:5];
+GammaSamples = [exp10(x) for x in 3:5];
 nsamples = length(GammaSamples);
 
 RR = zeros(S.MacroSamples,nsamples);
