@@ -8,7 +8,7 @@ addprocs(Sys.CPU_THREADS);
 
 @everywhere include("LJChain.jl")
 @everywhere include("CGStats.jl")
-using Main.LJChain,Main.CGStats,Plots,SharedArrays,StatsBase
+using Main.LJChain,Main.CGStats,Plots,SharedArrays,StatsBase,DelimitedFiles
 
 C = Chain();
 S = Simulator();
