@@ -15,26 +15,45 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,Plots
 ##################################################################################################################
 # Generic system
 
-# C = Chain();
-# S = Simulator(MacroSamples=2);
-# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
+
+# to change the values of the Gamma parameter
+GammaSamples = [exp10(x) for x in 2:5];
+nsamples = length(GammaSamples);
+
+RR = zeros(C.NPart,nsamples);
+Fmean = zeros(C.NPart,nsamples);
+
+for i = 1:nsamples
+    C = Chain(Gamma=GammaSamples[i,1],Beta=1);
+    (RR[:,i],PP,Veff,Fmean[:,i],Fstd) = VEffConstrainedLangDyn(C,S);
+end
+
+RF = zeros(C.NPart,nsamples*2);
+RF[:,1:nsamples] = RR;
+RF[:,nsamples+1:end] = Fmean;
+open("./Outcomes/Plots/FvsR_sC_Gamma.csv","w+") do x
+    writedlm(x,RF);
+end
+
+end
 
 ###################################################################################################################
 # to generate data to plot the mean force for the system C ([0,1,0], SM(particle 0)=10, LM(particle 1)=1, γ=1, β=1)
 
-S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
-
-# 2 Constrained Beads
-C = Chain(Gamma=1000,Beta=1);
-(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-
-# Write data to file
-open("./Outcomes/R_sC_2cb.csv","w+") do x
-    writedlm(x,RR);
-end
-open("./Outcomes/Fmean_sC_2cb.csv","w+") do x
-    writedlm(x,Fmean);
-end
+# S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
+#
+# # 2 Constrained Beads
+# C = Chain();
+# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+#
+# # Write data to file
+# open("./Outcomes/R_sC_2cb.csv","w+") do x
+#     writedlm(x,RR);
+# end
+# open("./Outcomes/Fmean_sC_2cb.csv","w+") do x
+#     writedlm(x,Fmean);
+# end
 
 ## 10 Constrained Beads (all Beads)
 #C = Chain(ConstrainedBeads=10);
@@ -48,7 +67,7 @@ end
 #    writedlm(x,Fmean);
 #end
 
-end
+#end
 
 #########################################################################################################################
 # to generate data to plot mean force, the fluctuating part of the force and the effective potential for the four system
