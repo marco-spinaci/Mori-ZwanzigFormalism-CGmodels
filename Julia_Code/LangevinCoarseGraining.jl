@@ -19,7 +19,7 @@ S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
 C = Chain();
 
 # to change the values of the Gamma parameter
-GammaSamples = [exp10(x) for x in 3:5];
+GammaSamples = [exp10(x) for x in 4:5];
 nsamples = length(GammaSamples);
 
 RR = zeros(S.MacroSamples,nsamples);
@@ -34,7 +34,7 @@ end
 RF = zeros(S.MacroSamples,nsamples*2);
 RF[:,1:nsamples] = RR;
 RF[:,nsamples+1:end] = Fmean;
-open("./Outcomes/Plots/FvsR_sC_Gamma.csv","w+") do x
+open("./Outcomes/Plots/FvsR_sC_Gamma_1.csv","w+") do x
     writedlm(x,RF);
 end
 
