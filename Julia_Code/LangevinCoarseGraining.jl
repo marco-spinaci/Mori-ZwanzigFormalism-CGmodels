@@ -26,7 +26,7 @@ RR = zeros(S.MacroSamples,nsamples);
 Fmean = zeros(S.MacroSamples,nsamples);
 for i = 1:nsamples
     println("Start the Gamma sample ",i,", Gamma=",GammaSamples[i,1]);
-    C = Chain(Gamma=Int(GammaSamples[i,1]),Beta=Int(1000));
+    C = Chain(Gamma=Int(GammaSamples[i,1]),Beta=Int(10000));
     (RR[:,i],PP,Veff,Fmean[:,i],Fstd) = VEffConstrainedLangDyn(C,S);
     println(" ...Fmean computed!");
 end
@@ -34,7 +34,7 @@ end
 RF = zeros(S.MacroSamples,nsamples*2);
 RF[:,1:nsamples] = RR;
 RF[:,nsamples+1:end] = Fmean;
-open("./Outcomes/Plots/FvsR_sC_Gamma_b1000_1.csv","w+") do x
+open("./Outcomes/Plots/FvsR_sC_Gamma_b10000_2.csv","w+") do x
     writedlm(x,RF);
 end
 

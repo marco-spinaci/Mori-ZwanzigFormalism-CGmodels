@@ -1,24 +1,9 @@
-#!/opt/local/bin/gnuplot -persist
-#
-set terminal postscript eps color enhanced "Times-Roman" 11
-#set title "Fmean vs R"
-set size .9,.9
-set lmargin 12
-set bmargin 5
-#set output "| epstopdf -f -o=Veff.pdf"
-#set term pdfcairo
-#set output 'CTRW-model.pdf'
-#set format y "10^{%L}"
-#set format x "10^{%L}"
-#set logscale xy
-#unset mxtics
-#unset mytics
+set terminal postscript eps color enhanced "Times-Roman" 9
+set size 1.1,1.1
 set ylabel "{{/RomanOblique Fmean (R)}}"
 set xlabel "{{/RomanOblique R}}"
-#set xrange [0:2]
-#set yrange [-5:5]
-#set key bottom left
-#unset key
+#set xrange [0:2
+#set yrange [-1e8:1e8]
 set grid
 
 #########################################
@@ -30,26 +15,48 @@ set grid
 #   4     ->   Fmean(Gamma2)
 ##########################################
 
-set title "Fmean vs R (Beta=1)"
-set output "| epstopdf -f -o=plotFvsR_sC_GAMMA_b1.pdf"
-p "FvsR_sC_Gamma_b1.csv" u 1:3 w l lw 2 lc rgb "red"   t "Gamma = 1e4",\
-  "FvsR_sC_Gamma_b1.csv" u 4:5 w l lw 2 lc rgb "green" t "Gamma = 1e5"
+set output "| epstopdf -f -o=plotFvsR_sC_BETA_g1e4.pdf"
+set multiplot layout 2,2 title "Fmean vs R (Gamma=1e4)" margins 0.12, 1, 0.19, 0.9 spacing 0.1
+#set logscale y
+p "FvsR_sC_Gamma_b1.csv" u 1:3 w l lw 2 lc rgb "red"   t "Beta = 1"
+set key bottom right
+p "FvsR_sC_Gamma_b10.csv" u 1:3 w l lw 2 lc rgb "green" t "Beta = 10"
+#unset logscale y
+p "FvsR_sC_Gamma_b100.csv" u 1:3 w l lw 2 lc rgb "blue" t "Beta = 100"
+unset multiplot
 
-set title "Fmean vs R (Beta=10)"
-set output "| epstopdf -f -o=plotFvsR_sC_GAMMA_b10.pdf"
-p "FvsR_sC_Gamma_b10.csv" u 1:3 w l lw 2 lc rgb "red"   t "Gamma = 1e4",\
-  "FvsR_sC_Gamma_b10.csv" u 4:5 w l lw 2 lc rgb "green" t "Gamma = 1e5"
 
-set title "Fmean vs R (Beta=100)"
-set output "| epstopdf -f -o=plotFvsR_sC_GAMMA_b100.pdf"
-p "FvsR_sC_Gamma_b100.csv" u 1:3 w l lw 2 lc rgb "red"   t "Gamma = 1e4",\
-  "FvsR_sC_Gamma_b100.csv" u 4:5 w l lw 2 lc rgb "green" t "Gamma = 1e5"
+set output "| epstopdf -f -o=plotFvsR_sC_BETA_g1e5.pdf"
+set multiplot layout 2,2 title "Fmean vs R (Gamma=1e5)" font ",11" margins 0.12, 1, 0.19, 0.9 spacing 0.09
+#set logscale y
+p "FvsR_sC_Gamma_b1.csv" u 2:4 w l lw 2 lc rgb "red"   t "Beta = 1"
+p "FvsR_sC_Gamma_b10.csv" u 2:4 w l lw 2 lc rgb "green" t "Beta = 10"
+#unset logscale y
+set key top right
+p "FvsR_sC_Gamma_b100.csv" u 2:4 w l lw 2 lc rgb "blue" t "Beta = 100"
+unset multiplot
 
-#set output "| epstopdf -f -o=plotFvsR_sC_GAMMA.pdf"
-#  p "FvsR_sC_Gamma.csv" u 1:5 w l lw 2 lc rgb "red"   t  "Gamma = 1e2",\
-#    "FvsR_sC_Gamma.csv" u 2:6 w l lw 2 lc rgb "green" t  "Gamma = 1e3",\
-#    "FvsR_sC_Gamma.csv" u 3:7 w l lw 2 lc rgb "blue"  t  "Gamma = 1e4",\
-#    "FvsR_sC_Gamma.csv" u 4:8 w l lw 2 lc rgb "olive" t  "Gamma = 1e5"
+
+set output "| epstopdf -f -o=plotFvsR_sC_BETA_g1e4_1.pdf"
+set multiplot layout 2,2 title "Fmean vs R (Gamma=1e4)" margins 0.12, 1, 0.19, 0.9 spacing 0.1
+#set logscale y
+p "FvsR_sC_Gamma_b10_1.csv" u 1:3 w l lw 2 lc rgb "red"   t "Beta = 10"
+set key bottom right
+p "FvsR_sC_Gamma_b100_1.csv" u 1:3 w l lw 2 lc rgb "green" t "Beta = 100"
+#unset logscale y
+p "FvsR_sC_Gamma_b1000_1.csv" u 1:3 w l lw 2 lc rgb "blue" t "Beta = 1000"
+unset multiplot
+
+
+set output "| epstopdf -f -o=plotFvsR_sC_BETA_g1e5_1.pdf"
+set multiplot layout 2,2 title "Fmean vs R (Gamma=1e5)" font ",11" margins 0.12, 1, 0.19, 0.9 spacing 0.09
+#set logscale y
+p "FvsR_sC_Gamma_b10_1.csv" u 2:4 w l lw 2 lc rgb "red"   t "Beta = 10"
+p "FvsR_sC_Gamma_b100_1.csv" u 2:4 w l lw 2 lc rgb "green" t "Beta = 100"
+#unset logscale y
+set key top right
+p "FvsR_sC_Gamma_b1000_1.csv" u 2:4 w l lw 2 lc rgb "blue" t "Beta = 1000"
+unset multiplot
 
 
 set output
