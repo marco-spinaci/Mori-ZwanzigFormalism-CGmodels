@@ -64,7 +64,7 @@ s1 = scatter(OrthoSamplesTot,VarStress,
          title  = "VarStress vs OrthoSamples
 		 (constraint dynamics)",
 		 titlefontsize = 7);
-# savefig("plotVarStressVSOrthoSamples.pdf");
+# savefig("../Outcomes/OrthogonalDynamics_DetAndStoc/plotVarStressVSOrthoSamples.pdf");
 
 ################################################################################################
 # to compute the orthogonal dynamics with the Langevin constraint dynamics
@@ -113,14 +113,14 @@ s2 = scatter(OrthoSamplesTot,VarStress,
          title  = "VarStress vs OrthoSamples
 		 (constraint Langevin dynamics)",
 		 titlefontsize = 7);
-# savefig("plotVarStressLANGDYN_VS_OrthoSamples.pdf");
+# savefig("../Outcomes/OrthogonalDynamics_DetAndStoc/plotVarStressLANGDYN_VS_OrthoSamples.pdf");
 
 ################################################################################################
 # to plot the two graphs together
 
 l = @layout [a b];
 plot(s1, s2, layout = l);
-savefig("plotVarStress_VS_OrthoSamples.pdf");
+savefig("../Outcomes/OrthogonalDynamics_DetAndStoc/plotVarStress_VS_OrthoSamples_1.pdf");
 
 ################################################################################################
 
