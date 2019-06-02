@@ -46,26 +46,26 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,Plots
 S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
 
 # 2 Constrained Beads
-C = Chain(Gamma=1e4,Beta=1000);
+C = Chain(Gamma=1e4,Beta=100);
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
 # Write data to file
-open("../Outcomes/C_System_2and10cb/R_sC_2cb_B1000.csv","w+") do x
+open("../Outcomes/C_System_2and10cb/R_sC_2cb_B100.csv","w+") do x
     writedlm(x,RR);
 end
-open("../Outcomes/C_System_2and10cb/Fmean_sC_2cb_B1000.csv","w+") do x
+open("../Outcomes/C_System_2and10cb/Fmean_sC_2cb_B100.csv","w+") do x
     writedlm(x,Fmean);
 end
 
 # 10 Constrained Beads (all Beads)
-C = Chain(Gamma=1e4,Beta=1000,ConstrainedBeads=10);
+C = Chain(Gamma=1e4,Beta=100,ConstrainedBeads=10);
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
 # Write data to file
-open("../Outcomes/C_System_2and10cb/R_sC_10cb_B1000.csv","w+") do x
+open("../Outcomes/C_System_2and10cb/R_sC_10cb_B100.csv","w+") do x
     writedlm(x,RR);
 end
-open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb_B1000.csv","w+") do x
+open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb_B100.csv","w+") do x
     writedlm(x,Fmean);
 end
 
