@@ -3,6 +3,6 @@
 #paste R_sC.csv P_sC.csv Veff_sC.csv Fmean_sC.csv Fstd_sC.csv > Plots/C.csv
 #paste R_sD.csv P_sD.csv Veff_sD.csv Fmean_sD.csv Fstd_sD.csv > Plots/D.csv
 #
-paste R_sC_2cb.csv Fmean_sC_2cb.csv > Plots/C_2cb.csv
-paste R_sC_10cb.csv Fmean_sC_10cb.csv > Plots/C_10cb.csv
+paste R_sC_2cb.csv Fmean_sC_2cb.csv > C_2cb.csv
+paste R_sC_10cb.csv Fmean_sC_10cb.csv > C_10cb.csv
 
