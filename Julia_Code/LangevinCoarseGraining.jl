@@ -10,33 +10,57 @@ addprocs(Sys.CPU_THREADS);
 
 @everywhere include("LJChain.jl")
 @everywhere include("CGStats.jl")
-using Main.LJChain,Main.CGStats,DelimitedFiles,Plots
+using Main.LJChain,Main.CGStats,DelimitedFiles,SharedArray,Plots
 
 ##################################################################################################################
 # to generate data to plot for the system C as Gamma and Beta change
 
 # to change the values of the Gamma parameter
-GammaSamples = [exp10(x) for x in 4:5];
-nsamples = length(GammaSamples);
+GammaSamples = [exp10(x) for x in 0:5];
+nGsamples = length(GammaSamples);
+
+# to change the values of the Beta parameter
+BetaSamples = [exp10(x) for x in 1:4];
+nBsamples = length(GammaSamples);
 
 S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
 
 C = Chain();
-RR = zeros(S.MacroSamples,nsamples);
-Fmean = zeros(S.MacroSamples,nsamples);
+RR = SharedArray{Float64}(S.MacroSamples,nBsamples,nGsamples);
+Fmean = SharedArray{Float64}(S.MacroSamples,nsBamples,nGsamples);
 
-for i = 1:nsamples
-   println("Start the Gamma sample ",i,", Gamma=",GammaSamples[i,1]);
-   C = Chain(Gamma=Int(GammaSamples[i,1]),Beta=Int(10000));
-   (RR[:,i],PP,Veff,Fmean[:,i],Fstd) = VEffConstrainedLangDyn(C,S);
-   println(" ...Fmean computed!");
+for i = 1:nGsamples
+   for j = 1:nBsamples
+      println("Start Gamma sample ",i," and Beta sample ",j);
+      println("  ... Gamma=",GammaSamples[i,1],", Beta=",BetaSamples[j,1]);
+      C = Chain(Gamma=GammaSamples[i,1],Beta=BetaSamples[j,1]);
+      (RR[:,j,i],PP,Veff,Fmean[:,j,i],Fstd) = VEffConstrainedLangDyn(C,S);
+      println("   ...Fmean computed!")
+   end
 end
 
-RF = zeros(S.MacroSamples,nsamples*2);
-RF[:,1:nsamples] = RR;
-RF[:,nsamples+1:end] = Fmean;
-open("../Outcomes/C_System_GammaBeta/FvsR_sC_Gamma_b10000_2.csv","w+") do x
-   writedlm(x,RF);
+RF = SharedArray{Float64}(S.MacroSamples,nBsamples*2,nGsamples);
+for k = 1:nGsamples
+   RF[:,1:nsamples,k] = RR[:,:,k];
+   RF[:,nsamples+1:end,k] = Fmean[:,:,k];
+end
+open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e0.csv","w+") do x
+   writedlm(x,RF[:,:,1]);
+end
+open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e1.csv","w+") do x
+   writedlm(x,RF[:,:,2]);
+end
+open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e2.csv","w+") do x
+   writedlm(x,RF[:,:,3]);
+end
+open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e3.csv","w+") do x
+   writedlm(x,RF[:,:,4]);
+end
+open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e4.csv","w+") do x
+   writedlm(x,RF[:,:,5]);
+end
+open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e5.csv","w+") do x
+   writedlm(x,RF[:,:,6]);
 end
 
 end
