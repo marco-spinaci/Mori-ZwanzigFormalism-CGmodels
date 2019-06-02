@@ -15,61 +15,61 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,Plots
 ##################################################################################################################
 # to generate data to plot for the system C as Gamma and Beta change
 
-S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
-C = Chain();
-
-# to change the values of the Gamma parameter
-GammaSamples = [exp10(x) for x in 4:5];
-nsamples = length(GammaSamples);
-
-RR = zeros(S.MacroSamples,nsamples);
-Fmean = zeros(S.MacroSamples,nsamples);
-for i = 1:nsamples
-    println("Start the Gamma sample ",i,", Gamma=",GammaSamples[i,1]);
-    C = Chain(Gamma=Int(GammaSamples[i,1]),Beta=Int(10000));
-    (RR[:,i],PP,Veff,Fmean[:,i],Fstd) = VEffConstrainedLangDyn(C,S);
-    println(" ...Fmean computed!");
-end
-
-RF = zeros(S.MacroSamples,nsamples*2);
-RF[:,1:nsamples] = RR;
-RF[:,nsamples+1:end] = Fmean;
-open("../Outcomes/C_System_GammaBeta/FvsR_sC_Gamma_b10000_2.csv","w+") do x
-    writedlm(x,RF);
-end
-
-end
-
+#S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
+#C = Chain();
+#
+## to change the values of the Gamma parameter
+#GammaSamples = [exp10(x) for x in 4:5];
+#nsamples = length(GammaSamples);
+#
+#RR = zeros(S.MacroSamples,nsamples);
+#Fmean = zeros(S.MacroSamples,nsamples);
+#for i = 1:nsamples
+#    println("Start the Gamma sample ",i,", Gamma=",GammaSamples[i,1]);
+#    C = Chain(Gamma=Int(GammaSamples[i,1]),Beta=Int(10000));
+#    (RR[:,i],PP,Veff,Fmean[:,i],Fstd) = VEffConstrainedLangDyn(C,S);
+#    println(" ...Fmean computed!");
+#end
+#
+#RF = zeros(S.MacroSamples,nsamples*2);
+#RF[:,1:nsamples] = RR;
+#RF[:,nsamples+1:end] = Fmean;
+#open("../Outcomes/C_System_GammaBeta/FvsR_sC_Gamma_b10000_2.csv","w+") do x
+#    writedlm(x,RF);
+#end
+#
+#end
+#
 ###################################################################################################################
 # to generate data to plot the mean force for the system C ([0,1,0], SM(particle 0)=10, LM(particle 1)=1, γ=1, β=1)
 
-# S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
-#
-# # 2 Constrained Beads
-# C = Chain();
-# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-#
-# # Write data to file
-# open("../Outcomes/C_System_Sand10cb/R_sC_2cb.csv","w+") do x
-#     writedlm(x,RR);
-# end
-# open("../Outcomes/C_System_Sand10cb/Fmean_sC_2cb.csv","w+") do x
-#     writedlm(x,Fmean);
-# end
+S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
 
-## 10 Constrained Beads (all Beads)
-#C = Chain(ConstrainedBeads=10);
-#(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-#
-## Write data to file
-#open("../Outcomes/C_System_Sand10cb/R_sC_10cb.csv","w+") do x
-#    writedlm(x,RR);
-#end
-#open("../Outcomes/C_System_Sand10cb/Fmean_sC_10cb.csv","w+") do x
-#    writedlm(x,Fmean);
-#end
+# 2 Constrained Beads
+C = Chain(Gamma=Int(1e4),Beta=Int(100));
+(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
-#end
+# Write data to file
+open("../Outcomes/C_System_2and10cb/R_sC_2cb.csv","w+") do x
+    writedlm(x,RR);
+end
+open("../Outcomes/C_System_2and10cb/Fmean_sC_2cb.csv","w+") do x
+    writedlm(x,Fmean);
+end
+
+# 10 Constrained Beads (all Beads)
+C = Chain(Gamma=Int(1e4),Beta=Int(100),ConstrainedBeads=10);
+(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+
+# Write data to file
+open("../Outcomes/C_System_2and10cb/R_sC_10cb.csv","w+") do x
+    writedlm(x,RR);
+end
+open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb.csv","w+") do x
+    writedlm(x,Fmean);
+end
+
+end
 
 #########################################################################################################################
 # to generate data to plot mean force, the fluctuating part of the force and the effective potential for the four system
