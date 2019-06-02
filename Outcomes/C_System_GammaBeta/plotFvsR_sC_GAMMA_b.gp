@@ -44,7 +44,8 @@ p "FvsR_sC_Gamma_b10_1.csv" u 1:3 w l lw 2 lc rgb "red"   t "Beta = 10"
 set key bottom right
 p "FvsR_sC_Gamma_b100_1.csv" u 1:3 w l lw 2 lc rgb "green" t "Beta = 100"
 #unset logscale y
-p "FvsR_sC_Gamma_b1000_1.csv" u 1:3 w l lw 2 lc rgb "blue" t "Beta = 1000"
+p "FvsR_sC_Gamma_b1000.csv" u 1:3 w l lw 2 lc rgb "blue" t "Beta = 1000"
+p "FvsR_sC_Gamma_b10000.csv" u 1:3 w l lw 2 lc rgb "olive" t "Beta = 10000"
 unset multiplot
 
 
@@ -55,7 +56,8 @@ p "FvsR_sC_Gamma_b10_1.csv" u 2:4 w l lw 2 lc rgb "red"   t "Beta = 10"
 p "FvsR_sC_Gamma_b100_1.csv" u 2:4 w l lw 2 lc rgb "green" t "Beta = 100"
 #unset logscale y
 set key top right
-p "FvsR_sC_Gamma_b1000_1.csv" u 2:4 w l lw 2 lc rgb "blue" t "Beta = 1000"
+p "FvsR_sC_Gamma_b1000.csv" u 2:4 w l lw 2 lc rgb "blue" t "Beta = 1000"
+p "FvsR_sC_Gamma_b10000.csv" u 2:4 w l lw 2 lc rgb "olive" t "Beta = 10000"
 unset multiplot
 
 
