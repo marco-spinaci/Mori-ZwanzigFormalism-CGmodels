@@ -21,13 +21,13 @@ nGsamples = length(GammaSamples);
 
 # to change the values of the Beta parameter
 BetaSamples = [exp10(x) for x in 1:4];
-nBsamples = length(GammaSamples);
+nBsamples = length(BetaSamples);
 
 S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
 
 C = Chain();
 RR = SharedArray{Float64}(S.MacroSamples,nBsamples,nGsamples);
-Fmean = SharedArray{Float64}(S.MacroSamples,nBamples,nGsamples);
+Fmean = SharedArray{Float64}(S.MacroSamples,nBsamples,nGsamples);
 
 for i = 1:nGsamples
    for j = 1:nBsamples
