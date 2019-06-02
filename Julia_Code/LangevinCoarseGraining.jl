@@ -46,7 +46,7 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,Plots
 S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
 
 # 2 Constrained Beads
-C = Chain(Gamma=Int(1e4),Beta=Int(100));
+C = Chain(Gamma=1e4,Beta=100);
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
 # Write data to file
@@ -58,7 +58,7 @@ open("../Outcomes/C_System_2and10cb/Fmean_sC_2cb.csv","w+") do x
 end
 
 # 10 Constrained Beads (all Beads)
-C = Chain(Gamma=Int(1e4),Beta=Int(100),ConstrainedBeads=10);
+C = Chain(Gamma=1e4,Beta=100,ConstrainedBeads=10);
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
 # Write data to file
