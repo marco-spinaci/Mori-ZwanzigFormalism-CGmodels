@@ -27,7 +27,7 @@ S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
 
 C = Chain();
 RR = SharedArray{Float64}(S.MacroSamples,nBsamples,nGsamples);
-Fmean = SharedArray{Float64}(S.MacroSamples,nsBamples,nGsamples);
+Fmean = SharedArray{Float64}(S.MacroSamples,nBamples,nGsamples);
 
 for i = 1:nGsamples
    for j = 1:nBsamples
@@ -41,8 +41,8 @@ end
 
 RF = SharedArray{Float64}(S.MacroSamples,nBsamples*2,nGsamples);
 for k = 1:nGsamples
-   RF[:,1:nsamples,k] = RR[:,:,k];
-   RF[:,nsamples+1:end,k] = Fmean[:,:,k];
+   RF[:,1:nBsamples,k] = RR[:,:,k];
+   RF[:,nBsamples+1:end,k] = Fmean[:,:,k];
 end
 open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e0.csv","w+") do x
    writedlm(x,RF[:,:,1]);
