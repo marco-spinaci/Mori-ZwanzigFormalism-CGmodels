@@ -13,7 +13,7 @@ addprocs(Sys.CPU_THREADS);
 using Main.LJChain,Main.CGStats,DelimitedFiles,Plots
 
 ##################################################################################################################
-# Generic system
+# to generate data to plot for the system C as Gamma and Beta change
 
 S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
 C = Chain();
@@ -34,7 +34,7 @@ end
 RF = zeros(S.MacroSamples,nsamples*2);
 RF[:,1:nsamples] = RR;
 RF[:,nsamples+1:end] = Fmean;
-open("./Outcomes/Plots/FvsR_sC_Gamma_b10000_2.csv","w+") do x
+open("../Outcomes/C_System_GammaBeta/FvsR_sC_Gamma_b10000_2.csv","w+") do x
     writedlm(x,RF);
 end
 
@@ -50,10 +50,10 @@ end
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 #
 # # Write data to file
-# open("./Outcomes/R_sC_2cb.csv","w+") do x
+# open("../Outcomes/C_System_Sand10cb/R_sC_2cb.csv","w+") do x
 #     writedlm(x,RR);
 # end
-# open("./Outcomes/Fmean_sC_2cb.csv","w+") do x
+# open("../Outcomes/C_System_Sand10cb/Fmean_sC_2cb.csv","w+") do x
 #     writedlm(x,Fmean);
 # end
 
@@ -62,10 +62,10 @@ end
 #(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 #
 ## Write data to file
-#open("./Outcomes/R_sC_10cb.csv","w+") do x
+#open("../Outcomes/C_System_Sand10cb/R_sC_10cb.csv","w+") do x
 #    writedlm(x,RR);
 #end
-#open("./Outcomes/Fmean_sC_10cb.csv","w+") do x
+#open("../Outcomes/C_System_Sand10cb/Fmean_sC_10cb.csv","w+") do x
 #    writedlm(x,Fmean);
 #end
 
@@ -81,19 +81,19 @@ end
 #(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 #
 ## Write data to file
-#open("./Outcomes/R_sA.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/R_sA.csv","w+") do x
 #    writedlm(x,RR);
 #end
-#open("./Outcomes/P_sA.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/P_sA.csv","w+") do x
 #    writedlm(x,PP);
 #end
-#open("./Outcomes/Veff_sA.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/Veff_sA.csv","w+") do x
 #    writedlm(x,Veff);
 #end
-#open("./Outcomes/Fmean_sA.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/Fmean_sA.csv","w+") do x
 #    writedlm(x,Fmean);
 #end
-#open("./Outcomes/Fstd_sA.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/Fstd_sA.csv","w+") do x
 #    writedlm(x,Fstd);
 #end
 #
@@ -102,19 +102,19 @@ end
 #(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 #
 ## Write data to file
-#open("./Outcomes/R_sB.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/R_sB.csv","w+") do x
 #    writedlm(x,RR);
 #end
-#open("./Outcomes/P_sB.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/P_sB.csv","w+") do x
 #    writedlm(x,PP);
 #end
-#open("./Outcomes/Veff_sB.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/Veff_sB.csv","w+") do x
 #    writedlm(x,Veff);
 #end
-#open("./Outcomes/Fmean_sB.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/Fmean_sB.csv","w+") do x
 #    writedlm(x,Fmean);
 #end
-#open("./Outcomes/Fstd_sB.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/Fstd_sB.csv","w+") do x
 #    writedlm(x,Fstd);
 #end
 #
@@ -123,19 +123,19 @@ end
 #(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 #
 ## Write data to file
-#open("./Outcomes/R_sC.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/R_sC.csv","w+") do x
 #    writedlm(x,RR);
 #end
-#open("./Outcomes/P_sC.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/P_sC.csv","w+") do x
 #    writedlm(x,PP);
 #end
-#open("./Outcomes/Veff_sC.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/Veff_sC.csv","w+") do x
 #    writedlm(x,Veff);
 #end
-#open("./Outcomes/Fmean_sC.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/Fmean_sC.csv","w+") do x
 #    writedlm(x,Fmean);
 #end
-#open("./Outcomes/Fstd_sC.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/Fstd_sC.csv","w+") do x
 #    writedlm(x,Fstd);
 #end
 #
@@ -144,19 +144,19 @@ end
 #(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 #
 ## Write data to file
-#open("./Outcomes/R_sD.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/R_sD.csv","w+") do x
 #    writedlm(x,RR);
 #end
-#open("./Outcomes/P_sD.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/P_sD.csv","w+") do x
 #    writedlm(x,PP);
 #end
-#open("./Outcomes/Veff_sD.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/Veff_sD.csv","w+") do x
 #    writedlm(x,Veff);
 #end
-#open("./Outcomes/Fmean_sD.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/Fmean_sD.csv","w+") do x
 #    writedlm(x,Fmean);
 #end
-#open("./Outcomes/Fstd_sD.csv","w+") do x
+#open("../Outcomes/ABCD_Systems/Fstd_sD.csv","w+") do x
 #    writedlm(x,Fstd);
 #end
 #

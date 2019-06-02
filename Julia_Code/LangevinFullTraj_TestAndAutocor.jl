@@ -75,7 +75,7 @@ p1 = scatter(1 ./BetaSamples,K,
              ylabel = "<Kmean>",
              title = "<Kmean> per particle vs T",
              titlefontsize = 7);
-savefig("./Outcomes/Plots/plotKmeanVST.pdf");
+savefig("../Outcomes/LangevinFullTraj_TestAndAutocor/plotKmeanVST.pdf");
 
 
 ###################################################################################################
@@ -131,8 +131,8 @@ println(" ...Autocorrelation computed!");
 # Write data to file
 tAutocor = zeros(length(lags),nsamples+1);
 tAutocor[:,1] = lags*S.dt;
-tAutocor[:,2:end] = Autocor; 
-open("./Outcomes/Plots/AutocorGAMMAfrom1e-5to1e5.csv","w+") do x
+tAutocor[:,2:end] = Autocor;
+open("../Outcomes/LangevinFullTraj_TestAndAutocor/AutocorGAMMA_1e-5_1e5.csv","w+") do x
     writedlm(x,tAutocor);
 end
 
@@ -148,7 +148,7 @@ p2 = plot(lags*S.dt,Autocor,
        ylabel = "Autocorrelation",
        title = "Autocorrelation of the momentum",
        titlefontsize = 7);
-savefig("./Outcomes/Plots/plotAutocorP(1).pdf");
+savefig("../Outcomes/LangevinFullTraj_TestAndAutocor/plotAutocorP_1.pdf");
 
 
 ###################################################################################################
@@ -156,4 +156,4 @@ savefig("./Outcomes/Plots/plotAutocorP(1).pdf");
 
 # l = @layout [a b];
 # plot(p1, p2, layout = l);
-# savefig("./Outcomes/Plots/plotFullTraj(Test&Autocor)(1).pdf");
+# savefig("../Outcomes/LangevinFullTraj_TestAndAutocor/plotFullTraj_TestAndAutocor.pdf");
