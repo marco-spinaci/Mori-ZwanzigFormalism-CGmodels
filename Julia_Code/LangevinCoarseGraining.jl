@@ -10,7 +10,7 @@ addprocs(Sys.CPU_THREADS);
 
 @everywhere include("LJChain.jl")
 @everywhere include("CGStats.jl")
-using Main.LJChain,Main.CGStats,DelimitedFiles,SharedArray,Plots
+using Main.LJChain,Main.CGStats,DelimitedFiles,SharedArrays,Plots
 
 ##################################################################################################################
 # to generate data to plot for the system C as Gamma and Beta change
