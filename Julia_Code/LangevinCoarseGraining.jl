@@ -30,7 +30,7 @@ GammaSamples = [exp10(x) for x in 0:5];
 nGsamples = length(GammaSamples);
 
 # to change the values of the Beta parameter
-BetaSamples = [exp10(x) for x in 1:4];
+BetaSamples = [exp10(x) for x in 1:3];
 nBsamples = length(BetaSamples);
 
 S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
