@@ -101,19 +101,19 @@ open("../Outcomes/C_System_2and10cb/Fmean_sC_2cb_B1000_G1e4.csv","w+") do x
     writedlm(x,Fmean);
 end
 
-# 10 Constrained Beads (all Beads)
-C = Chain(Gamma=1e4,Beta=1000,ConstrainedBeads=10);
-println("Start Gamma sample ",1," and Beta sample ",1,": Gamma=",C.Gamma,", Beta=",C.Beta,", ConstrainedBeads=",C.ConstrainedBeads,".");
-(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-# Write data to file
-
-open("../Outcomes/C_System_2and10cb/R_sC_10cb_B1000_G1e4.csv","w+") do x
-    writedlm(x,RR);
-end
-open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb_B1000_G1e4.csv","w+") do x
-    writedlm(x,Fmean);
-end
-
+## 10 Constrained Beads (all Beads)
+#C = Chain(Gamma=1e4,Beta=1000,ConstrainedBeads=10);
+#println("Start Gamma sample ",1," and Beta sample ",1,": Gamma=",C.Gamma,", Beta=",C.Beta,", ConstrainedBeads=",C.ConstrainedBeads,".");
+#(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+## Write data to file
+#
+#open("../Outcomes/C_System_2and10cb/R_sC_10cb_B1000_G1e4.csv","w+") do x
+#    writedlm(x,RR);
+#end
+#open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb_B1000_G1e4.csv","w+") do x
+#    writedlm(x,Fmean);
+#end
+#
 
 # 2 Constrained Beads
 C = Chain(Gamma=1e5,Beta=10);
@@ -128,18 +128,18 @@ open("../Outcomes/C_System_2and10cb/Fmean_sC_2cb_B10_G1e5.csv","w+") do x
     writedlm(x,Fmean);
 end
 
-# 10 Constrained Beads (all Beads)
-C = Chain(Gamma=1e5,Beta=10,ConstrainedBeads=10);
-println("Start Gamma sample ",2," and Beta sample ",2,": Gamma=",C.Gamma,", Beta=",C.Beta,", ConstrainedBeads=",C.ConstrainedBeads,".");
-(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-
-# Write data to file
-open("../Outcomes/C_System_2and10cb/R_sC_10cb_B10_G1e5.csv","w+") do x
-    writedlm(x,RR);
-end
-open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb_B10_G1e5.csv","w+") do x
-    writedlm(x,Fmean);
-end
+## 10 Constrained Beads (all Beads)
+#C = Chain(Gamma=1e5,Beta=10,ConstrainedBeads=10);
+#println("Start Gamma sample ",2," and Beta sample ",2,": Gamma=",C.Gamma,", Beta=",C.Beta,", ConstrainedBeads=",C.ConstrainedBeads,".");
+#(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+#
+## Write data to file
+#open("../Outcomes/C_System_2and10cb/R_sC_10cb_B10_G1e5.csv","w+") do x
+#    writedlm(x,RR);
+#end
+#open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb_B10_G1e5.csv","w+") do x
+#    writedlm(x,Fmean);
+#end
 
 
 # 2 Constrained Beads
@@ -155,18 +155,18 @@ open("../Outcomes/C_System_2and10cb/Fmean_sC_2cb_B100_G1e5.csv","w+") do x
     writedlm(x,Fmean);
 end
 
-# 10 Constrained Beads (all Beads)
-C = Chain(Gamma=1e5,Beta=100,ConstrainedBeads=10);
-println("Start Gamma sample ",2," and Beta sample ",3,": Gamma=",C.Gamma,", Beta=",C.Beta,", ConstrainedBeads=",C.ConstrainedBeads,".");
-(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-
-# Write data to file
-open("../Outcomes/C_System_2and10cb/R_sC_10cb_B100_G1e5.csv","w+") do x
-    writedlm(x,RR);
-end
-open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb_B100_G1e5.csv","w+") do x
-    writedlm(x,Fmean);
-end
+## 10 Constrained Beads (all Beads)
+#C = Chain(Gamma=1e5,Beta=100,ConstrainedBeads=10);
+#println("Start Gamma sample ",2," and Beta sample ",3,": Gamma=",C.Gamma,", Beta=",C.Beta,", ConstrainedBeads=",C.ConstrainedBeads,".");
+#(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+#
+## Write data to file
+#open("../Outcomes/C_System_2and10cb/R_sC_10cb_B100_G1e5.csv","w+") do x
+#    writedlm(x,RR);
+#end
+#open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb_B100_G1e5.csv","w+") do x
+#    writedlm(x,Fmean);
+#end
 
 
 end
