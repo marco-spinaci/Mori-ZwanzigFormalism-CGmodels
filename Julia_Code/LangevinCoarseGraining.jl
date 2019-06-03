@@ -31,8 +31,7 @@ Fmean = SharedArray{Float64}(S.MacroSamples,nBsamples,nGsamples);
 
 for i = 1:nGsamples
    for j = 1:nBsamples
-      println("Start Gamma sample ",i," and Beta sample ",j);
-      println("  ... Gamma=",GammaSamples[i,1],", Beta=",BetaSamples[j,1]);
+      println("Start Gamma sample ",i," and Beta sample ",j,": Gamma=",GammaSamples[i,1],", Beta=",BetaSamples[j,1],".");
       C = Chain(Gamma=GammaSamples[i,1],Beta=BetaSamples[j,1]);
       (RR[:,j,i],PP,Veff,Fmean[:,j,i],Fstd) = VEffConstrainedLangDyn(C,S);
       println("   ...Fmean computed!")
