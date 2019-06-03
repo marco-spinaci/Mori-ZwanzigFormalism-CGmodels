@@ -26,11 +26,11 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,SharedArrays,Plots
 # to generate data to plot for the system C as Gamma and Beta change
 
 # to change the values of the Gamma parameter
-GammaSamples = [exp10(x) for x in 0:5];
+GammaSamples = [exp10(x) for x in 1:5];
 nGsamples = length(GammaSamples);
 
 # to change the values of the Beta parameter
-BetaSamples = [exp10(x) for x in 0:2];
+BetaSamples = [exp10(x) for x in 3:3];
 nBsamples = length(BetaSamples);
 
 S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
@@ -48,28 +48,37 @@ for i = 1:nGsamples
    end
 end
 
-RF = SharedArray{Float64}(S.MacroSamples,nBsamples*2,nGsamples);
+# RF = SharedArray{Float64}(S.MacroSamples,nBsamples*2,nGsamples);
+# for k = 1:nGsamples
+#    RF[:,1:nBsamples,k] = RR[:,:,k];
+#    RF[:,nBsamples+1:end,k] = Fmean[:,:,k];
+# end
+# open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e0.csv","w+") do x
+#    writedlm(x,RF[:,:,1]);
+# end
+# open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e1.csv","w+") do x
+#    writedlm(x,RF[:,:,2]);
+# end
+# open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e2.csv","w+") do x
+#    writedlm(x,RF[:,:,3]);
+# end
+# open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e3.csv","w+") do x
+#    writedlm(x,RF[:,:,4]);
+# end
+# open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e4.csv","w+") do x
+#    writedlm(x,RF[:,:,5]);
+# end
+# open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e5.csv","w+") do x
+#    writedlm(x,RF[:,:,6]);
+# end
+
+RF = zeros(S.MacroSamples,nGsamples*2);
 for k = 1:nGsamples
-   RF[:,1:nBsamples,k] = RR[:,:,k];
-   RF[:,nBsamples+1:end,k] = Fmean[:,:,k];
+   RF[:,k] = RR[:,:,k];
+   RF[:,nGsamples+k] = Fmean[:,:,k];
 end
-open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e0.csv","w+") do x
-   writedlm(x,RF[:,:,1]);
-end
-open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e1.csv","w+") do x
-   writedlm(x,RF[:,:,2]);
-end
-open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e2.csv","w+") do x
-   writedlm(x,RF[:,:,3]);
-end
-open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e3.csv","w+") do x
-   writedlm(x,RF[:,:,4]);
-end
-open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e4.csv","w+") do x
-   writedlm(x,RF[:,:,5]);
-end
-open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e5.csv","w+") do x
-   writedlm(x,RF[:,:,6]);
+open("../Outcomes/C_System_GammaBeta/FvsR_sC_GAMMA_B1000.csv","w+") do x
+   writedlm(x,RF);
 end
 
 end
