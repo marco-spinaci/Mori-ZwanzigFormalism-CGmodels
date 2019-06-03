@@ -94,10 +94,10 @@ println("Start Gamma sample ",1," and Beta sample ",1,": Gamma=",C.Gamma,", Beta
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
 # Write data to file
-open("../Outcomes/C_System_2and10cb/R_sC_2cb_B1000_G1e4.csv","w+") do x
+open("../Outcomes/C_System_2and10cb/R_sC_2cb_B100_G1e4.csv","w+") do x
     writedlm(x,RR);
 end
-open("../Outcomes/C_System_2and10cb/Fmean_sC_2cb_B1000_G1e4.csv","w+") do x
+open("../Outcomes/C_System_2and10cb/Fmean_sC_2cb_B100_G1e4.csv","w+") do x
     writedlm(x,Fmean);
 end
 
@@ -107,10 +107,10 @@ println("Start Gamma sample ",1," and Beta sample ",1,": Gamma=",C.Gamma,", Beta
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 # Write data to file
 
-open("../Outcomes/C_System_2and10cb/R_sC_10cb_B1000_G1e4.csv","w+") do x
+open("../Outcomes/C_System_2and10cb/R_sC_10cb_B100_G1e4.csv","w+") do x
    writedlm(x,RR);
 end
-open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb_B1000_G1e4.csv","w+") do x
+open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb_B100_G1e4.csv","w+") do x
    writedlm(x,Fmean);
 end
 
