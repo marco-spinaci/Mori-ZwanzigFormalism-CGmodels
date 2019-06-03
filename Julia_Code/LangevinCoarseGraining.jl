@@ -26,7 +26,7 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,SharedArrays,Plots
 # to generate data to plot for the system C as Gamma and Beta change
 
 # to change the values of the Gamma parameter
-GammaSamples = [exp10(x) for x in -5:-1];
+GammaSamples = [exp10(x) for x in -5:-1]; # check the files that are needed to save the data
 nGsamples = length(GammaSamples);
 
 # to change the values of the Beta parameter
