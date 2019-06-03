@@ -25,48 +25,48 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,SharedArrays,Plots
 ##################################################################################################################
 # to generate data to plot for the system C as Gamma and Beta change
 
-# to change the values of the Gamma parameter
-GammaSamples = [exp10(x) for x in -5:-1]; # check the files that are needed to save the data
-nGsamples = length(GammaSamples);
-
-# to change the values of the Beta parameter
-BetaSamples = [exp10(x) for x in 0:3];
-nBsamples = length(BetaSamples);
-
-S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
-
-C = Chain();
-RR = SharedArray{Float64}(S.MacroSamples,nBsamples,nGsamples);
-Fmean = SharedArray{Float64}(S.MacroSamples,nBsamples,nGsamples);
-
-for i = 1:nGsamples
-   for j = 1:nBsamples
-      println("Start Gamma sample ",i," and Beta sample ",j,": Gamma=",GammaSamples[i,1],", Beta=",BetaSamples[j,1],".");
-      C = Chain(Gamma=GammaSamples[i,1],Beta=BetaSamples[j,1]);
-      (RR[:,j,i],PP,Veff,Fmean[:,j,i],Fstd) = VEffConstrainedLangDyn(C,S);
-   end
-end
-
-RF = SharedArray{Float64}(S.MacroSamples,nBsamples*2,nGsamples);
-for k = 1:nGsamples
-   RF[:,1:nBsamples,k] = RR[:,:,k];
-   RF[:,nBsamples+1:end,k] = Fmean[:,:,k];
-end
-open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e-5.csv","w+") do x
-   writedlm(x,RF[:,:,1]);
-end
-open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e-4.csv","w+") do x
-   writedlm(x,RF[:,:,2]);
-end
-open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e-3.csv","w+") do x
-   writedlm(x,RF[:,:,3]);
-end
-open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e-2.csv","w+") do x
-   writedlm(x,RF[:,:,4]);
-end
-open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e-1.csv","w+") do x
-   writedlm(x,RF[:,:,5]);
-end
+# # to change the values of the Gamma parameter
+# GammaSamples = [exp10(x) for x in -5:-1]; # check the files that are needed to save the data
+# nGsamples = length(GammaSamples);
+#
+# # to change the values of the Beta parameter
+# BetaSamples = [exp10(x) for x in 0:3];
+# nBsamples = length(BetaSamples);
+#
+# S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
+#
+# C = Chain();
+# RR = SharedArray{Float64}(S.MacroSamples,nBsamples,nGsamples);
+# Fmean = SharedArray{Float64}(S.MacroSamples,nBsamples,nGsamples);
+#
+# for i = 1:nGsamples
+#    for j = 1:nBsamples
+#       println("Start Gamma sample ",i," and Beta sample ",j,": Gamma=",GammaSamples[i,1],", Beta=",BetaSamples[j,1],".");
+#       C = Chain(Gamma=GammaSamples[i,1],Beta=BetaSamples[j,1]);
+#       (RR[:,j,i],PP,Veff,Fmean[:,j,i],Fstd) = VEffConstrainedLangDyn(C,S);
+#    end
+# end
+#
+# RF = SharedArray{Float64}(S.MacroSamples,nBsamples*2,nGsamples);
+# for k = 1:nGsamples
+#    RF[:,1:nBsamples,k] = RR[:,:,k];
+#    RF[:,nBsamples+1:end,k] = Fmean[:,:,k];
+# end
+# open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e-5.csv","w+") do x
+#    writedlm(x,RF[:,:,1]);
+# end
+# open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e-4.csv","w+") do x
+#    writedlm(x,RF[:,:,2]);
+# end
+# open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e-3.csv","w+") do x
+#    writedlm(x,RF[:,:,3]);
+# end
+# open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e-2.csv","w+") do x
+#    writedlm(x,RF[:,:,4]);
+# end
+# open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e-1.csv","w+") do x
+#    writedlm(x,RF[:,:,5]);
+# end
 # open("../Outcomes/C_System_GammaBeta/FvsR_sC_BETA_G1e5.csv","w+") do x
 #    writedlm(x,RF[:,:,6]);
 # end
@@ -85,33 +85,75 @@ end
 ####################################################################################################################
 # to generate data to plot the mean force for the system C ([0,1,0], SM(particle 0)=10, LM(particle 1)=1, γ=1, β=1)
 
-# S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
-#
-# # 2 Constrained Beads
-# C = Chain(Gamma=1e4,Beta=1000);
-# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-#
-# # Write data to file
-# open("../Outcomes/C_System_2and10cb/R_sC_2cb_B1000.csv","w+") do x
-#     writedlm(x,RR);
-# end
-# open("../Outcomes/C_System_2and10cb/Fmean_sC_2cb_B1000.csv","w+") do x
-#     writedlm(x,Fmean);
-# end
-#
-# # 10 Constrained Beads (all Beads)
-# C = Chain(Gamma=1e4,Beta=1000,ConstrainedBeads=10);
-# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-#
-# # Write data to file
-# open("../Outcomes/C_System_2and10cb/R_sC_10cb_B1000.csv","w+") do x
-#     writedlm(x,RR);
-# end
-# open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb_B1000.csv","w+") do x
-#     writedlm(x,Fmean);
-# end
-#
-# end
+S = Simulator(OrthoSamples=Int(1e2),MacroSamples=50);
+
+
+# 2 Constrained Beads
+C = Chain(Gamma=1e4,Beta=1000);
+(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+# Write data to file
+open("../Outcomes/C_System_2and10cb/R_sC_2cb_B1000.csv","w+") do x
+    writedlm(x,RR);
+end
+open("../Outcomes/C_System_2and10cb/Fmean_sC_2cb_B1000.csv","w+") do x
+    writedlm(x,Fmean);
+end
+# 10 Constrained Beads (all Beads)
+C = Chain(Gamma=1e4,Beta=1000,ConstrainedBeads=10);
+(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+# Write data to file
+open("../Outcomes/C_System_2and10cb/R_sC_10cb_B1000_G1e4.csv","w+") do x
+    writedlm(x,RR);
+end
+open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb_B1000_G1e4.csv","w+") do x
+    writedlm(x,Fmean);
+end
+
+
+# 2 Constrained Beads
+C = Chain(Gamma=1e5,Beta=10);
+(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+# Write data to file
+open("../Outcomes/C_System_2and10cb/R_sC_2cb_B10_G1e5.csv","w+") do x
+    writedlm(x,RR);
+end
+open("../Outcomes/C_System_2and10cb/Fmean_sC_2cb_B10_G1e5.csv","w+") do x
+    writedlm(x,Fmean);
+end
+# 10 Constrained Beads (all Beads)
+C = Chain(Gamma=1e5,Beta=10,ConstrainedBeads=10);
+(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+# Write data to file
+open("../Outcomes/C_System_2and10cb/R_sC_10cb_B10_G1e5.csv","w+") do x
+    writedlm(x,RR);
+end
+open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb_B10_G1e5.csv","w+") do x
+    writedlm(x,Fmean);
+end
+
+# 2 Constrained Beads
+C = Chain(Gamma=1e5,Beta=100);
+(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+# Write data to file
+open("../Outcomes/C_System_2and10cb/R_sC_2cb_B100_G1e5.csv","w+") do x
+    writedlm(x,RR);
+end
+open("../Outcomes/C_System_2and10cb/Fmean_sC_2cb_B100_G1e5.csv","w+") do x
+    writedlm(x,Fmean);
+end
+# 10 Constrained Beads (all Beads)
+C = Chain(Gamma=1e5,Beta=100,ConstrainedBeads=10);
+(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+# Write data to file
+open("../Outcomes/C_System_2and10cb/R_sC_10cb_B100_G1e5.csv","w+") do x
+    writedlm(x,RR);
+end
+open("../Outcomes/C_System_2and10cb/Fmean_sC_10cb_B100_G1e5.csv","w+") do x
+    writedlm(x,Fmean);
+end
+
+
+end
 
 #########################################################################################################################
 # to generate data to plot mean force, the fluctuating part of the force and the effective potential for the four system
