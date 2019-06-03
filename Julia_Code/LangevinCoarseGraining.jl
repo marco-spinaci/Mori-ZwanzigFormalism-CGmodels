@@ -13,6 +13,16 @@ addprocs(Sys.CPU_THREADS);
 using Main.LJChain,Main.CGStats,DelimitedFiles,SharedArrays,Plots
 
 ##################################################################################################################
+# General system
+
+# C = Chain(Beta=1000,Gamma=1);
+# S = Simulator(OrthoSamples=Int(1e2),MacroSamples=3);
+#
+# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+#
+# end
+
+##################################################################################################################
 # to generate data to plot for the system C as Gamma and Beta change
 
 # to change the values of the Gamma parameter

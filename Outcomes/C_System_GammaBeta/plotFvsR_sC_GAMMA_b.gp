@@ -2,7 +2,7 @@ set terminal postscript eps color enhanced "Times-Roman" 9
 set size 1.1,1.1
 set ylabel "{{/RomanOblique Fmean (R)}}"
 set xlabel "{{/RomanOblique R}}"
-#set xrange [0:2
+#set xrange [0:2]
 #set yrange [-1e8:1e8]
 set grid
 
