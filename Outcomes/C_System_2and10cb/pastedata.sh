@@ -4,11 +4,11 @@
 #paste R_sD.csv P_sD.csv Veff_sD.csv Fmean_sD.csv Fstd_sD.csv > Plots/D.csv
 #
 paste R_sC_2cb_B10_G1e5.csv Fmean_sC_2cb_B10_G1e5.csv > C_2cb_B10_G1e5.csv
-paste R_sC_10cb_B10_G1e5.csv Fmean_sC_10cb_B10_G1e5.csv > C_10cb_B10_G1e5.csv
+#paste R_sC_10cb_B10_G1e5.csv Fmean_sC_10cb_B10_G1e5.csv > C_10cb_B10_G1e5.csv
 #
 paste R_sC_2cb_B100_G1e5.csv Fmean_sC_2cb_B100_G1e5.csv > C_2cb_B100_G1e5.csv
-paste R_sC_10cb_B100_g1e5.csv Fmean_sC_10cb_B100_G1e5.csv > C_10cb_B100_G1e5.csv
+#paste R_sC_10cb_B100_g1e5.csv Fmean_sC_10cb_B100_G1e5.csv > C_10cb_B100_G1e5.csv
 #
 paste R_sC_2cb_B1000_G1e4.csv Fmean_sC_2cb_B1000_G1e4.csv > C_2cb_B1000_G1e4.csv
-paste R_sC_10cb_B1000_G1e4.csv Fmean_sC_10cb_B1000_G1e4.csv > C_10cb_B1000_G1e4.csv
+#paste R_sC_10cb_B1000_G1e4.csv Fmean_sC_10cb_B1000_G1e4.csv > C_10cb_B1000_G1e4.csv
 
