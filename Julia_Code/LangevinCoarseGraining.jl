@@ -80,7 +80,7 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,SharedArrays,Plots
 #    writedlm(x,RF);
 # end
 
-end
+#end
 
 ####################################################################################################################
 # to generate data to plot the mean force for the system C ([0,1,0], SM(particle 0)=10, LM(particle 1)=1, γ=1, β=1)
