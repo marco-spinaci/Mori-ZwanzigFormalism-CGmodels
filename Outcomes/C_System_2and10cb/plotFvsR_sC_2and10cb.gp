@@ -18,7 +18,7 @@ set title "2 constrained beads, Beta=100, Gamma=1e5"
 p "C_2cb_B100_G1e5.csv" u 1:2 w l lw 2 lc rgb "green"
 #set title "10 constrained beads, Beta=100"
 #p "C_10cb_B100_G1e5.csv" u 1:2 w l lw 2 lc rgb "olive"
-set title "2 constrained beads, Beta 1000, Gamma=1e4"
+set title "2 constrained beads, Beta 100, Gamma=1e4"
 p "C_2cb_B1000_G1e4.csv" u 1:2 w l lw 2 lc rgb "blue"
 unset multiplot
 
