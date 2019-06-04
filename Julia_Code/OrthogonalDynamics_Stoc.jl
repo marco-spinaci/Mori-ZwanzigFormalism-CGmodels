@@ -9,7 +9,7 @@ using Main.LJChain,Main.CGStats,Plots,Statistics
 # to change the number of samples to compute, i.e. OrthoSamples Value
 # Oin = Int(1e3);
 # Ofin = Int(1e6);
-OrthoSamplesTot = [exp10(x) for x in 1:3];
+OrthoSamplesTot = [exp10(x) for x in 1:7];
 
 # to change the gap between samples, i.e. OrthoSteps value
 Os = Int(1);
