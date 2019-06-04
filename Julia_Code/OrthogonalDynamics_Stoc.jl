@@ -1,7 +1,7 @@
 include("LJChain.jl")
 include("CGStats.jl")
 
-using Main.LJChain,Main.CGStats,Plots,Statistics
+using Main.LJChain,Main.CGStats,Plots,Statistics,DelimitedFiles
 
 ######################################################################################
 # Set up simulation parameters
@@ -9,7 +9,7 @@ using Main.LJChain,Main.CGStats,Plots,Statistics
 # to change the number of samples to compute, i.e. OrthoSamples Value
 # Oin = Int(1e3);
 # Ofin = Int(1e6);
-OrthoSamplesTot = [exp10(x) for x in 1:7];
+OrthoSamplesTot = [exp10(x) for x in 1:2];
 nsamples = length(OrthoSamplesTot);
 
 # to change the gap between samples, i.e. OrthoSteps value
@@ -21,7 +21,6 @@ Fs = Int(1e5);
 #######################################################################################
 
 C = Chain(Beta=100,Gamma=1e5);
-
 S = Simulator();
 # S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
 
@@ -53,6 +52,7 @@ VarStress     = zeros(length(OrthoSamplesTot));
 for i = 1:nsamples
 
 	S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs);
+	println("  Start sample ",i,": Orthosample=",OrthoSamplesTot[i],".");
 	(StressMoments[i,:],Portho,Qortho) = ConstrSampleLangDyn(Portho,Qortho,C,S);
 	FirstStress[i,1] = (1/i)*sum(StressMoments[1:i,1]);
 	VarStress[i,1]  = (1/i)*sum(StressMoments[1:i,2])-((1/i)*sum(StressMoments[1:i,1]))^2;
@@ -66,10 +66,10 @@ println("Distance between centre of mass of beads, RR = ", RR);
 
 # Write data to file
 data = zeros(nsamples,4);
-data[1,:] = RR;
-data[2,:] = OrthoSamplesTot;
-data[3,:] = FirstStress;
-data[4,:] = VarStress;
+data[1,1] = RR[1];
+data[:,2] = OrthoSamplesTot;
+data[:,3] = FirstStress;
+data[:,4] = VarStress;
 open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_B100_G1e5.csv","w+") do x
    writedlm(x,data);
 end
