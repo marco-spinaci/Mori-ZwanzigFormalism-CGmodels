@@ -71,7 +71,7 @@ S = Simulator(OrthoSamples=Int(1e4),MacroSamples=100);
 
 ############################################################################################
 # system C ( [0,1,0], SM (mass of 0 particles)=10, LM (mass of 1 particles)=1, γ=1, β=1 )
-C = Chain(Beta=100,Gamma=1e4);
+C = Chain(Beta=100,Gamma=1e5);
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
 # Write data to file
