@@ -23,7 +23,7 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,SharedArrays,Plots
 
 #################################################################################
 
-S = Simulator(OrthoSamples=Int(1e2),MacroSamples=1000);
+S = Simulator(OrthoSamples=Int(1e4),MacroSamples=100);
 
 #################################################################################
 ## system A
@@ -69,9 +69,9 @@ S = Simulator(OrthoSamples=Int(1e2),MacroSamples=1000);
 #    writedlm(x,Fstd);
 #end
 
-#################################################################################
-# system C
-C = Chain(Beta=100,Gamma=1e5);
+############################################################################################
+# system C ( [0,1,0], SM (mass of 0 particles)=10, LM (mass of 1 particles)=1, γ=1, β=1 )
+C = Chain(Beta=100,Gamma=1e4);
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
 # Write data to file

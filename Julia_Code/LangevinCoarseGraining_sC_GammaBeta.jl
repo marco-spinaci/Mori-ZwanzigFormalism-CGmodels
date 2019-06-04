@@ -13,7 +13,7 @@ addprocs(Sys.CPU_THREADS);
 using Main.LJChain,Main.CGStats,DelimitedFiles,SharedArrays,Plots
 
 ##########################################################################################################################
-# System C ([0,1,0], SM(particle 0)=10, LM(particle 1)=1, γ=1, β=1)
+# System C ([0,1,0], SM (mass of 0 particles)=10, LM (mass of 1 particles)=1, γ=1, β=1)
 ##########################################################################################################################
 # to change the values of the Gamma parameter
 GammaSamples = [exp10(x) for x in -5:-1]; # NB: check the files that are needed to save the data
