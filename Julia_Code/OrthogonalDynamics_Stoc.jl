@@ -20,7 +20,7 @@ Fs = Int(1e5);
 
 #######################################################################################
 
-C = Chain(Beta=100,Gamma=1e5);
+C = Chain(Beta=100,Gamma=1e4);
 S = Simulator();
 # S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
 
@@ -70,7 +70,7 @@ data[1,1] = RR[1];
 data[:,2] = OrthoSamplesTot;
 data[:,3] = FirstStress;
 data[:,4] = VarStress;
-open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_B100_G1e5_1.csv","w+") do x
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_B100_G1e4.csv","w+") do x
    writedlm(x,data);
 end
 
@@ -79,30 +79,30 @@ end
 #          markershape = :auto,
 #          markercolor = :red,
 #          markersize = 2.5,
-# 		 tickfontsize = 5,
-# 		 guidefontsize = 8,
+# 		   tickfontsize = 5,
+# 		   guidefontsize = 8,
 #          # xscale = :log10,
 #          xlabel = "OrthoSamples",
 #          yscale = :log10,
 #          ylabel = "VarStress",
 #          title  = "First stress moment vs OrthoSamples
-# 		 (constraint Langevin dynamics)",
-# 		 titlefontsize = 7)
+# 		   (constraint Langevin dynamics)",
+# 		   titlefontsize = 7)
 #
 # s2 = scatter(OrthoSamplesTot,VarStress,
 #          legend = false,
 #          markershape = :auto,
 #          markercolor = :red,
 #          markersize = 2.5,
-# 		 tickfontsize = 5,
-# 		 guidefontsize = 8,
+# 		   tickfontsize = 5,
+# 		   guidefontsize = 8,
 #          xscale = :log10,
 #          xlabel = "OrthoSamples",
 #          yscale = :log10,
 #          ylabel = "VarStress",
 #          title  = "VarStress vs OrthoSamples
-# 		 (constraint Langevin dynamics)",
-# 		 titlefontsize = 7);
+# 		   (constraint Langevin dynamics)",
+# 		   titlefontsize = 7);
 #
 # ################################################################################################
 # # to plot the two graphs together
