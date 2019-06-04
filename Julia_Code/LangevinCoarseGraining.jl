@@ -103,8 +103,8 @@ using Main.LJChain,Main.CGStats,DelimitedFiles,SharedArrays,Plots
 # C = Chain(Gamma=1e4,Beta=100,ConstrainedBeads=10);
 # println("Start Gamma sample ",1," and Beta sample ",1,": Gamma=",C.Gamma,", Beta=",C.Beta,", ConstrainedBeads=",C.ConstrainedBeads,".");
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+
 # # Write data to file
-#
 # open("../Outcomes/C_System_2and10cb/R_sC_10cb_B100_G1e4.csv","w+") do x
 #    writedlm(x,RR);
 # end
