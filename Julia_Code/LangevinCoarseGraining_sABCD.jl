@@ -75,19 +75,19 @@ C = Chain(Beta=100,Gamma=1e4);
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
 # Write data to file
-open("../Outcomes/ABCD_Systems/R_sC.csv","w+") do x
+open("../Outcomes/ABCD_Systems/R_sC_B100_G1e4.csv","w+") do x
    writedlm(x,RR);
 end
-open("../Outcomes/ABCD_Systems/P_sC.csv","w+") do x
+open("../Outcomes/ABCD_Systems/P_sC_B100_G1e4.csv","w+") do x
    writedlm(x,PP);
 end
-open("../Outcomes/ABCD_Systems/Veff_sC.csv","w+") do x
+open("../Outcomes/ABCD_Systems/Veff_sC_B100_G1e4.csv","w+") do x
    writedlm(x,Veff);
 end
-open("../Outcomes/ABCD_Systems/Fmean_sC.csv","w+") do x
+open("../Outcomes/ABCD_Systems/Fmean_sC_B100_G1e4.csv","w+") do x
    writedlm(x,Fmean);
 end
-open("../Outcomes/ABCD_Systems/Fstd_sC.csv","w+") do x
+open("../Outcomes/ABCD_Systems/Fstd_sC_B100_G1e4.csv","w+") do x
    writedlm(x,Fstd);
 end
 
