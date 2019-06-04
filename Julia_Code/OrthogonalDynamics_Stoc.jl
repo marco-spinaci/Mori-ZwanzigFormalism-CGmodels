@@ -20,7 +20,8 @@ Fs = Int(1e5);
 
 #######################################################################################
 
-C = Chain(Beta=100,Gamma=1e4);
+# C = Chain(Beta=100,Gamma=1e4);
+C = Chain();
 S = Simulator();
 # S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
 
@@ -70,7 +71,7 @@ data[1,1] = RR[1];
 data[:,2] = OrthoSamplesTot;
 data[:,3] = FirstStress;
 data[:,4] = VarStress;
-open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_B100_G1e4.csv","w+") do x
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_B1_G1.csv","w+") do x
    writedlm(x,data);
 end
 
