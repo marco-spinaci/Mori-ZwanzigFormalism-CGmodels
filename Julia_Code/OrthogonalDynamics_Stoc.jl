@@ -34,12 +34,7 @@ Portho = Pstore[:,end];
 Qortho = Qstore[:,end];
 
 # to compute the distance between centres of mass of beads
-R = CGDists(Qortho,C);
-l = length(R);
-RR = reshape(R[:,:],l);
-i = sortperm(RR);
-RR = RR[i];
-
+R = CGDists(Qortho,C)[1]; # NB: the function CgDists(Q,C) returns an array
 
 println("Computing orthogonal dynamics through Langevin constraint dynamics ...");
 
@@ -67,7 +62,7 @@ println("Distance between centre of mass of beads, RR = ", RR);
 
 # Write data to file
 data = zeros(nsamples,4);
-data[1,1] = RR[1];
+data[1,1] = RR;
 data[:,2] = OrthoSamplesTot;
 data[:,3] = FirstStress;
 data[:,4] = VarStress;
