@@ -70,7 +70,7 @@ data[1,1] = RR[1];
 data[:,2] = OrthoSamplesTot;
 data[:,3] = FirstStress;
 data[:,4] = VarStress;
-open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_B100_G1e5.csv","w+") do x
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_B100_G1e5_1.csv","w+") do x
    writedlm(x,data);
 end
 
