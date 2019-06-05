@@ -1,7 +1,7 @@
 include("LJChain.jl")
 include("CGStats.jl")
 
-using Main.LJChain,Main.CGStats,Plots,Statistics
+using Main.LJChain,Main.CGStats,Plots,Statistics,DelimitedFiles
 
 ######################################################################
 
@@ -44,8 +44,33 @@ for i = 1:length(OrthoSamplesTot)
 	global Qortho = Qortho;
 end
 
-plot(OrthoSamplesTot,VarStress);
-savefig("../Outcomes/OrthogonalDynamics_DetAndStoc/plotVarStressVSOrthoSamples_2.pdf");
+
+# Write data to file
+data = zeros(length(OrthoSamplesTot),4);
+data[:,1] = OrthoSamplesTot;
+data[:,2] = StressMoments[:,1];
+data[:,3] = StressMoments[:,2];
+data[:,4] = VarStress;
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_OrthogonalDynamics.csv","w+") do x
+   writedlm(x,data);
+end
+
+# plot(OrthoSamplesTot,VarStress);
+# scatter(OrthoSamplesTot,VarStress,
+#      legend = false,
+#      markershape = :auto,
+#      markercolor = :red,
+#      markersize = 2.5,
+# 	 tickfontsize = 5,
+# 	 guidefontsize = 8,
+#      xscale = :log10,
+#      xlabel = "OrthoSamples",
+#      yscale = :log10,
+#      ylabel = "VarStress",
+#      title  = "VarStress vs OrthoSamples
+# 	 (constraint dynamics)",
+# 	 titlefontsize = 7);
+# savefig("../Outcomes/OrthogonalDynamics_DetAndStoc/plotVarStress_VS_OrthoSamples_2.pdf");
 
 ###############################################################################
 # Autocorrelation analysis to compute the autocorrelation function and the
