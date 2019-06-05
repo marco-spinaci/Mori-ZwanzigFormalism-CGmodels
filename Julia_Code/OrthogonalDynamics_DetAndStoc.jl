@@ -23,7 +23,7 @@ S = Simulator();
 # S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
 
 #######################################################################################
-# to compute the orthogonal dynamic with the constrained dynamic by the varying
+# to compute the orthogonal dynamic with the constrained dynamic by varying
 # the number of samples
 
 # Initial condition
@@ -90,7 +90,7 @@ end
 # savefig("../Outcomes/OrthogonalDynamics_DetAndStoc/plotVarStressVSOrthoSamples_1.pdf");
 
 #################################################################################################
-# to compute the orthogonal dynamics with the Langevin constrained dynamics by the varying
+# to compute the orthogonal dynamics with the Langevin constrained dynamics by varying
 # the number of samples
 
 # Initial condition
