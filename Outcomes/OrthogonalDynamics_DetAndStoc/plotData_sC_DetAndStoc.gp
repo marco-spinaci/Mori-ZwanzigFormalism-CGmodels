@@ -9,12 +9,13 @@ unset key
 set grid
 
 ######################################################################
-# file "FvsR_sC_BETA_G*.csv"
+# file "data_sC_DET.csv" o "data_sC_Stoc_B*_G*.csv"
 # num.col.       valori
 #   1     ->   RR
 #   2     ->   samples
-#   3     ->   FirstStress
-#   4     ->   VarStress
+#   3     ->   First Stress Moments
+#   4     ->   Second Stress Moments
+#   5     ->   Var Stress Moments
 ######################################################################
 
 set output "| epstopdf -f -o=plotData_sC_B1_G1.pdf"

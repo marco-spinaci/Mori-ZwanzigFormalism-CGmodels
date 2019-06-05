@@ -18,7 +18,7 @@ Os = Int(1);
 # to change the number of FullSteps to compute full dynamics
 Fs = Int(1e5);
 
-C = Chain(Beta=10,Gamma=1e5); # NB: check the name of the output file
+C = Chain(Beta=1,Gamma=1); # NB: check the name of the output file
 S = Simulator();
 # S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
 
@@ -54,7 +54,7 @@ for i = 1:nsamples
 		StM[i,1] = (diff[i-1]*StM[i,1]+diff[i]*StressMoments[i,1])/sum(diff[1:i]);
 		StM[i,2] = (diff[i-1]*StM[i,2]+diff[i]*StressMoments[i,2])/sum(diff[1:i]);
 	end
-	VarStM[i]  = StM[i,2])-(StM[i,1])^2;
+	VarStM[i]  = StM[i,2]-(StM[i,1])^2;
 
 	global Portho = Portho;
 	global Qortho = Qortho;
@@ -125,7 +125,7 @@ for i = 1:nsamples
 		StM[i,1] = (diff[i-1]*StM[i,1]+diff[i]*StressMoments[i,1])/sum(diff[1:i]);
 		StM[i,2] = (diff[i-1]*StM[i,2]+diff[i]*StressMoments[i,2])/sum(diff[1:i]);
 	end
-	VarStM[i]  = StM[i,2])-(StM[i,1])^2;
+	VarStM[i]  = StM[i,2]-(StM[i,1])^2;
 
 	global Portho = Portho;
 	global Qortho = Qortho;
@@ -141,7 +141,7 @@ dataStoc[:,2] = OrthoSamplesTot;
 dataStoc[:,3] = StM[:,1];
 dataStoc[:,4] = StM[:,2];
 dataStoc[:,5] = VarStM;
-open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_Stoc_B10_G1e5.csv","w+") do x
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_Stoc_B1_G1.csv","w+") do x
    writedlm(x,dataStoc);
 end
 
