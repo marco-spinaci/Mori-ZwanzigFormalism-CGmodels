@@ -23,7 +23,7 @@ S = Simulator();
 # S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
 
 #######################################################################################
-# to compute the orthogonal dynamic with the constrained dynamic by the variation of
+# to compute the orthogonal dynamic with the constrained dynamic by the varying
 # the number of samples
 
 # Initial condition
@@ -90,58 +90,61 @@ end
 # savefig("../Outcomes/OrthogonalDynamics_DetAndStoc/plotVarStressVSOrthoSamples_1.pdf");
 
 #################################################################################################
-# # to compute the orthogonal dynamics with the Langevin constrained dynamics by the variation of
-# # the number of samples
-#
-# # Initial condition
-# P0 = zeros(C.NPart);
-# Q0 = Vector(1.0:1.0:30.0);
-#
-# (Pstore,Qstore,Fstore,Kmean,Hmean) = LangevinFullTraj(P0,Q0,C,S);
-# Portho = Pstore[:,end];
-# Qortho = Qstore[:,end];
-#
-# # to compute the distance between centres of mass of beads
-# RR = CGDists(Qortho,C)[1]; # NB: the function CgDists(Q,C) returns an array
-#
-# println("Computing orthogonal dynamics through Langevin constraint dynamics ...");
-#
-# # OrthoSamplesTot = Vector(Oin:Oin:Ofin);
-# diff = circshift(circshift(OrthoSamplesTot,-1)-OrthoSamplesTot,1);
-# diff[1] = OrthoSamplesTot[1];
-# StM     = zeros(nsamples,2);
-# VarStM  = zeros(nsamples);
-#
-# for i = 1:nsamples
-#     S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs);
-# 	# S = Simulator(OrthoSamples=OrthoSamplesTot[i],OrthoSteps=Os,FullSteps=Fs);
-# 	println("  Start sample ",i,": Orthosample=",OrthoSamplesTot[i],".");
-# 	(StressMoments,Portho,Qortho) = ConstrSampleLangDyn(Portho,Qortho,C,S);
-# 	if i == 1
-# 		StM[1,:] = StressMoments;
-# 	else
-#       StM[i,1] = (diff[i-1]*StM[i-1,1]+diff[i]*StressMoments[1,1])/sum(diff[1:i]);
-#       StM[i,2] = (diff[i-1]*StM[i-1,2]+diff[i]*StressMoments[1,2])/sum(diff[1:i]);
-# 	end
-# 	VarStM[i]  = StM[i,2]-(StM[i,1])^2;
-#
-# 	global Portho = Portho;
-# 	global Qortho = Qortho;
-# end
-#
-# println("  ... done!");
-# println("Distance between centre of mass of beads, RR = ", RR);
-#
-# # Write data to file
-# dataStoc = zeros(nsamples,5);
-# dataStoc[1,1] = RR;
-# dataStoc[:,2] = OrthoSamplesTot;
-# dataStoc[:,3] = StM[:,1];
-# dataStoc[:,4] = StM[:,2];
-# dataStoc[:,5] = VarStM;
-# open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_Stoc_B1_G1.csv","w+") do x
-#    writedlm(x,dataStoc);
-# end
+# to compute the orthogonal dynamics with the Langevin constrained dynamics by the varying
+# the number of samples
+
+# Initial condition
+P0 = zeros(C.NPart);
+Q0 = Vector(1.0:1.0:30.0);
+
+(Pstore,Qstore,Fstore,Kmean,Hmean) = LangevinFullTraj(P0,Q0,C,S);
+Portho = Pstore[:,end];
+Qortho = Qstore[:,end];
+
+# to compute the distance between centres of mass of beads
+RR = CGDists(Qortho,C)[1]; # NB: the function CgDists(Q,C) returns an array
+
+println("Computing orthogonal dynamics through Langevin constraint dynamics ...");
+
+# OrthoSamplesTot = Vector(Oin:Oin:Ofin);
+diff = circshift(circshift(OrthoSamplesTot,-1)-OrthoSamplesTot,1);
+diff[1] = OrthoSamplesTot[1];
+StM     = zeros(nsamples,2);
+VarStM  = zeros(nsamples);
+
+for i = 1:nsamples
+
+    S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs);
+	# S = Simulator(OrthoSamples=OrthoSamplesTot[i],OrthoSteps=Os,FullSteps=Fs);
+
+	println("  Start sample ",i,": Orthosample=",OrthoSamplesTot[i],".");
+	(StressMoments,Portho,Qortho) = ConstrSampleLangDyn(Portho,Qortho,C,S);
+
+	if i == 1
+		StM[1,:] = StressMoments;
+	else
+      StM[i,1] = (diff[i-1]*StM[i-1,1]+diff[i]*StressMoments[1,1])/sum(diff[1:i]);
+      StM[i,2] = (diff[i-1]*StM[i-1,2]+diff[i]*StressMoments[1,2])/sum(diff[1:i]);
+	end
+	VarStM[i]  = StM[i,2]-(StM[i,1])^2;
+
+	global Portho = Portho;
+	global Qortho = Qortho;
+end
+
+println("  ... done!");
+println("Distance between centre of mass of beads, RR = ", RR);
+
+# Write data to file
+dataStoc = zeros(nsamples,5);
+dataStoc[1,1] = RR;
+dataStoc[:,2] = OrthoSamplesTot;
+dataStoc[:,3] = StM[:,1];
+dataStoc[:,4] = StM[:,2];
+dataStoc[:,5] = VarStM;
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_Stoc_B1_G1.csv","w+") do x
+   writedlm(x,dataStoc);
+end
 
 # s1 = scatter(OrthoSamplesTot,StM[:,1],
 #          legend = false,
@@ -172,7 +175,7 @@ end
 #          title  = "VarStress vs OrthoSamples
 # 		   (constraint Langevin dynamics)",
 # 		   titlefontsize = 7);
-#
+
 #################################################################################################
 # # to plot the two graphs together
 #
