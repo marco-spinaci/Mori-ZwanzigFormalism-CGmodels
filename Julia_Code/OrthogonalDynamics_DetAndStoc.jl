@@ -46,7 +46,10 @@ VarStM  = zeros(nsamples);
 
 for i = 1:nsamples
 	S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs);
+
+	println("  Start sample ",i,": Orthosample=",OrthoSamplesTot[i],".");
 	(StressMoments,Portho,Qortho) = ConstrainedSample(Portho,Qortho,C,S);
+
 	if i == 1
 		StM[1,:] = StressMoments;
 	else
