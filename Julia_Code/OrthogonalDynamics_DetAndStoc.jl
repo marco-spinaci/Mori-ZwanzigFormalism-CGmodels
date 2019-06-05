@@ -41,7 +41,7 @@ println("Computing orthogonal dynamics through constrained dynamics ...");
 # OrthoSamplesTot = Vector(Oin:Oin:Ofin);
 diff = circshift(circshift(OrthoSamplesTot,-1)-OrthoSamplesTot,1);
 diff[1] = OrthoSamplesTot[1];
-StM     = zeros(length(nsamples,2);
+StM     = zeros(nsamples,2);
 VarStM  = zeros(nsamples);
 
 for i = 1:nsamples
@@ -110,7 +110,7 @@ println("Computing orthogonal dynamics through Langevin constraint dynamics ..."
 # OrthoSamplesTot = Vector(Oin:Oin:Ofin);
 diff = circshift(circshift(OrthoSamplesTot,-1)-OrthoSamplesTot,1);
 diff[1] = OrthoSamplesTot[1];
-StM     = zeros(length(nsamples,2);
+StM     = zeros(nsamples,2);
 VarStM  = zeros(nsamples);
 
 for i = 1:nsamples
