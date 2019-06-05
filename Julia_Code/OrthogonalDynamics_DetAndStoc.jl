@@ -9,7 +9,7 @@ using Main.LJChain,Main.CGStats,Plots,Statistics,DelimitedFiles
 # to change the number of samples to compute, i.e. OrthoSamples Value
 # Oin = Int(1e3);
 # Ofin = Int(1e6);
-OrthoSamplesTot = [exp10(x) for x in 1:5];
+OrthoSamplesTot = [exp10(x) for x in 1:6];
 nsamples = length(OrthoSamplesTot);
 
 # to change the gap between samples, i.e. OrthoSteps value
@@ -50,8 +50,8 @@ for i = 1:nsamples
 	if i == 1
 		StM[1,:] = StressMoments;
 	else
-		StM[i,1] = (diff[i-1]*StM[i-1,1]+diff[i]*StressMoments[1,1])/sum(diff[1:i]);
-		StM[i,2] = (diff[i-1]*StM[i-1,2]+diff[i]*StressMoments[1,2])/sum(diff[1:i]);
+		StM[i,1] = (OrthoSamplesTot[i-1]*StM[i-1,1]+diff[i]*StressMoments[1,1])/OrthoSamplesTot[i];
+		StM[i,2] = (OrthoSamplesTot[i-1]*StM[i-1,2]+diff[i]*StressMoments[1,2])/OrthoSamplesTot[i];
 	end
 	VarStM[i]  = StM[i,2]-(StM[i,1])^2;
 
@@ -123,8 +123,8 @@ for i = 1:nsamples
 	if i == 1
 		StM[1,:] = StressMoments;
 	else
-      StM[i,1] = (diff[i-1]*StM[i-1,1]+diff[i]*StressMoments[1,1])/sum(diff[1:i]);
-      StM[i,2] = (diff[i-1]*StM[i-1,2]+diff[i]*StressMoments[1,2])/sum(diff[1:i]);
+		StM[i,1] = (OrthoSamplesTot[i-1]*StM[i-1,1]+diff[i]*StressMoments[1,1])/OrthoSamplesTot[i];
+		StM[i,2] = (OrthoSamplesTot[i-1]*StM[i-1,2]+diff[i]*StressMoments[1,2])/OrthoSamplesTot[i];
 	end
 	VarStM[i]  = StM[i,2]-(StM[i,1])^2;
 
