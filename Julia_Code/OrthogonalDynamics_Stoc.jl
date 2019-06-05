@@ -18,23 +18,21 @@ Os = Int(1);
 # to change the number of FullSteps to compute full dynamics
 Fs = Int(1e5);
 
-#######################################################################################
-
-# C = Chain(Beta=100,Gamma=1e4);
-C = Chain();
+C = Chain(Beta=10,Gamma=1e5);
 S = Simulator();
 # S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
+
+#######################################################################################
 
 # Initial condition
 P0 = zeros(C.NPart);
 Q0 = Vector(1.0:1.0:30.0);
-
 (Pstore,Qstore,Fstore,Kmean,Hmean) = LangevinFullTraj(P0,Q0,C,S);
 Portho = Pstore[:,end];
 Qortho = Qstore[:,end];
 
 # to compute the distance between centres of mass of beads
-R = CGDists(Qortho,C)[1]; # NB: the function CgDists(Q,C) returns an array
+RR = CGDists(Qortho,C)[1]; # NB: the function CgDists(Q,C) returns an array
 
 println("Computing orthogonal dynamics through Langevin constraint dynamics ...");
 
@@ -46,7 +44,6 @@ FirstStress   = zeros(length(OrthoSamplesTot));
 VarStress     = zeros(length(OrthoSamplesTot));
 
 for i = 1:nsamples
-
 	S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs);
 	println("  Start sample ",i,": Orthosample=",OrthoSamplesTot[i],".");
 	(StressMoments[i,:],Portho,Qortho) = ConstrSampleLangDyn(Portho,Qortho,C,S);
@@ -66,7 +63,7 @@ data[1,1] = RR;
 data[:,2] = OrthoSamplesTot;
 data[:,3] = FirstStress;
 data[:,4] = VarStress;
-open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_B1_G1.csv","w+") do x
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_B10_G1e5.csv","w+") do x
    writedlm(x,data);
 end
 
