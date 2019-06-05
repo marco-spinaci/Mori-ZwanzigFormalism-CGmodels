@@ -214,7 +214,7 @@ diffusion coefficient is evaluated after performing `half' of the deterministic 
 function LangDynConstrainedStep(P,Q,F,C,dt)
 	PNext = P + 0.5.*C.ZetaConstr*F.*dt;                                   # B
 	QNext = Q + 0.5.*dt.*C.MInv*PNext;                                     # A
-  FNext = Forces(QNext,C);                                               # Force evaluation
+    FNext = Forces(QNext,C);                                               # Force evaluation
 	PNext = OrnUhlenbeckPart(PNext,C,dt)-C.PsiConstr'C.PhiConstr*FNext;    # O
 	QNext = QNext+0.5.*dt*C.MInv*PNext;                                    # A
 	FNext = Forces(QNext,C);                                               # Force evaluation
