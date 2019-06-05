@@ -1,7 +1,7 @@
 include("LJChain.jl")
 include("CGStats.jl")
 
-using Main.LJChain,Main.CGStats,Plots,Statistics
+using Main.LJChain,Main.CGStats,Plots,Statistics,DelimitedFiles
 
 ######################################################################################
 # Set up simulation parameters
@@ -9,7 +9,8 @@ using Main.LJChain,Main.CGStats,Plots,Statistics
 # to change the number of samples to compute, i.e. OrthoSamples Value
 # Oin = Int(1e3);
 # Ofin = Int(1e6);
-OrthoSamplesTot = [exp10(x) for x in 1:7];
+OrthoSamplesTot = [exp10(x) for x in 1:5];
+nsamples = length(OrthoSamplesTot);
 
 # to change the gap between samples, i.e. OrthoSteps value
 Os = Int(1);
@@ -17,113 +18,171 @@ Os = Int(1);
 # to change the number of FullSteps to compute full dynamics
 Fs = Int(1e5);
 
-######################################################################################
-# to compute the orthogonal dynamics with the constraint dynamics
-
-C = Chain();
+C = Chain(Beta=10,Gamma=1e5); # NB: check the name of the output file
 S = Simulator();
 # S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
 
+#######################################################################################
+# to compute the orthogonal dynamic with the constrained dynamic by the variation of
+# the number of samples
+
+# Initial condition
 (P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
 
 (Pstore,Qstore,Fstore) = FullTraj(P0,Q0,C,S);
 Portho = Pstore[:,end];
 Qortho = Qstore[:,end];
 
-println("Computing orthogonal dynamics through constraint dynamics ...");
+# to compute the distance between centres of mass of beads
+RR = CGDists(Qortho,C)[1]; # NB: the function CgDists(Q,C) returns an array
+
+println("Computing orthogonal dynamics through constrained dynamics ...");
 
 # OrthoSamplesTot = Vector(Oin:Oin:Ofin);
 diff = circshift(circshift(OrthoSamplesTot,-1)-OrthoSamplesTot,1);
 diff[1] = OrthoSamplesTot[1];
-StressMoments   = zeros(length(OrthoSamplesTot),2);
-VarStress       = zeros(length(OrthoSamplesTot));
+StM     = zeros(length(nsamples,2);
+VarStM  = zeros(nsamples);
 
-for i = 1:length(OrthoSamplesTot)
-
+for i = 1:nsamples
 	S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs);
-	(StressMoments[i,:],Portho,Qortho) = ConstrainedSample(Portho,Qortho,C,S);
-	VarStress[i,1]  = (1/i)*sum(StressMoments[1:i,2])-((1/i)*sum(StressMoments[1:i,1]))^2;
+	(StressMoments,Portho,Qortho) = ConstrainedSample(Portho,Qortho,C,S);
+	if i == 1
+		StM[i,1] = StressMoments[i,1];
+		StM[i,2] = StressMoments[i,2];
+	else
+		StM[i,1] = (diff[i-1]*StM[i,1]+diff[i]*StressMoments[i,1])/sum(diff[1:i]);
+		StM[i,2] = (diff[i-1]*StM[i,2]+diff[i]*StressMoments[i,2])/sum(diff[1:i]);
+	end
+	VarStM[i]  = StM[i,2])-(StM[i,1])^2;
 
 	global Portho = Portho;
 	global Qortho = Qortho;
 end
 
-println("  ... VarStress done!");
+println("  ... done!");
+println("Distance between centre of mass of beads, RR = ", RR);
 
-s1 = scatter(OrthoSamplesTot,VarStress,
-         legend = false,
-         markershape = :auto,
-         markercolor = :red,
-         markersize = 2.5,
-		 tickfontsize = 5,
-		 guidefontsize = 8,
-         xscale = :log10,
-         xlabel = "OrthoSamples",
-         yscale = :log10,
-         ylabel = "VarStress",
-         title  = "VarStress vs OrthoSamples
-		 (constraint dynamics)",
-		 titlefontsize = 7);
-# savefig("../Outcomes/OrthogonalDynamics_DetAndStoc/plotVarStressVSOrthoSamples.pdf");
+# Write data to file
+dataDet = zeros(nsamples,5);
+dataDet[1,1] = RR;
+dataDet[:,2] = OrthoSamplesTot;
+dataDet[:,3] = StM[:,1];
+dataDet[:,4] = StM[:,2];
+dataDet[:,5] = VarStM;
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_DET.csv","w+") do x
+   writedlm(x,dataDet);
+end
 
-################################################################################################
-# to compute the orthogonal dynamics with the Langevin constraint dynamics
+# s1 = scatter(OrthoSamplesTot,VarStM,
+#          legend = false,
+#          markershape = :auto,
+#          markercolor = :red,
+#          markersize = 2.5,
+# 		   tickfontsize = 5,
+# 		   guidefontsize = 8,
+#          xscale = :log10,
+#          xlabel = "OrthoSamples",
+#          yscale = :log10,
+#          ylabel = "VarStress",
+#          title  = "VarStress vs OrthoSamples
+# 		   (constraint dynamics)",
+# 		   titlefontsize = 7);
+# savefig("../Outcomes/OrthogonalDynamics_DetAndStoc/plotVarStressVSOrthoSamples_1.pdf");
 
-C = Chain();
-S = Simulator();
-# S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
+#################################################################################################
+# to compute the orthogonal dynamics with the Langevin constrained dynamics by the variation of
+# the number of samples
 
-(P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
+# Initial condition
+P0 = zeros(C.NPart);
+Q0 = Vector(1.0:1.0:30.0);
 
 (Pstore,Qstore,Fstore,Kmean,Hmean) = LangevinFullTraj(P0,Q0,C,S);
 Portho = Pstore[:,end];
 Qortho = Qstore[:,end];
+
+# to compute the distance between centres of mass of beads
+RR = CGDists(Qortho,C)[1]; # NB: the function CgDists(Q,C) returns an array
 
 println("Computing orthogonal dynamics through Langevin constraint dynamics ...");
 
 # OrthoSamplesTot = Vector(Oin:Oin:Ofin);
 diff = circshift(circshift(OrthoSamplesTot,-1)-OrthoSamplesTot,1);
 diff[1] = OrthoSamplesTot[1];
-StressMoments   = zeros(length(OrthoSamplesTot),2);
-VarStress       = zeros(length(OrthoSamplesTot));
+StM     = zeros(length(nsamples,2);
+VarStM  = zeros(nsamples);
 
-for i = 1:length(OrthoSamplesTot)
-
-	S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs);
-	(StressMoments[i,:],Portho,Qortho) = ConstrSampleLangDyn(Portho,Qortho,C,S);
-	VarStress[i,1]  = (1/i)*sum(StressMoments[1:i,2])-((1/i)*sum(StressMoments[1:i,1]))^2;
+for i = 1:nsamples
+    S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs);
+	# S = Simulator(OrthoSamples=OrthoSamplesTot[i],OrthoSteps=Os,FullSteps=Fs);
+	println("  Start sample ",i,": Orthosample=",OrthoSamplesTot[i],".");
+	(StressMoments,Portho,Qortho) = ConstrSampleLangDyn(Portho,Qortho,C,S);
+	if i == 1
+		StM[1,1] = StressMoments[1,1];
+		StM[1,2] = StressMoments[1,2];
+	else
+		StM[i,1] = (diff[i-1]*StM[i,1]+diff[i]*StressMoments[i,1])/sum(diff[1:i]);
+		StM[i,2] = (diff[i-1]*StM[i,2]+diff[i]*StressMoments[i,2])/sum(diff[1:i]);
+	end
+	VarStM[i]  = StM[i,2])-(StM[i,1])^2;
 
 	global Portho = Portho;
 	global Qortho = Qortho;
 end
 
-println("  ... VarStress done!");
+println("  ... done!");
+println("Distance between centre of mass of beads, RR = ", RR);
 
-s2 = scatter(OrthoSamplesTot,VarStress,
-         legend = false,
-         markershape = :auto,
-         markercolor = :red,
-         markersize = 2.5,
-		 tickfontsize = 5,
-		 guidefontsize = 8,
-         xscale = :log10,
-         xlabel = "OrthoSamples",
-         yscale = :log10,
-         ylabel = "VarStress",
-         title  = "VarStress vs OrthoSamples
-		 (constraint Langevin dynamics)",
-		 titlefontsize = 7);
-# savefig("../Outcomes/OrthogonalDynamics_DetAndStoc/plotVarStressLANGDYN_VS_OrthoSamples.pdf");
+# Write data to file
+dataStoc = zeros(nsamples,5);
+dataStoc[1,1] = RR;
+dataStoc[:,2] = OrthoSamplesTot;
+dataStoc[:,3] = StM[:,1];
+dataStoc[:,4] = StM[:,2];
+dataStoc[:,5] = VarStM;
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_Stoc_B10_G1e5.csv","w+") do x
+   writedlm(x,dataStoc);
+end
+
+# s1 = scatter(OrthoSamplesTot,StM[:,1],
+#          legend = false,
+#          markershape = :auto,
+#          markercolor = :red,
+#          markersize = 2.5,
+# 		   tickfontsize = 5,
+# 		   guidefontsize = 8,
+#          xscale = :log10,
+#          xlabel = "OrthoSamples",
+#          yscale = :log10,
+#          ylabel = "First Stress Moment",
+#          title  = "First stress moment vs OrthoSamples
+# 		   (constraint Langevin dynamics)",
+# 		   titlefontsize = 7)
+#
+# s2 = scatter(OrthoSamplesTot,VarStM,
+#          legend = false,
+#          markershape = :auto,
+#          markercolor = :red,
+#          markersize = 2.5,
+# 		   tickfontsize = 5,
+# 		   guidefontsize = 8,
+#          xscale = :log10,
+#          xlabel = "OrthoSamples",
+#          yscale = :log10,
+#          ylabel = "VarStress",
+#          title  = "VarStress vs OrthoSamples
+# 		   (constraint Langevin dynamics)",
+# 		   titlefontsize = 7);
+#
+#################################################################################################
+# # to plot the two graphs together
+#
+# l = @layout [a b];
+# plot(s1, s2, layout = l);
+# savefig("../Outcomes/OrthogonalDynamics_DetAndStoc/plotFirstStressMoment_VS_OrthoSamples_2.pdf");
 
 ################################################################################################
-# to plot the two graphs together
-
-l = @layout [a b];
-plot(s1, s2, layout = l);
-savefig("../Outcomes/OrthogonalDynamics_DetAndStoc/plotVarStress_VS_OrthoSamples_1.pdf");
-
-################################################################################################
-
 # Autocorrelation analysis to compute the autocorrelation function and the
 # corrisponding integrated autocorrelation time τ
 
