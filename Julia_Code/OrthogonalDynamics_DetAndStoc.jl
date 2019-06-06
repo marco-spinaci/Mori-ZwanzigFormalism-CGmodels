@@ -72,7 +72,7 @@ dataDet[:,2] = OrthoSamplesTot;
 dataDet[:,3] = StM[:,1];
 dataDet[:,4] = StM[:,2];
 dataDet[:,5] = VarStM;
-open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_DET.csv","w+") do x
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_DET_3.csv","w+") do x
    writedlm(x,dataDet);
 end
 
@@ -145,7 +145,7 @@ dataStoc[:,2] = OrthoSamplesTot;
 dataStoc[:,3] = StM[:,1];
 dataStoc[:,4] = StM[:,2];
 dataStoc[:,5] = VarStM;
-open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_Stoc_B1_G1.csv","w+") do x
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_Stoc_B1_G1_3.csv","w+") do x
    writedlm(x,dataStoc);
 end
 

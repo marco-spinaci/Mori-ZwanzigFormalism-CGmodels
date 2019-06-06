@@ -51,7 +51,7 @@ data[:,1] = OrthoSamplesTot;
 data[:,2] = StressMoments[:,1];
 data[:,3] = StressMoments[:,2];
 data[:,4] = VarStress;
-open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_OrthogonalDynamics.csv","w+") do x
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_OD.csv","w+") do x
    writedlm(x,data);
 end
 
