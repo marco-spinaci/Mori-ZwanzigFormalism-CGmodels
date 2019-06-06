@@ -57,16 +57,16 @@ pattern Patt.
   GammaTilde::Array{Float64,2}  = Diagonal(ones(NPart))*MInv*Gamma
   # Full CG Projections
   Phi::Array{Float64,2}	= kron(Diagonal(ones(NBeads)),ones(Float64,length(Patt))')
-  Psi 					= kron(Diagonal(ones(NBeads)),MassPatt'./BeadMass)
-  Xi 					= MInv\(Diagonal(ones(NPart))-Phi'Psi)*MInv;
-  Zeta 					= Diagonal(ones(NPart))-Psi'Phi;
+  Psi 				= kron(Diagonal(ones(NBeads)),MassPatt'./BeadMass)
+  #useless? ##Xi 					= MInv\(Diagonal(ones(NPart))-Phi'Psi)*MInv;
+  #useless? ##Zeta 					= Diagonal(ones(NPart))-Psi'Phi;
 
   # Constrained versions of CG Projections
   PhiConstr::Array{Float64,2}	= kron(Diagonal(ones(NBeads))[1:ConstrainedBeads,:],ones(Float64,length(Patt))')
   PsiConstr 					= kron(Diagonal(ones(NBeads))[1:ConstrainedBeads,:],MassPatt'./BeadMass)
-  XiConstr 						= MInv\(Diagonal(ones(NPart))-PhiConstr'PsiConstr)*MInv;
-  ZetaConstr 					= Diagonal(ones(NPart))-PsiConstr'PhiConstr;
-  MomProj 						= I - pinv(PhiConstr)*PhiConstr
+  #useless? ##XiConstr 						= MInv\(Diagonal(ones(NPart))-PhiConstr'PsiConstr)*MInv;
+  #useless? ##ZetaConstr 					= Diagonal(ones(NPart))-PsiConstr'PhiConstr;
+  MomProj 						= I - PsiConstr'*PhiConstr # this is correct up to a constant pinv(Matrix(PsiConstr))*PhiConstr
   NetMomProj					= I - ones(NPart)*pinv(ones(NPart))
 
   # Relative CG projections between identical beads (full and constrained)
@@ -184,8 +184,8 @@ Computes leapfrog step of dynamics with timestep dt, constrained to maintain CG
 positions and momenta.
 """
 function ConstrainedStep(P,Q,F,C,dt)
-  PNext = P + 0.5.*C.MomProj*F.*dt	 	    # B
-  QNext = Q + C.MInv*PNext.*dt;	                # A
+  PNext = P + 0.5.*C.MomProj*F.*dt	 	      # B
+  QNext = Q + C.MInv*C.MomProj*PNext.*dt;   # A
   FNext = Forces(QNext,C);			            # Force evaluation
   PNext = PNext + 0.5*C.MomProj*FNext.*dt;	# B
   return PNext,QNext,FNext
@@ -198,12 +198,12 @@ Computes forward step of Langevin dynamics with timestep dt using Leimkuhler-Mat
 "BAOAB" integrator; diffusion coefficient is evaluated after performing `half' of the deterministic part of the timestep.
 """
 function LangDynIntegrators(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Float64,1},C::Chain,dt::Float64)
-  PNext = P + 0.5.*F.*dt 	                     		# B
-  QNext = Q + 0.5.*dt.*C.MInv*PNext;             		# A
+  PNext = P + 0.5.*F.*dt 	                      		    # B
+  QNext = Q + 0.5.*dt.*C.MInv*PNext;                		# A
   PNext = C.NetMomProj*OrnUhlenbeckPart(PNext,C,dt);   	# O
-  QNext = QNext+0.5.*dt*C.MInv*PNext;            		# A
-  FNext = Forces(QNext,C);                       		# Force evaluation
-  PNext = PNext + 0.5.*FNext.*dt;                		# B
+  QNext = QNext+0.5.*dt*C.MInv*PNext;            		    # A
+  FNext = Forces(QNext,C);                       		    # Force evaluation
+  PNext = PNext + 0.5.*FNext.*dt;                		    # B
   return PNext,QNext,FNext
 end
 
@@ -215,8 +215,8 @@ diffusion coefficient is evaluated after performing `half' of the deterministic 
 """
 function LangDynConstrainedStep(P,Q,F,C,dt)
 	PNext = P + 0.5.*C.MomProj*F.*dt;                                      # B
-	QNext = Q + 0.5.*C.MInv*PNext.*dt;                                     # A
-	PNext = C.MomProj*C.NetMomProj*OrnUhlenbeckPart(PNext,C,dt)		       # O
+	QNext = Q + 0.5.*C.MInv*C.MomProj*PNext.*dt;                           # A
+	PNext = C.MomProj*C.NetMomProj*OrnUhlenbeckPart(PNext,C,dt)		         # O
 	QNext = QNext+0.5*C.MInv*PNext.*dt;                                    # A
 	FNext = Forces(QNext,C);                                               # Force evaluation
 	PNext = PNext + 0.5.*C.MomProj*FNext.*dt;                              # B
