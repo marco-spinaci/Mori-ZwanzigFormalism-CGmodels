@@ -18,38 +18,38 @@ set grid
 #   5     ->   Var Stress Moments
 ######################################################################
 
-set output "| epstopdf -f -o=plotData_sC_Det_2.pdf"
+set output "| epstopdf -f -o=plotData_sC_Det_3.pdf"
 set multiplot layout 2,2 title "System C, Constrained beds 2\n \n(Deterministic System)" font ",14" margins 0.12, 1, 0.09, 0.88 spacing 0.1
 
 set ylabel "{{/RomanOblique First Stress Moment}}"
 set logscale x
-p "data_sC_DET_1.csv" u 2:3 w lp lw 2 lc rgb "red"
+p "data_sC_DET_3.csv" u 2:3 w lp lw 2 lc rgb "red"
 
 set ylabel "{{/RomanOblique Second Stress Moment}}"
 set logscale x
-p "data_sC_DET_1.csv" u 2:4 w lp lw 2 lc rgb "blue"
+p "data_sC_DET_3.csv" u 2:4 w lp lw 2 lc rgb "blue"
 
 set ylabel "{{/RomanOblique Variance Stress Moment}}"
 set logscale x
-p "data_sC_DET_1.csv" u 2:5 w lp lw 2 lc rgb "blue"
+p "data_sC_DET_3.csv" u 2:5 w lp lw 2 lc rgb "blue"
 
 unset multiplot
 
 
-set output "| epstopdf -f -o=plotData_sC_Stoc_B1_G1_2.pdf"
+set output "| epstopdf -f -o=plotData_sC_Stoc_B1_G1_3.pdf"
 set multiplot layout 2,2 title "System C, Constrained beds 2, Beta=1, Gamma=1" font ",14" margins 0.12, 1, 0.09, 0.88 spacing 0.1
 
 set ylabel "{{/RomanOblique First Stress Moment}}"
 set logscale x
-p "data_sC_Stoc_B1_G1_1.csv" u 2:3 w lp lw 2 lc rgb "red"
+p "data_sC_Stoc_B1_G1_3.csv" u 2:3 w lp lw 2 lc rgb "red"
 
 set ylabel "{{/RomanOblique Second Stress Moment}}"
 set logscale x
-p "data_sC_Stoc_B1_G1_1.csv" u 2:4 w lp lw 2 lc rgb "blue"
+p "data_sC_Stoc_B1_G1_3.csv" u 2:4 w lp lw 2 lc rgb "blue"
 
 set ylabel "{{/RomanOblique Variance Stress Moment}}"
 set logscale x
-p "data_sC_Stoc_B1_G1_1.csv" u 2:5 w lp lw 2 lc rgb "blue"
+p "data_sC_Stoc_B1_G1_3.csv" u 2:5 w lp lw 2 lc rgb "blue"
 
 unset multiplot
 

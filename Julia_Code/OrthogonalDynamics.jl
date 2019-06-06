@@ -7,8 +7,8 @@ using Main.LJChain,Main.CGStats,Plots,Statistics,DelimitedFiles
 
 # to change the number of samples to compute, i.e. OrthoSamples Value
 
-Oin = Int(1e1);
-Ofin = Int(1e6);
+Oin = Int(1e3);
+Ofin = Int(1e7);
 
 # to change the gap between samples, i.e. OrthoSteps value
 
@@ -27,6 +27,8 @@ s = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
 
 (Pstore,Qstore,Fstore) = FullTraj(P0,Q0,c,s);
 
+println("Computing orthogonal dynamics through constrained dynamics ...");
+
 OrthoSamplesTot = Vector(Oin:Oin:Ofin);
 StressMoments   = zeros(length(OrthoSamplesTot),2);
 VarStress       = zeros(length(OrthoSamplesTot));
@@ -36,6 +38,8 @@ Qortho = Qstore[:,Fs];
 
 for i = 1:length(OrthoSamplesTot)
 
+	println("  Start sample ",i,": Orthosample=",OrthoSamplesTot[i],".");
+
 	(StressMoments[i,:],Portho,Qortho) = ConstrainedSample(Portho,Qortho,c,s);
 	VarStress[i]  = (1/i)*sum(StressMoments[1:i,2])-
 		  ((1/i)*sum(StressMoments[1:i,1]))^2;
@@ -44,6 +48,7 @@ for i = 1:length(OrthoSamplesTot)
 	global Qortho = Qortho;
 end
 
+println("  ... done!");
 
 # Write data to file
 data = zeros(length(OrthoSamplesTot),4);
@@ -51,7 +56,7 @@ data[:,1] = OrthoSamplesTot;
 data[:,2] = StressMoments[:,1];
 data[:,3] = StressMoments[:,2];
 data[:,4] = VarStress;
-open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_OD.csv","w+") do x
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_OD_2.csv","w+") do x
    writedlm(x,data);
 end
 

@@ -17,19 +17,19 @@ set grid
 #   4     ->   Var Stress Moments
 ######################################################################
 
-set output "| epstopdf -f -o=plotVarStress_VS_OrthoSamples_2.pdf"
+set output "| epstopdf -f -o=plotOD_2.pdf"
 set multiplot layout 2,2 title "System C, Constrained beds 2\n \n(Deterministic System)" font ",14" margins 0.12, 1, 0.09, 0.88 spacing 0.1
 
 set ylabel "{{/RomanOblique First Stress Moment}}"
 set logscale x
-p "data_OrthogonalDynamics.csv" u 1:2 w lp lw 2 lc rgb "red"
+p "data_OD_2.csv" u 1:2 w l lw 2 lc rgb "red"
 
 set ylabel "{{/RomanOblique Second Stress Moment}}"
 set logscale x
-p "data_OrthogonalDynamics.csv" u 1:3 w lp lw 2 lc rgb "blue"
+p "data_OD_2.csv" u 1:3 w l lw 2 lc rgb "blue"
 
 set ylabel "{{/RomanOblique Variance Stress Moment}}"
 set logscale x
-p "data_OrthogonalDynamics.csv" u 1:4 w lp lw 2 lc rgb "blue"
+p "data_OD_2.csv" u 1:4 w l lw 2 lc rgb "blue"
 
 unset multiplot
