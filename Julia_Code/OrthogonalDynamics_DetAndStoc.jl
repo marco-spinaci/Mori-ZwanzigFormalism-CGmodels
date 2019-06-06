@@ -9,7 +9,7 @@ using Main.LJChain,Main.CGStats,Plots,Statistics,DelimitedFiles
 # to change the number of samples to compute, i.e. OrthoSamples Value
 # Oin = Int(1e3);
 # Ofin = Int(1e6);
-OrthoSamplesTot = [exp10(x) for x in 1:8];
+OrthoSamplesTot = [exp10(x) for x in 1:7];
 nsamples = length(OrthoSamplesTot);
 
 # to change the gap between samples, i.e. OrthoSteps value
@@ -29,7 +29,7 @@ S = Simulator();
 # Initial condition
 (P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
 
-(Pstore,Qstore,Fstore) = FullTraj(P0,Q0,C,S);
+(Pstore,Qstore,Fstore) = LangevinFullTraj(P0,Q0,C,S);
 Portho = Pstore[:,end];
 Qortho = Qstore[:,end];
 

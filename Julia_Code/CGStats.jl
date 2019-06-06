@@ -21,8 +21,8 @@ export ApproxMeanForce, ApproxMeanStresses, ApproxFlucStep, ComputeVEff
 # Simulator type, encoding parameters #
 #######################################
 @with_kw struct Simulator
-  dt::Float64		= 1e-3
-  Stochdt::Float64	= 1e-3
+  dt::Float64		= 1e-4
+  Stochdt::Float64	= 1e-4
   FullSteps::Int	= Int(1e5)
   OrthoSteps::Int 	= 1
   ApproxSteps::Int	= Int(1e5)
@@ -141,6 +141,34 @@ function ConstrainedTraj(P0,Q0,C::Chain,S::Simulator)
   # Do simulation.
   for i = 2:S.FullSteps
     (P,Q,F) = ConstrainedStep(P,Q,F,C,S.dt);
+    Pstore[:,i] = P;
+    Qstore[:,i] = Q;
+    Fstore[:,i] = F;
+  end
+
+  return Pstore,Qstore,Fstore
+end
+
+function LangConstrainedTraj(P0,Q0,C::Chain,S::Simulator)
+  # Report to user.
+  println(now());
+  println("Running full simulation and storing trajectory.");
+  println("  NPart, number of particles simulated = ",C.NPart);
+  println("  dt, time step size = ",S.dt," seconds.");
+  println("  Total simulation time = ",S.FullTime," seconds.");
+
+  # Set up.
+  P = C.MomProj*P0; Q = Q0; F = Forces(Q,C);
+  Pstore = zeros(Float64,C.NPart,S.FullSteps);
+  Qstore = zeros(Float64,C.NPart,S.FullSteps);
+  Fstore = zeros(Float64,C.NPart,S.FullSteps);
+  Pstore[:,1] = P;
+  Qstore[:,1] = Q;
+  Fstore[:,1] = F;
+
+  # Do simulation.
+  for i = 2:S.FullSteps
+    (P,Q,F) = LangDynConstrainedStep(P,Q,F,C,S.dt);
     Pstore[:,i] = P;
     Qstore[:,i] = Q;
     Fstore[:,i] = F;
