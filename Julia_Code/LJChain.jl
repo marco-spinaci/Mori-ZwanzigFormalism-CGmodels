@@ -183,7 +183,7 @@ positions and momenta.
 """
 function ConstrainedStep(P,Q,F,C,dt)
   PNext = P + 0.5.*C.ZetaConstr*F.*dt	 	    # B
-  QNext = Q + C.MInv*PNext.*dt;	                # A
+  QNext = Q + C.MInv*C.ZetaConstr*PNext.*dt;	                # A
   FNext = Forces(QNext,C);			            # Force evaluation
   PNext = PNext + 0.5*C.ZetaConstr*FNext.*dt;	# B
   return PNext,QNext,FNext
