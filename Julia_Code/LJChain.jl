@@ -66,6 +66,8 @@ pattern Patt.
   PsiConstr 					= kron(Diagonal(ones(NBeads))[1:ConstrainedBeads,:],MassPatt'./BeadMass)
   XiConstr 						= MInv\(Diagonal(ones(NPart))-PhiConstr'PsiConstr)*MInv;
   ZetaConstr 					= Diagonal(ones(NPart))-PsiConstr'PhiConstr;
+  MomProj 						= I - pinv(PhiConstr)*PhiConstr
+  NetMomProj					= I - ones(NPart)*pinv(ones(NPart))
 
   # Relative CG projections between identical beads (full and constrained)
   PhiF::Array{Float64,2} 		= kron(Diagonal(ones(NBeads)),[zeros(Float64,length(Patt)-1);1.0])'  # Forces between beads
@@ -182,10 +184,10 @@ Computes leapfrog step of dynamics with timestep dt, constrained to maintain CG
 positions and momenta.
 """
 function ConstrainedStep(P,Q,F,C,dt)
-  PNext = P + 0.5.*C.ZetaConstr*F.*dt	 	    # B
+  PNext = P + 0.5.*C.MomProj*F.*dt	 	    # B
   QNext = Q + C.MInv*PNext.*dt;	                # A
   FNext = Forces(QNext,C);			            # Force evaluation
-  PNext = PNext + 0.5*C.ZetaConstr*FNext.*dt;	# B
+  PNext = PNext + 0.5*C.MomProj*FNext.*dt;	# B
   return PNext,QNext,FNext
 end
 
@@ -196,12 +198,12 @@ Computes forward step of Langevin dynamics with timestep dt using Leimkuhler-Mat
 "BAOAB" integrator; diffusion coefficient is evaluated after performing `half' of the deterministic part of the timestep.
 """
 function LangDynIntegrators(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Float64,1},C::Chain,dt::Float64)
-  PNext = P + 0.5.*F.*dt 	                     # B
-  QNext = Q + 0.5.*dt.*C.MInv*PNext;             # A
-  PNext = OrnUhlenbeckPart(PNext,C,dt);          # O
-  QNext = QNext+0.5.*dt*C.MInv*PNext;            # A
-  FNext = Forces(QNext,C);                       # Force evaluation
-  PNext = PNext + 0.5.*FNext.*dt;                # B
+  PNext = P + 0.5.*F.*dt 	                     		# B
+  QNext = Q + 0.5.*dt.*C.MInv*PNext;             		# A
+  PNext = C.NetMomProj*OrnUhlenbeckPart(PNext,C,dt);   	# O
+  QNext = QNext+0.5.*dt*C.MInv*PNext;            		# A
+  FNext = Forces(QNext,C);                       		# Force evaluation
+  PNext = PNext + 0.5.*FNext.*dt;                		# B
   return PNext,QNext,FNext
 end
 
@@ -212,13 +214,12 @@ Computes forward step of constrained Langevin dynamics with timestep dt using Le
 diffusion coefficient is evaluated after performing `half' of the deterministic part of the timestep.
 """
 function LangDynConstrainedStep(P,Q,F,C,dt)
-	PNext = P + 0.5.*C.ZetaConstr*F.*dt;                                   # B
-	QNext = Q + 0.5.*dt.*C.MInv*PNext;                                     # A
-    FNext = Forces(QNext,C);                                               # Force evaluation
-	PNext = OrnUhlenbeckPart(PNext,C,dt)-C.PsiConstr'C.PhiConstr*FNext;    # O
-	QNext = QNext+0.5.*dt*C.MInv*PNext;                                    # A
+	PNext = P + 0.5.*C.MomProj*F.*dt;                                      # B
+	QNext = Q + 0.5.*C.MInv*PNext.*dt;                                     # A
+	PNext = C.MomProj*C.NetMomProj*OrnUhlenbeckPart(PNext,C,dt)		       # O
+	QNext = QNext+0.5*C.MInv*PNext.*dt;                                    # A
 	FNext = Forces(QNext,C);                                               # Force evaluation
-	PNext = PNext + 0.5.*C.ZetaConstr*FNext.*dt;                           # B
+	PNext = PNext + 0.5.*C.MomProj*FNext.*dt;                              # B
 	return PNext,QNext,FNext
 end
 

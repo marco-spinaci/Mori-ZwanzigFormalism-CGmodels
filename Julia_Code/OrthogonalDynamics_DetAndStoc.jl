@@ -29,7 +29,7 @@ S = Simulator();
 # Initial condition
 (P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
 
-(Pstore,Qstore,Fstore) = FullTraj(P0,Q0,C,S);
+(Pstore,Qstore,Fstore) = LangevinFullTraj(P0,Q0,C,S);
 Portho = Pstore[:,end];
 Qortho = Qstore[:,end];
 
