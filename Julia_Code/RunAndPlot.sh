@@ -22,13 +22,19 @@ fold="../Outcomes/OrthogonalDynamics_DetAndStoc"
 # to run the same simulation two times
 for i in 1 2
 do
-  julia OrthogonalDynamics_DetAndStoc.jl
+  # julia OrthogonalDynamics_DetAndStoc.jl
 
-  #gnuplot $fold/plotData.gp
-  #mv $fold/plotData_sC_DET.pdf $fold/${i}_plotData_sC_DET_10_1e7.pdf
-  #mv $fold/plotData_sC_STOC.pdf $fold/${i}_plotData_sC_STOC_10_1e7.pdf
+  ~/Desktop/julia-1.1.1/bin/julia OrthogonalDynamics_DetAndStoc.jl
+  mv $fold/plotData_sC_DET.pdf $fold/${i}_plotData_sC_DET.pdf
+  mv $fold/plotData_sC_STOC.pdf $fold/${i}_plotData_sC_STOC.pdf
 
-   mv $fold/data_sC_DET.csv $fold/${i}_data_sC_DET_10_1e7.csv
-  mv $fold/data_sC_STOC.csv $fold/${i}_data_sC_STOC_10_1e7.csv
+  # mv $fold/${i}_plotData_sC_DET.pdf $fold/plotData_sC_DET.pdf
+  # mv $fold/${i}_plotData_sC_STOC.pdf $fold/plotData_sC_STOC.pdf
+
+  # gnuplot $fold/plotData.gp
+  # mv $fold/plotData_sC_DET.pdf $fold/${i}_plotData_sC_DET_10_1e7.pdf
+  # mv $fold/plotData_sC_STOC.pdf $fold/${i}_plotData_sC_STOC_10_1e7.pdf
+  # mv $fold/data_sC_DET.csv $fold/${i}_data_sC_DET_10_1e7.csv
+  # mv $fold/data_sC_STOC.csv $fold/${i}_data_sC_STOC_10_1e7.csv
 
 done
