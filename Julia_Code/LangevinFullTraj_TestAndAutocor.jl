@@ -52,7 +52,7 @@ K = SharedArray{Float64}(nsamples);
                 @async begin
                     println(" CPU_THREADS ",pp-1,", Worker ",pp,", Beta=",BetaSamples[jj,1]);
                     C = Chain(Beta=BetaSamples[jj,1]);
-                    K[jj,1] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[4];
+                    K[jj] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[4];
                 end
             end
         end
@@ -61,21 +61,29 @@ end
 
 println(" ...Kmean computed!");
 
-p1 = scatter(1 ./BetaSamples,K,
-	     legend = false,
-	     legendfontsize = 5,
-	     markershape = :auto,
-	     markercolor = :red,
-	     markersize = 2.5,
-             tickfontsize = 5,
-             guidefontsize = 8,
-             xscale = :log10,
-             xlabel = "T",
-             yscale = :log10,
-             ylabel = "<Kmean>",
-             title = "<Kmean> per particle vs T",
-             titlefontsize = 7);
-savefig("../Outcomes/LangevinFullTraj_TestAndAutocor/plotKmeanVST.pdf");
+# Write data to file
+BK = zeros(nsamples,2);
+BK[:,1] = 1 ./BetaSamples;
+BK[:,2] = K;
+open("../Outcomes/LangevinFullTraj_TestAndAutocor/Kmean_T.csv","w+") do x
+    writedlm(x,BK);
+end
+
+# p1 = scatter(1 ./BetaSamples,K,
+# 	     legend = false,
+# 	     legendfontsize = 5,
+# 	     markershape = :auto,
+# 	     markercolor = :red,
+# 	     markersize = 2.5,
+#              tickfontsize = 5,
+#              guidefontsize = 8,
+#              xscale = :log10,
+#              xlabel = "T",
+#              yscale = :log10,
+#              ylabel = "<Kmean>",
+#              title = "<Kmean> per particle vs T",
+#              titlefontsize = 7);
+# savefig("../Outcomes/LangevinFullTraj_TestAndAutocor/plotKmeanVST.pdf");
 
 
 ###################################################################################################
@@ -132,23 +140,23 @@ println(" ...Autocorrelation computed!");
 tAutocor = zeros(length(lags),nsamples+1);
 tAutocor[:,1] = lags*S.dt;
 tAutocor[:,2:end] = Autocor;
-open("../Outcomes/LangevinFullTraj_TestAndAutocor/AutocorGAMMA_1e-5_1e5.csv","w+") do x
+open("../Outcomes/LangevinFullTraj_TestAndAutocor/AutocorGAMMA.csv","w+") do x
     writedlm(x,tAutocor);
 end
 
 
-p2 = plot(lags*S.dt,Autocor,
-       legend = :topright,
-       legendfontsize = 5,
-       tickfontsize = 5,
-       guidefontsize = 8,
-       label = ["Gamma = 1e-5","Gamma = 1e-4","Gamma = 1e-3","Gamma = 1e-2","Gamma = 1e-1","Gamma = 1","Gamma = 1e1","Gamma = 1e2",
-		"Gamma = 1e3","Gamma = 1e4","Gamma = 1e5"],
-       xlabel = "t",
-       ylabel = "Autocorrelation",
-       title = "Autocorrelation of the momentum",
-       titlefontsize = 7);
-savefig("../Outcomes/LangevinFullTraj_TestAndAutocor/plotAutocorP_1.pdf");
+# p2 = plot(lags*S.dt,Autocor,
+#        legend = :topright,
+#        legendfontsize = 5,
+#        tickfontsize = 5,
+#        guidefontsize = 8,
+#        label = ["Gamma = 1e-5","Gamma = 1e-4","Gamma = 1e-3","Gamma = 1e-2","Gamma = 1e-1","Gamma = 1","Gamma = 1e1","Gamma = 1e2",
+# 		"Gamma = 1e3","Gamma = 1e4","Gamma = 1e5"],
+#        xlabel = "t",
+#        ylabel = "Autocorrelation",
+#        title = "Autocorrelation of the momentum",
+#        titlefontsize = 7);
+# savefig("../Outcomes/LangevinFullTraj_TestAndAutocor/plotAutocorP_1.pdf");
 
 
 ###################################################################################################
