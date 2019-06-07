@@ -29,7 +29,7 @@ S = Simulator();
 # Initial condition
 (P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
 
-(Pstore,Qstore,Fstore) = LangevinFullTraj(P0,Q0,C,S);
+(Pstore,Qstore,Fstore) = FullTraj(P0,Q0,C,S);
 Portho = Pstore[:,end];
 Qortho = Qstore[:,end];
 
@@ -62,7 +62,7 @@ for i = 1:nsamples
 	global Qortho = Qortho;
 end
 
-println("  ... done!");
+println(" ... done!");
 println("Distance between centre of mass of beads, RR = ", RR);
 
 # Write data to file
@@ -72,7 +72,7 @@ dataDet[:,2] = OrthoSamplesTot;
 dataDet[:,3] = StM[:,1];
 dataDet[:,4] = StM[:,2];
 dataDet[:,5] = VarStM;
-open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_DET_3.csv","w+") do x
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_DET.csv","w+") do x
    writedlm(x,dataDet);
 end
 
@@ -135,7 +135,7 @@ for i = 1:nsamples
 	global Qortho = Qortho;
 end
 
-println("  ... done!");
+println(" ... done!");
 println("Distance between centre of mass of beads, RR = ", RR);
 
 # Write data to file
@@ -145,7 +145,7 @@ dataStoc[:,2] = OrthoSamplesTot;
 dataStoc[:,3] = StM[:,1];
 dataStoc[:,4] = StM[:,2];
 dataStoc[:,5] = VarStM;
-open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_Stoc_B1_G1_3.csv","w+") do x
+open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_STOC.csv","w+") do x
    writedlm(x,dataStoc);
 end
 
