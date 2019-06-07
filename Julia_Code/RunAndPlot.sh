@@ -6,12 +6,16 @@
 #  mv Stoc.pdf $i_Sto.pdf
 #done
 
+###########################################################################
 # LangevinFullTraj_TestAndAutocorP
+
 fold=(../Outcomes/LangevinFullTraj_TestAndAutocor)
-julia LangevinFullTraj_TestAndAutocor.jl
+# julia LangevinFullTraj_TestAndAutocor.jl
 gnuplot $fold/plot_KmeanAndAutocorP.gp
 mv $fold/plotKmeanAndAutocorP.pdf $fold/plotKmeanAndAutocorP_1e-5_1e5.pdf
 mv $fold/AutocorGAMMA.csv $fold/AutocorGAMMA_1e-5_1e5.csv
 
+############################################################################
 #OrthogonalDynamimcs_DetAndStoc
+
 #gnuplot $fold/OrthogonalDynamimcs_DetAndStoc/plotDataOD_DetAndStoc.gp
