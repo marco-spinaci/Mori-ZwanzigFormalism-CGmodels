@@ -11,7 +11,8 @@ export Simulator
 # Functions to output raw trajectory data
 export FullTraj, LangevinFullTraj, ConstrainedTraj, ApproximateTraj
 # High-level function to extract data
-export VEffConstrained, VEffConstrainedLangDyn, ConstrainedAutocorr, FullAutocorr, ApproximateAutocorr, ConstrainedAutocorrPar, FullAutocorrPar, ApproximateAutocorrPar
+export VEffConstrained, VEffConstrainedLangDyn, ConstrainedAutocorr, FullAutocorr, ApproximateAutocorr, ConstrainedAutocorrPar, FullAutocorrPar,
+  ApproximateAutocorrPar
 # Orthogonal dynamics sampling
 export ConstrainedSample, ConstrSampleLangDyn
 # Functions to extract approximate dynamics

@@ -30,10 +30,10 @@ do
   ####################################################
 
   gnuplot $fold/plotData.gp
-  mv $fold/plotData_sC_DET.pdf $fold/${i}_plotData_sC_DET_10_1e7.pdf
-  mv $fold/plotData_sC_STOC.pdf $fold/${i}_plotData_sC_STOC_10_1e7.pdf
-  mv $fold/data_sC_DET.csv $fold/${i}_data_sC_DET_10_1e7.csv
-  mv $fold/data_sC_STOC.csv $fold/${i}_data_sC_STOC_10_1e7.csv
+  mv $fold/plotData_sC_DET.pdf $fold/${i}_plotData_sC_DET_10_1e8.pdf
+  mv $fold/plotData_sC_STOC.pdf $fold/${i}_plotData_sC_STOC_10_1e8.pdf
+  mv $fold/data_sC_DET.csv $fold/${i}_data_sC_DET_10_1e8.csv
+  mv $fold/data_sC_STOC.csv $fold/${i}_data_sC_STOC_10_1e8.csv
 done
 
 ###############################################################################
