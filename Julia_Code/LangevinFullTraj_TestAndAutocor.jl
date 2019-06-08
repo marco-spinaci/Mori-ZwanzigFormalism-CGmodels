@@ -46,7 +46,7 @@ K = SharedArray{Float64}(nsamples);
                     break;
                 end
                 global j += 1;
-                println("Start the Beta sample ",j);
+                println("Start Beta sample ",j);
                 pp = p;
                 jj = j;
                 @async begin
@@ -120,7 +120,7 @@ Autocor = SharedArray{Float64}(length(lags),nsamples);
                     break;
                 end
                 global j += 1;
-                println("Start the Gammma sample ",j);
+                println("Start Gammma sample ",j);
                 pp = p;
                 jj = j;
                 @async begin

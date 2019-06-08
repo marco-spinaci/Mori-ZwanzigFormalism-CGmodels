@@ -21,7 +21,7 @@ set title "<Kmean> per particle vs T"
 set logscale xy
 set xlabel "{{/RomanOblique T}}"
 set ylabel "{{/RomanOblique <Kmean>}}"
-p "../Outcomes/LangevinFullTraj_TestAndAutocor/Kmean_T.csv" u 1:2 w l lw 2 lc rgb "red"
+p "../Outcomes/LangevinFullTraj_TestAndAutocor/Kmean_T.csv" u 1:2 w lp lw 2 lc rgb "red"
 
 unset logscale
 set key
