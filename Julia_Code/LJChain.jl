@@ -184,10 +184,10 @@ Computes leapfrog step of dynamics with timestep dt, constrained to maintain CG
 positions and momenta.
 """
 function ConstrainedStep(P,Q,F,C,dt)
-  PNext = P + 0.5.*C.MomProj*F.*dt	 	      # B
-  QNext = Q + C.MInv*C.MomProj*PNext.*dt;   # A
-  FNext = Forces(QNext,C);			            # Force evaluation
-  PNext = PNext + 0.5*C.MomProj*FNext.*dt;	# B
+  PNext = P + 0.5.*C.MomProj*F.*dt;	 	      # B
+  QNext = Q + C.MInv*C.MomProj*PNext.*dt;     # A
+  FNext = Forces(QNext,C);			          # Force evaluation
+  PNext = PNext + 0.5*C.MomProj*FNext.*dt;	  # B
   return PNext,QNext,FNext
 end
 
@@ -200,7 +200,7 @@ Computes forward step of Langevin dynamics with timestep dt using Leimkuhler-Mat
 function LangDynIntegrators(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Float64,1},C::Chain,dt::Float64)
   PNext = P + 0.5.*F.*dt 	                      		    # B
   QNext = Q + 0.5.*dt.*C.MInv*PNext;                		# A
-  PNext = C.NetMomProj*OrnUhlenbeckPart(PNext,C,dt);        # O
+  PNext = C.NetMomProj*OrnUhlenbeckPart(PNext,C,dt)[1];     # O
   QNext = QNext+0.5.*dt*C.MInv*PNext;            		    # A
   FNext = Forces(QNext,C);                       		    # Force evaluation
   PNext = PNext + 0.5.*FNext.*dt;                		    # B
@@ -214,12 +214,12 @@ Computes forward step of constrained Langevin dynamics with timestep dt using Le
 diffusion coefficient is evaluated after performing `half' of the deterministic part of the timestep.
 """
 function LangDynConstrainedStep(P,Q,F,C,dt)
-	PNext = P + 0.5.*C.MomProj*F.*dt;                                      # B
-	QNext = Q + 0.5.*C.MInv*C.MomProj*PNext.*dt;                           # A
-	PNext = C.MomProj*C.NetMomProj*OrnUhlenbeckPart(PNext,C,dt)		         # O
-	QNext = QNext+0.5*C.MInv*PNext.*dt;                                    # A
-	FNext = Forces(QNext,C);                                               # Force evaluation
-	PNext = PNext + 0.5.*C.MomProj*FNext.*dt;                              # B
+	PNext = P + 0.5.*C.MomProj*F.*dt;                         # B
+	QNext = Q + 0.5.*C.MInv*C.MomProj*PNext.*dt;              # A
+	PNext = C.NetMomProj*OrnUhlenbeckPart(PNext,C,dt)[2];     # O
+	QNext = QNext+0.5*C.MInv*C.MomProj*PNext.*dt;             # A
+	FNext = Forces(QNext,C);                                  # Force evaluation
+	PNext = PNext + 0.5.*C.MomProj*FNext.*dt;                 # B
 	return PNext,QNext,FNext
 end
 
@@ -227,9 +227,11 @@ function OrnUhlenbeckPart(P::Array{Float64,1},C::Chain,dt::Float64)
  	# Calculate exact Ornstein-Uhlenbeck step using decomposition
 	c1 = exp(-C.GammaTilde*dt);
 	c3 = sqrt(1/C.Beta)*sqrt(Diagonal(ones(C.NPart))-c1^2);
+	c1c = exp(-C.GammaTilde*dt.*C.MomProj);
+	c3c = sqrt(1/C.Beta)*sqrt(Diagonal(ones(C.NPart))-c1c^2);
 
 	# Generate new momenta and return
-	return c1*P+c3*C.MHalf*randn(C.NPart);
+	return c1*P+c3*C.MHalf*randn(C.NPart), c1c*P+c3c*C.MomProj*C.MHalf*randn(C.NPart);
 end
 
 """

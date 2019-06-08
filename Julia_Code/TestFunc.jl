@@ -9,7 +9,36 @@ using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra
 C = Chain();
 S = Simulator();
 
-# #########################################################################################################
+####################################################################################################
+
+# (P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
+#
+# (Pstore,Qstore,Fstore) = FullTraj(P0,Q0,C,S);
+#
+# Pi = Pstore[:,end];
+# Qi = Qstore[:,end];
+#
+# PCG = C.PhiConstr*Pi;
+# QCG = C.PsiConstr*Qi;
+#
+# (StressMoments,Pf,Qf) = ConstrainedSample(Pi,Qi,C,S);
+
+#####################################################################################################
+
+P0 = zeros(C.NPart);
+Q0 = Vector(1.0:1.0:30.0);
+
+(Pstore,Qstore,Fstore,Kmean,Hmean) = LangevinFullTraj(P0,Q0,C,S);
+
+Pi = Pstore[:,end];
+Qi = Qstore[:,end];
+
+PCG = C.PhiConstr*Pi;
+QCG = C.PsiConstr*Qi;
+
+(StressMoments,Pf,Qf) = ConstrSampleLangDyn(Pi,Qi,C,S);
+
+#####################################################################################################
 #
 # PhiConstr = kron(Diagonal(ones(C.NBeads))[1:C.ConstrainedBeads,:],ones(Float64,length(C.Patt))');
 # PsiConstr = kron(Diagonal(ones(C.NBeads))[1:C.ConstrainedBeads,:],C.MassPatt'./C.BeadMass);
