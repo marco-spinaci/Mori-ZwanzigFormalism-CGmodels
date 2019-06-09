@@ -26,17 +26,17 @@ do
   mv $fold/data_sC_DET.csv $fold/${i}_data_sC_DET.csv
   mv $fold/data_sC_STOC.csv $fold/${i}_data_sC_STOC.csv
 
-  # then on your pc decomment the following rows
+  # # then on your pc decomment the following rows
   # mv $fold/${i}_data_sC_DET.csv $fold/data_sC_DET.csv
   # mv $fold/${i}_data_sC_STOC.csv $fold/data_sC_STOC.csv
   #
   # ####################################################
   #
   # gnuplot $fold/plotData.gp
-  # mv $fold/plotData_sC_DET.pdf $fold/${i}_plotData_sC_DET_10_1e8.pdf
-  # mv $fold/plotData_sC_STOC.pdf $fold/${i}_plotData_sC_STOC_10_1e8.pdf
-  # mv $fold/data_sC_DET.csv $fold/${i}_data_sC_DET_10_1e8.csv
-  # mv $fold/data_sC_STOC.csv $fold/${i}_data_sC_STOC_10_1e8.csv
+  # mv $fold/plotData_sC_DET.pdf $fold/${i}_plotData_sC_DET_10_1e7_dt10-3.pdf
+  # mv $fold/plotData_sC_STOC.pdf $fold/${i}_plotData_sC_STOC_10_1e7_dt10-3.pdf
+  # mv $fold/data_sC_DET.csv $fold/${i}_data_sC_DET_10_1e7_dt10-3.csv
+  # mv $fold/data_sC_STOC.csv $fold/${i}_data_sC_STOC_10_1e7_dt10-3.csv
 done
 
 ###############################################################################

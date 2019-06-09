@@ -18,9 +18,13 @@ Os = Int(1);
 # to change the number of FullSteps to compute full dynamics
 Fs = Int(1e5);
 
+# to change the time step (dt=1e-4)
+dtt = 1e-5;
+
+
 C = Chain(Beta=1,Gamma=1);
-S = Simulator();
-# S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
+S = Simulator(dt=dtt);
+# S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs,dt=dtt);
 
 #######################################################################################
 # to compute the orthogonal dynamic with the constrained dynamic by varying
@@ -45,7 +49,8 @@ StM     = zeros(nsamples,2);
 VarStM  = zeros(nsamples);
 
 for i = 1:nsamples
-	S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs,dt=1e-3);
+	S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs,dt=dtt);
+	# S = Simulator(OrthoSamples=OrthoSamplesTot[i],OrthoSteps=Os,FullSteps=Fs,dt=dtt);
 
 	println("  Start sample ",i,": Orthosample=",OrthoSamplesTot[i],".");
 	(StressMoments,Portho,Qortho) = ConstrainedSample(Portho,Qortho,C,S);
@@ -117,8 +122,8 @@ VarStM  = zeros(nsamples);
 
 for i = 1:nsamples
 
-    S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs,dt=1e-3);
-	# S = Simulator(OrthoSamples=OrthoSamplesTot[i],OrthoSteps=Os,FullSteps=Fs);
+    S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs,dt=dtt);
+	# S = Simulator(OrthoSamples=OrthoSamplesTot[i],OrthoSteps=Os,FullSteps=Fs,dt=dtt);
 
 	println("  Start sample ",i,": Orthosample=",OrthoSamplesTot[i],".");
 	(StressMoments,Portho,Qortho) = ConstrSampleLangDyn(Portho,Qortho,C,S);
