@@ -5,9 +5,10 @@ using Distributed
 
 using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra,StatsBase
 
-# Initial conditions
+
 C = Chain();
-S = Simulator();
+S = Simulator(); # dt=1e-4, FullSteps=Int(1e5),  OrthoSteps=1, OrthoSamples=Int(1e5)
+
 
 ####################################################################################################
 
@@ -36,7 +37,17 @@ Qi = Qstore[:,end];
 PCG = C.PhiConstr*Pi;
 QCG = C.PsiConstr*Qi;
 
-(StressMoments,Pf,Qf) = ConstrSampleLangDyn(Pi,Qi,C,S);
+@time begin
+    S = Simulator();
+    (StressMoments,Pf,Qf) = ConstrSampleLangDyn(Pi,Qi,C,S);
+    println(" t = ",S.dt*S.OrthoSamples," s");
+end;
+
+@time begin
+    S = Simulator(dt=1e-9,OrthoSteps=1e5,OrthoSamples=Int(1e5));
+    (StressMoments,Pf,Qf) = ConstrSampleLangDyn(Pi,Qi,C,S);
+    println(" t = ",S.dt*S.OrthoSamples," s");
+end;
 
 #####################################################################################################
 #
