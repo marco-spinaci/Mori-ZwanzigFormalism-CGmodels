@@ -9,7 +9,7 @@ using Main.LJChain,Main.CGStats,Plots,Statistics,DelimitedFiles
 # to change the number of samples to compute, i.e. OrthoSamples Value
 # Oin = Int(1e3);
 # Ofin = Int(1e6);
-OrthoSamplesTot = [exp10(x) for x in 1:8];
+OrthoSamplesTot = [exp10(x) for x in 1:7];
 nsamples = length(OrthoSamplesTot);
 
 # to change the gap between samples, i.e. OrthoSteps value
@@ -18,7 +18,7 @@ Os = Int(1);
 # to change the number of FullSteps to compute full dynamics
 Fs = Int(1e5);
 
-C = Chain(Beta=1,Gamma=1); # NB: check the name of the output file
+C = Chain(Beta=1,Gamma=1);
 S = Simulator();
 # S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs);
 
@@ -45,7 +45,7 @@ StM     = zeros(nsamples,2);
 VarStM  = zeros(nsamples);
 
 for i = 1:nsamples
-	S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs);
+	S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs,dt=1e-3);
 
 	println("  Start sample ",i,": Orthosample=",OrthoSamplesTot[i],".");
 	(StressMoments,Portho,Qortho) = ConstrainedSample(Portho,Qortho,C,S);
@@ -117,7 +117,7 @@ VarStM  = zeros(nsamples);
 
 for i = 1:nsamples
 
-    S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs);
+    S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs,dt=1e-3);
 	# S = Simulator(OrthoSamples=OrthoSamplesTot[i],OrthoSteps=Os,FullSteps=Fs);
 
 	println("  Start sample ",i,": Orthosample=",OrthoSamplesTot[i],".");
