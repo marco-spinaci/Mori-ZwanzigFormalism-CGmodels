@@ -37,7 +37,7 @@ Qi = Qstore[:,end];
 PCG = C.PhiConstr*Pi;
 QCG = C.PsiConstr*Qi;
 
-println("Computing orthogonal dynamics through constrained dynamics ...");
+println("Computing orthogonal dynamics through constrained Langevin dynamics ...");
 
 @time begin
     S = Simulator();
