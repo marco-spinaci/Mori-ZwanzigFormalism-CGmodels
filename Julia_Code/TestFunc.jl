@@ -47,7 +47,7 @@ println("Computing orthogonal dynamics through constrained Langevin dynamics ...
 end;
 
 @time begin
-    S = Simulator(dt=1e-9,OrthoSteps=1e8,OrthoSamples=Int(1e2));
+    S = Simulator(dt=1e-7,OrthoSteps=1e6,OrthoSamples=Int(1e2));
     (StressMoments,Pf,Qf) = ConstrSampleLangDyn(Pi,Qi,C,S);
     println("  dt, time step size = ",S.dt," seconds.");
     println("  Total simulation time = ",S.dt*S.OrthoSteps*S.OrthoSamples," seconds.");
