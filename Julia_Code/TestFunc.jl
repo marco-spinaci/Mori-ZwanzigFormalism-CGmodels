@@ -37,16 +37,20 @@ Qi = Qstore[:,end];
 PCG = C.PhiConstr*Pi;
 QCG = C.PsiConstr*Qi;
 
+println("Computing orthogonal dynamics through constrained dynamics ...");
+
 @time begin
     S = Simulator();
     (StressMoments,Pf,Qf) = ConstrSampleLangDyn(Pi,Qi,C,S);
-    println(" t = ",S.dt*S.OrthoSamples," s");
+    println("  dt, time step size = ",S.dt," seconds.");
+    println("  Total simulation time = ",S.dt*S.OrthoSamples," seconds.");
 end;
 
 @time begin
     S = Simulator(dt=1e-9,OrthoSteps=1e5,OrthoSamples=Int(1e5));
     (StressMoments,Pf,Qf) = ConstrSampleLangDyn(Pi,Qi,C,S);
-    println(" t = ",S.dt*S.OrthoSamples," s");
+    println("  dt, time step size = ",S.dt," seconds.");
+    println("  Total simulation time = ",S.dt*S.OrthoSteps*S.OrthoSamples," seconds.");
 end;
 
 #####################################################################################################
