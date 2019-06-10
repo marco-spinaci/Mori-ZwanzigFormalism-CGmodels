@@ -6,8 +6,8 @@ using Distributed
 # Set up parallel computing
 addprocs(Sys.CPU_THREADS);
 
-@everywhere include("LJChain.jl")
-@everywhere include("CGStats.jl")
+@everywhere include("../LJChain.jl")
+@everywhere include("../CGStats.jl")
 using Main.LJChain,Main.CGStats,Plots,SharedArrays,StatsBase,DelimitedFiles
 
 C = Chain();
@@ -22,7 +22,7 @@ Q0 = Vector(1.0:1.0:30.0);
 
 # to change the values of the BETA parameter
 #BetaSamples = Vector(200:200:1000);
-BetaSamples = [exp10(x) for x in -5:5];
+BetaSamples = [exp10(x) for x in -4:4];
 nsamples = length(BetaSamples);
 
 # K = zeros(nsamples);
@@ -33,7 +33,7 @@ nsamples = length(BetaSamples);
 #     K[i,1] = LangevinFullTraj(P0,Q0,C,S)[4];
 # end
 
-i=0;
+
 j=0;
 np = nprocs();
 K = SharedArray{Float64}(nsamples);
@@ -94,7 +94,7 @@ GammaSamples = [exp10(x) for x in -5:5];
 nsamples = length(GammaSamples);
 
 # to change the number of ACF to compute
-nlags = 10000;
+nlags = 100000;
 lags = Vector(0:1:nlags);
 
 
@@ -106,10 +106,11 @@ lags = Vector(0:1:nlags);
 # end
 
 
-i=0;
+
 j=0;
 np = nprocs();
 PFull = SharedArray{Float64}(C.NPart,S.FullSteps,nsamples);
+P = SharedArray{Float64}(S.FullSteps);
 Autocor = SharedArray{Float64}(length(lags),nsamples);
 
 @sync begin
@@ -127,7 +128,10 @@ Autocor = SharedArray{Float64}(length(lags),nsamples);
                     println(" CPU_THREADS ",pp-1,", Worker ",pp,", Gamma=",GammaSamples[jj,1]);
                     C = Chain(Gamma=GammaSamples[jj,1]);
                     PFull[:,:,jj] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[1];
-                    Autocor[:,jj] = remotecall_fetch(autocor,pp,PFull[1,:,jj],lags);
+                    for i =1:S.FullSteps
+                        P[i] = (C.PhiConstr*PFull[:,i,jj])[1];
+                    end
+                    Autocor[:,jj] = remotecall_fetch(autocor,pp,P,lags);
                 end
             end
         end

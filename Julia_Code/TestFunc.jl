@@ -26,32 +26,32 @@ S = Simulator(); # dt=1e-4, FullSteps=Int(1e5),  OrthoSteps=1, OrthoSamples=Int(
 
 #####################################################################################################
 
-P0 = zeros(C.NPart);
-Q0 = Vector(1.0:1.0:30.0);
-
-(Pstore,Qstore,Fstore,Kmean,Hmean) = LangevinFullTraj(P0,Q0,C,S);
-
-Pi = Pstore[:,end];
-Qi = Qstore[:,end];
-
-PCG = C.PhiConstr*Pi;
-QCG = C.PsiConstr*Qi;
-
-println("Computing orthogonal dynamics through constrained Langevin dynamics ...");
-
-@time begin
-    S = Simulator();
-    (StressMoments,Pf,Qf) = ConstrSampleLangDyn(Pi,Qi,C,S);
-    println("  dt, time step size = ",S.dt," seconds.");
-    println("  Total simulation time = ",S.dt*S.OrthoSamples," seconds.");
-end;
-
-@time begin
-    S = Simulator();
-    (StressMoments,Pf,Qf) = ConstrSampleLangDyn(Pi,Qi,C,S);
-    println("  dt, time step size = ",S.dt," seconds.");
-    println("  Total simulation time = ",S.dt*S.OrthoSteps*S.OrthoSamples," seconds.");
-end;
+# P0 = zeros(C.NPart);
+# Q0 = Vector(1.0:1.0:30.0);
+#
+# (Pstore,Qstore,Fstore,Kmean,Hmean) = LangevinFullTraj(P0,Q0,C,S);
+#
+# Pi = Pstore[:,end];
+# Qi = Qstore[:,end];
+#
+# PCG = C.PhiConstr*Pi;
+# QCG = C.PsiConstr*Qi;
+#
+# println("Computing orthogonal dynamics through constrained Langevin dynamics ...");
+#
+# @time begin
+#     S = Simulator();
+#     (StressMoments,Pf,Qf) = ConstrSampleLangDyn(Pi,Qi,C,S);
+#     println("  dt, time step size = ",S.dt," seconds.");
+#     println("  Total simulation time = ",S.dt*S.OrthoSamples," seconds.");
+# end;
+#
+# @time begin
+#     S = Simulator();
+#     (StressMoments,Pf,Qf) = ConstrSampleLangDyn(Pi,Qi,C,S);
+#     println("  dt, time step size = ",S.dt," seconds.");
+#     println("  Total simulation time = ",S.dt*S.OrthoSteps*S.OrthoSamples," seconds.");
+# end;
 
 #####################################################################################################
 #
