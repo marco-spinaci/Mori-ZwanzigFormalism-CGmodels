@@ -94,7 +94,7 @@ GammaSamples = [exp10(x) for x in -5:5];
 nsamples = length(GammaSamples);
 
 # to change the number of ACF to compute
-nlags = 100000;
+nlags = 90000;
 lags = Vector(0:1:nlags);
 
 
