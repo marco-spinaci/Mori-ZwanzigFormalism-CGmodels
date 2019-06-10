@@ -26,10 +26,12 @@ S = Simulator(); # dt=1e-4, FullSteps=Int(1e5),  OrthoSteps=1, OrthoSamples=Int(
 
 #####################################################################################################
 
-# P0 = zeros(C.NPart);
-# Q0 = Vector(1.0:1.0:30.0);
-#
-# (Pstore,Qstore,Fstore,Kmean,Hmean) = LangevinFullTraj(P0,Q0,C,S);
+P0 = zeros(C.NPart);
+Q0 = Vector(1.0:1.0:30.0);
+
+@time begin
+    (Pstore,Qstore,Fstore,Kmean,Hmean) = LangevinFullTraj(P0,Q0,C,S);
+end
 #
 # Pi = Pstore[:,end];
 # Qi = Qstore[:,end];
