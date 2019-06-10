@@ -1,7 +1,5 @@
-using Distributed
-
-@everywhere include("../LJChain.jl")
-@everywhere include("../CGStats.jl")
+include("../LJChain.jl")
+include("../CGStats.jl")
 
 using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra,StatsBase
 
@@ -17,28 +15,20 @@ Q0 = Vector(1.0:1.0:30.0);
 
 ############################################################################################################
 
-j=0;
-np = nprocs();
-Pstore = SharedArray{Float64}(C.NPart,S.FullSteps,nsamples);
-Qstore = SharedArray{Float64}(C.NPart,S.FullSteps,nsamples);
-Fstore = SharedArray{Float64}(C.NPart,S.FullSteps,nsamples);
 
-@sync begin
-    while j < nsamples
-        if j >= nsamples
-            break;
-        end
-        global j += 1;
-        pp = 2;
-        jj = j;
-        @async begin
-            println(" CPU_THREADS ",pp-1,", Worker ",pp," :");
-            (Pstore_DET[:,:,jj],Qstore_DET[:,:,jj],Fstore_DET[:,:,jj],Kmean,Hmean) = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S);
-            println(" CPU_THREADS ",pp,", Worker ",pp+1," :");
-            (Pstore_STOC[:,:,jj],Qstore_STOC[:,:,jj],Fstore_STOC[:,:,jj]) = remotecall_fetch(LangConstrainedTraj,pp+1,P0,Q0,C,S);
-        end
-    end
+Pstore_DET = SharedArray{Float64}(C.NPart,S.FullSteps,nsamples);
+Qstore_DET = SharedArray{Float64}(C.NPart,S.FullSteps,nsamples);
+Fstore_DET = SharedArray{Float64}(C.NPart,S.FullSteps,nsamples);
+
+Pstore_STOC = SharedArray{Float64}(C.NPart,S.FullSteps,nsamples);
+Qstore_STOC = SharedArray{Float64}(C.NPart,S.FullSteps,nsamples);
+Fstore_STOC = SharedArray{Float64}(C.NPart,S.FullSteps,nsamples);
+
+for i in 1:nsamples
+    (Pstore_DET[:,:,i],Qstore_DET[:,:,i],Fstore_DET[:,:,i],Kmean,Hmean) = LangevinFullTraj(P0,Q0,C,S);
+    (Pstore_STOC[:,:,i],Qstore_STOC[:,:,i],Fstore_STOC[:,:,i]) = LangConstrainedTraj(Pstore_DET[:,end,i],Qstore_DET[:,end,i],C,S);
 end
+
 
 # Write data to file
 open("1_Qstore_DET.csv","w+") do x
