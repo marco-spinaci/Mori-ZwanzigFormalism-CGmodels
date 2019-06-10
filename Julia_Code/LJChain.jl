@@ -227,11 +227,9 @@ function OrnUhlenbeckPart(P::Array{Float64,1},C::Chain,dt::Float64)
  	# Calculate exact Ornstein-Uhlenbeck step using decomposition
 	c1 = exp(-C.GammaTilde*dt);
 	c3 = sqrt(1/C.Beta)*sqrt(Diagonal(ones(C.NPart))-c1^2);
-	c1c = exp(-C.GammaTilde*dt.*C.MomProj);
-	c3c = sqrt(1/C.Beta)*sqrt(Diagonal(ones(C.NPart))-c1c^2);
 
 	# Generate new momenta and return
-	return c1*P+c3*C.MHalf*randn(C.NPart), c1c*P+c3c*C.MomProj*C.MHalf*randn(C.NPart);
+	return c1*P+c3*C.MHalf*randn(C.NPart), c1*P+c3*C.MomProj*C.MHalf*randn(C.NPart);
 end
 
 """

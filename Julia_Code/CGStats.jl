@@ -9,7 +9,7 @@ using Main.LJChain, Distributed, SharedArrays, Parameters, Statistics, Dates, Sp
 # Parameter object
 export Simulator
 # Functions to output raw trajectory data
-export FullTraj, LangevinFullTraj, ConstrainedTraj, ApproximateTraj
+export FullTraj, LangevinFullTraj, ConstrainedTraj, LangConstrainedTraj, ApproximateTraj
 # High-level function to extract data
 export VEffConstrained, VEffConstrainedLangDyn, ConstrainedAutocorr, FullAutocorr, ApproximateAutocorr, ConstrainedAutocorrPar, FullAutocorrPar,
   ApproximateAutocorrPar
@@ -73,7 +73,7 @@ function FullTraj(P0,Q0,C::Chain,S::Simulator)
 end
 
 """
-    (Pstore,Qstore,Fstore) = LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
+    (Pstore,Qstore,Fstore,Kmean,Hmean) = LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
 
     Outputs full trajectory data in matrices (Pstore,Qstore,Fstore) and the mean values of
 	the kinetic energy and the total energy.
@@ -150,11 +150,18 @@ function ConstrainedTraj(P0,Q0,C::Chain,S::Simulator)
   return Pstore,Qstore,Fstore
 end
 
+"""
+    (Pstore,Qstore,Fstore) = LangConstrainedTraj(P0,Q0,C::Chain,S::Simulator)
+
+    Outputs full trajectory data in matrices (Pstore,Qstore,Fstore).
+"""
 function LangConstrainedTraj(P0,Q0,C::Chain,S::Simulator)
   # Report to user.
-  println(now());
-  println("Running full simulation and storing trajectory.");
+  println(Dates.now());
+  println("Running full simulation of constrained Langevin dynamics and storing trajectory");
   println("  NPart, number of particles simulated = ",C.NPart);
+  println("  Beta, temperature parameter = ",C.Beta);
+  println("  Gamma, friction coefficient = ",C.Gamma);
   println("  dt, time step size = ",S.dt," seconds.");
   println("  Total simulation time = ",S.FullTime," seconds.");
 
