@@ -1,7 +1,7 @@
 include("../LJChain.jl")
 include("../CGStats.jl")
 
-using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra,StatsBase
+using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra,StatsBase, DelimitedFiles
 
 ###########################################################################################################
 
