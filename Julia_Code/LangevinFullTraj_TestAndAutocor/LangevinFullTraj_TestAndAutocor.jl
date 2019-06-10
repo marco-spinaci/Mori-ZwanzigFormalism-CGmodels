@@ -131,7 +131,7 @@ Autocor = SharedArray{Float64}(length(lags),nsamples);
                     for i =1:S.FullSteps
                         P[i,jj] = (C.PhiConstr*PFull[:,i,jj])[1];
                     end
-                    Autocor[:,jj] = remotecall_fetch(autocor,pp,P[i,jj],lags);
+                    Autocor[:,jj] = remotecall_fetch(autocor,pp,P[:,jj],lags);
                 end
             end
         end
