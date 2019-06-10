@@ -1,7 +1,7 @@
 using Distributed
 
-@everywhere include("LJChain.jl")
-@everywhere include("CGStats.jl")
+@everywhere include("../LJChain.jl")
+@everywhere include("../CGStats.jl")
 
 using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra,StatsBase
 
@@ -16,7 +16,6 @@ P0 = zeros(C.NPart);
 Q0 = Vector(1.0:1.0:30.0);
 
 ############################################################################################################
-
 
 j=0;
 np = nprocs();
