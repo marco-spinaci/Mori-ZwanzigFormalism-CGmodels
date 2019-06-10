@@ -14,47 +14,46 @@ set grid
 #  12      ->   ACF(t)_gamma1e5
 ######################################################################
 
-set output "| epstopdf -f -o=../Outcomes/LangevinFullTraj_TestAndAutocor/plotKmeanAndAutocorP.pdf"
+set output "| epstopdf -f -o=plotKmeanAndAutocorP.pdf"
 set multiplot layout 2,2 margins 0.12, 1, 0.09, 0.88 spacing 0.1
 
 set title "<Kmean> per particle vs T"
 set logscale xy
 set xlabel "{{/RomanOblique T}}"
 set ylabel "{{/RomanOblique <Kmean>}}"
-p "../Outcomes/LangevinFullTraj_TestAndAutocor/Kmean_T.csv" u 1:2 w lp lw 2 lc rgb "red"
+p "Kmean_T.csv" u 1:2 w lp lw 2 lc rgb "red"
 
 unset logscale
 set key
 set title "Autocorrelation of the momentum"
 set xlabel "{{/RomanOblique t}}"
 set ylabel "{{/RomanOblique Autocorrelation (t)}}"
-p "../Outcomes/LangevinFullTraj_TestAndAutocor/AutocorGAMMA.csv" u 1:2 w l lw 2 t  "Gamma = 10^{-5}",\
-                                                              '' u 1:3 w l lw 2 t  "Gamma = 10^{-4}",\
-                                                              '' u 1:4 w l lw 2 t  "Gamma = 10^{-3}",\
-                                                              '' u 1:5 w l lw 2 t  "Gamma = 10^{-2}",\
-                                                              '' u 1:6 w l lw 2 t  "Gamma = 10^{-1}"
+p "AutocorGAMMA.csv" u 1:2 w l lw 2 t  "Gamma = 10^{-5}",\
+                  '' u 1:3 w l lw 2 t  "Gamma = 10^{-4}",\
+                  '' u 1:4 w l lw 2 t  "Gamma = 10^{-3}",\
+                  '' u 1:5 w l lw 2 t  "Gamma = 10^{-2}",\
+                  '' u 1:6 w l lw 2 t  "Gamma = 10^{-1}"
 
 set title "Autocorrelation of the momentum"
 set xlabel "{{/RomanOblique t}}"
 set ylabel "{{/RomanOblique Autocorrelation (t)}}"
-p "../Outcomes/LangevinFullTraj_TestAndAutocor/AutocorGAMMA.csv" u 1:7 w l lw 2  t  "Gamma =  1",\
-                                                              '' u 1:8 w l lw 2  t  "Gamma = 10",\
-                                                              '' u 1:9 w l lw 2  t  "Gamma = 10^2",\
-                                                              '' u 1:10 w l lw 2 t  "Gamma = 10^3",\
-                                                              '' u 1:11 w l lw 2 t  "Gamma = 10^4",\
-                                                              '' u 1:12 w l lw 2 t  "Gamma = 10^5"
+p "AutocorGAMMA.csv" u 1:7 w l lw 2  t  "Gamma =  1",\
+                  '' u 1:8 w l lw 2  t  "Gamma = 10",\
+                  '' u 1:9 w l lw 2  t  "Gamma = 10^2",\
+                  '' u 1:10 w l lw 2 t  "Gamma = 10^3",\
+                  '' u 1:11 w l lw 2 t  "Gamma = 10^4",\
+                  '' u 1:12 w l lw 2 t  "Gamma = 10^5"
 
 set xrange [0:0.2]
 set title "Autocorrelation of the momentum"
 set xlabel "{{/RomanOblique t}}"
 set ylabel "{{/RomanOblique Autocorrelation (t)}}"
-p "../Outcomes/LangevinFullTraj_TestAndAutocor/AutocorGAMMA.csv" u 1:7 w l lw 2  t  "Gamma =  1",\
-                                                              '' u 1:8 w l lw 2  t  "Gamma = 10",\
-                                                              '' u 1:9 w l lw 2  t  "Gamma = 10^2",\
-                                                              '' u 1:10 w l lw 2 t  "Gamma = 10^3",\
-                                                              '' u 1:11 w l lw 2 t  "Gamma = 10^4",\
-                                                              '' u 1:12 w l lw 2 t  "Gamma = 10^5"
-
+p "AutocorGAMMA.csv" u 1:7 w l lw 2  t  "Gamma =  1",\
+                  '' u 1:8 w l lw 2  t  "Gamma = 10",\
+                  '' u 1:9 w l lw 2  t  "Gamma = 10^2",\
+                  '' u 1:10 w l lw 2 t  "Gamma = 10^3",\
+                  '' u 1:11 w l lw 2 t  "Gamma = 10^4",\
+                  '' u 1:12 w l lw 2 t  "Gamma = 10^5"
 unset multiplot
 
 set output

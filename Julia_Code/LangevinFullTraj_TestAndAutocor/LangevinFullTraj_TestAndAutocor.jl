@@ -110,7 +110,7 @@ lags = Vector(0:1:nlags);
 j=0;
 np = nprocs();
 PFull = SharedArray{Float64}(C.NPart,S.FullSteps,nsamples);
-P = SharedArray{Float64}(S.FullSteps);
+P = SharedArray{Float64}(S.FullSteps,nsamples);
 Autocor = SharedArray{Float64}(length(lags),nsamples);
 
 @sync begin
@@ -129,9 +129,9 @@ Autocor = SharedArray{Float64}(length(lags),nsamples);
                     C = Chain(Gamma=GammaSamples[jj,1]);
                     PFull[:,:,jj] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[1];
                     for i =1:S.FullSteps
-                        P[i] = (C.PhiConstr*PFull[:,i,jj])[1];
+                        P[i,jj] = (C.PhiConstr*PFull[:,i,jj])[1];
                     end
-                    Autocor[:,jj] = remotecall_fetch(autocor,pp,P,lags);
+                    Autocor[:,jj] = remotecall_fetch(autocor,pp,P[i,jj],lags);
                 end
             end
         end
