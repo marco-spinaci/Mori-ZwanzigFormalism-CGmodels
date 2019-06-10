@@ -65,7 +65,7 @@ println(" ...Kmean computed!");
 BK = zeros(nsamples,2);
 BK[:,1] = 1 ./BetaSamples;
 BK[:,2] = K;
-open("../Outcomes/LangevinFullTraj_TestAndAutocor/Kmean_T.csv","w+") do x
+open("Kmean_T.csv","w+") do x
     writedlm(x,BK);
 end
 
@@ -144,7 +144,7 @@ println(" ...Autocorrelation computed!");
 tAutocor = zeros(length(lags),nsamples+1);
 tAutocor[:,1] = lags*S.dt;
 tAutocor[:,2:end] = Autocor;
-open("../Outcomes/LangevinFullTraj_TestAndAutocor/AutocorGAMMA.csv","w+") do x
+open("AutocorGAMMA.csv","w+") do x
     writedlm(x,tAutocor);
 end
 
