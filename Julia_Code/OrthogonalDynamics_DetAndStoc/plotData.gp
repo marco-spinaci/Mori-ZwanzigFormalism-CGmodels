@@ -9,7 +9,7 @@ unset key
 set grid
 
 ######################################################################
-# file "data_sC_DET.csv" o "data_sC_Stoc_B*_G*.csv"
+# file "data_sC_DET.csv" o "data_sC_STOC.csv"
 # num.col.       valori
 #   1     ->   RR
 #   2     ->   samples
@@ -18,38 +18,40 @@ set grid
 #   5     ->   Var Stress Moments
 ######################################################################
 
-set output "| epstopdf -f -o=../Outcomes/OrthogonalDynamics_DetAndStoc/plotData_sC_DET.pdf"
-set multiplot layout 2,2 title "System C, Constrained beds 2\n \n(Deterministic System)" font ",14" margins 0.12, 1, 0.09, 0.88 spacing 0.1
+set output "| epstopdf -f -o=plot_data_sC_DET.pdf"
+set multiplot layout 2,2 title "System C, Constrained beds 2\n \n(Deterministic System, OrthoSteps=10, dt=10^{-4})" font ",14" \
+margins 0.12, 1, 0.09, 0.88 spacing 0.1
 
 set ylabel "{{/RomanOblique First Stress Moment}}"
 set logscale x
-p "../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_DET.csv" u 2:3 w lp lw 2 lc rgb "red"
+p "data_sC_DET.csv" u 2:3 w lp lw 2 lc rgb "red"
 
 set ylabel "{{/RomanOblique Second Stress Moment}}"
 set logscale x
-p "../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_DET.csv" u 2:4 w lp lw 2 lc rgb "blue"
+p "data_sC_DET.csv" u 2:4 w lp lw 2 lc rgb "blue"
 
 set ylabel "{{/RomanOblique Variance Stress Moment}}"
 set logscale x
-p "../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_DET.csv" u 2:5 w lp lw 2 lc rgb "blue"
+p "data_sC_DET.csv" u 2:5 w lp lw 2 lc rgb "blue"
 
 unset multiplot
 
 
-set output "| epstopdf -f -o=../Outcomes/OrthogonalDynamics_DetAndStoc/plotData_sC_STOC.pdf"
-set multiplot layout 2,2 title "System C, Constrained beds 2, Beta=1, Gamma=1" font ",14" margins 0.12, 1, 0.09, 0.88 spacing 0.1
+set output "| epstopdf -f -o=plot_data_sC_STOC.pdf"
+set multiplot layout 2,2 title "System C, Constrained beds 2\n \n(Stochastic System, OrthoSteps=10, dt=10^{-4}, Beta=1, Gamma=1)" font ",14" \
+margins 0.12, 1, 0.09, 0.88 spacing 0.1
 
 set ylabel "{{/RomanOblique First Stress Moment}}"
 set logscale x
-p "../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_STOC.csv" u 2:3 w lp lw 2 lc rgb "red"
+p "data_sC_STOC.csv" u 2:3 w lp lw 2 lc rgb "red"
 
 set ylabel "{{/RomanOblique Second Stress Moment}}"
 set logscale x
-p "../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_STOC.csv" u 2:4 w lp lw 2 lc rgb "blue"
+p "data_sC_STOC.csv" u 2:4 w lp lw 2 lc rgb "blue"
 
 set ylabel "{{/RomanOblique Variance Stress Moment}}"
 set logscale x
-p "../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_STOC.csv" u 2:5 w lp lw 2 lc rgb "blue"
+p "data_sC_STOC.csv" u 2:5 w lp lw 2 lc rgb "blue"
 
 unset multiplot
 

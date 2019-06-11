@@ -1,32 +1,32 @@
-include("LJChain.jl")
-include("CGStats.jl")
+include("../LJChain.jl")
+include("../CGStats.jl")
 
 using Main.LJChain,Main.CGStats,Plots,Statistics,DelimitedFiles
 
-######################################################################################
+###################################################################################################
 # Set up simulation parameters
 
 # to change the number of samples to compute, i.e. OrthoSamples Value
 # Oin = Int(1e3);
 # Ofin = Int(1e6);
-OrthoSamplesTot = [exp10(x) for x in 1:7];
+OrthoSamplesTot = [exp10(x) for x in 2:7];
 nsamples = length(OrthoSamplesTot);
 
-# to change the gap between samples, i.e. OrthoSteps value
-Os = Int(1);
-
-# to change the number of FullSteps to compute full dynamics
-Fs = Int(1e5);
-
 # to change the time step (dt=1e-4)
-dtt = 1e-5;
+dtt = 1e-4;
+
+# to change the gap between samples, i.e. OrthoSteps value (OrthoSteps=1)
+Os = Int(1e1);
+
+# to change the number of FullSteps to compute full dynamics (FullSteps=Int(1e5))
+Fs = Int(1e5);
 
 
 C = Chain(Beta=1,Gamma=1);
-S = Simulator(dt=dtt);
-# S = Simulator(OrthoSamples=Oin,OrthoSteps=Os,FullSteps=Fs,dt=dtt);
+S = Simulator(dt=dtt, FullSteps=Fs);    # NB: if you change the parameters, add new information about the simulated system to the titles of the plots
 
-#######################################################################################
+###################################################################################################
+###################################################################################################
 # to compute the orthogonal dynamic with the constrained dynamic by varying
 # the number of samples
 
@@ -49,8 +49,8 @@ StM     = zeros(nsamples,2);
 VarStM  = zeros(nsamples);
 
 for i = 1:nsamples
-	S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs,dt=dtt);
-	# S = Simulator(OrthoSamples=OrthoSamplesTot[i],OrthoSteps=Os,FullSteps=Fs,dt=dtt);
+	S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,dt=dtt);
+	# S = Simulator(OrthoSamples=OrthoSamplesTot[i],OrthoSteps=Os,dt=dtt);
 
 	println("  Start sample ",i,": Orthosample=",OrthoSamplesTot[i],".");
 	(StressMoments,Portho,Qortho) = ConstrainedSample(Portho,Qortho,C,S);
@@ -77,7 +77,7 @@ dataDet[:,2] = OrthoSamplesTot;
 dataDet[:,3] = StM[:,1];
 dataDet[:,4] = StM[:,2];
 dataDet[:,5] = VarStM;
-open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_DET.csv","w+") do x
+open("data_sC_DET.csv","w+") do x
    writedlm(x,dataDet);
 end
 
@@ -97,7 +97,8 @@ end
 # 		   titlefontsize = 7);
 # savefig("../Outcomes/OrthogonalDynamics_DetAndStoc/plotVarStressVSOrthoSamples_1.pdf");
 
-#################################################################################################
+#########################################################################################################################
+#########################################################################################################################
 # to compute the orthogonal dynamics with the Langevin constrained dynamics by varying
 # the number of samples
 
@@ -122,8 +123,8 @@ VarStM  = zeros(nsamples);
 
 for i = 1:nsamples
 
-    S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,FullSteps=Fs,dt=dtt);
-	# S = Simulator(OrthoSamples=OrthoSamplesTot[i],OrthoSteps=Os,FullSteps=Fs,dt=dtt);
+    S = Simulator(OrthoSamples=diff[i],OrthoSteps=Os,dt=dtt);
+	# S = Simulator(OrthoSamples=OrthoSamplesTot[i],OrthoSteps=Os,dt=dtt);
 
 	println("  Start sample ",i,": Orthosample=",OrthoSamplesTot[i],".");
 	(StressMoments,Portho,Qortho) = ConstrSampleLangDyn(Portho,Qortho,C,S);
@@ -150,7 +151,7 @@ dataStoc[:,2] = OrthoSamplesTot;
 dataStoc[:,3] = StM[:,1];
 dataStoc[:,4] = StM[:,2];
 dataStoc[:,5] = VarStM;
-open("../Outcomes/OrthogonalDynamics_DetAndStoc/data_sC_STOC.csv","w+") do x
+open("data_sC_STOC.csv","w+") do x
    writedlm(x,dataStoc);
 end
 
