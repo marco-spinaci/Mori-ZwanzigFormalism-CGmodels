@@ -10,6 +10,8 @@ addprocs(Sys.CPU_THREADS);
 @everywhere include("../CGStats.jl")
 using Main.LJChain,Main.CGStats,Plots,SharedArrays,StatsBase,DelimitedFiles
 
+########################################################################################################################
+
 C = Chain();
 S = Simulator(FullSteps=Int(1e7));  # NB: if you change the parameters, add new information about the simulated system to the titles of the plots
 
@@ -17,7 +19,8 @@ S = Simulator(FullSteps=Int(1e7));  # NB: if you change the parameters, add new 
 P0 = zeros(C.NPart);
 Q0 = Vector(1.0:1.0:30.0);
 
-################################################################################################
+#########################################################################################################################
+#########################################################################################################################
 # to checks if the function "LangevinFullTraj" works properly
 
 # to change the values of the BETA parameter
@@ -86,7 +89,8 @@ end
 # savefig("../Outcomes/LangevinFullTraj_TestAndAutocor/plotKmeanVST.pdf");
 
 
-###################################################################################################
+#################################################################################################################################
+#################################################################################################################################
 # to compute the autocorrealtion function at varying of the GAMMA parameter
 
 # to change the values of the Gamma parameter
