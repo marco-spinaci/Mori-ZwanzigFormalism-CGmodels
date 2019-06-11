@@ -11,7 +11,7 @@ addprocs(Sys.CPU_THREADS);
 using Main.LJChain,Main.CGStats,Plots,SharedArrays,StatsBase,DelimitedFiles
 
 C = Chain();
-S = Simulator(FullSteps=Int(1e7));
+S = Simulator(FullSteps=Int(1e7));  # NB: if you change the parameters, add new information about the simulated system to the titles of the plots
 
 # Initial condition
 P0 = zeros(C.NPart);

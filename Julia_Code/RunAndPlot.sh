@@ -1,16 +1,26 @@
-###########################################################################
+#############################################################################################################################
+#############################################################################################################################
+############            Script bash to run the simulation and plot the outocomes
+#############################################################################################################################
+#############################################################################################################################
+
+################################################################################
 # LangevinFullTraj_TestAndAutocorP
 
-fold="../LangevinFullTraj_TestAndAutocor"
+# fold="./LangevinFullTraj_TestAndAutocor"
+#
+# julia $fold/LangevinFullTraj_TestAndAutocor.jl
+# ~/Desktop/julia-1.1.1/bin/julia $fold/LangevinFullTraj_TestAndAutocor.jl  # NB: to run the scritpt on a remote pc (pmams3@gercphd)
+#
+# gnuplot $fold/plot_KmeanAndAutocorP.gp
+#
+# mv $fold/plotKmean_T.pdf $fold/1_plotKmean_T.pdf
+# mv $fold/plotAutocorGamma.pdf $fold/1_plotAutocorGamma.pdf
+#
+# mv $fold/Kmean_T.csv $fold/1_plotKmean_T.csv
+# mv $fold/AutocorGamma.csv $fold/1_AutocorGamma.csv
 
-julia $fold/LangevinFullTraj_TestAndAutocor.jl
-~/Desktop/julia-1.1.1/bin/julia $fold/LangevinFullTraj_TestAndAutocor.jl    # to run on a remote pc (pmams3@gercphd)
-
-gnuplot $fold/plot_KmeanAndAutocorP.gp
-mv $fold/plotKmeanAndAutocorP.pdf $fold/plotKmeanAndAutocorP_1e-5_1e5.pdf
-mv $fold/AutocorGAMMA.csv $fold/AutocorGAMMA_1e-5_1e5.csv
-
-############################################################################
+###############################################################################
 # OrthogonalDynamimcs_DetAndStoc
 
 # fold="../Outcomes/OrthogonalDynamics_DetAndStoc"
