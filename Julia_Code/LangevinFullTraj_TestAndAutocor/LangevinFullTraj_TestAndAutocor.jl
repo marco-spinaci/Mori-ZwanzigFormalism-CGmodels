@@ -6,8 +6,8 @@ using Distributed
 # Set up parallel computing
 addprocs(Sys.CPU_THREADS);
 
-@everywhere include("../LJChain.jl")
-@everywhere include("../CGStats.jl")
+@everywhere include("LJChain.jl")
+@everywhere include("CGStats.jl")
 using Main.LJChain,Main.CGStats,Plots,SharedArrays,StatsBase,DelimitedFiles
 
 ########################################################################################################################
@@ -23,54 +23,54 @@ Q0 = Vector(1.0:1.0:30.0);
 #########################################################################################################################
 # to checks if the function "LangevinFullTraj" works properly
 
-# to change the values of the BETA parameter
-#BetaSamples = Vector(200:200:1000);
-BetaSamples = [exp10(x) for x in -4:4];
-nsamples = length(BetaSamples);
-
-# K = zeros(nsamples);
-# for i = 1:length(BetaSamples)
-#     C = Chain(Beta=BetaSamples[i,1]);
-#     # PFull,QFull,FFull,Kmean,Hmean = LangevinFullTraj(P0,Q0,C,S);
-#     # K[i,1] = Kmean;
-#     K[i,1] = LangevinFullTraj(P0,Q0,C,S)[4];
+# # to change the values of the BETA parameter
+# #BetaSamples = Vector(200:200:1000);
+# BetaSamples = [exp10(x) for x in -4:4];
+# nsamples = length(BetaSamples);
+#
+# # K = zeros(nsamples);
+# # for i = 1:length(BetaSamples)
+# #     C = Chain(Beta=BetaSamples[i,1]);
+# #     # PFull,QFull,FFull,Kmean,Hmean = LangevinFullTraj(P0,Q0,C,S);
+# #     # K[i,1] = Kmean;
+# #     K[i,1] = LangevinFullTraj(P0,Q0,C,S)[4];
+# # end
+#
+#
+# j=0;
+# np = nprocs();
+# K = SharedArray{Float64}(nsamples);
+#
+# @sync begin
+#     while j < nsamples
+#         for p in 1:np
+#             if p != myid() || np == 1
+#                 if j >= nsamples
+#                     break;
+#                 end
+#                 global j += 1;
+#                 println("Start Beta sample ",j);
+#                 pp = p;
+#                 jj = j;
+#                 @async begin
+#                     println(" CPU_THREADS ",pp-1,", Worker ",pp,", Beta=",BetaSamples[jj,1]);
+#                     C = Chain(Beta=BetaSamples[jj,1]);
+#                     K[jj] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[4];
+#                 end
+#             end
+#         end
+#     end
 # end
-
-
-j=0;
-np = nprocs();
-K = SharedArray{Float64}(nsamples);
-
-@sync begin
-    while j < nsamples
-        for p in 1:np
-            if p != myid() || np == 1
-                if j >= nsamples
-                    break;
-                end
-                global j += 1;
-                println("Start Beta sample ",j);
-                pp = p;
-                jj = j;
-                @async begin
-                    println(" CPU_THREADS ",pp-1,", Worker ",pp,", Beta=",BetaSamples[jj,1]);
-                    C = Chain(Beta=BetaSamples[jj,1]);
-                    K[jj] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[4];
-                end
-            end
-        end
-    end
-end
-
-println(" ...Kmean computed!");
-
-# Write data to file
-BK = zeros(nsamples,2);
-BK[:,1] = 1 ./BetaSamples;
-BK[:,2] = K;
-open("Kmean_T.csv","w+") do x
-    writedlm(x,BK);
-end
+#
+# println(" ...Kmean computed!");
+#
+# # Write data to file
+# BK = zeros(nsamples,2);
+# BK[:,1] = 1 ./BetaSamples;
+# BK[:,2] = K;
+# open("./LangevinFullTraj_TestAndAutocor/Kmean_T.csv","w+") do x
+#     writedlm(x,BK);
+# end
 
 # p1 = scatter(1 ./BetaSamples,K,
 # 	     legend = false,
@@ -98,7 +98,7 @@ GammaSamples = [exp10(x) for x in -5:5];
 nsamples = length(GammaSamples);
 
 # to change the number of ACF to compute
-nlags = 90000;
+nlags = 1e6;
 lags = Vector(0:1:nlags);
 
 
@@ -148,7 +148,7 @@ println(" ...Autocorrelation computed!");
 tAutocor = zeros(length(lags),nsamples+1);
 tAutocor[:,1] = lags*S.dt;
 tAutocor[:,2:end] = Autocor;
-open("AutocorGAMMA.csv","w+") do x
+open("./LangevinFullTraj_TestAndAutocor/AutocorGAMMA.csv","w+") do x
     writedlm(x,tAutocor);
 end
 

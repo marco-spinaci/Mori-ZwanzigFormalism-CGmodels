@@ -15,19 +15,19 @@ set grid
 ######################################################################
 
 
-set title "<Kmean> per particle vs T\n \n \
-[System C (full simulation of Langevin dynamics), Beta=1, dt = 10^{-4} s, total simulation time = 10^3 s]" font ",14"
-set logscale xy
-set xlabel "{{/RomanOblique BETA^{-1}}}"
-set ylabel "{{/RomanOblique <Kmean>}}"
-set output "| epstopdf -f -o=plotKmean_T.pdf"
-p "Kmean_T.csv" u 1:2 w lp lw 2 lc rgb "red"
+#set title "<Kmean> per particle vs T\n \n \
+#[System C (full simulation of Langevin dynamics), Beta=1, dt = 10^{-4} s, total simulation time = 10^3 s]" font ",14"
+#set logscale xy
+#set xlabel "{{/RomanOblique BETA^{-1}}}"
+#set ylabel "{{/RomanOblique <Kmean>}}"
+#set output "| epstopdf -f -o=./LangevinFullTraj_TestAndAutocor/plotKmean_T.pdf"
+#p "Kmean_T.csv" u 1:2 w lp lw 2 lc rgb "red"
 
 unset title
 unset logscale
 set key
 
-set output "| epstopdf -f -o=plotAutocorGamma.pdf"
+set output "| epstopdf -f -o=./LangevinFullTraj_TestAndAutocor/plotAutocorGamma.pdf"
 set multiplot layout 2,2 title "Autocorrelation of the momentum for a single bead\n \n \
 [System C (full simulation of Langevin dynamics), Beta=1, dt = 10^{-4} s, total simulation time = 10^3 s]" \
 font ",14" margins 0.12, 1, 0.09, 0.88 spacing 0.1
