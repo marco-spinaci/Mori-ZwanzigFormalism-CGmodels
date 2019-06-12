@@ -60,22 +60,24 @@
 
 fold="./C_System_2and10cb"
 
-julia $fold/LangevinCoarseGraining_sC_2and10cb.jl
-# ~/Desktop/julia-1.1.1/bin/julia $fold/LangevinCoarseGraining_sC_2and10cb.jl  # NB: to run the scritpt on a remote pc (pmams3@gercphd)
+# julia $fold/LangevinCoarseGraining_sC_2and10cb.jl
+~/Desktop/julia-1.1.1/bin/julia $fold/LangevinCoarseGraining_sC_2and10cb.jl  # NB: to run the scritpt on a remote pc (pmams3@gercphd)
 
 paste $fold/R_sC_2cb.csv $fold/Fmean_sC_2cb.csv $fold/Veff_sC_2cb.csv > $fold/C_2cb.csv
 paste $fold/R_sC_10cb.csv $fold/Fmean_sC_10cb.csv > $fold/C_10cb.csv
 
-gnuplot $fold/plotFvsR_sC_2and10cb.gp
+# gnuplot $fold/plotFvsR_sC_2and10cb.gp
+#
+# mv $fold/plotFvsR_sC_2and10cb.pdf $fold/1_plotFvsR_sC_2and10cb.pdf
+#
+# mv $fold/C_2cb.csv $fold/1_C_2cb.csv
+# mv $fold/C_10cb.csv $fold/1_C_10cb.csv
+#
+# mv $fold/R_sC_2cb.csv $fold/1_R_sC_2cb.csv
+# mv $fold/Fmean_sC_2cb.csv $fold/1_Fmean_sC_2cb.csv
+# mv $fold/Veff_sC_2cb.csv $fold/1_Veff_sC_2cb.csv
+#
+# mv $fold/R_sC_10cb.csv $fold/1_R_sC_10cb.csv
+# mv $fold/Fmean_sC_10cb.csv $fold/1_Fmean_sC_10cb.csv
 
-mv $fold/plotFvsR_sC_2and10cb.pdf $fold/1_plotFvsR_sC_2and10cb.pdf
-
-mv $fold/C_2cb.csv $fold/1_C_2cb.csv
-mv $fold/C_10cb.csv $fold/1_C_10cb.csv
-
-mv $fold/R_sC_2cb.csv $fold/1_R_sC_2cb.csv
-mv $fold/Fmean_sC_2cb.csv $fold/1_Fmean_sC_2cb.csv
-mv $fold/Veff_sC_2cb.csv $fold/1_Veff_sC_2cb.csv
-
-mv $fold/R_sC_10cb.csv $fold/1_R_sC_10cb.csv
-mv $fold/Fmean_sC_10cb.csv $fold/1_Fmean_sC_10cb.csv
+######################################################################################################################################
