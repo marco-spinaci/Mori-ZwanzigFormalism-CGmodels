@@ -9,7 +9,7 @@ using Main.LJChain,Main.CGStats,Plots,Statistics,DelimitedFiles
 # to change the number of samples to compute, i.e. OrthoSamples Value
 # Oin = Int(1e3);
 # Ofin = Int(1e6);
-OrthoSamplesTot = [exp10(x) for x in 2:7];
+OrthoSamplesTot = [exp10(x) for x in 2:2];
 nsamples = length(OrthoSamplesTot);
 
 # to change the time step (dt=1e-4)
@@ -77,7 +77,7 @@ dataDet[:,2] = OrthoSamplesTot;
 dataDet[:,3] = StM[:,1];
 dataDet[:,4] = StM[:,2];
 dataDet[:,5] = VarStM;
-open("data_sC_DET.csv","w+") do x
+open("./OrthogonalDynamics_DetAndStoc/data_sC_DET.csv","w+") do x
    writedlm(x,dataDet);
 end
 
@@ -151,7 +151,7 @@ dataStoc[:,2] = OrthoSamplesTot;
 dataStoc[:,3] = StM[:,1];
 dataStoc[:,4] = StM[:,2];
 dataStoc[:,5] = VarStM;
-open("data_sC_STOC.csv","w+") do x
+open("./OrthogonalDynamics_DetAndStoc/data_sC_STOC.csv","w+") do x
    writedlm(x,dataStoc);
 end
 

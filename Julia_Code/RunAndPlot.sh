@@ -35,7 +35,7 @@ do
   mv $fold/data_sC_DET.csv $fold/${i}_data_sC_DET.csv
   mv $fold/data_sC_STOC.csv $fold/${i}_data_sC_STOC.csv
 
-  # # then on your pc decomment the following lines
+  # then on your pc decomment the following lines
   # mv $fold/${i}_data_sC_DET.csv $fold/data_sC_DET.csv
   # mv $fold/${i}_data_sC_STOC.csv $fold/data_sC_STOC.csv
   #
