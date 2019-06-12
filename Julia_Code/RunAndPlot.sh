@@ -7,10 +7,10 @@
 #############################################################################################################################
 #### LangevinFullTraj_TestAndAutocorP
 
-fold="./LangevinFullTraj_TestAndAutocor"
+# fold="./LangevinFullTraj_TestAndAutocor"
 
 # julia $fold/LangevinFullTraj_TestAndAutocor.jl
-~/Desktop/julia-1.1.1/bin/julia $fold/LangevinFullTraj_TestAndAutocor.jl  # NB: to run the scritpt on a remote pc (pmams3@gercphd)
+# ~/Desktop/julia-1.1.1/bin/julia $fold/LangevinFullTraj_TestAndAutocor.jl  # NB: to run the scritpt on a remote pc (pmams3@gercphd)
 
 # gnuplot $fold/plot_KmeanAndAutocorP.gp
 
@@ -55,5 +55,27 @@ fold="./LangevinFullTraj_TestAndAutocor"
 #
 # done
 
-###############################################################################
-# LangevinCoarseGraining_sC_GammaBeta
+##################################################################################################################################
+#### C_System_2and10cb
+
+fold="./C_System_2and10cb"
+
+julia $fold/LangevinCoarseGraining_sC_2and10cb.jl
+# ~/Desktop/julia-1.1.1/bin/julia $fold/LangevinCoarseGraining_sC_2and10cb.jl  # NB: to run the scritpt on a remote pc (pmams3@gercphd)
+
+paste $fold/R_sC_2cb.csv $fold/Fmean_sC_2cb.csv $fold/Veff_sC_2cb.csv > $fold/C_2cb.csv
+paste $fold/R_sC_10cb.csv $fold/Fmean_sC_10cb.csv > $fold/C_10cb.csv
+
+gnuplot $fold/plotFvsR_sC_2and10cb.gp
+
+mv $fold/plotFvsR_sC_2and10cb.pdf $fold/1_plotFvsR_sC_2and10cb.pdf
+
+mv $fold/C_2cb.csv $fold/1_C_2cb.csv
+mv $fold/C_10cb.csv $fold/1_C_10cb.csv
+
+mv $fold/R_sC_2cb.csv $fold/1_R_sC_2cb.csv
+mv $fold/Fmean_sC_2cb.csv $fold/1_Fmean_sC_2cb.csv
+mv $fold/Veff_sC_2cb.csv $fold/1_Veff_sC_2cb.csv
+
+mv $fold/R_sC_10cb.csv $fold/1_R_sC_10cb.csv
+mv $fold/Fmean_sC_10cb.csv $fold/1_Fmean_sC_10cb.csv
