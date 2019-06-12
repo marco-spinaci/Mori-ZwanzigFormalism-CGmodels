@@ -18,7 +18,7 @@ p "./C_System_2and10cb/C_2cb.csv" u 1:2 w lp lw 2 lc rgb "red"
 set title "10 constrained beads"
 p "./C_System_2and10cb/C_10cb.csv" u 1:2 w lp lw 2 lc rgb "green"
 
-set key
+set key bottom right
 unset title
 p "./C_System_2and10cb/C_2cb.csv" u 1:2 w lp lw 2 t "2 constraine beads", "./C_System_2and10cb/C_10cb.csv" u 1:2 w l lw 2 t "10 constrained beads"
 

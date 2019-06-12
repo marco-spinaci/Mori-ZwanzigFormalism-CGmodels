@@ -231,11 +231,11 @@ function ConstrainedSample(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,
   # Mean Forces
   StressMoments = zeros(C.ConstrainedBeads-1,S.Moments);
 
-  PCG = C.PhiConstr*P;
-  QCG = C.PsiConstr*Q;
-  E0  = Potential(Q,C);
+  #PCG = C.PhiConstr*P;
+  #QCG = C.PsiConstr*Q;
+  #E0  = Potential(Q,C);
   F   = Forces(Q,C);
-  H0  = E0 + KineticEnergy(P,C);
+  #H0  = E0 + KineticEnergy(P,C);
 
   s = 0;
   ObsMean = 0;
@@ -258,8 +258,8 @@ function ConstrainedSample(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,
   # Efinal = Potential(Q,C);
   # Hfinal = Efinal + KineticEnergy(P,C);
 
-  println("        Error in momentum constraint = ",maximum(abs.(PCG-C.PhiConstr*P)));
-  println("        Error in position constraint = ",maximum(abs.(QCG-C.PsiConstr*Q)));
+  #println("        Error in momentum constraint = ",maximum(abs.(PCG-C.PhiConstr*P)));
+  #println("        Error in position constraint = ",maximum(abs.(QCG-C.PsiConstr*Q)));
   #println("        Relative error in energy     = ",abs(Hfinal/H0-1));
   #if Obs!=0
   #  println("        Value of observable          = ",ObsMean);
@@ -274,11 +274,11 @@ function ConstrSampleLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,
   # Mean Forces
   StressMoments = zeros(C.ConstrainedBeads-1,S.Moments);
 
-  PCG = C.PhiConstr*P;
-  QCG = C.PsiConstr*Q;
-  E0  = Potential(Q,C);
+  #PCG = C.PhiConstr*P;
+  #QCG = C.PsiConstr*Q;
+  #E0  = Potential(Q,C);
   F   = Forces(Q,C);
-  H0  = E0 + KineticEnergy(P,C);
+  #H0  = E0 + KineticEnergy(P,C);
 
   s = 0;
   ObsMean = 0;
@@ -301,8 +301,8 @@ function ConstrSampleLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,
   # Efinal = Potential(Q,C);
   # Hfinal = Efinal + KineticEnergy(P,C);
 
-  println("        Error in momentum constraint = ",maximum(abs.(PCG-C.PhiConstr*P)));
-  println("        Error in position constraint = ",maximum(abs.(QCG-C.PsiConstr*Q)));
+  #println("        Error in momentum constraint = ",maximum(abs.(PCG-C.PhiConstr*P)));
+  #println("        Error in position constraint = ",maximum(abs.(QCG-C.PsiConstr*Q)));
   #println("        Relative error in energy     = ",abs(Hfinal/H0-1));
   #if Obs!=0
   #  println("        Value of observable          = ",ObsMean);
