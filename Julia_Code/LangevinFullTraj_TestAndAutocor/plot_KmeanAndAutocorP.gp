@@ -10,13 +10,13 @@ set grid
 # num.col.       valori               num.col.       valori
 #   1      ->       t                   1     ->        T
 #   2      ->   ACF(t)_gamma1e-5        2     ->      Kmean
-#  ...     ->      ....
+#  ...     ->        ...
 #  12      ->   ACF(t)_gamma1e5
 ######################################################################
 
 
 set title "<Kmean> per particle vs T\n \n \
-[System C (full simulation of Langevin dynamics), Beta=1, dt = 10^{-3}, total simulation time = 10^4]" font ",14"
+[System C (full simulation of Langevin dynamics), Beta=1, dt = 10^{-2}, total simulation time = 10^5]" font ",14"
 set logscale xy
 set xlabel "{{/RomanOblique BETA^{-1}}}"
 set ylabel "{{/RomanOblique <Kmean>}}"
