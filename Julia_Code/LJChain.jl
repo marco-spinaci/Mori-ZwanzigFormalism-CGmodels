@@ -217,7 +217,7 @@ function LangDynConstrainedStep(P,Q,F,C,dt)
 	PNext = P + 0.5.*C.MomProj*F.*dt;                         # B
 	QNext = Q + 0.5.*C.MInv*C.MomProj*PNext.*dt;              # A
 	PNext = C.NetMomProj*OrnUhlenbeckPart(PNext,C,dt)[2];     # O
-	QNext = QNext+0.5*C.MInv*C.MomProj*PNext.*dt;             # A
+	QNext = QNext + 0.5*C.MInv*C.MomProj*PNext.*dt;           # A
 	FNext = Forces(QNext,C);                                  # Force evaluation
 	PNext = PNext + 0.5.*C.MomProj*FNext.*dt;                 # B
 	return PNext,QNext,FNext
