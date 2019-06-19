@@ -15,10 +15,10 @@ fold="./LangevinFullTraj_TestAndAutocor"
 # gnuplot $fold/plot_KmeanAndAutocorP.gp
 #
 # mv $fold/plotKmean_T.pdf $fold/1_plotKmean_T.pdf
-# mv $fold/plotAutocorGamma.pdf $fold/2_plotAutocorGamma.pdf
+# mv $fold/plotAutocorGamma.pdf $fold/1_plotAutocorGamma.pdf
 #
-# mv $fold/Kmean_T.csv $fold/1_plotKmean_T.csv
-# mv $fold/AutocorGamma.csv $fold/2_AutocorGamma.csv
+# mv $fold/Kmean_T.csv $fold/1_Kmean_T.csv
+# mv $fold/AutocorGAMMA.csv $fold/1_AutocorGAMMA.csv
 
 ##############################################################################################################################
 #### OrthogonalDynamimcs_DetAndStoc
