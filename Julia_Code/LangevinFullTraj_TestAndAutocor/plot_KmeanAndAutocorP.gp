@@ -1,4 +1,4 @@
-set terminal postscript eps color enhanced "Times-Roman" 9
+set terminal postscript eps color enhanced "Times-Roman" 14
 set size 1.1,1.1
 #set xrange [0:2]
 #set yrange [-2:0.5]
@@ -16,8 +16,9 @@ set grid
 
 
 set title "<Kmean> per particle vs T\n \n \
-[System C (full simulation of Langevin dynamics), Beta=1, dt = 10^{-2}, total simulation time = 10^5]" font ",14"
+[System C (full simulation of Langevin dynamics), Gamma=1, dt = 10^{-2}, total simulation time = 10^5]" font ",18"
 set logscale xy
+set format xy "10^{%L}"
 set xlabel "{{/RomanOblique BETA^{-1}}}"
 set ylabel "{{/RomanOblique <Kmean>}}"
 set output "| epstopdf -f -o=./LangevinFullTraj_TestAndAutocor/plotKmean_T.pdf"
@@ -68,5 +69,7 @@ p "./LangevinFullTraj_TestAndAutocor/Kmean_T.csv" u 1:2 w lp lw 2 lc rgb "red"
 #                   '' u 1:12 w l lw 2 t  "Gamma = 10^5"
 #
 # unset multiplot
-# set output
+
+
+set output
 #  EOF

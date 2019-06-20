@@ -13,7 +13,7 @@ using Main.LJChain,Main.CGStats,Plots,SharedArrays,StatsBase,DelimitedFiles
 ########################################################################################################################
 
 C = Chain();
-S = Simulator(FullSteps=Int(1e7),dt=1e-2);  # NB: if you change the parameters, add new information about the simulated system to the titles of the plots
+S = Simulator(FullSteps=Int(1e7),dt=1e-4);  # NB: if you change the parameters, add new information about the simulated system to the titles of the plots
 
 # Initial condition
 P0 = zeros(C.NPart);
@@ -54,7 +54,7 @@ K = SharedArray{Float64}(nsamples);
                 jj = j;
                 @async begin
                     println(" CPU_THREADS ",pp-1,", Worker ",pp,", Beta=",BetaSamples[jj,1]);
-                    C = Chain(Beta=BetaSamples[jj,1]);
+                    C = Chain(Beta=BetaSamples[jj,1],Gamma=1e2);
                     K[jj] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[4];
                 end
             end
