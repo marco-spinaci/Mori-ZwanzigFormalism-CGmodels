@@ -16,7 +16,7 @@ set grid
 
 
 set title "<Kmean> per particle vs T\n \n \
-[System C (full simulation of Langevin dynamics), Gamma=1, dt = 10^{-2}, total simulation time = 10^5]" font ",18"
+[System C (full simulation of Langevin dynamics), Gamma=100, dt = 10^{-3}, total simulation time = 10^4]" font ",18"
 set logscale xy
 set format xy "10^{%L}"
 set xlabel "{{/RomanOblique BETA^{-1}}}"

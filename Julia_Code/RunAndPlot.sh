@@ -10,14 +10,14 @@
 fold="./LangevinFullTraj_TestAndAutocor"
 
 # julia $fold/LangevinFullTraj_TestAndAutocor.jl
-# ~/Desktop/julia-1.1.1/bin/julia $fold/LangevinFullTraj_TestAndAutocor.jl  # NB: to run the scritpt on a remote pc (pmams3@gercphd)
+~/Desktop/julia-1.1.1/bin/julia $fold/LangevinFullTraj_TestAndAutocor.jl  # NB: to run the scritpt on a remote pc (pmams3@gercphd)
 
-gnuplot $fold/plot_KmeanAndAutocorP.gp
-
-mv $fold/plotKmean_T.pdf $fold/3_plotKmean_T.pdf
-# mv $fold/plotAutocorGamma.pdf $fold/1_plotAutocorGamma.pdf
-
-mv $fold/Kmean_T.csv $fold/3_Kmean_T.csv
+# gnuplot $fold/plot_KmeanAndAutocorP.gp
+#
+# mv $fold/plotKmean_T.pdf $fold/1.2_plotKmean_T.pdf
+# # mv $fold/plotAutocorGamma.pdf $fold/1_plotAutocorGamma.pdf
+#
+# mv $fold/Kmean_T.csv $fold/1.2_Kmean_T.csv
 # mv $fold/AutocorGAMMA.csv $fold/1_AutocorGAMMA.csv
 
 ##############################################################################################################################
