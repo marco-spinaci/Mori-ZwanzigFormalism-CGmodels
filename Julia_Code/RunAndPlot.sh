@@ -7,18 +7,28 @@
 #############################################################################################################################
 #### LangevinFullTraj_TestAndAutocorP
 
-fold="./LangevinFullTraj_TestAndAutocor"
+# fold="./LangevinFullTraj_TestAndAutocor"
 
 # julia $fold/LangevinFullTraj_TestAndAutocor.jl
 # ~/Desktop/julia-1.1.1/bin/julia $fold/LangevinFullTraj_TestAndAutocor.jl  # NB: to run the scritpt on a remote pc (pmams3@gercphd)
 
-gnuplot $fold/plot_KmeanAndAutocorP.gp
+# gnuplot $fold/plot_KmeanAndAutocorP.gp
 
 # mv $fold/plotKmean_T.pdf $fold/2.2_plotKmean_T.pdf
 # mv $fold/plotAutocorGamma.pdf $fold/1_plotAutocorGamma.pdf
 
 # mv $fold/Kmean_T.csv $fold/2.2_Kmean_T.csv
 # mv $fold/AutocorGAMMA.csv $fold/1_AutocorGAMMA.csv
+
+#############################################################################################################################
+#### Maxwell-Boltzmann distribution
+
+julia Store_FullandConstrainedTrajectory/storeFullAndConstrTrajectory.jl
+
+julia Data_Analysis/Maxwell-Boltzmann_distribution/MBd.jl
+
+gnuplot Data_Analysis/Maxwell-Boltzmann_distribution/plot_MBd.gp
+
 
 ##############################################################################################################################
 #### OrthogonalDynamimcs_DetAndStoc

@@ -6,8 +6,8 @@ using Distributed
 # Set up parallel computing
 addprocs(Sys.CPU_THREADS);
 
-@everywhere include("LJChain.jl")
-@everywhere include("CGStats.jl")
+@everywhere include("../LJChain.jl")
+@everywhere include("../CGStats.jl")
 using Main.LJChain,Main.CGStats,Plots,SharedArrays,StatsBase,DelimitedFiles
 
 ########################################################################################################################
@@ -23,8 +23,11 @@ Q0 = Vector(1.0:1.0:30.0);
 #########################################################################################################################
 # to checks if the function "LangevinFullTraj" works properly
 
+######################################################################
+## Equipartition Therorem ##
+
 # to change the values of the BETA parameter
-#BetaSamples = Vector(200:200:1000);
+BetaSamples = Vector(200:200:1000);
 BetaSamples = [exp10(x) for x in -4:4];
 nsamples = length(BetaSamples);
 
@@ -87,6 +90,7 @@ end
 #              title = "<Kmean> per particle vs T",
 #              titlefontsize = 7);
 # savefig("../Outcomes/LangevinFullTraj_TestAndAutocor/plotKmeanVST.pdf");
+
 
 
 #################################################################################################################################
