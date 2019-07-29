@@ -12,7 +12,7 @@ using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra
 
 ################################################################################################################
 
-C = Chain(Beta=1e-1);          # System C ([0,1,0], SM (mass of 0 particles)=10, LM (mass of 1 particles)=1, γ=1, β=1)
+C = Chain(Beta=1e-2);          # System C ([0,1,0], SM (mass of 0 particles)=10, LM (mass of 1 particles)=1, γ=1, β=1)
 S = Simulator(FullSteps=Int(1e6));               # dt=1e-4, FullSteps=Int(1e5),  OrthoSteps=1, OrthoSamples=Int(1e5)
 
 P0 = zeros(C.NPart);
@@ -60,7 +60,7 @@ println(" ...Momenta of single bead computed!");
 # Write data to file
 Pb = zeros(S.FullSteps,nsamples);
 Pb[:,1:3] = P;
-open("Store_FullandConstrainedTrajectory/P_compMBdBETA(1e-1).csv","w+") do x
+open("Store_FullandConstrainedTrajectory/P_compMBdBETA(1e-2).csv","w+") do x
     writedlm(x,Pb);
 end
 
