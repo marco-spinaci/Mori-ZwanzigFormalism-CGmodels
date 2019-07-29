@@ -23,11 +23,11 @@
 #############################################################################################################################
 #### Maxwell-Boltzmann distribution
 
-# julia Store_FullandConstrainedTrajectory/storeFullAndConstrTrajectory.jl
+julia Store_FullandConstrainedTrajectory/storeFullAndConstrTrajectory.jl
 
-# julia Data_Analysis/Maxwell-Boltzmann_distribution/MBd.jl
+julia Data_Analysis/Maxwell-Boltzmann_distribution/MBd.jl
 
-gnuplot Data_Analysis/Maxwell-Boltzmann_distribution/plot_MBd.gp
+# gnuplot Data_Analysis/Maxwell-Boltzmann_distribution/plot_MBd.gp
 
 
 ##############################################################################################################################
