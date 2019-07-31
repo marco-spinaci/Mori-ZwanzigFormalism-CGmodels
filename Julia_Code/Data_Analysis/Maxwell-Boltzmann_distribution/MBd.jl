@@ -11,7 +11,7 @@ C = Chain();      # System C ([0,1,0], SM (mass of 0 particles)=10, LM (mass of 
 S = Simulator();  # dt=1e-4, FullSteps=Int(1e5),  OrthoSteps=1, OrthoSamples=Int(1e5)
 
 
-P=readdlm("Store_FullandConstrainedTrajectory/P_compMBdBETA(1e-1).csv",Float64);
+P=readdlm("Store_FullandConstrainedTrajectory/P_compMBdBETA(1e-2).csv",Float64);
 
 ## dt=1e-4
 h1 = fit(Histogram,P[:,1]);
@@ -22,7 +22,7 @@ H1 = zeros(length(h1.weights),2);
 H1[:,1] = (x01[2:end]+x01[1:end-1])/2;
 H1[:,2] = h1.weights./length(P[:,1]);
 
-open("Data_Analysis/Maxwell-Boltzmann_distribution/HistMaxBolt_dt1e-4_B1e-1.csv","w+") do x
+open("Data_Analysis/Maxwell-Boltzmann_distribution/HistMaxBolt_dt1e-4_B1e-2.csv","w+") do x
     writedlm(x,H1);
 end
 
@@ -35,7 +35,7 @@ H2 = zeros(length(h2.weights),2);
 H2[:,1] = (x02[2:end]+x02[1:end-1])/2;
 H2[:,2] = h2.weights./length(P[:,2]);
 
-open("Data_Analysis/Maxwell-Boltzmann_distribution/HistMaxBolt_dt1e-3_B1e-1.csv","w+") do x
+open("Data_Analysis/Maxwell-Boltzmann_distribution/HistMaxBolt_dt1e-3_B1e-2.csv","w+") do x
     writedlm(x,H2);
 end
 
@@ -48,7 +48,7 @@ H3 = zeros(length(h3.weights),2);
 H3[:,1] = (x03[2:end]+x03[1:end-1])/2;
 H3[:,2] = h3.weights./length(P[:,3]);
 
-open("Data_Analysis/Maxwell-Boltzmann_distribution/HistMaxBolt_dt1e-2_B1e-1.csv","w+") do x
+open("Data_Analysis/Maxwell-Boltzmann_distribution/HistMaxBolt_dt1e-2_B1e-2.csv","w+") do x
     writedlm(x,H3);
 end
 
