@@ -5,7 +5,7 @@ set key box
 set key font ",11"
 set grid
 
-set output "| epstopdf -f -o=Data_Analysis/Maxwell-Boltzmann_distribution/HistMBd_B1e-2.pdf"
+set output "| epstopdf -f -o=Data_Analysis/Maxwell-Boltzmann_distribution/HistMBd_B1.pdf"
 
 f(x) = a*exp(-b*x**2)
 # a = 0.1   # BETA=1
