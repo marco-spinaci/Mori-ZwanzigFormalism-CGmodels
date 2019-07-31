@@ -1,4 +1,4 @@
-\documentclass[10pt,a4paper]{article}
+\documentclass[10pt,a4paper]{report}
 \usepackage[english]{babel}
 \usepackage[T1]{fontenc}
 \usepackage[utf8x]{inputenc}
@@ -21,10 +21,19 @@
 
 \begin{document}
 
-  \begin{center}
-   \section*{{\LARGE Notes}}
-  \end{center}
+%  \begin{center}
+%   \section*{{\LARGE Notes}}
+%  \end{center}
 
+\tableofcontents
+
+\part{Theoretical Background}
+
+\chapter{Mori-Zwanzig theory}
+
+
+
+\chapter{Numerical Method}
 \section{Langevin Dynamics Integrator: BAOAB method}
 In this work we simulated the Langevin Dynamics by the BAOAB method, which was derived and analysed by B. Leimkuhler and C. Matthews \cite{LeimMatt:LAnDynInt}. 
 
@@ -117,8 +126,9 @@ where $\boldsymbol{\Delta}_{p}$ is the mass-weighted Laplacian in the momenta an
 \subsection{Some more details about the work of B. Leimkuhler and C. Matthews}
 The methods that are considered are splitting integrators that decompose the stochastic vector field which drives the Langevin Dynamics into simpler vector fields which can be solved exactly. Nevertheless, the composition method that results cannot be directly related to a stochastic differential equation, but nonetheless the invariant measure associated to the numerical method can be derived, using the Baker-Campbell-Hausdorff (BCH) expansion, as an asymptotic series in two parameters: the stepsize and the coefficient $\gamma^{-1}$. The authors stress that their approach focuses on the truncation error of the invariant distribution, thus the greatest benefit would be seen only when the statistical error is well controlled. Furthermore, they observe that the least biased scheme from the point of view of the error introduced in configurational sampling is also as efficient as the alternatives and the most robust with respect the variation of parameters (stepsize and $\gamma^{-1}$), thus they emphasise that there is no price for the improvement in accuracy.
 
+
 \appendix
-\section{Elements of Probability Theory and Stochastic Processes}
+\chapter{Elements of Probability Theory and Stochastic Processes}
 We introduce some basic definition and results from probability theory and stochastic processes. This material can be found in \cite{Pavliotis2014,Williams1991}. 
 
 \begin{defin}[\textbf{Sample Space}]

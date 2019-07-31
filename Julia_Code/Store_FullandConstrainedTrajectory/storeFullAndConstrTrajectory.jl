@@ -12,8 +12,8 @@ using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra
 
 ################################################################################################################
 
-C = Chain(Beta=1e-2);          # System C ([0,1,0], SM (mass of 0 particles)=10, LM (mass of 1 particles)=1, γ=1, β=1)
-S = Simulator(FullSteps=Int(1e6));               # dt=1e-4, FullSteps=Int(1e5),  OrthoSteps=1, OrthoSamples=Int(1e5)
+C = Chain(Beta=1);          # System C ([0,1,0], SM (mass of 0 particles)=10, LM (mass of 1 particles)=1, γ=1, β=1)
+S = Simulator(FullSteps=Int(1e7));               # dt=1e-4, FullSteps=Int(1e5),  OrthoSteps=1, OrthoSamples=Int(1e5)
 
 P0 = zeros(C.NPart);
 Q0 = Vector(1.0:1.0:30.0);
@@ -44,7 +44,7 @@ P     = SharedArray{Float64}(S.FullSteps,nsamples);
                 jj = j;
                 @async begin
                     println(" CPU_THREADS ",pp-1,", Worker ",pp,", dt=",dtSamples[jj]);
-                    S = Simulator(dt=dtSamples[jj],FullSteps=Int(1e6));
+                    S = Simulator(dt=dtSamples[jj],FullSteps=Int(1e7));
                     PFull[:,:,jj] = remotecall_fetch(LangevinFullTraj,pp,P0,Q0,C,S)[1];
                     for i =1:S.FullSteps
                         P[i,jj] = (C.PhiConstr*PFull[:,i,jj])[1];
@@ -60,7 +60,7 @@ println(" ...Momenta of single bead computed!");
 # Write data to file
 Pb = zeros(S.FullSteps,nsamples);
 Pb[:,1:3] = P;
-open("Store_FullandConstrainedTrajectory/P_compMBdBETA(1e-2).csv","w+") do x
+open("Store_FullandConstrainedTrajectory/P_compMBdBETA(1).csv","w+") do x
     writedlm(x,Pb);
 end
 

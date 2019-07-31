@@ -12,6 +12,7 @@ deps/deps.jl
 *.log
 *.out
 *.synctex.gz
+*.toc
 
 # exclude directory
 Transferability/
