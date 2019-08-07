@@ -321,7 +321,7 @@ function ConstrainedAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
   StressSqMean 	= zeros(C.ConstrainedBeads-1);
   MomStats    	= zeros(S.NumLags,C.ConstrainedBeads);
   MomStorage 	= zeros(S.NumLags,C.ConstrainedBeads);
-  MomMean	= zeros(C.ConstrainedBeads);
+  MomMean	    = zeros(C.ConstrainedBeads);
   MomSqMean 	= zeros(C.ConstrainedBeads);
 
   E0  = Potential(Q,C);
@@ -332,7 +332,7 @@ function ConstrainedAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
     m = 0;
     while m < S.NumLags
         for i = 1:S.LagStep
-          (P,Q,F) = ConstrainedStep(P,Q,F,C,S.dt);
+          (P,Q,F) = LangDynConstrainedStep(P,Q,F,C,S.dt);  #ConstrainedStep
         end
 
         m+=1;
@@ -352,7 +352,7 @@ function ConstrainedAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
   while s < S.OrthoSamples
     # Advance to next sample time
     for i = 1:S.LagStep
-      (P,Q,F) = ConstrainedStep(P,Q,F,C,S.dt);
+      (P,Q,F) = LangDynConstrainedStep(P,Q,F,C,S.dt); #ConstrainedStep
     end
 
     # Record successful sample.
@@ -426,7 +426,7 @@ function FullAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
     m = 0;
     while m < S.NumLags
         for i = 1:S.LagStep
-          (P,Q,F) = LeapfrogStep(P,Q,F,C,S.dt);
+          (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt); #LeapfrogStep
         end
 
         m+=1;
@@ -448,7 +448,7 @@ function FullAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
     while s < S.OrthoSamples
       # Advance to next sample time
       for i = 1:S.LagStep
-        (P,Q,F) = LeapfrogStep(P,Q,F,C,S.dt);
+        (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt); #LeapfrogStep
       end
 
       # Record successful sample.

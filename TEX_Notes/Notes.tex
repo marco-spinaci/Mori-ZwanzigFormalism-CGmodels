@@ -30,6 +30,23 @@
 \part{Theoretical Background}
 
 \chapter{Mori-Zwanzig theory}
+The Mori-Zwanzig theory allows to observe the evolution of a system through the projection on a subset of its degrees of freedom, the evolution of the selected variables is determined by the sum of a deterministic part and a random, ``noisy'' part. The randomness reflects one's ignorance of unresolved degrees of freedom. This is done via a projection operator technique getting the \emph{generalized Langevin equation} (GLE), an equation of the form 
+\begin{equation}
+ \frac{dA}{dt}=i\Omega A(t)-\int_0^t\,d\tau K(\tau)A(t-\tau)+F(t)
+ \label{generalGLE}
+\end{equation}
+where $\Omega$, $K(t)$ and $F(t)$ are well-defined functions, called the frequency, memory function, and random force respectively.
+This equation describes the non-equilibrium evolution of any set of functions $A(t)$ defined on the phase-space of the microscopic system and, depending on the context, these functions have been referred to as collective variables, relevant variables, coarse-grained variables or collective modes.
+
+This theory has been know in the context of transport theory and for example in the dynamic light scattering, the GLE is used to compute time-correlation functions under circumstances where the usual phenomenological equations do not apply. Indeed throught the equation (\ref{generalGLE}) can be obtained the equation for the time correlation function $C(t)$:  
+\begin{equation}
+ \frac{dC(t)}{dt}=i\Omega C(t)-\int_0^t\,d\tau K(\tau)C(t-\tau)\,.
+\end{equation}
+This is called the \emph{memory-function equation} and the random force appears implicitly in $K(t)$ \cite{Berne:DynamicLightScatt}.
+
+The projection operator technique are powerful tools for the development of a statistical-mechanical foundation of irreversible processes in many-body systems \cite{Grabert:Projection}. These tools has been introduced into statistical physics by S. Nakajima in 1958 and R. Zwanzig in 1960. The former to study the quantum statistical mechanics of steady diffusion \cite{Nakajima1958}, and the latter to give a new formulation of methods introduced in the statistical-mechanical theory of irreversibility \cite{Zwanzig1960}. 
+Later in 1965, H. Mori proposed an projection operator technique in Heisenberg picture, which leads to the linear GLE for arbitrary systems close to thermal equilibrium \cite{Mori1965}. Some years later in 1973 R. Zwanzig derived a class of generalized Langevin equations describing the motion of a system interacting with a heat bath, this GLE is exact but differs from that obtained by Mori's scheme for two reasons: for the presence of an arbitrary nonlinear force and for the fact that its validity is not restricted to small deviations from the thermal equilibrium \cite{Zwanzig1973}.
+In recent years, D. Kauzlarić et all showed that Mori GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables, the functions $A(t)$ in the equation (\ref{generalGLE}), evolve in a time scale much larger than the memory time scale \cite{Kauzlaric2011}.
 
 
 
@@ -128,6 +145,7 @@ The methods that are considered are splitting integrators that decompose the sto
 
 
 \appendix
+
 \chapter{Elements of Probability Theory and Stochastic Processes}
 We introduce some basic definition and results from probability theory and stochastic processes. This material can be found in \cite{Pavliotis2014,Williams1991}. 
 
@@ -198,6 +216,12 @@ F_X:\mathbb{R} &\to[0,1] \\
 x &\mapsto F_X(x)\coloneqq\mathbb{P}\left( \left\lbrace \omega\in\Omega:X(\omega)\leq x \right\rbrace \right)=\mathbb{P}\left( X\leq x\right)\,.
 \end{align*}
 This function $F_X$ indicates the likelihood that the random variable $X$ is in $(-\infty,x]$
+
+\chapter{Liouville Space}
+In classical mechanics, the phase space is the space of all possible states of a physical system of M degree of freedom. The state is characterized by the vector 
+%$\Aphase{}=\cip{\Aphase{\bfr},\Aphase{\bfp}}=\cip{\bfr_1,\ldots,\bfr_{\nfg},\bfp_1,\ldots,\bfp_{\nfg}}.$
+$\gamma=\left(\gamma_{\bold(r)},\gamma_{\bold(p)}\right)=$
+
 
 \cleardoublepage
 \phantomsection
