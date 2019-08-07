@@ -17,7 +17,7 @@
 \usepackage[colorlinks]{hyperref}
 
 \theoremstyle{definition}
-\newtheorem{defin}{Definition}[section]
+\newtheorem{defin}{Definition}[chapter]
 
 \usepackage{mymacrosTESI}
 
@@ -95,8 +95,8 @@ here $k$ and $D$ are positive parameters. The solution of one dimensional OU-SDE
 \]
 and the average and variance are respectively:
 \begin{align*}
- \left\langle x(t)\right\rangle &= \left\langle x_0(t_0)\right\rangle\,e^{-k(t-t_0)}\,, \\
- \left\langle \left(x(t)-\left\langle x(t)\right\rangle\right)^2\right\rangle &= \left[ Var(x_0)-\frac{D}{2k} \right]e^{-2k(t-t_0)}+\frac{D}{2k}\,.
+ \mathbb{E}[x(t)] &= \mathbb{E}[x_0(t_0)]\,e^{-k(t-t_0)}\,, \\
+ \mathbb{E}\left[ \left( x(t)-\mathbb{E}[x(t)] \right)^2 \right] &= \left[ Var(x_0)-\frac{D}{2k} \right]e^{-2k(t-t_0)}+\frac{D}{2k}\,.
 \end{align*}
 We can easily show in the stationary limit ($t\gg t_0$) and applying the equipartition theorem that the diffusive parameter $D$ is equal to $(2k)/\beta$.
 
@@ -190,6 +190,7 @@ A probability space is a triple $(\Omega,\mathscr{F},\mathbb{P})$ comprising a s
 
 \noindent
 Since we are usually interested in the consequence of the outcomes of an experiment, we introduce the notion of random variable that is intuitively a function of the outcomes. We do it following the Williams \cite{Williams1991}, through the definition of measurable function from $(\Omega,\mathscr{F},\mathbb{P})$ to $(\mathbb{R},\mathscr{B}(\mathbb{R}))$\footnote{We will use the notation $\mathscr{B}(\mathbb{R})$ to denote the Borel $\sigma$-algebra of $\mathbb{R}$, the smallest $\sigma$-algebra containing all open sets of $\mathbb{R}$.}. 
+
 \begin{defin}[\textbf{$\mathscr{F}$-measurable function}]
 Let $(\Omega,\mathscr{F},\mathbb{P})$ and $(\mathbb{R},\mathscr{B}(\mathbb{R}))$ be two measurable spaces. 
 The function $\psi:\Omega\to\mathbb{R}$ is called $\mathscr{F}$-measurable function if 
@@ -215,9 +216,41 @@ The measure $\mathbb{P}_X$ is called \emph{distribution} (or sometimes the \emph
 We can now define the \emph{distribution function} of $X$:
 \begin{align*}
 F_X:\mathbb{R} &\to[0,1] \\ 
-x &\mapsto F_X(x)\coloneqq\mathbb{P}\left( \left\lbrace \omega\in\Omega:X(\omega)\leq x \right\rbrace \right)=\mathbb{P}\left( X\leq x\right)\,.
+x &\mapsto F_X(x) \coloneqq \mathbb{P}\left( \left\lbrace \omega\in\Omega:X(\omega)\leq x \right\rbrace \right)=\mathbb{P}\left( X\leq x\right)\,.
 \end{align*}
-This function $F_X$ indicates the likelihood that the random variable $X$ is in $(-\infty,x]$
+This function $F_X$ indicates the likelihood that the random variable $X$ is in $(-\infty,x]$.
+
+\begin{defin}[\textbf{Probability density function}]
+Let $X$ a random variable and $f:\mathbb{R}\to\mathbb{R}$ a function such that 
+\[ f(x)\geq 0 \quad\forall\; x\in\mathbb{R} \qquad\mathrm{and}\qquad \int_{\mathbb{R}	}f(x)\,dx=1\,.\]
+We say that $X$ has a \emph{probability density function} (pdf) $f_X$ if 
+\[ \mathbb{P}(X\in B)=\int_Bf_X(x)\,dx \qquad \forall\; B\in\mathscr{B}(\mathbb{R}) \]
+\end{defin}
+
+\begin{defin}[\textbf{Expected value}]
+We define the \emph{expectation} $\mathbb{E}\sqp{X}$ of a random variable $X$ by 
+\[ \mathbb{E}\sqp{X}\coloneqq \int_{\Omega}X\,d\mathbb{P} \equiv \int_{\Omega}X(\omega)\,\mathbb{P}(d\omega) = \int_{\mathbb{R}}x\,\mathbb{P}_X(dx)\,. \]
+\end{defin}
+\noindent
+In the last equality we changed variable $x=X(\omega)$ and used the definition of distribution of $X$, that is $\mathbb{P}_X(B)=\mathbb{P}(X^{-1}(B))$. 
+
+Let $h:\mathbb{R}\to\mathbb{R}$ a Borel measurable function. Then
+\[
+h(X)\in\mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}} \coloneqq \bp{ X\in\cip{\Omega,\mathscr{F},\mathbb{P}}:\;\mathbb{E}\sqp{|X|^1}<\infty }
+\;\Leftrightarrow\; h\in\mathcal{L}^1\cip{\Omega,\mathscr{B},\mathbb{P}_X}
+\] 
+and then
+$$\mathbb{E}\sqp{h(X)}=\int_{\mathbb{R}}h(x)\,\mathbb{P}_X(dx)\,.$$
+Furthermore, if $f_X$ is a pdf of $X$ and
+\[
+\mathbb{E}\sqp{|h(X)|}<\infty\;\Longleftrightarrow\;\int_{\mathbb{R}}|h(x)|\,f_X(x)\,dx<\infty\,,
+\] 
+then
+\[
+\mathbb{E}\sqp{h(X)}=\int_{\mathbb{R}}h(x)\,f_X(x)\,dx\,.
+\]
+
+
 
 \chapter{Liouville Space}
 In classical mechanics, the phase-space is the space of all possible states of a physical system composed by M particles. The state is represented by the point $\Aphase{}$ specified by the vector 
