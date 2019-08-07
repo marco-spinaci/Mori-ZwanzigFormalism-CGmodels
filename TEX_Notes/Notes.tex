@@ -19,6 +19,8 @@
 \theoremstyle{definition}
 \newtheorem{defin}{Definition}[section]
 
+\usepackage{mymacrosTESI}
+
 \begin{document}
 
 %  \begin{center}
@@ -46,7 +48,7 @@ This is called the \emph{memory-function equation} and the random force appears 
 
 The projection operator technique are powerful tools for the development of a statistical-mechanical foundation of irreversible processes in many-body systems \cite{Grabert:Projection}. These tools has been introduced into statistical physics by S. Nakajima in 1958 and R. Zwanzig in 1960. The former to study the quantum statistical mechanics of steady diffusion \cite{Nakajima1958}, and the latter to give a new formulation of methods introduced in the statistical-mechanical theory of irreversibility \cite{Zwanzig1960}. 
 Later in 1965, H. Mori proposed an projection operator technique in Heisenberg picture, which leads to the linear GLE for arbitrary systems close to thermal equilibrium \cite{Mori1965}. Some years later in 1973 R. Zwanzig derived a class of generalized Langevin equations describing the motion of a system interacting with a heat bath, this GLE is exact but differs from that obtained by Mori's scheme for two reasons: for the presence of an arbitrary nonlinear force and for the fact that its validity is not restricted to small deviations from the thermal equilibrium \cite{Zwanzig1973}.
-In recent years, D. Kauzlarić et all showed that Mori GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables, the functions $A(t)$ in the equation (\ref{generalGLE}), evolve in a time scale much larger than the memory time scale \cite{Kauzlaric2011}.
+In recent years, D. Kauzlari\'c et all showed that Mori GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables, the functions $A(t)$ in the equation (\ref{generalGLE}), evolve in a time scale much larger than the memory time scale \cite{Kauzlaric2011}.
 
 
 
@@ -218,9 +220,31 @@ x &\mapsto F_X(x)\coloneqq\mathbb{P}\left( \left\lbrace \omega\in\Omega:X(\omega
 This function $F_X$ indicates the likelihood that the random variable $X$ is in $(-\infty,x]$
 
 \chapter{Liouville Space}
-In classical mechanics, the phase space is the space of all possible states of a physical system of M degree of freedom. The state is characterized by the vector 
-%$\Aphase{}=\cip{\Aphase{\bfr},\Aphase{\bfp}}=\cip{\bfr_1,\ldots,\bfr_{\nfg},\bfp_1,\ldots,\bfp_{\nfg}}.$
-$\gamma=\left(\gamma_{\bold(r)},\gamma_{\bold(p)}\right)=$
+In classical mechanics, the phase-space is the space of all possible states of a physical system composed by M particles. The state is represented by the point $\Aphase{}$ specified by the vector 
+\[\Aphase{}=\cip{ \Aphase{\bfr},\Aphase{\bfp} }=\cip{ \bfr_1,\ldots,\bfr_M , \bfp_1,\ldots,\bfp_M }\,.\]
+The evolution of a state is obtained in according to the canonical equations of motion
+\begin{equation}\label{Eq:liouville}
+\begin{split}
+  \totd{\Aphase{}}{t} &= \sum_{i=1}^M \sqp{ \pard{\Aphase{}}{\bfr_i} \cdot \dot{\bfr_i}  + \pard{\Aphase{}}{\bfp_i} \cdot \dot{\bfp_i} } ={}\\
+                      &=\sum_{i=1}^M \sqp{ \pard{\Aphase{}}{\bfr_i} \cdot \pard{\Ham}{\bfp_i} - \pard{\Aphase{}}{\bfp_i} \cdot \pard{\Ham}{\bfr_i} } 
+                      \equiv \bp{\Aphase{},\Ham}
+\end{split}
+\end{equation}
+where $\bp{\Aphase{},\Ham}$ is Poisson bracket of $\Aphase{}$ with the Hamiltonian $\Ham$. The equation obtained indicates that $\bp{\Aphase{},\Ham}$ is a generator of the time evolution of $\Aphase{}(t)$.
+
+The Poisson bracket allows us to introduce an operator $L$ called \emph{Liouvillian} or \emph{Liouville operator} 
+\begin{equation}\label{Eq:liouvilleOperator}
+  iL \equiv \bp{ \ldots,\Ham} = \sum_{i=1}^M \sqp{ \pard{\Ham}{\bfp_i}\cdot\pard{}{\bfr_i} - \pard{\Ham}{\bfr_i}\cdot\pard{}{\bfp_i} }
+\end{equation}
+where $i=\sqrt{-1}$.
+
+The equation (\ref{Eq:liouville}) can be rewrite as $\mbox{d}\Aphase{}/\mbox{d}t=iL\,\Aphase{}$, which can be formally resolved as
+\begin{equation}
+ \Aphase{}(t) = e^{iLt} \,\Aphase{}(0)\,,
+\end{equation}
+where the operator $exp(iLt)$ is know as the \emph{classical propagator} and defines a mapping in phase-space. 
+
+
 
 
 \cleardoublepage
