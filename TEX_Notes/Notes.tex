@@ -222,14 +222,14 @@ This function $F_X$ indicates the likelihood that the random variable $X$ is in 
 
 \begin{defin}[\textbf{Probability density function}]
 Let $X$ a random variable and $f:\mathbb{R}\to\mathbb{R}$ a function such that 
-\[ f(x)\geq 0 \quad\forall\; x\in\mathbb{R} \qquad\mathrm{and}\qquad \int_{\mathbb{R}	}f(x)\,dx=1\,.\]
+\[ f(x)\geq 0 \quad\forall\; x\in\mathbb{R} \qquad\mathrm{and}\qquad \int_{\mathbb{R}	}f(x)\,\mbox{d}x=1\,.\]
 We say that $X$ has a \emph{probability density function} (pdf) $f_X$ if 
-\[ \mathbb{P}(X\in B)=\int_Bf_X(x)\,dx \qquad \forall\; B\in\mathscr{B}(\mathbb{R}) \]
+\[ \mathbb{P}(X\in B)=\int_Bf_X(x)\,\mbox{d}x \qquad \forall\; B\in\mathscr{B}(\mathbb{R}) \]
 \end{defin}
 
 \begin{defin}[\textbf{Expected value}]
 We define the \emph{expectation} $\mathbb{E}\sqp{X}$ of a random variable $X$ by 
-\[ \mathbb{E}\sqp{X}\coloneqq \int_{\Omega}X\,d\mathbb{P} \equiv \int_{\Omega}X(\omega)\,\mathbb{P}(d\omega) = \int_{\mathbb{R}}x\,\mathbb{P}_X(dx)\,. \]
+\[ \mathbb{E}\sqp{X}\coloneqq \int_{\Omega}X\,\mbox{d}\mathbb{P} \equiv \int_{\Omega}X(\omega)\,\mathbb{P}(\diff\omega) = \int_{\mathbb{R}}x\,\mathbb{P}_X(\diff x)\,. \]
 \end{defin}
 \noindent
 In the last equality we changed variable $x=X(\omega)$ and used the definition of distribution of $X$, that is $\mathbb{P}_X(B)=\mathbb{P}(X^{-1}(B))$. 
@@ -240,26 +240,36 @@ h(X)\in\mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}} \coloneqq \bp{ X\in\cip{
 \;\Leftrightarrow\; h\in\mathcal{L}^1\cip{\Omega,\mathscr{B},\mathbb{P}_X}
 \] 
 and then
-$$\mathbb{E}\sqp{h(X)}=\int_{\mathbb{R}}h(x)\,\mathbb{P}_X(dx)\,.$$
+$$\mathbb{E}\sqp{h(X)}=\int_{\mathbb{R}}h(x)\,\mathbb{P}_X(\diff x)\,.$$
 Furthermore, if $f_X$ is a pdf of $X$ and
 \[
-\mathbb{E}\sqp{|h(X)|}<\infty\;\Longleftrightarrow\;\int_{\mathbb{R}}|h(x)|\,f_X(x)\,dx<\infty\,,
+\mathbb{E}\sqp{|h(X)|}<\infty\;\Longleftrightarrow\;\int_{\mathbb{R}}|h(x)|\,f_X(x)\,\diff x<\infty\,,
 \] 
 then
 \[
-\mathbb{E}\sqp{h(X)}=\int_{\mathbb{R}}h(x)\,f_X(x)\,dx\,.
+\mathbb{E}\sqp{h(X)}=\int_{\mathbb{R}}h(x)\,f_X(x)\,\diff x\,.
 \]
 
 
 
 \chapter{Liouville Space}
-In classical mechanics, the phase-space is the space of all possible states of a physical system composed by M particles. The state is represented by the point $\Aphase{}$ specified by the vector 
-\[\Aphase{}=\cip{ \Aphase{\bfr},\Aphase{\bfp} }=\cip{ \bfr_1,\ldots,\bfr_M , \bfp_1,\ldots,\bfp_M }\,.\]
-The evolution of a state is obtained in according to the canonical equations of motion
+In classical mechanics, the phase-space\footnote{
+Mathematically, the space of configuration might be defined by a \emph{manifold} $M$ (either finite or infinite dimensional), and for each position $\bfr\in M$ in that space, the momentum $\bfp$ of the system would take values in the cotangent space $T^*_{\bfr}M$ of that space. This since the velocity $\dot{\bfr}$ naturally lives in the tangent space $T_{\bfr}M$, but the momentum $$\bfp \coloneqq \pard{L(\bfr,\dot{\bfr})}{\dot{\bfr}},$$ where $L(\bfr,\dot{\bfr})$ is the Lagrangian of the system, for its definition lives naturally in the cotangent space $T^*_{\bfr}M$. 
+Therefore the phase-space is naturally represented here by the \emph{cotangent bundle} $$T^*M \coloneqq \bp{\cip{\bfr,\bfp}:\;\bfr\in M,\,\bfp\in T^*_{\bfr}M}\,,$$ which comes with a canonical \emph{symplectic form} $\omega\coloneqq \mbox{d}\bfp \wedge \mbox{d}\bfr$.
+} 
+$X=\mathbb{R}^{6N}$ is the space of all possible states of a physical system composed by N particles. The state is represented by the point $\Aphase{}$ specified by the vector \[\Aphase{}=\cip{ \Aphase{\bfr},\Aphase{\bfp} }=\cip{ \bfr_1,\ldots,\bfr_N , \bfp_1,\ldots,\bfp_N }\,.\]
+Let $\Ham:X\to \real$ the Hamiltonian of the system and we define a probability measure of finding the system in state $\Aphase{}$ as 
+$$
+\mathbb{P}(\mbox{d}\Aphase{}) = \rho(\Aphase{})\diff\Aphase{}\,
+$$
+where $\rho(\Aphase{})$ can be any equilibrium ensemble pdf. For example, in the canonical ensemble $\rho(\Aphase{})=\partf^{-1}e^{-\beta\Ham(\Aphase{})}$ where $\beta=\cip{K_BT}^{-1}>0$ such that $e^{-\beta\Ham(\Aphase{})}$ is integrable with respect to the Lebesgue measure on $X$ and $\partf$ is the canonical partition function, 
+$\partf=\int_Xe^{-\beta\Ham(\Aphase{})}\diff\Aphase{}\,.$
+
+The evolution of a state is obtained in according to the canonical equations of motion as
 \begin{equation}\label{Eq:liouville}
 \begin{split}
-  \totd{\Aphase{}}{t} &= \sum_{i=1}^M \sqp{ \pard{\Aphase{}}{\bfr_i} \cdot \dot{\bfr_i}  + \pard{\Aphase{}}{\bfp_i} \cdot \dot{\bfp_i} } ={}\\
-                      &=\sum_{i=1}^M \sqp{ \pard{\Aphase{}}{\bfr_i} \cdot \pard{\Ham}{\bfp_i} - \pard{\Aphase{}}{\bfp_i} \cdot \pard{\Ham}{\bfr_i} } 
+  \totd{\Aphase{}}{t} &= \sum_{i=1}^N \sqp{ \pard{\Aphase{}}{\bfr_i} \cdot \dot{\bfr_i}  + \pard{\Aphase{}}{\bfp_i} \cdot \dot{\bfp_i} } ={}\\
+                      &=\sum_{i=1}^N \sqp{ \pard{\Aphase{}}{\bfr_i} \cdot \pard{\Ham}{\bfp_i} - \pard{\Aphase{}}{\bfp_i} \cdot \pard{\Ham}{\bfr_i} } 
                       \equiv \bp{\Aphase{},\Ham}
 \end{split}
 \end{equation}
@@ -267,7 +277,7 @@ where $\bp{\Aphase{},\Ham}$ is Poisson bracket of $\Aphase{}$ with the Hamiltoni
 
 The Poisson bracket allows us to introduce an operator $L$ called \emph{Liouvillian} or \emph{Liouville operator} 
 \begin{equation}\label{Eq:liouvilleOperator}
-  iL \equiv \bp{ \ldots,\Ham} = \sum_{i=1}^M \sqp{ \pard{\Ham}{\bfp_i}\cdot\pard{}{\bfr_i} - \pard{\Ham}{\bfr_i}\cdot\pard{}{\bfp_i} }
+  iL \equiv \bp{ \ldots,\Ham} = \sum_{i=1}^N \sqp{ \pard{\Ham}{\bfp_i}\cdot\pard{}{\bfr_i} - \pard{\Ham}{\bfr_i}\cdot\pard{}{\bfp_i} }
 \end{equation}
 where $i=\sqrt{-1}$.
 
@@ -277,6 +287,16 @@ The equation (\ref{Eq:liouville}) can be rewrite as $\mbox{d}\Aphase{}/\mbox{d}t
 \end{equation}
 where the operator $exp(iLt)$ is know as the \emph{classical propagator} and defines a mapping in phase-space. 
 
+Let $A:X\to\real$ a \emph{phase functions} satisfying $A\in L^2\cip{X,\mathbb{P}}$. If $L^2\cip{X,\mathbb{P}}$ comes with the usual scalar product 
+$$
+\cip{A,B}=\int_X A(\Aphase{})B(\Aphase{})\, \mathbb{P}(\mbox{d}\Aphase{}) = \int_X A(\Aphase{}) B(\Aphase{})\, \rho(\Aphase{})\,\diff\Aphase{}\,, 
+$$
+then $L^2\cip{X,\mathbb{P}}$ is a Hilbert space. It is simple to show that the rate of change of $A$ is given by $\mbox{d}A/\mbox{d}t=iL\,A$, which formal solution is given by 
+$$
+A(\Aphase{},t) = e^{iLt} \,A(\Aphase{},0)\,.
+$$
+
+The Hilbert space just defined is often called \emph{Liouville space} because the Liouvillian generates the motion in this space. 
 
 
 
