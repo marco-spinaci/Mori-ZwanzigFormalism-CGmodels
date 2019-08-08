@@ -32,23 +32,31 @@
 \part{Theoretical Background}
 
 \chapter{Mori-Zwanzig theory}
-The Mori-Zwanzig theory allows to observe the evolution of a system through the projection on a subset of its degrees of freedom, the evolution of the selected variables is determined by the sum of a deterministic part and a random, ``noisy'' part. The randomness reflects one's ignorance of unresolved degrees of freedom. This is done via a projection operator technique getting the \emph{generalized Langevin equation} (GLE), an equation of the form 
+The Mori-Zwanzig theory allows to observe the evolution of a system through the projection on a subset of its degrees of freedom, the evolution of the selected variables is determined by the sum of a deterministic part and a random, ``noisy'' part. The randomness reflects one's ignorance of unresolved degrees of freedom. This is done via a \emph{projection operator technique} getting the \emph{generalized Langevin equation} (GLE), an equation of the form 
 \begin{equation}
- \frac{dA}{dt}=i\Omega A(t)-\int_0^t\,d\tau K(\tau)A(t-\tau)+F(t)
+ \frac{\diff A}{\diff t}=i\Omega A(t)-\int_0^t\,\diff\tau K(\tau)A(t-\tau)+F(t)
  \label{generalGLE}
 \end{equation}
 where $\Omega$, $K(t)$ and $F(t)$ are well-defined functions, called the frequency, memory function, and random force respectively.
-This equation describes the non-equilibrium evolution of any set of functions $A(t)$ defined on the phase-space of the microscopic system and, depending on the context, these functions have been referred to as collective variables, relevant variables, coarse-grained variables or collective modes.
+This equation describes the non-equilibrium evolution of any set of functions $A(t)$ defined on the phase-space of the microscopic system. Depending on the context, these functions have been referred to as collective variables, relevant variables, coarse-grained variables or collective modes.
 
-This theory has been know in the context of transport theory and for example in the dynamic light scattering, the GLE is used to compute time-correlation functions under circumstances where the usual phenomenological equations do not apply. Indeed throught the equation (\ref{generalGLE}) can be obtained the equation for the time correlation function $C(t)$:  
+This theory is know in various context as well as in transport theory. For example in the dynamic light scattering or in the liquids theory, the GLE is used to compute time-correlation functions under circumstances where the usual phenomenological equations do not apply. Indeed through the equation (\ref{generalGLE}) can be obtained the equation for the time correlation function $C(t)$:  
 \begin{equation}
- \frac{dC(t)}{dt}=i\Omega C(t)-\int_0^t\,d\tau K(\tau)C(t-\tau)\,.
+ \frac{\diff C(t)}{\diff t}=i\Omega\, C(t)-\int_0^t\,\diff\tau K(\tau)C(t-\tau)\,.
 \end{equation}
-This is called the \emph{memory-function equation} and the random force appears implicitly in $K(t)$ \cite{Berne:DynamicLightScatt}.
+This is called the \emph{memory-function equation} and the random force appears implicitly in $K(t)$ \cite{Berne:DynamicLightScatt,hansen2006}.
 
-The projection operator technique are powerful tools for the development of a statistical-mechanical foundation of irreversible processes in many-body systems \cite{Grabert:Projection}. These tools has been introduced into statistical physics by S. Nakajima in 1958 and R. Zwanzig in 1960. The former to study the quantum statistical mechanics of steady diffusion \cite{Nakajima1958}, and the latter to give a new formulation of methods introduced in the statistical-mechanical theory of irreversibility \cite{Zwanzig1960}. 
+The \emph{projection operator technique} are powerful tools for the development of a statistical-mechanical foundation of irreversible processes in many-body systems \cite{Grabert:Projection}. These tools has been introduced into statistical physics by S. Nakajima in 1958 and R. Zwanzig in 1960. The former to study the quantum statistical mechanics of steady diffusion \cite{Nakajima1958}, and the latter to give a new formulation of methods introduced in the statistical-mechanical theory of irreversibility \cite{Zwanzig1960}. 
 Later in 1965, H. Mori proposed an projection operator technique in Heisenberg picture, which leads to the linear GLE for arbitrary systems close to thermal equilibrium \cite{Mori1965}. Some years later in 1973 R. Zwanzig derived a class of generalized Langevin equations describing the motion of a system interacting with a heat bath, this GLE is exact but differs from that obtained by Mori's scheme for two reasons: for the presence of an arbitrary nonlinear force and for the fact that its validity is not restricted to small deviations from the thermal equilibrium \cite{Zwanzig1973}.
 In recent years, D. Kauzlari\'c et all showed that Mori GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables, the functions $A(t)$ in the equation (\ref{generalGLE}), evolve in a time scale much larger than the memory time scale \cite{Kauzlaric2011}.
+
+Below we will just give an idea of Mori's projector because in this work, we will work with Zwanzig's projector.
+\section{Mori GLE}
+
+\section{Zwanzig GLE}
+
+\chapter{Canonical Mapping and Coarse-Graining}
+
 
 
 
@@ -195,7 +203,7 @@ Since we are usually interested in the consequence of the outcomes of an experim
 Let $(\Omega,\mathscr{F},\mathbb{P})$ and $(\mathbb{R},\mathscr{B}(\mathbb{R}))$ be two measurable spaces. 
 The function $\psi:\Omega\to\mathbb{R}$ is called $\mathscr{F}$-measurable function if 
 \[
-\psi^{-1}(A)\coloneqq\{\omega\in\Omega:\psi(\omega)\in A \}\in\mathscr{F},\quad\forall\, A\in\mathscr{B}(\mathbb{R})\,.
+\psi^{-1}(B)\coloneqq\{\omega\in\Omega:\psi(\omega)\in B \}\in\mathscr{F},\quad\forall\, B\in\mathscr{B}(\mathbb{R})\,.
 \]
 \end{defin}
 
@@ -254,13 +262,13 @@ then
 
 \chapter{Liouville Space}
 In classical mechanics, the phase-space\footnote{
-Mathematically, the space of configuration might be defined by a \emph{manifold} $M$ (either finite or infinite dimensional), and for each position $\bfr\in M$ in that space, the momentum $\bfp$ of the system would take values in the cotangent space $T^*_{\bfr}M$ of that space. This since the velocity $\dot{\bfr}$ naturally lives in the tangent space $T_{\bfr}M$, but the momentum $$\bfp \coloneqq \pard{L(\bfr,\dot{\bfr})}{\dot{\bfr}},$$ where $L(\bfr,\dot{\bfr})$ is the Lagrangian of the system, for its definition lives naturally in the cotangent space $T^*_{\bfr}M$. 
-Therefore the phase-space is naturally represented here by the \emph{cotangent bundle} $$T^*M \coloneqq \bp{\cip{\bfr,\bfp}:\;\bfr\in M,\,\bfp\in T^*_{\bfr}M}\,,$$ which comes with a canonical \emph{symplectic form} $\omega\coloneqq \mbox{d}\bfp \wedge \mbox{d}\bfr$.
+Mathematically, the space of configuration might be defined by a \emph{manifold} $M$ (either finite or infinite dimensional), and for each position $\bfr\in M$ in that space, the momentum $\bfp$ of the system would take values in the cotangent space $T^*_{\bfr}M$ of that space. This since the velocity $\dot{\bfr}$ naturally lives in the tangent space $T_{\bfr}M$, but the momentum for its definition $$\bfp \coloneqq \pard{L(\bfr,\dot{\bfr})}{\dot{\bfr}},$$ where $L(\bfr,\dot{\bfr})$ is the Lagrangian of the system, lives naturally in the cotangent space $T^*_{\bfr}M$. 
+Therefore the phase-space is naturally represented by the \emph{cotangent bundle} $$T^*M \coloneqq \bp{\cip{\bfr,\bfp}:\;\bfr\in M,\,\bfp\in T^*_{\bfr}M}\,,$$ which comes with a canonical \emph{symplectic form} $\omega\coloneqq \mbox{d}\bfp \wedge \mbox{d}\bfr$.
 } 
 $X=\mathbb{R}^{6N}$ is the space of all possible states of a physical system composed by N particles. The state is represented by the point $\Aphase{}$ specified by the vector \[\Aphase{}=\cip{ \Aphase{\bfr},\Aphase{\bfp} }=\cip{ \bfr_1,\ldots,\bfr_N , \bfp_1,\ldots,\bfp_N }\,.\]
 Let $\Ham:X\to \real$ the Hamiltonian of the system and we define a probability measure of finding the system in state $\Aphase{}$ as 
 $$
-\mathbb{P}(\mbox{d}\Aphase{}) = \rho(\Aphase{})\diff\Aphase{}\,
+\mathbb{P}(\mbox{d}\Aphase{}) = \rho(\Aphase{})\diff\Aphase{}\,,
 $$
 where $\rho(\Aphase{})$ can be any equilibrium ensemble pdf. For example, in the canonical ensemble $\rho(\Aphase{})=\partf^{-1}e^{-\beta\Ham(\Aphase{})}$ where $\beta=\cip{K_BT}^{-1}>0$ such that $e^{-\beta\Ham(\Aphase{})}$ is integrable with respect to the Lebesgue measure on $X$ and $\partf$ is the canonical partition function, 
 $\partf=\int_Xe^{-\beta\Ham(\Aphase{})}\diff\Aphase{}\,.$
@@ -282,23 +290,45 @@ The Poisson bracket allows us to introduce an operator $L$ called \emph{Liouvill
 where $i=\sqrt{-1}$.
 
 The equation (\ref{Eq:liouville}) can be rewrite as $\mbox{d}\Aphase{}/\mbox{d}t=iL\,\Aphase{}$, which can be formally resolved as
-\begin{equation}
+$$
  \Aphase{}(t) = e^{iLt} \,\Aphase{}(0)\,,
-\end{equation}
+$$
 where the operator $exp(iLt)$ is know as the \emph{classical propagator} and defines a mapping in phase-space. 
 
 Let $A:X\to\real$ a \emph{phase functions} satisfying $A\in L^2\cip{X,\mathbb{P}}$. If $L^2\cip{X,\mathbb{P}}$ comes with the usual scalar product 
 $$
 \cip{A,B}=\int_X A(\Aphase{})B(\Aphase{})\, \mathbb{P}(\mbox{d}\Aphase{}) = \int_X A(\Aphase{}) B(\Aphase{})\, \rho(\Aphase{})\,\diff\Aphase{}\,, 
 $$
-then $L^2\cip{X,\mathbb{P}}$ is a Hilbert space. It is simple to show that the rate of change of $A$ is given by $\mbox{d}A/\mbox{d}t=iL\,A$, which formal solution is given by 
+then $L^2\cip{X,\mathbb{P}}$ is a Hilbert space\footnote{
+In general, let $X$ is a set and $\mu$ is a countably additive measure on the $\sigma$-algebra of subsets of $X$. The Hilbert space $L^2\cip{X,\mu}$ is the space of complex-valued measurable functions such that
+$$
+\int_X|f|^2\diff \mu<\infty,
+$$ 
+where functions are identified if and only if they differ only on a set of measure zero and where the inner product of a pair of functions $f$, $g$ in $L^2\cip{X,\mu}$ is defined as
+$$
+\cip{f,g}=\int_Xf\,g^*\,\diff \mu.
+$$
+}. 
+It is simple to show that the rate of change of $A$ is given by $\mbox{d}A/\mbox{d}t=iL\,A$, which formal solution is given by 
 $$
 A(\Aphase{},t) = e^{iLt} \,A(\Aphase{},0)\,.
 $$
 
-The Hilbert space just defined is often called \emph{Liouville space} because the Liouvillian generates the motion in this space. 
+The Hilbert space just defined is often called \emph{Liouville space} because the Liouvillian generates the motion in this space. In a similar way to quantum mechanics, we can show that the Liouvillian $L$ is a linear Hermitian operator, that is $L^{\dagger}=L$ where $L^{\dagger}$ is Hermitian conjugate of $L$, and
+thereby the classical propagator is a unitary operator in the phase-space.
 
-
+We can now define the \emph{time correlation function} $C(t)$ as
+\[
+C(t) \coloneqq \left\langle A(0)\,A(t)\right\rangle=\int_X A(\Aphase{},0)A(\Aphase{},t)\, \rho(\Aphase{})\diff\Aphase{}\,,
+\] 
+where $\left\langle\ldots\right\rangle$ denotes an ensemble average. This equation can be expressed as 
+\[
+C(t) = \int_X A(\Aphase{})\,e^{iLt}A(\Aphase{})\, \rho	(\Aphase{})\diff\Aphase{} = \cip{A(\Aphase{}), e^{iLt}A(\Aphase{}) } = \cip{ A(0),A(t)}\,,
+\]
+thus we obtained
+\[
+\left\langle A(0)\,A(t)\right\rangle = \cip{ A(0),A(t)}.
+\]
 
 \cleardoublepage
 \phantomsection
