@@ -32,40 +32,58 @@
 \part{Theoretical Background}
 
 \chapter{Mori-Zwanzig theory}
-The Mori-Zwanzig theory allows to observe the evolution of a system through the projection on a subset of its degrees of freedom, the evolution of the selected variables is determined by the sum of a deterministic part and a random, ``noisy'' part. The randomness reflects one's ignorance of unresolved degrees of freedom. This is done via a \emph{projection operator technique} getting the \emph{generalized Langevin equation} (GLE), an equation of the form 
-\begin{equation}
+The Mori-Zwanzig theory allows to observe the evolution of a dynamical system through the projection on a subset of its degrees of freedom, this is done through \emph{projection operator techniques}.
+
+The \emph{projection operator technique} are powerful tools for the study of irreversible processes in many-body systems \cite{Grabert:Projection}. These tools has been introduced into statistical physics by S. Nakajima in 1958 and R. Zwanzig in 1960. The former to study the quantum statistical mechanics of steady diffusion \cite{Nakajima1958}, and the latter to give a new formulation of methods introduced in the statistical-mechanical theory of irreversibility \cite{Zwanzig1960}. In particular R. Zwanzig has developed the technique into a powerful tool for deriving formally accurate motion equations for classical or quantal probability densities \cite{Zwanzig1961,Zwanzig1964}. Later in 1965, H. Mori proposed a different tool, which leads to the linear \emph{generalized Langevin equation} (GLE), an equation of the form 
+\begin{equation}\label{generalGLE}
  \frac{\diff A}{\diff t}=i\Omega A(t)-\int_0^t\,\diff\tau K(\tau)A(t-\tau)+F(t)
- \label{generalGLE}
 \end{equation}
 where $\Omega$, $K(t)$ and $F(t)$ are well-defined functions, called the frequency, memory function, and random force respectively.
-This equation describes the non-equilibrium evolution of any set of functions $A(t)$ defined on the phase-space of the microscopic system. Depending on the context, these functions have been referred to as collective variables, relevant variables, coarse-grained variables or collective modes.
-
-This theory is know in various context as well as in transport theory. For example in the dynamic light scattering or in the liquids theory, the GLE is used to compute time-correlation functions under circumstances where the usual phenomenological equations do not apply. Indeed through the equation (\ref{generalGLE}) can be obtained an equation for the time correlation function $C(t)$:  
+This equation describes the non-equilibrium evolution of any set of functions $A(t)$ defined on the phase-space of the arbitrary microscopic system, close to thermal equilibrium \cite{Mori1965}. To now these variables $A(t)$ are called collective variables, relevant variables, coarse-grained variables or collective modes, depending on the context.
+Some years later in 1973 R. Zwanzig derived a class of generalized Langevin equations describing the motion of a system interacting with a heat bath, this GLE is exact but differs from that obtained by Mori's scheme for two reasons: for the presence of an arbitrary nonlinear force and for the fact that its validity is not restricted to small deviations from the thermal equilibrium \cite{Zwanzig1973}.
+In recent years D. Kauzlari\'c et all showed, in their work on the calculation of the friction matrix in the coarse-grained description of an atomistic system, that Mori GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables (the functions $A(t)$ in the equation (\ref{generalGLE})) evolve in a time scale much larger than the memory time scale \cite{Kauzlaric2011}.
+These techniques are is know in various context as well as in transport theory. For example in the dynamic light scattering or in the liquids theory, the GLE is used to compute time-correlation functions under circumstances where the usual phenomenological equations do not apply. Indeed through the equation (\ref{generalGLE}) can be obtained an equation for the time correlation function $C(t)$:  
 \begin{equation}
  \frac{\diff C(t)}{\diff t}=i\Omega\, C(t)-\int_0^t\,\diff\tau K(\tau)C(t-\tau)\,.
 \end{equation}
 This is called the \emph{memory-function equation} and the random force appears implicitly in $K(t)$ \cite{Berne:DynamicLightScatt,hansen2006}.
 
-The \emph{projection operator technique} are powerful tools for the development of a statistical-mechanical foundation of irreversible processes in many-body systems \cite{Grabert:Projection}. These tools has been introduced into statistical physics by S. Nakajima in 1958 and R. Zwanzig in 1960. The former to study the quantum statistical mechanics of steady diffusion \cite{Nakajima1958}, and the latter to give a new formulation of methods introduced in the statistical-mechanical theory of irreversibility \cite{Zwanzig1960}. In particular R. Zwanzig \cite{Zwanzig1961,Zwanzig1964} has developed the technique into a powerful tool for deriving formally accurate motion equations for classical or quantal probability densities. Later in 1965, H. Mori proposed a different tool, which leads to the linear GLE for arbitrary systems close to thermal equilibrium \cite{Mori1965}. Some years later in 1973 R. Zwanzig derived a class of generalized Langevin equations describing the motion of a system interacting with a heat bath, this GLE is exact but differs from that obtained by Mori's scheme for two reasons: for the presence of an arbitrary nonlinear force and for the fact that its validity is not restricted to small deviations from the thermal equilibrium \cite{Zwanzig1973}.
-In recent years D. Kauzlari\'c et all showed, in their work on the calculation of the friction matrix in the coarse-grained description of an atomistic system, that Mori GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables (the functions $A(t)$ in the equation (\ref{generalGLE})) evolve in a time scale much larger than the memory time scale \cite{Kauzlaric2011}.
+If the dynamical system considered is Hamiltonian we can use two equivalent approaches. 
+The former applying the projection operator in a Hilbert space of probability densities function (pdf) to the Liouville equation, obtained the generalized Fokker-Planck and master equations \cite{Kinjo2007,Zwanzig1960,Zwanzig1961,Zwanzig1964}.
+While the latter, applying the projection operator in the Liouville space, see appendix \ref{App:B}, to the equation of motion of time-dependent property phase function, obtained GLE and transport equation \cite{DiPasquale2019,Hijon2010,Mori1965,Nordholm1975,Zwanzig1973}.
+The mathematical equivalence of these two approaches is given by the duality between Liouville space and the space of densities of states.
+In what follows, we choose to follow the second approach since this results in a more physically-intuitive derivation and we will derive the GLE with the Zwanzig projection and the Mori projection, respectively.
 
-Below we will derive the GLE for the generic coarse-grained (CG) variables for both approaches. Therefore, we assume that a microscopic level the system is well described by classical mechanics and is composed by $\nfg$ particles. We will refer to it as the \emph{fine-grained} (FG) system. Furthermore, we assume that the coarse-grained description of the same system is composed of $\ncg$ particles. The microscopic state is characterised by variable $\Aphase{}(t)$ in $6\nfg$-dimensional phase-space and to derive a reduced description of this system, we consider a smaller set of phase function $\Bphase{}(\Aphase{}(t))$, which we choose as a CG phase-space variables.
+We assume that at the microscopic level the system is well described by classical mechanics and is composed by $\nfg$ particles. We will refer to it as the \emph{fine-grained} (FG) system. Furthermore, we assume that the coarse-grained description of the same system is composed of $\ncg$ particles. The microscopic state is characterised by variable $\Aphase{}(t)$ in $6\nfg$-dimensional phase-space. To derive a reduced description of this system, we consider a smaller set of phase function
+\begin{equation*}
+ \Bphase{}(\Aphase{}) = \cip{ \Bphase{\bfR}(\Aphase{}),\Bphase{\bfP}(\Aphase{}) } 
+       = (\bfR_1(\Aphase{}),\ldots,\bfR_{\ncg}(\Aphase{}),\bfP_1(\Aphase{}),\ldots,\bfP_{\ncg}(\Aphase{}))\,,
+\end{equation*}
+which we choose as a CG phase-space variables.
 The time evolution of a function of phase variables is given by
-\begin{equation*}
-  \totd{\Bphase{}(\Aphase{}(t))}{t} =
-  \Lio\,\Bphase{}(\Aphase{}(t)),\quad\Bphase{}(\Aphase{}(0)) = \Bphase{}(\Aphase{0})\,.
-\end{equation*}
-Here, the operator $\Lio\equiv iL$ is the \emph{Liouvillian} and the formal solution is given by
-\begin{equation*}
-	\Bphase{}(\Aphase{}(t)) = \exp{t\Lio}\,\Bphase{}(\Aphase{0}),
-\end{equation*}
-see appendix \ref{App:B}.
+\begin{equation}\label{Eq:MotionEqGamma}
+  \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\Bphase{}(\Aphase{}(t))\,,
+  \quad\Bphase{}(\Aphase{}(0)) = \Bphase{}(\Aphase{0})\,.
+\end{equation}
+Here, the operator $\Lio\equiv iL$ is the \emph{Liouvillian}, see appendix \ref{App:B}, and the formal solution is given by
+\begin{equation}\label{Eq:SOlLiouville}
+	\Bphase{}(\Aphase{}(t)) = \exp{\Lio t}\,\Bphase{}(\Aphase{0})\,.
+\end{equation}
+This solution implicitly depends upon the full evolution of the FG system, therefore this equation does not provide a self-consistent evolution equation for the observables, i.e. for the phase functions. 
+Differentiating both sides of the relation (\ref{Eq:SOlLiouville}) with respect to time we can rewrite the equation (\ref{Eq:MotionEqGamma}) as
+\begin{equation}
+ \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\exp{\Lio t}\,\Bphase{}(\Aphase{0}) = \exp{\Lio t}\Lio\,\Bphase{0}\,, 
+\end{equation}
+where $\Bphase{0}=\Bphase{}(\Aphase{0})$.
+The Mori-Zwanzig formalism allows us to replace equation obtained by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables $\Bphase{}(\Aphase{})$ themselves leading to a closed equation for the CG variables.
 
-\section{Zwanzig GLE}
+
+\section{Zwanzig's scheme}
 
 
 
-\section{Mori GLE}
+
+\section{Mori's scheme}
 
 
 
@@ -286,10 +304,11 @@ then
 \chapter{Liouville Space}
 \label{App:B}
 In classical mechanics, the phase-space\footnote{
-Mathematically, the space of configuration might be defined by a \emph{manifold} $M$ (either finite or infinite dimensional), and for each position $\bfr\in M$ in that space, the momentum $\bfp$ of the system would take values in the cotangent space $T^*_{\bfr}M$ of that space. This since the velocity $\dot{\bfr}$ naturally lives in the tangent space $T_{\bfr}M$, but the momentum for its definition $$\bfp \coloneqq \pard{L(\bfr,\dot{\bfr})}{\dot{\bfr}},$$ where $L(\bfr,\dot{\bfr})$ is the Lagrangian of the system, lives naturally in the cotangent space $T^*_{\bfr}M$. 
+Mathematically, the space of configuration might be defined by a \emph{manifold} $M$ (either finite or infinite dimensional), and for each position $\bfr\in M$ in that space, the momentum $\bfp$ of the system would take values in the cotangent space $T^*_{\bfr}M$ of that space. This since the velocity $\dot{\bfr}$ naturally lives in the tangent space $T_{\bfr}M$, but the momentum, for its definition, lives naturally in the cotangent space $T^*_{\bfr}M$:
+$$\bfp \coloneqq \pard{L(\bfr,\dot{\bfr})}{\dot{\bfr}},$$ where $L(\bfr,\dot{\bfr})$ is the Lagrangian of the system. 
 Therefore the phase-space is naturally represented by the \emph{cotangent bundle} $$T^*M \coloneqq \bp{\cip{\bfr,\bfp}:\;\bfr\in M,\,\bfp\in T^*_{\bfr}M}\,,$$ which comes with a canonical \emph{symplectic form} $\omega\coloneqq \mbox{d}\bfp \wedge \mbox{d}\bfr$.
 } 
-$X=\mathbb{R}^{6N}$ is the space of all possible states of a physical system composed by N particles. The state is represented by the point $\Aphase{}$ specified by the vector 
+$X=\mathbb{R}^{6N}$ is the space of all possible states of a physical system composed by N particles. The state is characterized by the instantaneous positions and momenta of the N particles of the system
 \begin{equation}\label{gamma}
  \Aphase{}=\cip{ \Aphase{\bfr},\Aphase{\bfp} }=\cip{ \bfr_1,\ldots,\bfr_N , \bfp_1,\ldots,\bfp_N }\,.
 \end{equation}
@@ -301,31 +320,31 @@ where $\rho(\Aphase{})$ can be any equilibrium ensemble pdf. For example, in the
 $\partf=\int_Xe^{-\beta\Ham(\Aphase{})}\diff\Aphase{}\,.$
 
 The evolution of a state is obtained in according to the canonical equations of motion as
-\begin{equation}\label{Eq:liouville}
-\begin{split}
+\begin{equation}
+\begin{split}\label{Eq:MotionEq}
   \totd{\Aphase{}}{t} &= \sum_{i=1}^N \sqp{ \pard{\Aphase{}}{\bfr_i} \cdot \dot{\bfr_i}  + \pard{\Aphase{}}{\bfp_i} \cdot \dot{\bfp_i} } ={}\\
-                      &=\sum_{i=1}^N \sqp{ \pard{\Aphase{}}{\bfr_i} \cdot \pard{\Ham}{\bfp_i} - \pard{\Aphase{}}{\bfp_i} \cdot \pard{\Ham}{\bfr_i} } 
-                      \equiv \bp{\Aphase{},\Ham}
+               &=\sum_{i=1}^N \sqp{ \pard{\Aphase{}}{\bfr_i} \cdot \pard{\Ham}{\bfp_i} - \pard{\Aphase{}}{\bfp_i} \cdot \pard{\Ham}{\bfr_i} } 
+               \equiv \bp{\Aphase{},\Ham}
 \end{split}
 \end{equation}
 where $\bp{\Aphase{},\Ham}$ is Poisson bracket of $\Aphase{}$ with the Hamiltonian $\Ham$. The equation obtained indicates that $\bp{\Aphase{},\Ham}$ is a generator of the time evolution of $\Aphase{}(t)$.
 
 The Poisson bracket allows us to introduce an operator $L$ called \emph{Liouvillian} or \emph{Liouville operator} 
 \begin{equation}\label{Eq:liouvilleOperator}
-  iL \equiv \bp{ \ldots,\Ham} = \sum_{i=1}^N \sqp{ \pard{\Ham}{\bfp_i}\cdot\pard{}{\bfr_i} - \pard{\Ham}{\bfr_i}\cdot\pard{}{\bfp_i} }
+  iL \coloneqq \bp{ \ldots,\Ham} = \sum_{i=1}^N \sqp{ \pard{\Ham}{\bfp_i}\cdot\pard{}{\bfr_i} - \pard{\Ham}{\bfr_i}\cdot\pard{}{\bfp_i} }
 \end{equation}
 where $i=\sqrt{-1}$.
 
-The equation (\ref{Eq:liouville}) can be rewrite as $\mbox{d}\Aphase{}/\mbox{d}t=iL\,\Aphase{}$, which can be formally resolved as
+The equation (\ref{Eq:MotionEq}) can be rewrite as $\mbox{d}\Aphase{}/\mbox{d}t=iL\,\Aphase{}$, which can be formally resolved as
 $$
  \Aphase{}(t) = e^{iLt} \,\Aphase{}(0)\,,
 $$
 where the operator $exp(iLt)$ is know as the \emph{classical propagator} and defines a mapping in phase-space. 
 
 Let $A:X\to\real$ a \emph{phase functions} satisfying $A\in L^2\cip{X,\mathbb{P}}$. If $L^2\cip{X,\mathbb{P}}$ comes with the usual scalar product 
-$$
+\begin{equation}\label{eq:innerProd}
 \cip{A,B}=\int_X A(\Aphase{})B(\Aphase{})\, \mathbb{P}(\mbox{d}\Aphase{}) = \int_X A(\Aphase{}) B(\Aphase{})\, \rho(\Aphase{})\,\diff\Aphase{}\,, 
-$$
+\end{equation}
 then $L^2\cip{X,\mathbb{P}}$ is a Hilbert space\footnote{
 In general, let $X$ is a set and $\mu$ is a countably additive measure on the $\sigma$-algebra of subsets of $X$. The Hilbert space $L^2\cip{X,\mu}$ is the space of complex-valued measurable functions such that
 $$
@@ -337,25 +356,26 @@ $$
 $$
 }. 
 It is simple to show that the rate of change of $A$ is given by $\mbox{d}A/\mbox{d}t=iL\,A$, which formal solution is given by 
-$$
+\begin{equation}
 A(\Aphase{},t) = e^{iLt} \,A(\Aphase{},0)\,.
-$$
+\end{equation}
 
 The Hilbert space just defined is often called \emph{Liouville space} because the Liouvillian generates the motion in this space. In a similar way to quantum mechanics, we can show that the Liouvillian $L$ is a linear Hermitian operator, that is $L^{\dagger}=L$ where $L^{\dagger}$ is Hermitian conjugate of $L$, and
 thereby the classical propagator is a unitary operator in the phase-space.
 
 We can now define the \emph{time correlation function} $C(t)$ as
-\[
-C(t) \coloneqq \left\langle A(0)\,A(t)\right\rangle=\int_X A(\Aphase{},0)A(\Aphase{},t)\, \rho(\Aphase{})\diff\Aphase{}\,,
-\] 
+\begin{equation}
+ C(t) \coloneqq \left\langle A(0)\,A(t)\right\rangle=\int_X A(\Aphase{},0)A(\Aphase{},t)\, \rho(\Aphase{})\diff\Aphase{}\,,
+\end{equation}
 where $\left\langle\ldots\right\rangle$ denotes an ensemble average. This equation can be expressed as 
-\[
+\begin{equation*}
 C(t) = \int_X A(\Aphase{})\,e^{iLt}A(\Aphase{})\, \rho	(\Aphase{})\diff\Aphase{} = \cip{A(\Aphase{}), e^{iLt}A(\Aphase{}) } = \cip{ A(0),A(t)}\,,
-\]
+\end{equation*}
 thus we obtained
-\[
-\left\langle A(0)\,A(t)\right\rangle = \cip{ A(0),A(t)}.
-\]
+\begin{equation*}
+ \left\langle A(0)\,A(t)\right\rangle = \cip{ A(0),A(t)}.
+\end{equation*}
+
 
 \cleardoublepage
 \phantomsection
