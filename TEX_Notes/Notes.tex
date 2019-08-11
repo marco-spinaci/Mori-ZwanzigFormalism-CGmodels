@@ -39,7 +39,7 @@ The \emph{projection operator technique} are powerful tools for the study of irr
  \frac{\diff A}{\diff t}=i\Omega A(t)-\int_0^t\,\diff\tau K(\tau)A(t-\tau)+F(t)
 \end{equation}
 where $\Omega$, $K(t)$ and $F(t)$ are well-defined functions, called the frequency, memory function, and random force respectively.
-This equation describes the non-equilibrium evolution of any set of functions $A(t)$ defined on the phase-space of the arbitrary microscopic system, close to thermal equilibrium \cite{Mori1965}. To now these variables $A(t)$ are called collective variables, relevant variables, coarse-grained variables or collective modes, depending on the context.
+This equation describes the non-equilibrium evolution of any set of functions $A(t)$ defined on the phase-space of the arbitrary microscopic system, close to thermal equilibrium \cite{Mori1965}. To now these variables $A(t)$ are called collective variables, relevant variables, coarse-grained (CG) variables or collective modes, depending on the context.
 Some years later in 1973 R. Zwanzig derived a class of generalized Langevin equations describing the motion of a system interacting with a heat bath, this GLE is exact but differs from that obtained by Mori's scheme for two reasons: for the presence of an arbitrary nonlinear force and for the fact that its validity is not restricted to small deviations from the thermal equilibrium \cite{Zwanzig1973}.
 In recent years D. Kauzlari\'c et all showed, in their work on the calculation of the friction matrix in the coarse-grained description of an atomistic system, that Mori GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables (the functions $A(t)$ in the equation (\ref{generalGLE})) evolve in a time scale much larger than the memory time scale \cite{Kauzlaric2011}.
 These techniques are is know in various context as well as in transport theory. For example in the dynamic light scattering or in the liquids theory, the GLE is used to compute time-correlation functions under circumstances where the usual phenomenological equations do not apply. Indeed through the equation (\ref{generalGLE}) can be obtained an equation for the time correlation function $C(t)$:  
@@ -52,14 +52,16 @@ If the dynamical system considered is Hamiltonian we can use two equivalent appr
 The former applying the projection operator in a Hilbert space of probability densities function (pdf) to the Liouville equation, obtained the generalized Fokker-Planck and master equations \cite{Kinjo2007,Zwanzig1960,Zwanzig1961,Zwanzig1964}.
 While the latter, applying the projection operator in the Liouville space, see appendix \ref{App:B}, to the equation of motion of time-dependent property phase function, obtained GLE and transport equation \cite{DiPasquale2019,Hijon2010,Mori1965,Nordholm1975,Zwanzig1973}.
 The mathematical equivalence of these two approaches is given by the duality between Liouville space and the space of densities of states.
-In what follows, we choose to follow the second approach since this results in a more physically-intuitive derivation and we will derive the GLE with the Zwanzig projection and the Mori projection, respectively.
+In what follows, we choose to follow the second approach since this results in a more physically-intuitive derivation and we will derive the GLE for the CG variables with the \emph{Zwanzig projection} and the \emph{Mori projection}, respectively.
 
-We assume that at the microscopic level the system is well described by classical mechanics and is composed by $\nfg$ particles. We will refer to it as the \emph{fine-grained} (FG) system. Furthermore, we assume that the coarse-grained description of the same system is composed of $\ncg$ particles. The microscopic state is characterised by variable $\Aphase{}(t)$ in $6\nfg$-dimensional phase-space. To derive a reduced description of this system, we consider a smaller set of phase function
+We assume that at the microscopic level the system is well described by classical mechanics and is composed by $\nfg$ particles. We will refer to it as the \emph{fine-grained} (FG) system. The microscopic state is characterised by variable $\Aphase{}(t)$ in $6\nfg$-dimensional phase-space. To derive a reduced description of this system, we consider a smaller set of phase function $\Bphase{}(\Aphase{})$, which we call observables\footnote{
+Throughout the present section, these observables could be quite general,
+but we will later apply the derivation made here to the particular choice 
 \begin{equation*}
  \Bphase{}(\Aphase{}) = \cip{ \Bphase{\bfR}(\Aphase{}),\Bphase{\bfP}(\Aphase{}) } 
        = (\bfR_1(\Aphase{}),\ldots,\bfR_{\ncg}(\Aphase{}),\bfP_1(\Aphase{}),\ldots,\bfP_{\ncg}(\Aphase{}))\,,
 \end{equation*}
-which we choose as a CG phase-space variables.
+corresponding to the positions and momenta of particles in the CG system composed of $\ncg$ particles.}.
 The time evolution of a function of phase variables is given by
 \begin{equation}\label{Eq:MotionEqGamma}
   \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\Bphase{}(\Aphase{}(t))\,,
@@ -69,21 +71,43 @@ Here, the operator $\Lio\equiv iL$ is the \emph{Liouvillian}, see appendix \ref{
 \begin{equation}\label{Eq:SOlLiouville}
 	\Bphase{}(\Aphase{}(t)) = \exp{\Lio t}\,\Bphase{}(\Aphase{0})\,.
 \end{equation}
-This solution implicitly depends upon the full evolution of the FG system, therefore this equation does not provide a self-consistent evolution equation for the observables, i.e. for the phase functions. 
+This solution implicitly depends upon the full evolution of the FG system, therefore this equation does not provide a self-consistent evolution equation for the observables. 
+
+The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves leading to a closed equation for the CG variables. For example, with the \emph{Zwanzig projection} this is done by projecting the equation for the observables $\Bphase{}$ onto the space of functions of the CG variables, which may be regarded as a subspace of the FG observable space\footnote{This is true as long as some very broad measurability assumptions on the CG variables chosen are met; in practice, choosing CG variables which are continuous and differentiable in the FG variables is already sufficient, and this particular choice is implicitly assumed in the derivation presented here. In theory however, much more general choices can be made.}.
+
+
+\section{Zwanzig approach}
+\subsection{The projection}
+We suppose that the state of the system is described by the canonical equilibrium distribution\footnote{Different choices are possible. For example it is also perfectly possible to carry out the same derivation using the micro-canonical equilibrium measure.} $\rho^{eq}(\Aphase{})$, therefore the probability equilibrium measure is given by the Gibbs measure on the FG phase-space $X=\real^{6\nfg}$:
+\begin{equation*}
+ \mathbb{P}(\diff\Aphase{})=\rho^{eq}(\Aphase{})\diff\Aphase{}=\frac{1}{\partf}\exp{-\beta\Ham(\Aphase{})}\diff\Aphase{}\,.
+\end{equation*}
+% 
+We denote the \emph{Zwanzig projection} as $\mathcal{P}_{\Bphase{}}$:
+%
+\begin{equation}\label{Eq:proj}
+	\mathcal{P}_{\Bphase{}}F(\Aphase{}) = \frac{1}{\Omega(\Bphase{})} \int{ F(\Aphase{}')}\,\dirac{\Bphase{}(\Aphase{}')-\Bphase{}}\rho^{eq}(\Aphase{}')\diff\Aphase{}'
+\end{equation}
+%
+where $F(\Aphase{})$ is a generic function acting on the space-phase and the normalisation factor, also called the \textit{structure function} \cite{Zwanzig1961}, represents the total volume of the surface in phace-space $S(\Bphase{})$, which is defined by $\Bphase{}(\Aphase{})=\Bphase{}$:
+%
+\begin{equation}\label{eq:structurefunc}
+	\Omega(\Bphase{}) = \int\dirac{\Bphase{}(\Aphase{}')-\Bphase{}}\mathbb{P}(\diff\Aphase{}').
+\end{equation}
+%
+The projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary function $F(\Aphase{})$ that part, $\mathcal{P}_{\Bphase{}}F(\Aphase{})$, which depends on $\Aphase{}$ only through $\Bphase{}(\Aphase{})$. The integral in the numerator represent the quantity of  
+
+
+\subsection{Generalized Langevin Equation}
 Differentiating both sides of the relation (\ref{Eq:SOlLiouville}) with respect to time we can rewrite the equation (\ref{Eq:MotionEqGamma}) as
 \begin{equation}
  \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\exp{\Lio t}\,\Bphase{}(\Aphase{0}) = \exp{\Lio t}\Lio\,\Bphase{0}\,, 
 \end{equation}
 where $\Bphase{0}=\Bphase{}(\Aphase{0})$.
-The Mori-Zwanzig formalism allows us to replace equation obtained by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables $\Bphase{}(\Aphase{})$ themselves leading to a closed equation for the CG variables.
-
-
-\section{Zwanzig's scheme}
 
 
 
-
-\section{Mori's scheme}
+\section{Mori approach}
 
 
 
