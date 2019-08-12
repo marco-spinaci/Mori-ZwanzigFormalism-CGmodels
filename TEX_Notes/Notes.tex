@@ -89,13 +89,15 @@ We denote the \emph{Zwanzig projection} as $\mathcal{P}_{\Bphase{}}$:
 	\mathcal{P}_{\Bphase{}}F(\Aphase{}) = \frac{1}{\Omega(\Bphase{})} \int{ F(\Aphase{}')}\,\dirac{\Bphase{}(\Aphase{}')-\Bphase{}}\rho^{eq}(\Aphase{}')\diff\Aphase{}'
 \end{equation}
 %
-where $F(\Aphase{})$ is a generic function acting on the space-phase and the normalisation factor, also called the \textit{structure function} \cite{Zwanzig1961}, represents the total volume of the surface in phace-space $S(\Bphase{})$, which is defined by $\Bphase{}(\Aphase{})=\Bphase{}$:
+where $F(\Aphase{})$ is a generic function acting on the space-phase and the normalisation factor, also called the \textit{structure function}, represents the total volume of the surface $S(\Bphase{})$ in phace-space, which is defined by $\Bphase{}(\Aphase{})=\Bphase{}$:
 %
 \begin{equation}\label{eq:structurefunc}
-	\Omega(\Bphase{}) = \int\dirac{\Bphase{}(\Aphase{}')-\Bphase{}}\mathbb{P}(\diff\Aphase{}').
+	\Omega(\Bphase{}) = \int\dirac{\Bphase{}(\Aphase{}')-\Bphase{}}\mathbb{P}(\diff\Aphase{}')\,.
 \end{equation}
-%
-The projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary function $F(\Aphase{})$ that part, $\mathcal{P}_{\Bphase{}}F(\Aphase{})$, which depends on $\Aphase{}$ only through $\Bphase{}(\Aphase{})$. The integral in the numerator represent the quantity of  
+In other words, \textit{structure function} represents the number of micro-states compatible with the macro-state $\Bphase{}(\Aphase{})=\Bphase{}$ \cite{Hijon2010}.
+  
+The projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary function $F(\Aphase{})$ that part, $\mathcal{P}_{\Bphase{}}F(\Aphase{})$, which depends on $\Aphase{}$ only through $\Bphase{}(\Aphase{})$. 
+For a given $\Aphase{}$ we determine the observables $\Bphase{}=\Bphase{}(\Aphase{})$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondence surface $S(\Bphase{})$, while the \textit{structure function} in the denominator $\Omega(\Bphase{}(\Aphase{}))=\Omega(\Bphase{})$ allows us to spread this amount on the surface $S(\Bphase{})$ \cite{Zwanzig1961}.
 
 
 \subsection{Generalized Langevin Equation}
