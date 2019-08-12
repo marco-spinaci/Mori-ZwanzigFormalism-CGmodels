@@ -78,11 +78,11 @@ The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}
 
 
 \section{Zwanzig approach}
-\subsection{The projection}
+\subsection{The Zwanzig projection}
 We suppose that the state of the system is described by the canonical equilibrium distribution\footnote{Different choices are possible. For example it is also perfectly possible to carry out the same derivation using the micro-canonical equilibrium measure.} $\rho^{eq}(\Aphase{})$, therefore the probability equilibrium measure is given by the Gibbs measure on the FG phase-space $X=\real^{6\nfg}$:
-\begin{equation*}
+\begin{equation}\label{Eq:GibbsMeas}
  \mathbb{P}(\diff\Aphase{})=\rho^{eq}(\Aphase{})\diff\Aphase{}=\frac{1}{\partf}\exp{-\beta\Ham(\Aphase{})}\diff\Aphase{}\,.
-\end{equation*}
+\end{equation}
 % 
 We denote the \emph{Zwanzig projection} as $\mathcal{P}_{\Bphase{}}$:
 %
@@ -103,11 +103,26 @@ Therefore, loosely speaking, $\mathcal{P}_{\Bphase{}}$ ``average'' the function 
 The fact that $\mathcal{P}_{\Bphase{}}$ is a projection operator can be easily verified by showing that it satisfies the necessary and
 sufficient condition for a projection operator, $\mathcal{P}_{\Bphase{}}^2=\mathcal{P}_{\Bphase{}}$ \cite{Zwanzig1961}. 
 
-We will now show that this projection is equivalent to taking the conditional expectation\footnote{Since identifying the projection with a conditional expectation will be useful for the following sections.}, as define in appendix \ref{App:A}, $\cexpval{F}{\,\Bphase{}} \equiv \aver{F}_{\Bphase{}}$ with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for a specific value of the CG variables $\Bphase{}(\Aphase{})=\Bphase{}$ \cite{Chorin2000,DiPasquale2019}.
 
-Let $A\in L^2\cip{X,\mathbb{P}}$, i.e. a phase function in the Liouville space (see appendix \ref{App:B}). We can determine the observed value of the phase function $A$ as the expected value with respect to the measure $\mathbb{P}(\diff\Aphase{})$, $\mathbb{E}[A]$.
+\subsection{Equivalence of Zwanzig projection and conditional expectation}
+We will now show that this projection is equivalent to taking the conditional expectation: 
+$$\mathcal{P}_{\Bphase{}}F \equiv \cexpval{F}{\,\Bphase{}} = \aver{F}_{\Bphase{}}\,$$ 
+with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for a specific value of the CG variables $\Bphase{}(\Aphase{})=\Bphase{}$ \cite{Chorin2000,DiPasquale2019}. This is done because it will be useful for the following sections.
 
+Let $A\in L^2\cip{X,\mathbb{P}}$, i.e. a phase function in the Liouville space (see appendix \ref{App:B}). The observed value of the phase function $A$ is the expected value $\mathbb{E}[A]$, defined by (\ref{Def:E[...]}), with respect to the Gibbs measure (\ref{Eq:GibbsMeas}).
+Therefore, $A(\Aphase{})$ may be considered a random variable, see definition (\ref{Def:rv}).
+We now focus our attention on a set of functions 
+$$
+\bp{ A_I\in L^2\cip{X,\mathbb{P}}:\; I=1,\ldots,\ncg \;\;\mathrm{and}\;\; \ncg\le\nfg }\,,
+$$
+i.e. on the set of CG variables, which define a space $V=\real^{\ncg}$.
 
+We are now in position to define the projection operator. Given a phase function $B$, we define the projection operator over the CG variables as
+\begin{equation*}
+ \mathcal{P}_{\bfa}B = \int_{A^{-1}\cip{\bp{\bfa}}}B(\Aphase{})\mathbb{P}_{\bfa}(\diff\Aphase{})
+ \quad\mathrm{where}\quad A^{-1}:V \to X
+\end{equation*}
+where $A:X\to L^2\cip{X,\mathbb{P}}$, $A^{-1}\cip{\bp{\bfa}}=\bp{\Aphase{} \in X:\;A(\Aphase{})\in \bp{\bfa}}$
 
 \subsection{Generalized Langevin Equation}
 Differentiating both sides of the relation (\ref{Eq:SOlLiouville}) with respect to time we can rewrite the equation (\ref{Eq:MotionEqGamma}) as
@@ -282,7 +297,7 @@ The function $\psi:\Omega\to\mathbb{R}$ is called $\mathscr{F}$-measurable funct
 \]
 \end{defin}
 
-\begin{defin}[\textbf{Random Variable}]
+\begin{defin}[\textbf{Random Variable}]\label{Def:rv}
 Let $(\Omega,\mathscr{F},\mathbb{P})$ be a probability space. A random variable is $\mathscr{F}$-measurable function, thus
 \[
 X:\Omega \to\mathbb{R}\,,\quad X^{-1}:\mathscr{B}(\mathbb{R})\to\mathscr{F}\,.
@@ -310,9 +325,11 @@ We say that $X$ has a \emph{probability density function} (pdf) $f_X$ if
 \[ \mathbb{P}(X\in B)=\int_Bf_X(x)\,\mbox{d}x \qquad \forall\; B\in\mathscr{B}(\mathbb{R}) \]
 \end{defin}
 
-\begin{defin}[\textbf{Expected value}]
+\begin{defin}[\textbf{Expected value}]\label{Def:E[...]}
 We define the \emph{expectation} $\mathbb{E}\sqp{X}$ of a random variable $X$ by 
-\[ \mathbb{E}\sqp{X}\coloneqq \int_{\Omega}X\,\mbox{d}\mathbb{P} \equiv \int_{\Omega}X(\omega)\,\mathbb{P}(\diff\omega) = \int_{\mathbb{R}}x\,\mathbb{P}_X(\diff x)\,. \]
+\begin{equation*} 
+\mathbb{E}\sqp{X}\coloneqq \int_{\Omega}X\,\mbox{d}\mathbb{P} \equiv \int_{\Omega}X(\omega)\,\mathbb{P}(\diff\omega) = \int_{\mathbb{R}}x\,\mathbb{P}_X(\diff x)\,. 
+\end{equation*}
 In the last equality we changed variable $x=X(\omega)$ and used the definition of distribution of $X$, that is $\mathbb{P}_X(B)=\mathbb{P}(X^{-1}(B))$.
 \end{defin}
 
@@ -401,8 +418,7 @@ A(\Aphase{},t) = e^{iLt} \,A(\Aphase{},0)\,.
 \end{equation}
 The Hilbert space just defined is often called \emph{Liouville space} because the Liouvillian generates the motion in this space. 
 
-In a similar way to quantum mechanics, we can show that the Liouvillian $L$ is a linear Hermitian operator, that is $L^{\dagger}=L$ where $L^{\dagger}$ is Hermitian conjugate of $L$, and
-thereby the \emph{classical propagator} is a unitary operator in the phase-space.
+In a similar way to quantum mechanics, we can now show that the Liouvillian $L$ is a linear Hermitian operator, that is $L^{\dagger}=L$ where $L^{\dagger}$ is Hermitian conjugate of $L$, and thereby the \emph{classical propagator} is a unitary operator in the phase-space.
 
 We can now define the \emph{time correlation function} $C(t)$ as
 \begin{equation}
