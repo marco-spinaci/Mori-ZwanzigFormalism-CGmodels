@@ -18,6 +18,7 @@
 
 \theoremstyle{definition}
 \newtheorem{defin}{Definition}[section]
+\newtheorem{prop}[defin]{Proposition}
 
 \usepackage{mymacrosTESI}
 
@@ -48,7 +49,7 @@ These techniques are is know in various context as well as in transport theory. 
 \end{equation}
 This is called the \emph{memory-function equation} and the random force appears implicitly in $K(t)$ \cite{Berne:DynamicLightScatt,hansen2006}.
 
-If the dynamical system considered is Hamiltonian we can use two equivalent approaches. 
+If the dynamical system considered is Hamiltonian, in the Mori-Zwanzig theory we can use two equivalent approaches. 
 The former applying the projection operator in a Hilbert space of probability densities function (pdf) to the Liouville equation, obtained the generalized Fokker-Planck and master equations \cite{Kinjo2007,Zwanzig1960,Zwanzig1961,Zwanzig1964}.
 While the latter, applying the projection operator in the Liouville space, see appendix \ref{App:B}, to the equation of motion of time-dependent property phase function, obtained GLE and transport equation \cite{DiPasquale2019,Hijon2010,Mori1965,Nordholm1975,Zwanzig1973}.
 The mathematical equivalence of these two approaches is given by the duality between Liouville space and the space of densities of states.
@@ -97,7 +98,15 @@ where $F(\Aphase{})$ is a generic function acting on the space-phase and the nor
 In other words, \textit{structure function} represents the number of micro-states compatible with the macro-state $\Bphase{}(\Aphase{})=\Bphase{}$ \cite{Hijon2010}.
   
 The projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary function $F(\Aphase{})$ that part, $\mathcal{P}_{\Bphase{}}F(\Aphase{})$, which depends on $\Aphase{}$ only through $\Bphase{}(\Aphase{})$. 
-For a given $\Aphase{}$ we determine the observables $\Bphase{}=\Bphase{}(\Aphase{})$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondence surface $S(\Bphase{})$, while the \textit{structure function} in the denominator $\Omega(\Bphase{}(\Aphase{}))=\Omega(\Bphase{})$ allows us to spread this amount on the surface $S(\Bphase{})$ \cite{Zwanzig1961}.
+For a given $\Aphase{}$ we determine the observables $\Bphase{}=\Bphase{}(\Aphase{})$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondence surface $S(\Bphase{})$, while the \textit{structure function} in the denominator $\Omega(\Bphase{}(\Aphase{}))=\Omega(\Bphase{})$ allows us to spread this amount on the surface $S(\Bphase{})$.
+Therefore, loosely speaking, $\mathcal{P}_{\Bphase{}}$ ``average'' the function $F(\Aphase{})$ over the surface $S(\Bphase{}(\Aphase{}))$. 
+The fact that $\mathcal{P}_{\Bphase{}}$ is a projection operator can be easily verified by showing that it satisfies the necessary and
+sufficient condition for a projection operator, $\mathcal{P}_{\Bphase{}}^2=\mathcal{P}_{\Bphase{}}$ \cite{Zwanzig1961}. 
+
+We will now show that this projection is equivalent to taking the conditional expectation\footnote{Since identifying the projection with a conditional expectation will be useful for the following sections.}, as define in appendix \ref{App:A}, $\cexpval{F}{\,\Bphase{}} \equiv \aver{F}_{\Bphase{}}$ with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for a specific value of the CG variables $\Bphase{}(\Aphase{})=\Bphase{}$ \cite{Chorin2000,DiPasquale2019}.
+
+Let $A\in L^2\cip{X,\mathbb{P}}$, i.e. a phase function in the Liouville space (see appendix \ref{App:B}). We can determine the observed value of the phase function $A$ as the expected value with respect to the measure $\mathbb{P}(\diff\Aphase{})$, $\mathbb{E}[A]$.
+
 
 
 \subsection{Generalized Langevin Equation}
@@ -304,15 +313,15 @@ We say that $X$ has a \emph{probability density function} (pdf) $f_X$ if
 \begin{defin}[\textbf{Expected value}]
 We define the \emph{expectation} $\mathbb{E}\sqp{X}$ of a random variable $X$ by 
 \[ \mathbb{E}\sqp{X}\coloneqq \int_{\Omega}X\,\mbox{d}\mathbb{P} \equiv \int_{\Omega}X(\omega)\,\mathbb{P}(\diff\omega) = \int_{\mathbb{R}}x\,\mathbb{P}_X(\diff x)\,. \]
+In the last equality we changed variable $x=X(\omega)$ and used the definition of distribution of $X$, that is $\mathbb{P}_X(B)=\mathbb{P}(X^{-1}(B))$.
 \end{defin}
-\noindent
-In the last equality we changed variable $x=X(\omega)$ and used the definition of distribution of $X$, that is $\mathbb{P}_X(B)=\mathbb{P}(X^{-1}(B))$. 
 
+\begin{prop}
 Let $h:\mathbb{R}\to\mathbb{R}$ a Borel measurable function. Then
 \[
 h(X)\in\mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}} \coloneqq \bp{ X\in\cip{\Omega,\mathscr{F},\mathbb{P}}:\;\mathbb{E}\sqp{|X|^1}<\infty }
-\;\Leftrightarrow\; h\in\mathcal{L}^1\cip{\Omega,\mathscr{B},\mathbb{P}_X}
 \] 
+if and only if $h\in\mathcal{L}^1\cip{\Omega,\mathscr{B},\mathbb{P}_X}$
 and then
 $$\mathbb{E}\sqp{h(X)}=\int_{\mathbb{R}}h(x)\,\mathbb{P}_X(\diff x)\,.$$
 Furthermore, if $f_X$ is a pdf of $X$ and
@@ -323,6 +332,11 @@ then
 \[
 \mathbb{E}\sqp{h(X)}=\int_{\mathbb{R}}h(x)\,f_X(x)\,\diff x\,.
 \]
+\end{prop}
+\begin{proof}
+See Williams \cite[pp.~68-69]{Williams1991}.
+\end{proof}
+
 
 \section{Stochastic Processes}
 
@@ -367,7 +381,7 @@ $$
 $$
 where the operator $exp(iLt)$ is know as the \emph{classical propagator} and defines a mapping in phase-space. 
 
-Let $A:X\to\real$ a \emph{phase functions} satisfying $A\in L^2\cip{X,\mathbb{P}}$. If $L^2\cip{X,\mathbb{P}}$ comes with the usual scalar product 
+Let $A:X\to\real$ a \emph{phase functions} satisfying $A\in L^2\cip{X,\mathbb{P}}$, where $L^2\cip{X,\mathbb{P}}$ is the Lebesgue space of square-summable functions and where functions are identified if and only if they differ only on a set of measure zero. If $L^2\cip{X,\mathbb{P}}$ comes with the usual scalar product 
 \begin{equation}\label{eq:innerProd}
 \cip{A,B}=\int_X A(\Aphase{})B(\Aphase{})\, \mathbb{P}(\mbox{d}\Aphase{}) = \int_X A(\Aphase{}) B(\Aphase{})\, \rho(\Aphase{})\,\diff\Aphase{}\,, 
 \end{equation}
@@ -385,9 +399,10 @@ It is simple to show that the rate of change of $A$ is given by $\mbox{d}A/\mbox
 \begin{equation}
 A(\Aphase{},t) = e^{iLt} \,A(\Aphase{},0)\,.
 \end{equation}
+The Hilbert space just defined is often called \emph{Liouville space} because the Liouvillian generates the motion in this space. 
 
-The Hilbert space just defined is often called \emph{Liouville space} because the Liouvillian generates the motion in this space. In a similar way to quantum mechanics, we can show that the Liouvillian $L$ is a linear Hermitian operator, that is $L^{\dagger}=L$ where $L^{\dagger}$ is Hermitian conjugate of $L$, and
-thereby the classical propagator is a unitary operator in the phase-space.
+In a similar way to quantum mechanics, we can show that the Liouvillian $L$ is a linear Hermitian operator, that is $L^{\dagger}=L$ where $L^{\dagger}$ is Hermitian conjugate of $L$, and
+thereby the \emph{classical propagator} is a unitary operator in the phase-space.
 
 We can now define the \emph{time correlation function} $C(t)$ as
 \begin{equation}
