@@ -113,16 +113,15 @@ Let $A\in L^2\cip{X,\mathbb{P}}$, i.e. a phase function in the Liouville space (
 Therefore, $A(\Aphase{})$ may be considered a random variable, see definition (\ref{Def:rv}).
 We now focus our attention on a set of functions 
 $$
-\bp{ A_I\in L^2\cip{X,\mathbb{P}}:\; I=1,\ldots,\ncg \;\;\mathrm{and}\;\; \ncg\le\nfg }\,,
+\bp{ A_I\in L^2\cip{X,\mathbb{P}}\colon\; I=1,\ldots,\ncg \;\;\mathrm{and}\;\; \ncg\le\nfg }\,,
 $$
 i.e. on the set of CG variables, which define a space $V=\real^{\ncg}$.
 
 We are now in position to define the projection operator. Given a phase function $B$, we define the projection operator over the CG variables as
 \begin{equation*}
- \mathcal{P}_{\bfa}B = \int_{A^{-1}\cip{\bp{\bfa}}}B(\Aphase{})\mathbb{P}_{\bfa}(\diff\Aphase{})
- \quad\mathrm{where}\quad A^{-1}:V \to X
+ \mathcal{P}_{\bfa}B = \int_{A^{-1}\cip{\bp{\bfa}}}B(\Aphase{})\mathbb{P}_{\bfa}(\diff\Aphase{})\,,
 \end{equation*}
-where $A:X\to L^2\cip{X,\mathbb{P}}$, $A^{-1}\cip{\bp{\bfa}}=\bp{\Aphase{} \in X:\;A(\Aphase{})\in \bp{\bfa}}$
+where $A^{-1}\cip{\bp{\bfa}}=\bp{\Aphase{} \in X:\;A(\Aphase{})\in \bp{\bfa}}$
 
 \subsection{Generalized Langevin Equation}
 Differentiating both sides of the relation (\ref{Eq:SOlLiouville}) with respect to time we can rewrite the equation (\ref{Eq:MotionEqGamma}) as
@@ -272,7 +271,7 @@ A pair $(\Omega,\mathscr{F})$, where $\Omega$ is a set and $\mathscr{F}$ is a $\
 \begin{defin}[\textbf{Probability Measure}]
 A probability measure $\mathbb{P}$ on the measurable space $(\Omega,\mathscr{F})$ is a function
 \[
-\mathbb{P}:\mathscr{F} \to [0,1];\: F \mapsto \mathbb{P}(F);
+\mathbb{P}\colon\mathscr{F} \to [0,1];\: F \mapsto \mathbb{P}(F);
 \]
 satisfying
 \begin{compactenum}[(i)] 
@@ -291,30 +290,30 @@ Since we are usually interested in the consequence of the outcomes of an experim
 
 \begin{defin}[\textbf{$\mathscr{F}$-measurable function}]
 Let $(\Omega,\mathscr{F},\mathbb{P})$ and $(\mathbb{R},\mathscr{B}(\mathbb{R}))$ be two measurable spaces. 
-The function $\psi:\Omega\to\mathbb{R}$ is called $\mathscr{F}$-measurable function if 
+The function $\psi\colon \Omega\to\mathbb{R}$ is called $\mathscr{F}$-measurable function if 
 \[
-\psi^{-1}(B)\coloneqq\{\omega\in\Omega:\psi(\omega)\in B \}\in\mathscr{F},\quad\forall\, B\in\mathscr{B}(\mathbb{R})\,.
+\psi^{-1}(B)\coloneqq\{\omega\in\Omega\colon \psi(\omega)\in B \}\in\mathscr{F},\quad\forall\, B\in\mathscr{B}(\mathbb{R})\,.
 \]
 \end{defin}
 
 \begin{defin}[\textbf{Random Variable}]\label{Def:rv}
 Let $(\Omega,\mathscr{F},\mathbb{P})$ be a probability space. A random variable is $\mathscr{F}$-measurable function, thus
 \[
-X:\Omega \to\mathbb{R}\,,\quad X^{-1}:\mathscr{B}(\mathbb{R})\to\mathscr{F}\,.
+X\colon \Omega \to\mathbb{R}\,,\quad X^{-1}\colon \mathscr{B}(\mathbb{R})\to\mathscr{F}\,.
 \]
 \end{defin}
 
 \noindent
 Every random variable, carried by some probability triple $(\Omega,\mathscr{F},\mathbb{P})$, induces a probability measure $\mathbb{P}_X$ on $(\mathbb{R},\mathscr{B}(\mathbb{R}))$:
 \begin{align*}
-\mathbb{P}_X:\mathscr{B}(\mathbb{R}) &\to [0,1] \\
+\mathbb{P}_X\colon \mathscr{B}(\mathbb{R}) &\to [0,1] \\
 B &\mapsto \mathbb{P}_X(B)\coloneqq\mathbb{P}(X\in B)=\mathbb{P}(X^{-1}(B))\,.
 \end{align*}
 The measure $\mathbb{P}_X$ is called \emph{distribution} (or sometimes the \emph{law}) of $X$.
 We can now define the \emph{distribution function} of $X$:
 \begin{align*}
-F_X:\mathbb{R} &\to[0,1] \\ 
-x &\mapsto F_X(x) \coloneqq \mathbb{P}\left( \left\lbrace \omega\in\Omega:X(\omega)\leq x \right\rbrace \right)=\mathbb{P}\left( X\leq x\right)\,.
+F_X\colon \mathbb{R} &\to[0,1] \\ 
+x &\mapsto F_X(x) \coloneqq \mathbb{P}\left( \left\lbrace \omega\in\Omega\colon X(\omega)\leq x \right\rbrace \right)=\mathbb{P}\left( X\leq x\right)\,.
 \end{align*}
 This function $F_X$ indicates the likelihood that the random variable $X$ is in $(-\infty,x]$.
 
@@ -326,19 +325,19 @@ We say that $X$ has a \emph{probability density function} (pdf) $f_X$ if
 \end{defin}
 
 \begin{defin}[\textbf{Expected value}]\label{Def:E[...]}
-We define the \emph{expectation} $\mathbb{E}\sqp{X}$ of a random variable $X$ by 
+Let $\mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}}$ be the space of integrable function, see \cite[p. 54]{Williams1991}.
+We define the \emph{expectation} $\mathbb{E}\sqp{X}$ of a random variable $X\in \mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}}$ by 
 \begin{equation*} 
-\mathbb{E}\sqp{X}\coloneqq \int_{\Omega}X\,\mbox{d}\mathbb{P} \equiv \int_{\Omega}X(\omega)\,\mathbb{P}(\diff\omega) = \int_{\mathbb{R}}x\,\mathbb{P}_X(\diff x)\,. 
+\mathbb{E}\sqp{X}\coloneqq \int_{\Omega}X\,\mbox{d}\mathbb{P} \equiv \int_{\Omega}X(\omega)\,\mathbb{P}(\diff\omega) = \int_{\mathbb{R}}x\,\mathbb{P}_X(\diff x)\,, 
 \end{equation*}
 In the last equality we changed variable $x=X(\omega)$ and used the definition of distribution of $X$, that is $\mathbb{P}_X(B)=\mathbb{P}(X^{-1}(B))$.
 \end{defin}
 
 \begin{prop}
-Let $h:\mathbb{R}\to\mathbb{R}$ a Borel measurable function. Then
-\[
-h(X)\in\mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}} \coloneqq \bp{ X\in\cip{\Omega,\mathscr{F},\mathbb{P}}:\;\mathbb{E}\sqp{|X|^1}<\infty }
-\] 
-if and only if $h\in\mathcal{L}^1\cip{\Omega,\mathscr{B},\mathbb{P}_X}$
+Let $h:\mathbb{R}\to\mathbb{R}$ a Borel measurable function and $X\in \mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}}$ a random variable.
+
+\noindent  
+Then $ h(X)\in\mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}}$ if and only if $h\in\mathcal{L}^1\cip{\Omega,\mathscr{B},\mathbb{P}_X}$
 and then
 $$\mathbb{E}\sqp{h(X)}=\int_{\mathbb{R}}h(x)\,\mathbb{P}_X(\diff x)\,.$$
 Furthermore, if $f_X$ is a pdf of $X$ and
@@ -354,6 +353,11 @@ then
 See Williams \cite[pp.~68-69]{Williams1991}.
 \end{proof}
 
+\begin{defin}[\textbf{Conditional expectation}]\label{Def:CondExp}
+Let $(\Omega,\mathscr{F},\mathbb{P})$ be a probability space and $X \in \mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}}$ a random variable.
+Let $\mathcal{G}\subseteq\mathcal{F}$ 
+
+\end{defin}
 
 \section{Stochastic Processes}
 
