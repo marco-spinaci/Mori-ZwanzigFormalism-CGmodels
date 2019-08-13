@@ -408,6 +408,7 @@ g(z) \coloneqq \int_{\real} h(x)f_{X\lvert Z}\cip{x\lvert z}\diff x\,,
 $$
 then $Y\coloneqq g(Z)$ is a version of the conditional expectation of $h(X)$ given $\sigma(Z)$, $\cexpval{h(X)}{\,\sigma(Z)}$.
 \end{prop}
+
 \begin{proof}
 We can write $\sigma\cip{Z}=\bp{A=Z^{-1}(B)\,,\;\mathrm{for}\,B\in\mathscr{B}(\real)}\subseteq\mathscr{F}$ where 
 $$Z^{-1}(B)=\bp{\omega\in\Omega\colon Z(\omega)\in B }\in\mathscr{F}\quad\forall\,B\in\mathscr{B}(\real)\,. $$
@@ -418,14 +419,11 @@ I_B(Z) \coloneqq \begin{cases}
  0 & \text{otherwise}\,.
 \end{cases}
 $$
-
 \begin{multline*}
 \cexp{h(X)I_B(Z)}=\iint h(x)I_B(z)f_{X,Z}(x,z)\diff x\diff z={}\\
    =\iint h(x)I_B(z)f_{X\lvert Z}\cip{x\lvert z}f_Z(z)\diff x\diff z ={}\\
    =\int_{\real} g(z)I_B(z)f_Z(z)\diff z = \int_B g(z)f_Z(z)\diff z = \cexp{g(Z)I_B(Z)}
 \end{multline*}
-
-
 \end{proof}
 
 
