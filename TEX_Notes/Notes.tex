@@ -434,9 +434,10 @@ $$
 So we have
 \begin{multline*}
 \cexp{g(Z)I_{A}}=\cexp{g(Z)I_B(Z)} = \int_B g(z)f_Z(z)\,\diff z ={}\\ 
- = \int_{\real} g(z)I_B(z)f_Z(z)\,\diff z =\int_{\real}\cip{\int_\real h(x) f_{X\lvert Z}\cip{x\lvert 	z}  \diff x}I_B(z)f_Z(z) \,\diff z ={}\\
-   = \int_{\real}\int_{\real} h(x)I_B(z)\,f_{X,Z}(x,z)\,\diff x\,\diff z = \cexp{h(X)I_B(Z)}=\cexp{h(X)I_{A}}
+ = \int_{\real} g(z)I_B(z)f_Z(z)\,\diff z =\int_{\real}\cip{\int_\real h(x) f_{X\lvert Z}\cip{x\lvert z}\,\diff x}I_B(z)f_Z(z) \,\diff z ={}\\
+   = \int_{\real}\int_{\real} h(x)I_B(z)\,f_{X,Z}(x,z)\,\diff x\,\diff z = \cexp{h(X)I_B(Z)}=\cexp{h(X)I_{A}}\,,
 \end{multline*}
+for the Fubini's theorem, see \cite[p.~87]{Williams1991}.
 \end{proof}
 
 
