@@ -70,7 +70,7 @@ The time evolution of a function of phase variables is given by
   \quad\Bphase{}(\Aphase{}(0)) = \Bphase{}(\Aphase{0})\,.
 \end{equation}
 Here, the operator $\Lio\equiv iL$ is the \emph{Liouvillian}, see appendix \ref{App:B}, and the formal solution is given by
-\begin{equation}\label{Eq:SOlLiouville}
+\begin{equation}\label{Eq:SolLiouville}
 	\Bphase{}(\Aphase{}(t)) = \exp{\Lio t}\,\Bphase{}(\Aphase{0})\,.
 \end{equation}
 This solution implicitly depends upon the full evolution of the FG system, therefore this equation does not provide a self-consistent evolution equation for the observables. 
@@ -118,14 +118,14 @@ $$
 $$
 i.e. on the set of CG variables, which define a space $V=\real^{\ncg}$.
 
-We are now in position to define the projection operator. Given a phase function $B$, we define the projection operator over the CG variables as
+We are now in position to define the projection operator. Given a phase function $B$, we define the projection operator over the CG space $V$ as
 \begin{equation*}
  \mathcal{P}_{\bfa}B = \int_{A^{-1}\cip{\bp{\bfa}}}B(\Aphase{})\mathbb{P}_{\bfa}(\diff\Aphase{})\,,
 \end{equation*}
 where $A^{-1}\cip{\bp{\bfa}}=\bp{\Aphase{} \in X:\;A(\Aphase{})= \bfa}$ is the preimage of $\Bphase{}\in \real^{\ncg}$.
 
 \subsection{Generalized Langevin Equation}
-Differentiating both sides of the relation (\ref{Eq:SOlLiouville}) with respect to time we can rewrite the equation (\ref{Eq:MotionEqGamma}) as
+Differentiating both sides of the relation (\ref{Eq:SolLiouville}) with respect to time we can rewrite the equation (\ref{Eq:MotionEqGamma}) as
 \begin{equation}
  \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\exp{\Lio t}\,\Bphase{}(\Aphase{0}) = \exp{\Lio t}\Lio\,\Bphase{0}\,, 
 \end{equation}
@@ -356,7 +356,7 @@ then
 
 We now give a central definition of modern probability, that is a fundamental theorem (Kolmogorov, 1933).
 
-\begin{theorem}[\textbf{Conditional expectation}]\label{Def:CondExp}
+\begin{theorem}[\textbf{Conditional expectation}]\label{Th:CondExp}
 Let $\cip{\Omega,\mathscr{F},\mathbb{P}}$ be a probability space, $X \in \mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}}$ a random variable and $\mathscr{G}$ a sub-$\sigma$-algebra of $\mathscr{F}$, $\mathscr{G}\subseteq\mathscr{F}$.
 Then there exists a random variable $Y\in \mathcal{L}^1\cip{\Omega,\mathscr{G},\mathbb{P}}$, that is $\mathscr{G}$-measurable and $\cexp{\abs{Y}}<\infty$, such that
 $$
@@ -406,23 +406,36 @@ Let $h$ be a Borel function on $\real$ such that $\cexp{\abs{h(X)}}<\infty$. Set
 $$
 g(z) \coloneqq \int_{\real} h(x)f_{X\lvert Z}\cip{x\lvert z}\diff x\,,
 $$
-then $Y\coloneqq g(Z)$ is a version of the conditional expectation of $h(X)$ given $\sigma(Z)$, $\cexpval{h(X)}{\,\sigma(Z)}$.
+then $Y\coloneqq g(Z)$ is a version of the conditional expectation of $h(X)$ given $\sigma(Z)$, $\cexpval{h(X)}{\,\sigma(Z)}\equiv\cexpval{h(X)}{\,Z}$.
 \end{prop}
 
 \begin{proof}
-We can write $\sigma\cip{Z}=\bp{A=Z^{-1}(B)\,,\;\mathrm{for}\,B\in\mathscr{B}(\real)}\subseteq\mathscr{F}$ where 
+We can characterize $\sigma(Z)$ as
+$$\sigma\cip{Z}=\bp{A=Z^{-1}(B)\,,\;\mathrm{for}\,B\in\mathscr{B}(\real)}\subseteq\mathscr{F}$$ where 
 $$Z^{-1}(B)=\bp{\omega\in\Omega\colon Z(\omega)\in B }\in\mathscr{F}\quad\forall\,B\in\mathscr{B}(\real)\,. $$
-Hence, we must show that $\cexp{h(X)I_B(Z)}=\cexp{g(Z)I_B(Z)}$ where $I_B(Z)$ is the indicator function of $B$:
+We introduce the indicator function of $A$ as
 $$
-I_B(Z) \coloneqq \begin{cases} 
- 1 & \text{if $Z\in B$}\,, \\ 
- 0 & \text{otherwise}\,.
+I_A(\omega) \coloneqq \begin{cases} 
+ 1 & \text{if $\omega\in A$}\,, \\ 
+ 0 & \text{otherwise}\,,
 \end{cases}
 $$
+and from the characterization of $\sigma(Z)$ one has that $I_A(\omega)=I_B(Z)$, since that $\omega \in A$ if and only if $Z(\omega)\in B$.
+
+\noindent
+Hence, to show that 
+$$
+g(Z)=\cexpval{h(X)}{\,Z}=\int_\real h(x) f_{X\lvert Z}\cip{x\lvert z}  \diff x\,
+$$
+for the theorem (\ref{Th:CondExp}) we must show that
+$$
+\cexp{g(Z)I_{A}}=\cexp{h(X)I_{A}}\quad\forall\,A\in\sigma(Z)\,.
+$$
+So we have
 \begin{multline*}
-\cexp{h(X)I_B(Z)}=\iint h(x)I_B(z)f_{X,Z}(x,z)\diff x\diff z={}\\
-   =\iint h(x)I_B(z)f_{X\lvert Z}\cip{x\lvert z}f_Z(z)\diff x\diff z ={}\\
-   =\int_{\real} g(z)I_B(z)f_Z(z)\diff z = \int_B g(z)f_Z(z)\diff z = \cexp{g(Z)I_B(Z)}
+\cexp{g(Z)I_{A}}=\cexp{g(Z)I_B(Z)} = \int_B g(z)f_Z(z)\,\diff z ={}\\ 
+ = \int_{\real} g(z)I_B(z)f_Z(z)\,\diff z =\int_{\real}\cip{\int_\real h(x) f_{X\lvert Z}\cip{x\lvert 	z}  \diff x}I_B(z)f_Z(z) \,\diff z ={}\\
+   = \int_{\real}\int_{\real} h(x)I_B(z)\,f_{X,Z}(x,z)\,\diff x\,\diff z = \cexp{h(X)I_B(Z)}=\cexp{h(X)I_{A}}
 \end{multline*}
 \end{proof}
 
