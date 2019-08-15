@@ -17,11 +17,13 @@
 \usepackage[colorlinks]{hyperref}
 
 \theoremstyle{definition}
-\newtheorem{defin}{Definition}[section]
+\newtheorem{defin}{Definition}[chapter]
 \newtheorem{prop}[defin]{Proposition}
 \newtheorem{theorem}[defin]{Theorem}
 
 \usepackage{mymacrosTESI}
+
+\usepackage[titletoc,page]{appendix}
 
 \begin{document}
 
@@ -54,7 +56,7 @@ This is called the \emph{memory-function equation} and the random force appears 
 
 If the dynamical system considered is Hamiltonian, in the Mori-Zwanzig theory we can use two equivalent approaches. 
 The former applying the projection operator in a Hilbert space of probability densities function (pdf) to the Liouville equation, obtained the generalized Fokker-Planck and master equations \cite{Kinjo2007,Zwanzig1960,Zwanzig1961,Zwanzig1964}.
-While the latter, applying the projection operator in the Liouville space, see appendix \ref{App:B}, to the equation of motion of time-dependent property phase function, obtained GLE and transport equation \cite{DiPasquale2019,Hijon2010,Mori1965,Nordholm1975,Zwanzig1973}.
+While the latter, applying the projection operator in the Liouville space, see appendix \ref{App:C}, to the equation of motion of time-dependent property phase function, obtained GLE and transport equation \cite{DiPasquale2019,Hijon2010,Mori1965,Nordholm1975,Zwanzig1973}.
 The mathematical equivalence of these two approaches is given by the duality between Liouville space and the space of densities of states.
 In what follows, we choose to follow the second approach since this results in a more physically-intuitive derivation and we will derive the GLE for the CG variables with the \emph{Zwanzig projection} and the \emph{Mori projection}, respectively.
 
@@ -71,7 +73,7 @@ The time evolution of a function of phase variables is given by
   \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\Bphase{}(\Aphase{}(t))\,,
   \quad\Bphase{}(\Aphase{}(0)) = \Bphase{}(\Aphase{0})\,.
 \end{equation}
-Here, the operator $\Lio\equiv iL$ is the \emph{Liouvillian}, see appendix \ref{App:B}, and the formal solution is given by
+Here, the operator $\Lio\equiv iL$ is the \emph{Liouvillian}, see appendix \ref{App:C}, and the formal solution is given by
 \begin{equation}\label{Eq:SolLiouville}
 	\Bphase{}(\Aphase{}(t)) = \exp{\Lio t}\,\Bphase{}(\Aphase{0})\,.
 \end{equation}
@@ -112,7 +114,7 @@ We will now show that this projection is equivalent to taking the conditional ex
 $$\mathcal{P}_{\Bphase{}}F \equiv \cexpval{F}{\,\Bphase{}} = \aver{F}_{\Bphase{}}\,$$ 
 with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for a specific value of the CG variables $\Bphase{}(\Aphase{})=\Bphase{}$ \cite{Chorin2000,DiPasquale2019}. This is done because it will be useful for the following sections.
 
-Let $A$ be a phase function in the Liouville space (see appendix \ref{App:B}).
+Let $A$ be a phase function in the Liouville space (see appendix \ref{App:C}).
 We now focus our attention on a set of functions 
 $$
 \bp{ A_I\in L^2\cip{X,\mathbb{P}}\,,\;\;\mathrm{where}\;\; I=1,\ldots,\ncg \;\;\mathrm{and}\;\; \ncg\le\nfg }\,,
@@ -133,15 +135,34 @@ Therefore, the projection operator has a nice interpretation as a conditional ex
  \mathcal{P}_{a}B = \cexpval{B}{\,\bfA(\Aphase{})=\bfa}\,.
 \end{equation}
 For the mathematical details of the conditional expectation see theorem \ref{Th:CondExp}. 
-We stress here that the conditional expectation \ref{ConExp}, which we rewrite as  $\cexpval{B}{\,\bfa}$, is a function of $\bfa$, is a linear operator and represents the best approximation of $B$ compared to any function of $\bfa$, is therefore an orthogonal projection. For further details on the latest properties listed, see the definition \ref{Def:ExpOrthProj}.
+We stress here that the conditional expectation \ref{ConExp}, which we rewrite as  $\cexpval{B}{\,\bfa}$, is a function of $\bfa$, is a linear operator and represents the best approximation of $B$ compared to any function of $\bfa$, is therefore an orthogonal projection. For further details on the latest properties, see the definition \ref{Def:ExpOrthProj}.
 
+The complementary orthogonal projection $\qproj_{\bfa}$ is define as
+$$
+ \qproj_{\bfa}B\cip{\Aphase{}}=B\cip{\Aphase{}}-\pproj_{\bfa}B\cip{\Aphase{}}\,.
+$$ 
 
 \subsection{Generalized Langevin Equation}
-%Differentiating both sides of the relation (\ref{Eq:SolLiouville}) with respect to time we can rewrite the equation (\ref{Eq:MotionEqGamma}) as
-%\begin{equation}
-% \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\exp{\Lio t}\,\Bphase{}(\Aphase{0}) = \exp{\Lio t}\Lio\,\Bphase{0}\,, 
-%\end{equation}
-%where $\Bphase{0}=\Bphase{}(\Aphase{0})$.
+We are now in the position to derive the GLE. 
+Differentiating both sides of the relation (\ref{Eq:SolLiouville}) with respect to time, we can rewrite the equation (\ref{Eq:MotionEqGamma}) as
+\begin{equation}
+ \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\exp{\Lio t}\,\Bphase{}(\Aphase{0}) = \exp{\Lio t}\Lio\,\Bphase{0}\,, 
+\end{equation}
+where $\Bphase{0}=\Bphase{}(\Aphase{0})$. Applying the identity operator $\idproj=\pproj+\qproj$ to the equation obtained, one has
+\begin{equation}\label{Eq:MoIdProj}
+ \totd{\Bphase{t}}{t} = \exp{\Lio t}\cip{\pproj+\qproj}\Lio\,\Bphase{0}=
+ \exp{\Lio t}\pproj\Lio\,\Bphase{0} + \exp{\Lio t}\qproj\Lio\,\Bphase{0}\,. 
+\end{equation} 
+Now we use the Dunhamel-Dyson operator identity, see appendix \ref{App:D}:
+\begin{equation}
+ \exp{\Lio t} = \exp{t\qproj\Lio} + \int_0^t \exp{(t-s)\Lio}\,\pproj\Lio\,\exp{s\qproj\Lio}\,\diff s
+\end{equation}
+to rewrite the second term on the RHS of eq. (\ref{Eq:MoIdProj}) as
+\begin{equation}
+ \exp{\Lio t}\qproj\Lio\,\Bphase{0} = \exp{t\qproj\Lio}\qproj\Lio\,\Bphase{0} + 
+ \int_0^t \exp{(t-s)\Lio}\,\pproj\Lio\,\exp{s\qproj\Lio}\,\qproj\Lio\,\Bphase{0}\,\diff s\,. 
+\end{equation}
+
 
 
 \section{Mori approach}
@@ -254,13 +275,11 @@ We stress here that the conditional expectation \ref{ConExp}, which we rewrite a
 
 
 
-\appendix
+\begin{appendices}
 
-\chapter{Elements of Probability Theory and Stochastic Processes}
+\chapter{Elements of Probability Theory}
 \label{App:A}
-We introduce some basic definition and results from probability theory and stochastic processes. This material can be found in \cite{Pavliotis2014,Williams1991}. 
-
-\section{Probability Theory}
+We introduce some basic definition and results from probability theory. This material can be found in \cite{Williams1991}. 
 
 \begin{defin}[\textbf{Sample Space}]
 The set of all events, such as all the possible outcomes of an experiment, is called sample space and is denoted by $\Omega$.  
@@ -454,11 +473,11 @@ So we have, applying Fubini's theorem see \cite[p.~77-79]{Williams1991},
 \end{proof}
 
 
-\section{Stochastic Processes}
+\chapter{Elements of Stochastic Processes}
 
 
 \chapter{Liouville Space}
-\label{App:B}
+\label{App:C}
 In classical mechanics, the phase-space\footnote{
 Mathematically, the space of configuration might be defined by a \emph{manifold} $M$ (either finite or infinite dimensional), and for each position $\bfr\in M$ in that space, the momentum $\bfp$ of the system would take values in the cotangent space $T^*_{\bfr}M$ of that space. This since the velocity $\dot{\bfr}$ naturally lives in the tangent space $T_{\bfr}M$, but the momentum, for its definition, lives naturally in the cotangent space $T^*_{\bfr}M$:
 $$\bfp \coloneqq \pard{L(\bfr,\dot{\bfr})}{\dot{\bfr}},$$ where $L(\bfr,\dot{\bfr})$ is the Lagrangian of the system. 
@@ -532,6 +551,10 @@ thus we obtained
  \left\langle A(0)\,A(t)\right\rangle = \cip{ A(0),A(t)}.
 \end{equation*}
 
+\chapter{Dunhamel-Dyson operator identity}
+\label{App:D}
+
+\end{appendices}
 
 \cleardoublepage
 \phantomsection
