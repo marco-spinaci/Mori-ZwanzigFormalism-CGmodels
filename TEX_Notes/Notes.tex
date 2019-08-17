@@ -64,7 +64,7 @@ We assume that at the microscopic level the system is well described by classica
 Throughout the present section, these observables could be quite general,
 but we will later apply the derivation made here to the particular choice 
 \begin{equation*}
- \Bphase{}(\Aphase{}) = \cip{ \Bphase{\bfR}(\Aphase{}),\Bphase{\bfP}(\Aphase{}) } 
+ \Bphase{} = \cip{ \Bphase{\bfR}(\Aphase{}),\Bphase{\bfP}(\Aphase{}) } 
        = (\bfR_1(\Aphase{}),\ldots,\bfR_{\ncg}(\Aphase{}),\bfP_1(\Aphase{}),\ldots,\bfP_{\ncg}(\Aphase{}))\,,
 \end{equation*}
 corresponding to the positions and momenta of particles in the CG system composed of $\ncg$ particles.}.
@@ -80,7 +80,7 @@ Here, the operator $\Lio\equiv iL$ is the \emph{Liouvillian}, see appendix \ref{
 where the exponential operator is defined through its Taylor expansion.
 This solution implicitly depends upon the full evolution of the FG system, therefore this equation does not provide a self-consistent evolution equation for the observables. 
 
-The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves leading to a closed equation for the CG variables. For example, with the \emph{Zwanzig projection} this is done by projecting the equation for the observables $\Bphase{}$ onto the space of functions of the CG variables, which may be regarded as a subspace of the FG observable space\footnote{This is true as long as some very broad measurability assumptions on the CG variables chosen are met; in practice, choosing CG variables which are continuous and differentiable in the FG variables is already sufficient, and this particular choice is implicitly assumed in the derivation presented here. In theory however, much more general choices can be made.}.
+The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables $\Bphase{}(\Aphase{})$ by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves leading to a closed equation for the CG variables $\Bphase{}$. For example, with the \emph{Zwanzig projection} this is done by projecting the equation for the observables $\Bphase{}(\Aphase{})$ onto the space of functions of the CG variables $\Bphase{}$, which may be regarded as a subspace of the FG observable space\footnote{This is true as long as some very broad measurability assumptions on the CG variables chosen are met; in practice, choosing CG variables which are continuous and differentiable in the FG variables is already sufficient, and this particular choice is implicitly assumed in the derivation presented here. In theory however, much more general choices can be made.}.
 
 
 \section{Zwanzig approach}
@@ -104,7 +104,7 @@ where $F(\Aphase{})$ is a generic function acting on the space-phase and the nor
 In other words, \textit{structure function} represents the number of micro-states compatible with the macro-state $\Bphase{}(\Aphase{})=\Bphase{}$ \cite{Hijon2010}.
   
 The projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary function $F(\Aphase{})$ that part, $\mathcal{P}_{\Bphase{}}F(\Aphase{})$, which depends on $\Aphase{}$ only through $\Bphase{}(\Aphase{})$. 
-For a given $\Aphase{}$ we determine the observables $\Bphase{}=\Bphase{}(\Aphase{})$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondence surface $S(\Bphase{})$, while the \textit{structure function} in the denominator $\Omega(\Bphase{}(\Aphase{}))=\Omega(\Bphase{})$ allows us to spread this amount on the surface $S(\Bphase{})$.
+For a given $\Aphase{}$ we determine the observables $\Bphase{}(\Aphase{})=\Bphase{}$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondence surface $S(\Bphase{})$, while the \textit{structure function} in the denominator $\Omega(\Bphase{}(\Aphase{}))=\Omega(\Bphase{})$ allows us to spread this amount on the surface $S(\Bphase{})$.
 Therefore, loosely speaking, $\mathcal{P}_{\Bphase{}}$ ``average'' the function $F(\Aphase{})$ over the surface $S(\Bphase{}(\Aphase{}))$. 
 The fact that $\mathcal{P}_{\Bphase{}}$ is a projection operator can be easily verified by showing that it satisfies the necessary and
 sufficient condition for a projection operator, $\mathcal{P}_{\Bphase{}}^2=\mathcal{P}_{\Bphase{}}$ \cite{Zwanzig1961}. 
@@ -113,14 +113,14 @@ sufficient condition for a projection operator, $\mathcal{P}_{\Bphase{}}^2=\math
 \subsection{Zwanzig Projection as Conditional Expectation}
 We will now show that this projection is equivalent to taking the conditional expectation: 
 $$\mathcal{P}_{\Bphase{}}F \equiv \cexpval{F}{\,\Bphase{}} = \aver{F}_{\Bphase{}}\,$$ 
-with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for a specific value of the CG variables $\Bphase{}(\Aphase{})=\Bphase{}$ \cite{Chorin2000,DiPasquale2019}. This is done because it will be useful for the following sections.
+with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for a specific value of the CG variables $\Bphase{}$ \cite{Chorin2000,DiPasquale2019}. This is done because it will be useful for the following sections.
 
 Let $A$ be a phase function in the Liouville space (see appendix \ref{App:C}).
 We now focus our attention on a set of functions 
 $$
 \bp{ A_I\in L^2\cip{X,\mathbb{P}}\,,\;\;\mathrm{where}\;\; I=1,\ldots,\ncg \;\;\mathrm{and}\;\; \ncg\le\nfg }\,,
 $$
-i.e. on the set of CG variables, which define a space $V=\real^{\ncg}$. Given a phase function $B$, we define the projection operator over the CG space $V$ as
+i.e. on the set of CG variables $\Bphase{}$, which define a space $V=\real^{\ncg}$. Given a phase function $B$, we define the projection operator over the CG space $V$ as
 \begin{equation*}
  \mathcal{P}_{\bfa}B = \int_{A^{-1}\cip{\bp{\bfa}}}B(\Aphase{})\mathbb{P}_{\bfa}(\diff\Aphase{})\,,
 \end{equation*}
