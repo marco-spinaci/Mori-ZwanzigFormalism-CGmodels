@@ -21,6 +21,7 @@
 \newtheorem{prop}[defin]{Proposition}
 \newtheorem{theorem}[defin]{Theorem}
 
+\DeclareMathAlphabet\mathbfcal{OMS}{cmsy}{b}{n}
 \usepackage{mymacrosTESI}
 
 \usepackage[titletoc,page]{appendix}
@@ -107,7 +108,11 @@ The projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary func
 For a given $\Aphase{}$ we determine the observables $\Bphase{}(\Aphase{})=\Bphase{}$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondence surface $S(\Bphase{})$, while the \textit{structure function} in the denominator $\Omega(\Bphase{}(\Aphase{}))=\Omega(\Bphase{})$ allows us to spread this amount on the surface $S(\Bphase{})$.
 Therefore, loosely speaking, $\mathcal{P}_{\Bphase{}}$ ``average'' the function $F(\Aphase{})$ over the surface $S(\Bphase{}(\Aphase{}))$. 
 The fact that $\mathcal{P}_{\Bphase{}}$ is a projection operator can be easily verified by showing that it satisfies the necessary and
-sufficient condition for a projection operator, $\mathcal{P}_{\Bphase{}}^2=\mathcal{P}_{\Bphase{}}$ \cite{Zwanzig1961}. 
+sufficient condition for a projection operator, $\mathcal{P}_{\Bphase{}}^2=\mathcal{P}_{\Bphase{}}$ \cite{Zwanzig1961}.
+We can define the \emph{complementary orthogonal projection} $\qproj$ as
+$$
+ \qproj=\idproj-\pproj\,.
+$$  
 
 
 \subsection{Zwanzig Projection as Conditional Expectation}
@@ -118,30 +123,26 @@ with respect to the equilibrium distribution, for a generic function $F=F(\Aphas
 Let $A$ be a phase function in the Liouville space (see appendix \ref{App:C}).
 We now focus our attention on a set of functions 
 $$
-\bp{ A_I\in L^2\cip{X,\mathbb{P}}\,,\;\;\mathrm{where}\;\; I=1,\ldots,\ncg \;\;\mathrm{and}\;\; \ncg\le\nfg }\,,
+\bfA(\Aphase{})=\bp{ A_I\in L^2\cip{X,\mathbb{P}}\,,\;\;\mathrm{where}\;\; I=1,\ldots,\ncg \;\;\mathrm{and}\;\; \ncg\le\nfg }\,,
 $$
 i.e. on the set of CG variables $\Bphase{}$, which define a space $V=\real^{\ncg}$. Given a phase function $B$, we define the projection operator over the CG space $V$ as
 \begin{equation*}
  \mathcal{P}_{\bfa}B = \int_{A^{-1}\cip{\bp{\bfa}}}B(\Aphase{})\mathbb{P}_{\bfa}(\diff\Aphase{})\,,
 \end{equation*}
-where $A^{-1}\cip{\bp{\bfa}}=\bp{\Aphase{} \in X:\;A(\Aphase{})= \bfa}$ is the preimage of $\Bphase{}\in \real^{\ncg}$ and $\mathbb{P}_{\bfa}\cip{\diff \Aphase{}}$ is the measure which satisfies
+where $A^{-1}\cip{\bp{\bfa}}=\bp{\Aphase{} \in X:\;\bfA(\Aphase{})= \bfa}$ is the preimage of $\Bphase{}\in \real^{\ncg}$ for some fixed $\bfa$ and $\mathbb{P}_{\bfa}\cip{\diff \Aphase{}}$ is the measure which satisfies
 $$
 \int_V\cip{\int_{A^{-1}\cip{\bp{\bfa}}}B(\Aphase{})\mathbb{P}_{\bfa}(\diff\Aphase{})}\diff \bfa = \int_X B\cip{\Aphase{}}\mathbb{P}\cip{\diff\Aphase{}}\,,
 $$
 for any phase function $B$ in the Liouville space.
 
-Since that the observed value of the phase function $A$ is the expected value $\mathbb{E}[A]$, see definition \ref{Def:E[...]}, with respect to the Gibbs measure (\ref{Eq:GibbsMeas}), we can interpret the phase function as random variable.  
+Since that the observed value of the phase function $f(\Aphase{})$ is the expected value $\mathbb{E}[f]$, see definition \ref{Def:E[...]}, with respect to the Gibbs measure (\ref{Eq:GibbsMeas}), we can interpret the phase function as random variable.  
 Therefore, the projection operator has a nice interpretation as a conditional expectation over the CG variables:
 \begin{equation}\label{ConExp}
  \mathcal{P}_{\bfa}B = \cexpval{B}{\,\bfA(\Aphase{})=\bfa}\,.
 \end{equation}
 For the mathematical details of the conditional expectation see theorem \ref{Th:CondExp}. 
-We stress here that the conditional expectation \ref{ConExp}, which we rewrite as  $\cexpval{B}{\,\bfa}$, is a function of $\bfa$, is a linear operator and represents the best approximation of $B$ compared to any function of $\bfa$, is therefore an orthogonal projection. For further details on the latest properties, see the definition \ref{Def:ExpOrthProj}.
+We stress here that the conditional expectation \ref{ConExp}, which we rewrite as  $\cexpval{B}{\,\bfa}$, is a function of $\bfa$, is a linear operator and represents the best approximation of $B$ compared to any function of $\bfa$, is therefore an orthogonal projection. For further details on the last property, see the definition \ref{Def:ExpOrthProj}.
 
-The complementary orthogonal projection $\qproj_{\bfa}$ is define as
-$$
- \qproj_{\bfa}B\cip{\Aphase{}}=B\cip{\Aphase{}}-\pproj_{\bfa}B\cip{\Aphase{}}\,.
-$$ 
 
 \subsection{Generalized Langevin Equation}
 We are now in the position to derive the GLE. 
@@ -166,11 +167,11 @@ and if we take the adjoint of both side, we obtain that
 where we used the fact that the projection operators $\pproj$ and $\qproj$ are Hermitian operator, while the liouvillian $\Lio$ is anti-Hermitian.
 
 We can rewrite the second term on the RHS of eq. (\ref{Eq:MoIdProj}) as
-\begin{equation}
+\begin{equation}\label{Eq:PezzoEqEvoluz}
  \exp{\Lio t}\qproj\Lio\,\Bphase{0} = \exp{\qproj\Lio t}\qproj\Lio\,\Bphase{0} + 
  \int_0^t \exp{\Lio(t-s)}\,\pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0}\,\diff s\,, 
 \end{equation}
-and, considering the projection on the CG variables $A(\Aphase{})=\bfa$, the last part of the integral becomes:
+and, considering the projection on the CG variables such that $A(\Aphase{})=\bfa$, the last part of the integral becomes:
 \begin{multline*}
  \pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0} = 	
    \frac{1}{\Omega(\bfa)} \int\diff\Aphase{}\rho^{eq}(\Aphase{})\, \dirac{\Bphase{}(\Aphase{})-\bfa}
@@ -200,7 +201,7 @@ where $\nabla_\bfx$ denotes the gradient taken with respect to the variable $\bf
 %
 where $\otimes$ represents a tensor product. We used the fact that the divergence of a continuously differentiable second-order tensor field is a first-order tensor field, i.e. $\nabla\cdot\cip{f\bfu\otimes \bfv} = \bfv \cip{\bfu\cdot \nabla f} + f\cip{\nabla\cdot \bfu}\bfv + f\cip{\bfu\cdot\nabla}\bfv$ where $f$ is a generic function and $\bfu$, $\bfv$ two generic vectors.
 We can rewrite the equation obtained as
-\begin{multline}
+\begin{multline}\label{Eq:PezzoInt}
 \pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0} = \frac{1}{\Omega(\bfa)}\, \nabla_{\bfa}\cdot\bp{ \Omega(\bfa)\,
     \pproj\sqp{ \cip{ \Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } } ={}\\
   = \frac{\nabla_{\bfa}\Omega(\bfa)}{\Omega(\bfa)}\, \pproj\sqp{ \cip{ \Lio\,\Bphase{}} 
@@ -226,7 +227,36 @@ Instead, the Latter function is defined as
 	&= \beta\,\pproj\sqp{ \cip{ \qproj\Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } }\,, 
 \end{split}
 \end{equation}
-where we used the fact that $\pproj\qproj=0$. This function is a positive definite memory matrix and its components can be written in Green-Kubo form.
+where we used the fact that $\pproj\qproj=0$. This function is a positive definite memory matrix.
+
+Inserting eq. (\ref{Eq:PezzoInt}) in eq. (\ref{Eq:PezzoEqEvoluz}), the eq. (\ref{Eq:MoIdProj}) becomes
+\begin{multline}
+ \totd{\Bphase{t}}{t} = \exp{\Lio t}\pproj\Lio\,\Bphase{0} + \exp{\Lio t}\qproj\Lio\,\Bphase{0} ={}\\
+   = \exp{\Lio t}\pproj\Lio\,\Bphase{0} - \int_0^t \exp{\Lio(t-s)}\,\nabla_{\bfa}\,\entropy\cip{\bfa}\fricmat\cip{\bfa,s} \diff s +{}\\
+   + \frac{1}{\beta}\int_0^t \exp{\Lio(t-s)}\,\nabla_{\bfa}\cdot\fricmat\cip{\bfa,s} \diff s + \exp{\qproj\Lio t}\qproj\Lio\,\Bphase{0}\,. 
+\end{multline}
+Now, since for any $f\cip{\Bphase{t}}$ we have $\exp{\Lio t}f\cip{\Bphase{0}}=f\cip{\Bphase{t}}$, the terms in equation become:
+\begin{align*}
+  \exp{\Lio t}\pproj_{\bfa}\Lio\,\Bphase{0} &= \pproj_{\bfa(t)}\Lio\,\Bphase{0}\,,\\
+  \exp{\Lio(t-s)}\,\nabla_{\bfa}\,\entropy\cip{\bfa}\fricmat\cip{\bfa,s} &= 
+  \nabla_{\bfa}\,\entropy\cip{\bfa(t-s)}\fricmat\cip{\bfa(t-s),s}\,,\\ 
+  \exp{\Lio(t-s)}\,\nabla_{\bfa}\cdot\fricmat\cip{\bfa,s} &= \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s}\,,
+\end{align*} 
+so we get
+\begin{multline}
+ \totd{\Bphase{t}}{t} = \Lambda\cip{\Bphase{t}} 
+    - \int_0^t \nabla_{\bfa}\,\entropy\cip{\bfa(t-s)}\fricmat\cip{\bfa(t-s),s} \diff s +{}\\
+    + \frac{1}{\beta}\int_0^t \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s} \diff s + \fprojbf_{\Bphase{}}(t,\Aphase{})\,, 
+\end{multline}
+where $\Lambda\cip{\Bphase{t}}=\pproj_{\bfa(t)}\Lio\,\Bphase{0}$ and the last term $\fprojbf_{\Bphase{}}(t,\Aphase{})$ is define as
+\begin{equation}\label{eq:randomforce}
+	\fprojbf_{\Bphase{}}(t,\Aphase{}) = \exp{\qproj_{\bfa}\Lio t}\qproj_{\bfa}\Lio\,\Bphase{0} = 
+	   \qproj_{\bfa}\exp{\qproj_{\bfa}\Lio t}\Lio\,\Bphase{0}\,.
+\end{equation} 
+
+
+
+
 
 \section{Mori approach}
 
