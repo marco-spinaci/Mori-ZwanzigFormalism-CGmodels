@@ -33,7 +33,7 @@
 
 \tableofcontents
 
-\part{Introduction}
+%\part{Introduction}
 
 \part{Theoretical Background}
 
@@ -75,8 +75,9 @@ The time evolution of a function of phase variables is given by
 \end{equation}
 Here, the operator $\Lio\equiv iL$ is the \emph{Liouvillian}, see appendix \ref{App:C}, and the formal solution is given by
 \begin{equation}\label{Eq:SolLiouville}
-	\Bphase{}(\Aphase{}(t)) = \exp{\Lio t}\,\Bphase{}(\Aphase{0})\,.
+	\Bphase{}(\Aphase{}(t)) = \exp{\Lio t}\,\Bphase{}(\Aphase{0})\,,
 \end{equation}
+where the exponential operator is defined through its Taylor expansion.
 This solution implicitly depends upon the full evolution of the FG system, therefore this equation does not provide a self-consistent evolution equation for the observables. 
 
 The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves leading to a closed equation for the CG variables. For example, with the \emph{Zwanzig projection} this is done by projecting the equation for the observables $\Bphase{}$ onto the space of functions of the CG variables, which may be regarded as a subspace of the FG observable space\footnote{This is true as long as some very broad measurability assumptions on the CG variables chosen are met; in practice, choosing CG variables which are continuous and differentiable in the FG variables is already sufficient, and this particular choice is implicitly assumed in the derivation presented here. In theory however, much more general choices can be made.}.
@@ -132,7 +133,7 @@ for any phase function $B$ in the Liouville space.
 Since that the observed value of the phase function $A$ is the expected value $\mathbb{E}[A]$, see definition \ref{Def:E[...]}, with respect to the Gibbs measure (\ref{Eq:GibbsMeas}), we can interpret the phase function as random variable.  
 Therefore, the projection operator has a nice interpretation as a conditional expectation over the CG variables:
 \begin{equation}\label{ConExp}
- \mathcal{P}_{a}B = \cexpval{B}{\,\bfA(\Aphase{})=\bfa}\,.
+ \mathcal{P}_{\bfa}B = \cexpval{B}{\,\bfA(\Aphase{})=\bfa}\,.
 \end{equation}
 For the mathematical details of the conditional expectation see theorem \ref{Th:CondExp}. 
 We stress here that the conditional expectation \ref{ConExp}, which we rewrite as  $\cexpval{B}{\,\bfa}$, is a function of $\bfa$, is a linear operator and represents the best approximation of $B$ compared to any function of $\bfa$, is therefore an orthogonal projection. For further details on the latest properties, see the definition \ref{Def:ExpOrthProj}.
@@ -153,7 +154,8 @@ where $\Bphase{0}=\Bphase{}(\Aphase{0})$. Applying the identity operator $\idpro
  \totd{\Bphase{t}}{t} = \exp{\Lio t}\cip{\pproj+\qproj}\Lio\,\Bphase{0}=
  \exp{\Lio t}\pproj\Lio\,\Bphase{0} + \exp{\Lio t}\qproj\Lio\,\Bphase{0}\,. 
 \end{equation}
-Now if we make in the Dunhamel-Dyson operator identity (\ref{Eq:DysId}), the substitutions $A=\Lio\qproj$ and $B=\Lio\pproj$, we get
+
+Now if we make in the Dunhamel-Dyson operator identity (\ref{Eq:DysId}) for the exponential operator $exp(-(A+B)t)$, the substitutions $A=\Lio\qproj$ and $B=\Lio\pproj$, we get
 $$
 \exp{-\Lio t} = \exp{-\Lio\qproj t}-\int_0^{t}\exp{-\Lio\qproj s}\,\Lio\pproj \,\exp{-\Lio(t-s)}\,\diff s\,,
 $$
@@ -162,119 +164,175 @@ and if we take the adjoint of both side, we obtain that
  \exp{\Lio t} = \exp{\qproj\Lio t} + \int_0^t \exp{\Lio (t-s)}\,\pproj\Lio\,\exp{\qproj\Lio s}\,\diff s\,,
 \end{equation}
 where we used the fact that the projection operators $\pproj$ and $\qproj$ are Hermitian operator, while the liouvillian $\Lio$ is anti-Hermitian.
-We can now rewrite the second term on the RHS of eq. (\ref{Eq:MoIdProj}) as
+
+We can rewrite the second term on the RHS of eq. (\ref{Eq:MoIdProj}) as
 \begin{equation}
  \exp{\Lio t}\qproj\Lio\,\Bphase{0} = \exp{\qproj\Lio t}\qproj\Lio\,\Bphase{0} + 
- \int_0^t \exp{\Lio(t-s)}\,\pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0}\,\diff s\,. 
+ \int_0^t \exp{\Lio(t-s)}\,\pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0}\,\diff s\,, 
 \end{equation}
-
-
+and, considering the projection on the CG variables $A(\Aphase{})=\bfa$, the last part of the integral becomes:
+\begin{multline*}
+ \pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0} = 	
+   \frac{1}{\Omega(\bfa)} \int\diff\Aphase{}\rho^{eq}(\Aphase{})\, \dirac{\Bphase{}(\Aphase{})-\bfa}
+         \sqp{ \Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } ={}\\
+   = -\frac{1}{\Omega(\bfa)} \int\diff\Aphase{}\rho^{eq}(\Aphase{}) 
+         \sqp{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } \Lio\,\dirac{\Bphase{}(\Aphase{})-\bfa}\,.
+\end{multline*}
+Here, we used the fact that $\Lio$ is skew-symmetric (anti-Hermitian) on the Liouville space, i.e. $(f,\Lio\, g)=-(\Lio\, f,g)$ for all $f,g$ in the Liouville space. Using the chain rule for time differentiation\footnote{ 
+For a generic function on the CG space: 
+$$
+ \totd{B(\Bphase{})}{t}=\Lio\,B(\Bphase{})=\dot{\Bphase{}}\cdot\nabla_{\Bphase{}}B(\Bphase{})=
+   \Lio\,\Bphase{}\cdot\nabla_{\Bphase{}}B(\Bphase{})\,,
+$$
+so we get $ \Lio\,B(\Bphase{})=\Lio\,\Bphase{}\cdot\nabla_{\Bphase{}}B(\Bphase{})$.
+} we can write 
+$$
+ \Lio\,\dirac{\Bphase{}(\Aphase{})-\bfa} = \Lio\,\Bphase{}\cdot\nabla_{\Bphase{}}\dirac{\Bphase{}(\Aphase{})-\bfa} = 
+ - \Lio\,\Bphase{}\cdot\nabla_{\bfa}\,\dirac{\Bphase{}(\Aphase{})-\bfa}
+$$
+where $\nabla_\bfx$ denotes the gradient taken with respect to the variable $\bfx$, and get:
+\begin{multline*}
+ \pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0} = \frac{1}{\Omega(\bfa)} \int\diff\Aphase{}\rho^{eq}(\Aphase{})\,
+    \sqp{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } \Lio\,\Bphase{}\cdot\nabla_{\bfa}\,\dirac{\Bphase{}(\Aphase{})-\bfa} ={}\\
+  = \frac{1}{\Omega(\bfa)}\,\nabla_{\bfa}\cdot\int\diff\Aphase{}\rho^{eq}(\Aphase{})\,\bp{ \,\dirac{\Bphase{}(\Aphase{})-\bfa}   
+    \sqp{ \cip{ \Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0}} } }\,,
+\end{multline*}
+%
+where $\otimes$ represents a tensor product. We used the fact that the divergence of a continuously differentiable second-order tensor field is a first-order tensor field, i.e. $\nabla\cdot\cip{f\bfu\otimes \bfv} = \bfv \cip{\bfu\cdot \nabla f} + f\cip{\nabla\cdot \bfu}\bfv + f\cip{\bfu\cdot\nabla}\bfv$ where $f$ is a generic function and $\bfu$, $\bfv$ two generic vectors.
+We can rewrite the equation obtained as
+\begin{multline}
+\pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0} = \frac{1}{\Omega(\bfa)}\, \nabla_{\bfa}\cdot\bp{ \Omega(\bfa)\,
+    \pproj\sqp{ \cip{ \Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } } ={}\\
+  = \frac{\nabla_{\bfa}\Omega(\bfa)}{\Omega(\bfa)}\, \pproj\sqp{ \cip{ \Lio\,\Bphase{}} 
+    \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } +
+    \nabla_{\bfa}\cdot\pproj\sqp{ \cip{ \Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } ={}\\
+  = - \nabla_{\bfa}\,\entropy\cip{\bfa}\fricmat\cip{\bfa,s} + \frac{1}{\beta}\, \nabla_{\bfa}\cdot\fricmat\cip{\bfa,s}\,,
+\end{multline}
+where $\beta=\cip{\kb T}^{-1}$ and we have introduced two new functions. 
+The former 
+\begin{equation}\label{Eq:Entropy(FreeE)}
+  \entropy\cip{\bfa}\coloneqq -\frac{1}{\beta}\ln \Omega\cip{\bfa}
+\end{equation}
+is interpreted, since it has units of energy, as a contribution to the free energy of the system, in view of the definition of $\Omega(\bfa)$ in eq. (\ref{eq:structurefunc}). We note that in \cite{Hijon2010}, the alternative quantity $\mathcal{S}(\bfa) = \kb\ln{\Omega(\bfa)}$ is defined, which is an entropy. Both definitions are identical up to a multiplicative factor, and depend upon on the assumed temperature of the system.
+Instead, the Latter function is defined as
+\begin{equation}
+\begin{split}\label{Eq:fricmatrix}
+	\fricmat\cip{\bfa,s} &\coloneqq \beta\,\pproj\sqp{ \cip{ \Lio\,\Bphase{}} \otimes 
+	  \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } ={}\\
+	&= \beta\,\bp{ \pproj\sqp{ \cip{ \pproj\Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } + 
+	  \pproj\sqp{ \cip{ \qproj\Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } } ={}\\
+	&= \beta\,\bp{ \cip{ \pproj\Lio\,\Bphase{}} \otimes \pproj\sqp{\cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } + 
+	  \pproj\sqp{ \cip{ \qproj\Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } } ={}\\
+	&= \beta\,\pproj\sqp{ \cip{ \qproj\Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } }\,, 
+\end{split}
+\end{equation}
+where we used the fact that $\pproj\qproj=0$. This function is a positive definite memory matrix and its components can be written in Green-Kubo form.
 
 \section{Mori approach}
 
 
 
-\chapter{Canonical Mapping and Coarse-Graining}
+%\chapter{Canonical Mapping and Coarse-Graining}
 
 
 
 
-\chapter{Numerical Method}
-\section{Langevin Dynamics Integrator: BAOAB method}
-In this work we simulated the Langevin Dynamics by the BAOAB method, which was derived and analysed by B. Leimkuhler and C. Matthews \cite{LeimMatt:LAnDynInt}. 
-
-The aim of their work is to compare Langevin dynamics integrators in term of their invariant distributions and demonstrate a superconvergence property of a certain method in the high friction limit (or in the null mass limit). Numerically they implemented the various methods considered and compared the accuracy of configurational sampling for different values of the friction parameter $\gamma$ and a range of timesteps.
-
-Their results show that the best method to sample the configurational Gibbs-Boltzmann distribution\footnote{This means the calculation of functions averages of phase space variables of a molecular N-body system modelled at constant temperature.} is the BAOAB method and in the context of molecular dynamics it is a cheap and easy to implement scheme using only a single force vector per timestep:
-\begin{align*}
- p_{n+1/2} &= p_n-\frac{1}{2}\,\nabla U\left(x_n\right)\,dt\,; \\
- x_{n+1/2} &= x_n+\frac{1}{2}\,M^{-1}\,p_{n+1/2}\,dt\,; \\
- \hat{p}_{n+1/2} &= c_1\,p_{n+1/2}+c_2\,M^{1/2}\,R_{n+1}\,; \\ 
- x_{n+1} &= x_{n+1/2}+\frac{1}{2}\,M^{-1}\,\hat{p}_{n+1/2}\,dt\,; \\
- p_{n+1} &= \hat{p}_{n+1/2}-\frac{1}{2}\,\nabla U\left(x_{n+1}\right)\,dt\,. \\
-\end{align*}
-Here, $R_i$ is an N-vector of iid normal random numbers with mean $0$ and variance $1$, $M$ is the diagonal mass matrix, $dt$ is the timestep, 
-\[ c_1=e^{-\tilde{\gamma}\,dt}\quad\text{and}\quad c_2=\sqrt{\left(1-c_1^2\right)/\beta}  \] are evaluated for a given friction parameter $\tilde{\gamma}=\gamma\,M^{-1}$ and a given temperature parameter $\beta=(K_BT)^{-1}$, where $K_B$ is the Boltzmann's constant.
-
-
-\subsection{An idea of how the BAOAB method was derived}
-
-%\subsubsection{Background}
-An It\^o stochastic differential equation (SDE) can be written as
-\[
-  d\mathbf{x}(t)=\mathbf{a} \left[\mathbf{x}(t),t\right] dt+\mathbf{b}\left[\mathbf{x}(t),t\right] d\mathbf{W}(t)\,,
-\]
-where $\mathbf{x}$ are the $n$ stochastic process, $\mathbf{a}(\mathbf{x},t)$ and $\mathbf{b}(\mathbf{x},t)$ are certain know functions, 
-$ d\mathbf{W}\equiv \boldsymbol{\xi}(t)\,dt $ is an $n$ variable Wiener process and $\boldsymbol{\xi}(t)$ is the white noise. This SDE corresponds an Fokker-Planck equation if the stochastic process described by a conditional probability density $p(\mathbf{x},t\,|\,\mathbf{x_0},t_0)\equiv p$ satisfy 
-\[
-  \partial_t\,p=\mathscr{L}(\mathbf{x},t)\,p
-     =-\sum_i\,\partial_i\left[ A_i(\mathbf{x},t)\,p\, \right]+\frac{1}{2}\sum_{ij}\,\partial_i\partial_j\left[ B_{ij}(\mathbf{x},t)\,p\, \right] 
-\]
-where $\mathscr{L}(\mathbf{x},t)$ is a second-order differential operator and the coefficients of RHS are such that $\mathbf{A}(\mathbf{x},t)=\mathbf{a}(\mathbf{x},t)$ and $\underline{\mathbf{B}}(\mathbf{x},t)=\mathbf{b}(\mathbf{x},t)\textbf{b}^T(\mathbf{x},t)$. The Fokker-Planck equation describes diffusion processes, the vector $\mathbf{A}(\mathbf{x},t)$ is know as drift vector and the matrix $\underline{\mathbf{B}}(\mathbf{x},t)$ is know as the diffusion matrix. From its definition this matrix is positive semidefinite and symmetric \cite{Gardiner2009}.
-
-Let us consider an Orstein-Uhlenbeck (OU) SDE, that is, an It\^o equation where the coefficients are
-\[
- \mathbf{a}(\mathbf{x})=-k\,\mathbf{x}\quad\text{and}\quad b=\sqrt{D}
-\]
-here $k$ and $D$ are positive parameters. The solution of one dimensional OU-SDE can be computed by the It\^o's formula applied to $y=xe^{k\,t}$\cite{Gardiner2009}. We get 
-\[
- x(t)=x_0(t_0)\,e^{-k(t-t_0)}+\sqrt{D}\int_{t_0}^t\,dW(t')e^{-k(t-t')}\,,
-\]
-and the average and variance are respectively:
-\begin{align*}
- \mathbb{E}[x(t)] &= \mathbb{E}[x_0(t_0)]\,e^{-k(t-t_0)}\,, \\
- \mathbb{E}\left[ \left( x(t)-\mathbb{E}[x(t)] \right)^2 \right] &= \left[ Var(x_0)-\frac{D}{2k} \right]e^{-2k(t-t_0)}+\frac{D}{2k}\,.
-\end{align*}
-We can easily show in the stationary limit ($t\gg t_0$) and applying the equipartition theorem that the diffusive parameter $D$ is equal to $(2k)/\beta$.
-
-
-%\subsubsection{Langevin Dynamics}
-Langevin dynamics combines a conservative dynamic with the OU stochastic vector field as a forcing for the momentum, so we are assuming that the stochastic force is not affected by the potential:
-\[
- M\frac{d^2\mathbf{x}}{dt^2}=-\boldsymbol{\nabla} U(\mathbf{x})-\gamma\,\frac{d\mathbf{x}}{dt}+\sqrt{(2\gamma)/\beta}\,\boldsymbol{\xi}(t)
-\]
-where we introduced physical quantities: $M$ is the mass of the particle, $\mathbf{x}$ is the coordinate of position, $\gamma$ is the friction parameter and $\beta=\left( K_BT \right)^{-1}$ is the temperature parameter. We can rewrite the equation as
-\[
-\begin{cases}
- d\mathbf{x}=\mathbf{v}\,dt \\
- Md\mathbf{v}=\left[ -\boldsymbol{\nabla} U(\mathbf{x})-\gamma\,\mathbf{v} \right]\,dt+\sqrt{(2\gamma)/\beta}\,d\mathbf{W}
-\end{cases}
-\]
-and for the canonical coordinates $ \{\mathbf{q}(t),\mathbf{p}(t)\} $ we get 
-\[
-\begin{cases}
- d\mathbf{q}=M^{-1}\,\mathbf{p}\,dt \\
- d\mathbf{p}=\left[ -\boldsymbol{\nabla} U(\mathbf{q})-\tilde{\gamma}\,\mathbf{p} \right]\,dt+\sqrt{(2\tilde{\gamma})/\beta}\,M^{1/2}d\mathbf{W}
-\end{cases}
-\]
-where $\tilde{\gamma}=\gamma/M$. From the system of two first-order equations can we compute the drift and diffusion coefficients
-\begin{align*}
- \left(A_{\mathbf{q}}\right)_i &= M^{-1}\,p_i\,;  &  \left(B_{\mathbf{q}\mathbf{q}}\right)_{ij} &= \left(B_{\mathbf{p}\mathbf{q}}\right)_{ij}=0\,; \\
- \left(A_{\mathbf{p}}\right)_i &= \left(-\boldsymbol{\nabla} U(\mathbf{q})-\tilde{\gamma}\,\mathbf{p}\right)_i\,;  &  
-      \left(B_{\mathbf{p}\mathbf{p}}\right)_{ij} &= \frac{2\tilde{\gamma}}{\beta}\,M\,\delta_{ij}\,;
-\end{align*}
-and thus determine the Fokker-Planck operator for the Langevin dynamics
-\begin{multline*}
- \mathscr{L}_{LD}\,\varphi=-M^{-1}\,\sum_i\,p_i\,\partial_{q_i}\,\varphi\,+ 
-                          \,\boldsymbol{\nabla}U(\mathbf{q})\,\sum_i\,\partial_{p_i}\,\varphi\,+{}\\                          
-                          +\,\tilde{\gamma}\,\sum_i\,\partial_{p_i}\,p_i\,\varphi\,+
-                          \,\tilde{\gamma}\,\sum_i\,\,p_i\,\partial_{p_i}\,\varphi\,+
-                          \,\tilde{\gamma}\,K_BT\,\sum_i\,M\,\partial_i^2\,\varphi={}\\
-                          =-M^{-1}\mathbf{p}\cdot\boldsymbol{\nabla}_{q}\,\varphi\,+
-                          \,\boldsymbol{\nabla}U(\mathbf{q})\cdot\boldsymbol{\nabla}_{p}\,\varphi\,+
-                          \,\tilde{\gamma}\, \left[ \,\boldsymbol{\nabla}_{p}(\mathbf{p}\,\varphi)+
-                          \,K_BT\boldsymbol{\Delta}_{p}\,\varphi \,\right]\,,
-\end{multline*}
-where $\boldsymbol{\Delta}_{p}$ is the mass-weighted Laplacian in the momenta and $\varphi$ is a test function \cite{Risk:TheFPeq}.
-
-\subsubsection{Splitting methods}
-
-\subsection{Some more details about the work of B. Leimkuhler and C. Matthews}
-The methods that are considered are splitting integrators that decompose the stochastic vector field which drives the Langevin Dynamics into simpler vector fields which can be solved exactly. Nevertheless, the composition method that results cannot be directly related to a stochastic differential equation, but nonetheless the invariant measure associated to the numerical method can be derived, using the Baker-Campbell-Hausdorff (BCH) expansion, as an asymptotic series in two parameters: the stepsize and the coefficient $\gamma^{-1}$. The authors stress that their approach focuses on the truncation error of the invariant distribution, thus the greatest benefit would be seen only when the statistical error is well controlled. Furthermore, they observe that the least biased scheme from the point of view of the error introduced in configurational sampling is also as efficient as the alternatives and the most robust with respect the variation of parameters (stepsize and $\gamma^{-1}$), thus they emphasise that there is no price for the improvement in accuracy.
-
-
-
-\part{Numerical Experiments}
+%\chapter{Numerical Method}
+%\section{Langevin Dynamics Integrator: BAOAB method}
+%In this work we simulated the Langevin Dynamics by the BAOAB method, which was derived and analysed by B. Leimkuhler and C. Matthews \cite{LeimMatt:LAnDynInt}. 
+%
+%The aim of their work is to compare Langevin dynamics integrators in term of their invariant distributions and demonstrate a superconvergence property of a certain method in the high friction limit (or in the null mass limit). Numerically they implemented the various methods considered and compared the accuracy of configurational sampling for different values of the friction parameter $\gamma$ and a range of timesteps.
+%
+%Their results show that the best method to sample the configurational Gibbs-Boltzmann distribution\footnote{This means the calculation of functions averages of phase space variables of a molecular N-body system modelled at constant temperature.} is the BAOAB method and in the context of molecular dynamics it is a cheap and easy to implement scheme using only a single force vector per timestep:
+%\begin{align*}
+% p_{n+1/2} &= p_n-\frac{1}{2}\,\nabla U\left(x_n\right)\,dt\,; \\
+% x_{n+1/2} &= x_n+\frac{1}{2}\,M^{-1}\,p_{n+1/2}\,dt\,; \\
+% \hat{p}_{n+1/2} &= c_1\,p_{n+1/2}+c_2\,M^{1/2}\,R_{n+1}\,; \\ 
+% x_{n+1} &= x_{n+1/2}+\frac{1}{2}\,M^{-1}\,\hat{p}_{n+1/2}\,dt\,; \\
+% p_{n+1} &= \hat{p}_{n+1/2}-\frac{1}{2}\,\nabla U\left(x_{n+1}\right)\,dt\,. \\
+%\end{align*}
+%Here, $R_i$ is an N-vector of iid normal random numbers with mean $0$ and variance $1$, $M$ is the diagonal mass matrix, $dt$ is the timestep, 
+%\[ c_1=e^{-\tilde{\gamma}\,dt}\quad\text{and}\quad c_2=\sqrt{\left(1-c_1^2\right)/\beta}  \] are evaluated for a given friction parameter $\tilde{\gamma}=\gamma\,M^{-1}$ and a given temperature parameter $\beta=(K_BT)^{-1}$, where $K_B$ is the Boltzmann's constant.
+%
+%
+%\subsection{An idea of how the BAOAB method was derived}
+%
+%%\subsubsection{Background}
+%An It\^o stochastic differential equation (SDE) can be written as
+%\[
+%  d\mathbf{x}(t)=\mathbf{a} \left[\mathbf{x}(t),t\right] dt+\mathbf{b}\left[\mathbf{x}(t),t\right] d\mathbf{W}(t)\,,
+%\]
+%where $\mathbf{x}$ are the $n$ stochastic process, $\mathbf{a}(\mathbf{x},t)$ and $\mathbf{b}(\mathbf{x},t)$ are certain know functions, 
+%$ d\mathbf{W}\equiv \boldsymbol{\xi}(t)\,dt $ is an $n$ variable Wiener process and $\boldsymbol{\xi}(t)$ is the white noise. This SDE corresponds an Fokker-Planck equation if the stochastic process described by a conditional probability density $p(\mathbf{x},t\,|\,\mathbf{x_0},t_0)\equiv p$ satisfy 
+%\[
+%  \partial_t\,p=\mathscr{L}(\mathbf{x},t)\,p
+%     =-\sum_i\,\partial_i\left[ A_i(\mathbf{x},t)\,p\, \right]+\frac{1}{2}\sum_{ij}\,\partial_i\partial_j\left[ B_{ij}(\mathbf{x},t)\,p\, \right] 
+%\]
+%where $\mathscr{L}(\mathbf{x},t)$ is a second-order differential operator and the coefficients of RHS are such that $\mathbf{A}(\mathbf{x},t)=\mathbf{a}(\mathbf{x},t)$ and $\underline{\mathbf{B}}(\mathbf{x},t)=\mathbf{b}(\mathbf{x},t)\textbf{b}^T(\mathbf{x},t)$. The Fokker-Planck equation describes diffusion processes, the vector $\mathbf{A}(\mathbf{x},t)$ is know as drift vector and the matrix $\underline{\mathbf{B}}(\mathbf{x},t)$ is know as the diffusion matrix. From its definition this matrix is positive semidefinite and symmetric \cite{Gardiner2009}.
+%
+%Let us consider an Orstein-Uhlenbeck (OU) SDE, that is, an It\^o equation where the coefficients are
+%\[
+% \mathbf{a}(\mathbf{x})=-k\,\mathbf{x}\quad\text{and}\quad b=\sqrt{D}
+%\]
+%here $k$ and $D$ are positive parameters. The solution of one dimensional OU-SDE can be computed by the It\^o's formula applied to $y=xe^{k\,t}$\cite{Gardiner2009}. We get 
+%\[
+% x(t)=x_0(t_0)\,e^{-k(t-t_0)}+\sqrt{D}\int_{t_0}^t\,dW(t')e^{-k(t-t')}\,,
+%\]
+%and the average and variance are respectively:
+%\begin{align*}
+% \mathbb{E}[x(t)] &= \mathbb{E}[x_0(t_0)]\,e^{-k(t-t_0)}\,, \\
+% \mathbb{E}\left[ \left( x(t)-\mathbb{E}[x(t)] \right)^2 \right] &= \left[ Var(x_0)-\frac{D}{2k} \right]e^{-2k(t-t_0)}+\frac{D}{2k}\,.
+%\end{align*}
+%We can easily show in the stationary limit ($t\gg t_0$) and applying the equipartition theorem that the diffusive parameter $D$ is equal to $(2k)/\beta$.
+%
+%
+%%\subsubsection{Langevin Dynamics}
+%Langevin dynamics combines a conservative dynamic with the OU stochastic vector field as a forcing for the momentum, so we are assuming that the stochastic force is not affected by the potential:
+%\[
+% M\frac{d^2\mathbf{x}}{dt^2}=-\boldsymbol{\nabla} U(\mathbf{x})-\gamma\,\frac{d\mathbf{x}}{dt}+\sqrt{(2\gamma)/\beta}\,\boldsymbol{\xi}(t)
+%\]
+%where we introduced physical quantities: $M$ is the mass of the particle, $\mathbf{x}$ is the coordinate of position, $\gamma$ is the friction parameter and $\beta=\left( K_BT \right)^{-1}$ is the temperature parameter. We can rewrite the equation as
+%\[
+%\begin{cases}
+% d\mathbf{x}=\mathbf{v}\,dt \\
+% Md\mathbf{v}=\left[ -\boldsymbol{\nabla} U(\mathbf{x})-\gamma\,\mathbf{v} \right]\,dt+\sqrt{(2\gamma)/\beta}\,d\mathbf{W}
+%\end{cases}
+%\]
+%and for the canonical coordinates $ \{\mathbf{q}(t),\mathbf{p}(t)\} $ we get 
+%\[
+%\begin{cases}
+% d\mathbf{q}=M^{-1}\,\mathbf{p}\,dt \\
+% d\mathbf{p}=\left[ -\boldsymbol{\nabla} U(\mathbf{q})-\tilde{\gamma}\,\mathbf{p} \right]\,dt+\sqrt{(2\tilde{\gamma})/\beta}\,M^{1/2}d\mathbf{W}
+%\end{cases}
+%\]
+%where $\tilde{\gamma}=\gamma/M$. From the system of two first-order equations can we compute the drift and diffusion coefficients
+%\begin{align*}
+% \left(A_{\mathbf{q}}\right)_i &= M^{-1}\,p_i\,;  &  \left(B_{\mathbf{q}\mathbf{q}}\right)_{ij} &= \left(B_{\mathbf{p}\mathbf{q}}\right)_{ij}=0\,; \\
+% \left(A_{\mathbf{p}}\right)_i &= \left(-\boldsymbol{\nabla} U(\mathbf{q})-\tilde{\gamma}\,\mathbf{p}\right)_i\,;  &  
+%      \left(B_{\mathbf{p}\mathbf{p}}\right)_{ij} &= \frac{2\tilde{\gamma}}{\beta}\,M\,\delta_{ij}\,;
+%\end{align*}
+%and thus determine the Fokker-Planck operator for the Langevin dynamics
+%\begin{multline*}
+% \mathscr{L}_{LD}\,\varphi=-M^{-1}\,\sum_i\,p_i\,\partial_{q_i}\,\varphi\,+ 
+%                          \,\boldsymbol{\nabla}U(\mathbf{q})\,\sum_i\,\partial_{p_i}\,\varphi\,+{}\\                          
+%                          +\,\tilde{\gamma}\,\sum_i\,\partial_{p_i}\,p_i\,\varphi\,+
+%                          \,\tilde{\gamma}\,\sum_i\,\,p_i\,\partial_{p_i}\,\varphi\,+
+%                          \,\tilde{\gamma}\,K_BT\,\sum_i\,M\,\partial_i^2\,\varphi={}\\
+%                          =-M^{-1}\mathbf{p}\cdot\boldsymbol{\nabla}_{q}\,\varphi\,+
+%                          \,\boldsymbol{\nabla}U(\mathbf{q})\cdot\boldsymbol{\nabla}_{p}\,\varphi\,+
+%                          \,\tilde{\gamma}\, \left[ \,\boldsymbol{\nabla}_{p}(\mathbf{p}\,\varphi)+
+%                          \,K_BT\boldsymbol{\Delta}_{p}\,\varphi \,\right]\,,
+%\end{multline*}
+%where $\boldsymbol{\Delta}_{p}$ is the mass-weighted Laplacian in the momenta and $\varphi$ is a test function \cite{Risk:TheFPeq}.
+%
+%\subsubsection{Splitting methods}
+%
+%\subsection{Some more details about the work of B. Leimkuhler and C. Matthews}
+%The methods that are considered are splitting integrators that decompose the stochastic vector field which drives the Langevin Dynamics into simpler vector fields which can be solved exactly. Nevertheless, the composition method that results cannot be directly related to a stochastic differential equation, but nonetheless the invariant measure associated to the numerical method can be derived, using the Baker-Campbell-Hausdorff (BCH) expansion, as an asymptotic series in two parameters: the stepsize and the coefficient $\gamma^{-1}$. The authors stress that their approach focuses on the truncation error of the invariant distribution, thus the greatest benefit would be seen only when the statistical error is well controlled. Furthermore, they observe that the least biased scheme from the point of view of the error introduced in configurational sampling is also as efficient as the alternatives and the most robust with respect the variation of parameters (stepsize and $\gamma^{-1}$), thus they emphasise that there is no price for the improvement in accuracy.
+%
+%
+%
+%\part{Numerical Experiments}
 
 
 
@@ -478,7 +536,7 @@ So we have, applying Fubini's theorem see \cite[p.~77-79]{Williams1991},
 \end{proof}
 
 
-\chapter{Elements of Stochastic Processes}
+%\chapter{Elements of Stochastic Processes}
 
 
 \chapter{Liouville Space}
@@ -532,7 +590,7 @@ $$
 $$ 
 where functions are identified if and only if they differ only on a set of measure zero and where the inner product of a pair of functions $f$, $g$ in $L^2\cip{X,\mu}$ is defined as
 $$
-\cip{f,g}=\int_Xf\,g^*\,\diff \mu.
+\cip{f,g}=\int_Xf^*\,g\,\diff \mu.
 $$
 }. 
 It is simple to show that the rate of change of $A$ is given by $\mbox{d}A/\mbox{d}t=iL\,A$, which formal solution is given by 
