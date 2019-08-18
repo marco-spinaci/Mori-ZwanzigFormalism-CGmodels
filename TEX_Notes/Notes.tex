@@ -49,7 +49,8 @@ where $\Omega$, $K(t)$ and $F(t)$ are well-defined functions, called the frequen
 This equation describes the non-equilibrium evolution of any set of functions $A(t)$ defined on the phase-space of the arbitrary microscopic system, close to thermal equilibrium \cite{Mori1965}. To now these variables $A(t)$ are called collective variables, relevant variables, coarse-grained (CG) variables or collective modes, depending on the context.
 Some years later in 1973 R. Zwanzig derived a class of generalized Langevin equations describing the motion of a system interacting with a heat bath, this GLE is exact but differs from that obtained by Mori's scheme for two reasons: for the presence of an arbitrary nonlinear force and for the fact that its validity is not restricted to small deviations from the thermal equilibrium \cite{Zwanzig1973}.
 In recent years D. Kauzlari\'c et all showed, in their work on the calculation of the friction matrix in the coarse-grained description of an atomistic system, that Mori GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables (the functions $A(t)$ in the equation (\ref{generalGLE})) evolve in a time scale much larger than the memory time scale \cite{Kauzlaric2011}.
-These techniques are is know in various context as well as in transport theory. For example in the dynamic light scattering or in the liquids theory, the GLE is used to compute time-correlation functions under circumstances where the usual phenomenological equations do not apply. Indeed through the equation (\ref{generalGLE}) can be obtained an equation for the time correlation function $C(t)$:  
+
+These techniques are know in various context as well as in transport theory. For example in the dynamic light scattering or in the liquids theory, the GLE is used to compute time-correlation functions under circumstances where the usual phenomenological equations do not apply. Indeed through the equation (\ref{generalGLE}) can be obtained an equation for the time correlation function $C(t)$:  
 \begin{equation}
  \frac{\diff C(t)}{\diff t}=i\Omega\, C(t)-\int_0^t\,\diff\tau K(\tau)C(t-\tau)\,.
 \end{equation}
@@ -59,6 +60,7 @@ If the dynamical system considered is Hamiltonian, in the Mori-Zwanzig theory we
 The former applying the projection operator in a Hilbert space of probability densities function (pdf) to the Liouville equation, obtained the generalized Fokker-Planck and master equations \cite{Kinjo2007,Zwanzig1960,Zwanzig1961,Zwanzig1964}.
 While the latter, applying the projection operator in the Liouville space, see appendix \ref{App:C}, to the equation of motion of time-dependent property phase function, obtained GLE and transport equation \cite{DiPasquale2019,Hijon2010,Mori1965,Nordholm1975,Zwanzig1973}.
 The mathematical equivalence of these two approaches is given by the duality between Liouville space and the space of densities of states, in complete analogy with the Schr\"odinger and Heisenberg pictures in Quantum Mechanics. 
+
 In what follows, we choose to follow the second approach since this results in a more physically-intuitive derivation and we will derive the GLE for the CG variables with the \emph{Zwanzig projection} and the \emph{Mori projection}, respectively.
 
 We assume that at the microscopic level the system is well described by classical mechanics and is composed by $\nfg$ particles. We will refer to it as the \emph{fine-grained} (FG) system. The microscopic state is characterised by variable $\Aphase{}(t)$ in $6\nfg$-dimensional phase-space. To derive a reduced description of this system, we consider a smaller set of phase function $\Bphase{}(\Aphase{})$, which we call observables\footnote{
@@ -81,24 +83,25 @@ Here, the operator $\Lio\equiv iL$ is the \emph{Liouvillian}, see appendix \ref{
 where the exponential operator is defined through its Taylor expansion.
 This solution implicitly depends upon the full evolution of the FG system, therefore this equation does not provide a self-consistent evolution equation for the observables. 
 
-The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables $\Bphase{}(\Aphase{})$ by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves leading to a closed equation for the CG variables. For example, with the \emph{Zwanzig projection} this is done by projecting the equation for the observables $\Bphase{}(\Aphase{})$ onto the space of functions of the CG variables, which may be regarded as a subspace of the FG observable space\footnote{This is true as long as some very broad measurability assumptions on the CG variables chosen are met; in practice, choosing CG variables which are continuous and differentiable in the FG variables is already sufficient, and this particular choice is implicitly assumed in the derivation presented here. In theory however, much more general choices can be made.}.
+We also assume that the state of the system is described by the canonical equilibrium distribution\footnote{Different choices are possible. For example it is also perfectly possible to carry out the same derivation using the micro-canonical equilibrium measure.} $\rho^{eq}(\Aphase{})$, and so that that the probability equilibrium measure is given by the Gibbs measure on the FG phase-space $X=\real^{6\nfg}$:
+\begin{equation}\label{Eq:GibbsMeas}
+ \mathbb{P}(\diff\Aphase{})=\rho^{eq}(\Aphase{})\diff\Aphase{}=\frac{1}{\partf}\exp{-\beta\Ham(\Aphase{})}\diff\Aphase{}\,.
+\end{equation}
+
+The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables $\Bphase{}(\Aphase{})$ by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves leading to a closed equation for the CG variables. 
+
+%For example, with the \emph{Zwanzig projection} this is done by projecting the equation for the observables $\Bphase{}(\Aphase{})$ onto the space of functions of the CG variables, which may be regarded as a subspace of the FG observable space\footnote{This is true as long as some very broad measurability assumptions on the CG variables chosen are met; in practice, choosing CG variables which are continuous and differentiable in the FG variables is already sufficient, and this particular choice is implicitly assumed in the derivation presented here. In theory however, much more general choices can be made.}.
 
 \section{Mori approach}
 \label{Sec:MoriProj}
 
 \section{Zwanzig approach}
 \subsection{The Zwanzig Projection}
-We suppose that the state of the system is described by the canonical equilibrium distribution\footnote{Different choices are possible. For example it is also perfectly possible to carry out the same derivation using the micro-canonical equilibrium measure.} $\rho^{eq}(\Aphase{})$, and we choose that the probability equilibrium measure is given by the Gibbs measure on the FG phase-space $X=\real^{6\nfg}$:
-\begin{equation}\label{Eq:GibbsMeas}
- \mathbb{P}(\diff\Aphase{})=\rho^{eq}(\Aphase{})\diff\Aphase{}=\frac{1}{\partf}\exp{-\beta\Ham(\Aphase{})}\diff\Aphase{}\,.
-\end{equation}
-% 
+
 We denote the \emph{Zwanzig projection} as $\mathcal{P}_{\Bphase{}}$:
-%
 \begin{equation}\label{Eq:proj}
 	\mathcal{P}_{\Bphase{}}F(\Aphase{}) = \frac{1}{\Omega(\Bphase{}(\Aphase{}))} \int_X F(\Aphase{}')\,\dirac{\Bphase{}(\Aphase{}')-\Bphase{}(\Aphase{})}\rho^{eq}(\Aphase{}')\diff\Aphase{}'
 \end{equation}
-%
 where $F(\Aphase{})$ is a generic function acting on the space-phase and the normalisation factor, also called the \textit{structure function}, represents the total volume of the surface $S(\Bphase{}(\Aphase{}))$ in phace-space, which is defined by $\Bphase{}(\Aphase{}')=\Bphase{}(\Aphase{})$:
 %
 \begin{equation}\label{eq:structurefunc}
@@ -260,7 +263,7 @@ where we have defined
 	   \qproj_{\bfa}\exp{\qproj_{\bfa}\Lio t}\Lio\,\Bphase{0}\,.
 \end{align} 
 The quantity $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ still depends on the FG variables, and is given by the solution of an auxiliary set of equations called \emph{orthogonal dynamics equations} \cite{Givon2005}, which we will discuss in the following sections.  
-We can rewrite eq. (\ref{Eq:fricmatrix}) as
+We can now rewrite eq. (\ref{Eq:fricmatrix}) as
 \begin{multline}\label{Eq:FRICmatrixRF}
  \fricmat\cip{\bfa,s} \coloneqq 
    \beta\,\pproj_{\bfa}\sqp{ \cip{ \qproj_{\bfa}\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } }={}\\ 
@@ -292,14 +295,13 @@ With this in mind, we can rewrite eq. (\ref{Eq:MZequation}) as an integro-differ
 \end{multline}
 where $\mathbf{F}(t)$ is interpreted as a zero-mean random process whose statistical properties are specified by eq. (\ref{Eq:RAndomForce}) in which $\Aphase{0}$ is random and distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa(0)$.
 
+The terms involving the friction matrix turn out to be the most difficult to compute in a real calculation because of the memory effect. We will briefly discuss the friction matrix and the memory effects but a more thorough analysis of these terms is left for future works. 
+In the next chapter we will derive more explicit forms of the terms appearing in eq. (\ref{Eq:MZequation}) for a CG system, for specific choices of the CG variables which arises naturally from physical considerations, namely canonical mappings (i.e. transformations).
+We will show how these formal expressions can be computed from MD simulations for a simple system represented by a one dimensional chain composed by atoms with different mass connected through a Lennard-Jones potential. The scale separation hypothesis will be discussed for this simple system.
 
 
-
-
-
-
-
-%\chapter{Canonical Mapping and Coarse-Graining}
+\chapter{Canonical Mapping and Coarse-Graining}
+\label{Sec:CanMapp&CG}
 
 
 
@@ -400,6 +402,7 @@ where $\mathbf{F}(t)$ is interpreted as a zero-mean random process whose statist
 %
 %
 %\part{Numerical Experiments}
+%\label{Sec:NumExp}
 
 
 
