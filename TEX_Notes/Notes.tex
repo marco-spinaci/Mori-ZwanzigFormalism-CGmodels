@@ -65,7 +65,7 @@ We assume that at the microscopic level the system is well described by classica
 Throughout the present section, these observables could be quite general,
 but we will later apply the derivation made here to the particular choice 
 \begin{equation*}
- \Bphase{} = \cip{ \Bphase{\bfR}(\Aphase{}),\Bphase{\bfP}(\Aphase{}) } 
+ \Bphase{}(\Aphase{}) = \cip{ \Bphase{\bfR}(\Aphase{}),\Bphase{\bfP}(\Aphase{}) } 
        = (\bfR_1(\Aphase{}),\ldots,\bfR_{\ncg}(\Aphase{}),\bfP_1(\Aphase{}),\ldots,\bfP_{\ncg}(\Aphase{}))\,,
 \end{equation*}
 corresponding to the positions and momenta of particles in the CG system composed of $\ncg$ particles.}.
@@ -81,12 +81,14 @@ Here, the operator $\Lio\equiv iL$ is the \emph{Liouvillian}, see appendix \ref{
 where the exponential operator is defined through its Taylor expansion.
 This solution implicitly depends upon the full evolution of the FG system, therefore this equation does not provide a self-consistent evolution equation for the observables. 
 
-The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables $\Bphase{}(\Aphase{})$ by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves leading to a closed equation for the CG variables $\Bphase{}$. For example, with the \emph{Zwanzig projection} this is done by projecting the equation for the observables $\Bphase{}(\Aphase{})$ onto the space of functions of the CG variables $\Bphase{}$, which may be regarded as a subspace of the FG observable space\footnote{This is true as long as some very broad measurability assumptions on the CG variables chosen are met; in practice, choosing CG variables which are continuous and differentiable in the FG variables is already sufficient, and this particular choice is implicitly assumed in the derivation presented here. In theory however, much more general choices can be made.}.
+The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables $\Bphase{}(\Aphase{})$ by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves leading to a closed equation for the CG variables. For example, with the \emph{Zwanzig projection} this is done by projecting the equation for the observables $\Bphase{}(\Aphase{})$ onto the space of functions of the CG variables, which may be regarded as a subspace of the FG observable space\footnote{This is true as long as some very broad measurability assumptions on the CG variables chosen are met; in practice, choosing CG variables which are continuous and differentiable in the FG variables is already sufficient, and this particular choice is implicitly assumed in the derivation presented here. In theory however, much more general choices can be made.}.
 
+\section{Mori approach}
+\label{Sec:MoriProj}
 
 \section{Zwanzig approach}
 \subsection{The Zwanzig Projection}
-We suppose that the state of the system is described by the canonical equilibrium distribution\footnote{Different choices are possible. For example it is also perfectly possible to carry out the same derivation using the micro-canonical equilibrium measure.} $\rho^{eq}(\Aphase{})$, therefore the probability equilibrium measure is given by the Gibbs measure on the FG phase-space $X=\real^{6\nfg}$:
+We suppose that the state of the system is described by the canonical equilibrium distribution\footnote{Different choices are possible. For example it is also perfectly possible to carry out the same derivation using the micro-canonical equilibrium measure.} $\rho^{eq}(\Aphase{})$, and we choose that the probability equilibrium measure is given by the Gibbs measure on the FG phase-space $X=\real^{6\nfg}$:
 \begin{equation}\label{Eq:GibbsMeas}
  \mathbb{P}(\diff\Aphase{})=\rho^{eq}(\Aphase{})\diff\Aphase{}=\frac{1}{\partf}\exp{-\beta\Ham(\Aphase{})}\diff\Aphase{}\,.
 \end{equation}
@@ -94,31 +96,31 @@ We suppose that the state of the system is described by the canonical equilibriu
 We denote the \emph{Zwanzig projection} as $\mathcal{P}_{\Bphase{}}$:
 %
 \begin{equation}\label{Eq:proj}
-	\mathcal{P}_{\Bphase{}}F(\Aphase{}) = \frac{1}{\Omega(\Bphase{})} \int_X F(\Aphase{}')\,\dirac{\Bphase{}(\Aphase{}')-\Bphase{}}\rho^{eq}(\Aphase{}')\diff\Aphase{}'
+	\mathcal{P}_{\Bphase{}}F(\Aphase{}) = \frac{1}{\Omega(\Bphase{}(\Aphase{}))} \int_X F(\Aphase{}')\,\dirac{\Bphase{}(\Aphase{}')-\Bphase{}(\Aphase{})}\rho^{eq}(\Aphase{}')\diff\Aphase{}'
 \end{equation}
 %
-where $F(\Aphase{})$ is a generic function acting on the space-phase and the normalisation factor, also called the \textit{structure function}, represents the total volume of the surface $S(\Bphase{})$ in phace-space, which is defined by $\Bphase{}(\Aphase{})=\Bphase{}$:
+where $F(\Aphase{})$ is a generic function acting on the space-phase and the normalisation factor, also called the \textit{structure function}, represents the total volume of the surface $S(\Bphase{}(\Aphase{}))$ in phace-space, which is defined by $\Bphase{}(\Aphase{}')=\Bphase{}(\Aphase{})$:
 %
 \begin{equation}\label{eq:structurefunc}
-	\Omega(\Bphase{}) = \int_X\dirac{\Bphase{}(\Aphase{}')-\Bphase{}}\mathbb{P}(\diff\Aphase{}')\,.
+	\Omega(\Bphase{}(\Aphase{})) = \int_X\dirac{\Bphase{}(\Aphase{}')-\Bphase{}(\Aphase{})}\mathbb{P}(\diff\Aphase{}')\,.
 \end{equation}
-In other words, \textit{structure function} represents the number of micro-states compatible with the macro-state $\Bphase{}(\Aphase{})=\Bphase{}$ \cite{Hijon2010}.
+In other words, \textit{structure function} represents the number of micro-states compatible with the macro-state $\Bphase{}(\Aphase{}')=\Bphase{}(\Aphase{})$ \cite{Hijon2010}.
   
 The projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary function $F(\Aphase{})$ that part, $\mathcal{P}_{\Bphase{}}F(\Aphase{})$, which depends on $\Aphase{}$ only through $\Bphase{}(\Aphase{})$. 
-For a given $\Aphase{}$ we determine the observables $\Bphase{}(\Aphase{})=\Bphase{}$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondence surface $S(\Bphase{})$, while the \textit{structure function} in the denominator $\Omega(\Bphase{}(\Aphase{}))=\Omega(\Bphase{})$ allows us to spread this amount on the surface $S(\Bphase{})$.
-Therefore, loosely speaking, $\mathcal{P}_{\Bphase{}}$ ``average'' the function $F(\Aphase{})$ over the surface $S(\Bphase{}(\Aphase{}))$. 
+For a given $\Aphase{}$ we determine the numerical values $\bfa$ of observables, $\bfa=\Bphase{}(\Aphase{})$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondence surface $S(\bfa)$, while the \textit{structure function} in the denominator $\Omega(\Bphase{}(\Aphase{}))=\Omega(\bfa)$ allows us to spread this amount on the surface $S(\bfa)$.
+Therefore, loosely speaking, $\mathcal{P}_{\Bphase{}}$ ``average'' the function $F(\Aphase{})$ over the surface $S(\bfa)$. 
 The fact that $\mathcal{P}_{\Bphase{}}$ is a projection operator can be easily verified by showing that it satisfies the necessary and
 sufficient condition for a projection operator, $\mathcal{P}_{\Bphase{}}^2=\mathcal{P}_{\Bphase{}}$ \cite{Zwanzig1961}.
-We can define the \emph{complementary orthogonal projection} $\qproj$ as
+We can define the \emph{complementary orthogonal projection} $\qproj_{\Bphase{}}$ as
 $$
- \qproj=\idproj-\pproj\,.
+ \qproj_{\Bphase{}}=\idproj-\pproj_{\Bphase{}}\,.
 $$  
 
 
 \subsection{Zwanzig Projection as Conditional Expectation}
 We will now show that this projection is equivalent to taking the conditional expectation: 
 $$\mathcal{P}_{\Bphase{}}F \equiv \cexpval{F}{\,\Bphase{}} = \aver{F}_{\Bphase{}}\,$$ 
-with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for a specific value of the CG variables $\Bphase{}$ \cite{Chorin2000,DiPasquale2019}. This is done because it will be useful for the following sections.
+with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for a specific value of the CG variables $\Bphase{}(\Aphase{})$ \cite{Chorin2000,DiPasquale2019}. This is done because it will be useful for the following sections.
 
 Let $A$ be a phase function in the Liouville space (see appendix \ref{App:C}).
 We now focus our attention on a set of functions 
@@ -145,7 +147,8 @@ We stress here that the conditional expectation \ref{ConExp}, which we rewrite a
 
 
 \subsection{Generalized Langevin Equation}
-We are now in the position to derive the GLE. 
+We are now in the position to derive the GLE. We will make the derivation considering an ensemble of initial conditions $\Aphase{0}$ satisfying $\Bphase{}(\Aphase{0})=\bfa$ for some fixed $\bfa=\bfA(\Aphase{})$ and with $\Aphase{0}$ distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa$.  
+
 Differentiating both sides of the relation (\ref{Eq:SolLiouville}) with respect to time, we can rewrite the equation (\ref{Eq:MotionEqGamma}) as
 \begin{equation}
  \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\exp{\Lio t}\,\Bphase{}(\Aphase{0}) = \exp{\Lio t}\Lio\,\Bphase{0}\,, 
@@ -174,10 +177,10 @@ We can rewrite the second term on the RHS of eq. (\ref{Eq:MoIdProj}) as
 and, considering the projection on the CG variables such that $A(\Aphase{})=\bfa$, the last part of the integral becomes:
 \begin{multline*}
  \pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0} = 	
-   \frac{1}{\Omega(\bfa)} \int\diff\Aphase{}\rho^{eq}(\Aphase{})\, \dirac{\Bphase{}(\Aphase{})-\bfa}
+   \frac{1}{\Omega(\bfa)} \int\diff\Aphase{0}\rho^{eq}(\Aphase{0})\, \dirac{\Bphase{}(\Aphase{0})-\bfa}
          \sqp{ \Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } ={}\\
-   = -\frac{1}{\Omega(\bfa)} \int\diff\Aphase{}\rho^{eq}(\Aphase{}) 
-         \sqp{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } \Lio\,\dirac{\Bphase{}(\Aphase{})-\bfa}\,.
+   = -\frac{1}{\Omega(\bfa)} \int\diff\Aphase{0}\rho^{eq}(\Aphase{0}) 
+         \sqp{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } \Lio\,\dirac{\Bphase{}(\Aphase{0})-\bfa}\,.
 \end{multline*}
 Here, we used the fact that $\Lio$ is skew-symmetric (anti-Hermitian) on the Liouville space, i.e. $(f,\Lio\, g)=-(\Lio\, f,g)$ for all $f,g$ in the Liouville space. Using the chain rule for time differentiation\footnote{ 
 For a generic function on the CG space: 
@@ -193,20 +196,20 @@ $$
 $$
 where $\nabla_\bfx$ denotes the gradient taken with respect to the variable $\bfx$, and get:
 \begin{multline*}
- \pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0} = \frac{1}{\Omega(\bfa)} \int\diff\Aphase{}\rho^{eq}(\Aphase{})\,
-    \sqp{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } \Lio\,\Bphase{}\cdot\nabla_{\bfa}\,\dirac{\Bphase{}(\Aphase{})-\bfa} ={}\\
-  = \frac{1}{\Omega(\bfa)}\,\nabla_{\bfa}\cdot\int\diff\Aphase{}\rho^{eq}(\Aphase{})\,\bp{ \,\dirac{\Bphase{}(\Aphase{})-\bfa}   
-    \sqp{ \cip{ \Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0}} } }\,,
+\pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0} = \frac{1}{\Omega(\bfa)} \int\diff\Aphase{0}\rho^{eq}(\Aphase{0})\,
+    \sqp{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } \Lio\,\Bphase{0}\cdot\nabla_{\bfa}\,\dirac{\Bphase{}(\Aphase{0})-\bfa} ={}\\
+  = \frac{1}{\Omega(\bfa)}\,\nabla_{\bfa}\cdot\int\diff\Aphase{0}\rho^{eq}(\Aphase{0})\,\bp{ \,\dirac{\Bphase{}(\Aphase{0})-\bfa}   
+    \sqp{ \cip{ \Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0}} } }\,,
 \end{multline*}
 %
 where $\otimes$ represents a tensor product. We used the fact that the divergence of a continuously differentiable second-order tensor field is a first-order tensor field, i.e. $\nabla\cdot\cip{f\bfu\otimes \bfv} = \bfv \cip{\bfu\cdot \nabla f} + f\cip{\nabla\cdot \bfu}\bfv + f\cip{\bfu\cdot\nabla}\bfv$ where $f$ is a generic function and $\bfu$, $\bfv$ two generic vectors.
 We can rewrite the equation obtained as
 \begin{multline}\label{Eq:PezzoInt}
 \pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0} = \frac{1}{\Omega(\bfa)}\, \nabla_{\bfa}\cdot\bp{ \Omega(\bfa)\,
-    \pproj\sqp{ \cip{ \Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } } ={}\\
-  = \frac{\nabla_{\bfa}\Omega(\bfa)}{\Omega(\bfa)}\, \pproj\sqp{ \cip{ \Lio\,\Bphase{}} 
+    \pproj\sqp{ \cip{ \Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } } ={}\\
+  = \frac{\nabla_{\bfa}\Omega(\bfa)}{\Omega(\bfa)}\, \pproj\sqp{ \cip{ \Lio\,\Bphase{0}} 
     \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } +
-    \nabla_{\bfa}\cdot\pproj\sqp{ \cip{ \Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } ={}\\
+    \nabla_{\bfa}\cdot\pproj\sqp{ \cip{ \Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } ={}\\
   = - \nabla_{\bfa}\,\entropy\cip{\bfa}\fricmat\cip{\bfa,s} + \frac{1}{\beta}\, \nabla_{\bfa}\cdot\fricmat\cip{\bfa,s}\,,
 \end{multline}
 where $\beta=\cip{\kb T}^{-1}$ and we have introduced two new functions. 
@@ -215,19 +218,19 @@ The former
   \entropy\cip{\bfa}\coloneqq -\frac{1}{\beta}\ln \Omega\cip{\bfa}
 \end{equation}
 is interpreted, since it has units of energy, as a contribution to the free energy of the system, in view of the definition of $\Omega(\bfa)$ in eq. (\ref{eq:structurefunc}). We note that in \cite{Hijon2010}, the alternative quantity $\mathcal{S}(\bfa) = \kb\ln{\Omega(\bfa)}$ is defined, which is an entropy. Both definitions are identical up to a multiplicative factor, and depend upon on the assumed temperature of the system.
-Instead, the Latter function is defined as
+Instead, the latter function is a positive definite memory matrix:
 \begin{equation}
 \begin{split}\label{Eq:fricmatrix}
-	\fricmat\cip{\bfa,s} &\coloneqq \beta\,\pproj\sqp{ \cip{ \Lio\,\Bphase{}} \otimes 
+	\fricmat\cip{\bfa,s} &\coloneqq \beta\,\pproj\sqp{ \cip{ \Lio\,\Bphase{0}} \otimes 
 	  \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } ={}\\
-	&= \beta\,\bp{ \pproj\sqp{ \cip{ \pproj\Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } + 
-	  \pproj\sqp{ \cip{ \qproj\Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } } ={}\\
-	&= \beta\,\bp{ \cip{ \pproj\Lio\,\Bphase{}} \otimes \pproj\sqp{\cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } + 
-	  \pproj\sqp{ \cip{ \qproj\Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } } ={}\\
-	&= \beta\,\pproj\sqp{ \cip{ \qproj\Lio\,\Bphase{}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } }\,, 
+	&= \beta\,\bp{ \pproj\sqp{ \cip{ \pproj\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } + 
+	  \pproj\sqp{ \cip{ \qproj\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } } ={}\\
+	&= \beta\,\bp{ \cip{ \pproj\Lio\,\Bphase{0}} \otimes \pproj\sqp{\cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } + 
+	  \pproj\sqp{ \cip{ \qproj\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } } ={}\\
+	&= \beta\,\pproj\sqp{ \cip{ \qproj\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } }\,, 
 \end{split}
 \end{equation}
-where we used the fact that $\pproj\qproj=0$. This function is a positive definite memory matrix.
+where we used the fact that $\pproj\qproj=0$.
 
 Inserting eq. (\ref{Eq:PezzoInt}) in eq. (\ref{Eq:PezzoEqEvoluz}), the eq. (\ref{Eq:MoIdProj}) becomes
 \begin{multline}
@@ -243,22 +246,56 @@ Now, since for any $f\cip{\Bphase{t}}$ we have $\exp{\Lio t}f\cip{\Bphase{0}}=f\
   \exp{\Lio(t-s)}\,\nabla_{\bfa}\cdot\fricmat\cip{\bfa,s} &= \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s}\,,
 \end{align*} 
 so we get
-\begin{multline}
+\begin{multline}\label{Eq:MZequation}
  \totd{\Bphase{t}}{t} = \Lambda\cip{\Bphase{t}} 
     - \int_0^t \nabla_{\bfa}\,\entropy\cip{\bfa(t-s)}\fricmat\cip{\bfa(t-s),s} \diff s +{}\\
-    + \frac{1}{\beta}\int_0^t \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s} \diff s + \fprojbf_{\Bphase{}}(t,\Aphase{})\,, 
+    + \frac{1}{\beta}\int_0^t \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s} \diff s + \fprojbf_{\Bphase{}}(t,\Aphase{0})\,, 
 \end{multline}
-where $\Lambda\cip{\Bphase{t}}=\pproj_{\bfa(t)}\Lio\,\Bphase{0}$ and the last term $\fprojbf_{\Bphase{}}(t,\Aphase{})$ is define as
-\begin{equation}\label{eq:randomforce}
-	\fprojbf_{\Bphase{}}(t,\Aphase{}) = \exp{\qproj_{\bfa}\Lio t}\qproj_{\bfa}\Lio\,\Bphase{0} = 
+where we have defined
+\begin{align}
+ \label{Eq:Lamba(GammaT)}
+ \Lambda\cip{\Bphase{t}} &\coloneqq \pproj_{\bfa(t)}\Lio\,\Bphase{0}\,,\\
+ \label{Eq:RAndomForce}
+ \fprojbf_{\Bphase{}}(t,\Aphase{0}) &\coloneqq \exp{\qproj_{\bfa}\Lio t}\qproj_{\bfa}\Lio\,\Bphase{0} = 
 	   \qproj_{\bfa}\exp{\qproj_{\bfa}\Lio t}\Lio\,\Bphase{0}\,.
-\end{equation} 
+\end{align} 
+The quantity $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ still depends on the FG variables, and is given by the solution of an auxiliary set of equations called \emph{orthogonal dynamics equations} \cite{Givon2005}, which we will discuss in the following sections.  
+We can rewrite eq. (\ref{Eq:fricmatrix}) as
+\begin{multline}\label{Eq:FRICmatrixRF}
+ \fricmat\cip{\bfa,s} \coloneqq 
+   \beta\,\pproj_{\bfa}\sqp{ \cip{ \qproj_{\bfa}\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } }={}\\ 
+ = \beta\pproj_{\bfa} \sqp{\fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(t,\Aphase{0})}\,,
+\end{multline}
+therefore, from eq. (\ref{Eq:MZequation}), $\bffricmat$ is a friction matrix, whose components can be written in Green-Kubo form \cite{Kauzlaric2011}.
+
+Recall that we are not interested in solving the equation (\ref{Eq:MZequation}) for a specific initial condition $\Bphase{}(\Aphase{0})$, but rather for an ensemble of initial conditions $\Aphase{0}$ satisfying $\Bphase{}(\Aphase{0})=\bfa(0)$ for some fixed $\bfa(0)=\bfA(\Aphase{})$, where $\bfA(\Aphase{})$ is a generic set of CG variables, and with $\Aphase{0}$ distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa(0)$. It is important to highlight here that the complexity of the equation (\ref{Eq:MZequation}) is not reduced with respect the starting equation (\ref{Eq:MotionEqGamma}), it has simply been shifted into the calculation of the \emph{orthogonal dynamics}. However close to equilibrium, the term $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ is uncorrelated with the projected variables $\Bphase{}$ and therefore approximated as a random noise. 
+The proof of this statement is based on the Mori projector $\pproj^{M}$, see section \ref{Sec:MoriProj}, which, as we said, is a special case of the Zwanzig projector when the system is near the equilibrium \cite{Kauzlaric2011}. If we now consider eq. (\ref{Eq:RAndomForce}), we can write:
+\begin{equation*}
+\begin{split}
+ \cip{ \fprojbf_{\Bphase{}}(t,\Aphase{0}) ,\, \Bphase{}^*(\Aphase{0}) } &= 
+    \cip{ \exp{\qproj_{\bfa}^M\Lio t}\qproj_{\bfa}^M\Lio\,\Bphase{0} ,\, \Bphase{0}^* } = \\
+  &= \cip{ \qproj_{\bfa}^M\exp{\qproj_{\bfa}^M\Lio t}\qproj_{\bfa}^M\Lio\,\Bphase{0} ,\, \Bphase{0}^* } = \\
+  &= \cip{ \qproj_{\bfa}^M \fprojbf_{\Bphase{}}(t,\Aphase{0}) ,\, \Bphase{0}^* } = \\
+  &= \cip{\fprojbf_{\Bphase{}}(t,\Aphase{0}) ,\, \Bphase{0}^* } - 
+  \frac{\cip{\fprojbf_{\Bphase{}}(t,\Aphase{0}) ,\, \Bphase{0}^* }}{\cip{\Bphase{0} ,\, \Bphase{0}^* }}\cip{\Bphase{0} ,\, \Bphase{0}^* } =
+  0\,,
+\end{split}
+\end{equation*}
+where we used the idempotent property of the projector and the definition of $\qproj^M$, the complement of $\pproj^M$.
+In the Langevin description of the dynamics of a system, the random force has the property of being uncorrelated from the velocity of the particle. For the same reason, being the dynamic of $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ orthogonal to that of $\Bphase{}$, i.e. they are uncorrelated, we can identity it as random force acting on the system.
+
+With this in mind, we can rewrite eq. (\ref{Eq:MZequation}) as an integro-differential equation with a random-source term which is usually referred to as the \emph{Generalized Langevin Equation} (GLE):
+\begin{multline}\label{Eq:ZwanGLE}
+ \totd{\Bphase{t}}{t} = \Lambda\cip{\Bphase{t}} 
+    - \int_0^t \nabla_{\bfa}\,\entropy\cip{\bfa(t-s)}\fricmat\cip{\bfa(t-s),s} \diff s +{}\\
+    + \frac{1}{\beta}\int_0^t \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s} \diff s + \mathbf{F}(t)\,, 
+\end{multline}
+where $\mathbf{F}(t)$ is interpreted as a zero-mean random process whose statistical properties are specified by eq. (\ref{Eq:RAndomForce}) in which $\Aphase{0}$ is random and distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa(0)$.
 
 
 
 
 
-\section{Mori approach}
 
 
 
