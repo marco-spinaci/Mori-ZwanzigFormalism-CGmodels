@@ -24,6 +24,10 @@
 \DeclareMathAlphabet\mathbfcal{OMS}{cmsy}{b}{n}
 \usepackage{mymacrosTESI}
 
+\usepackage{graphicx, sub figure}
+\usepackage[margin=10pt,font=small,labelfont=bf]{caption}
+\graphicspath{ {Figure/} }
+
 \usepackage[titletoc,page]{appendix}
 
 \begin{document}
@@ -34,7 +38,7 @@
 
 \tableofcontents
 
-%\part{Introduction}
+\part{Introduction}
 
 \part{Theoretical Background}
 
@@ -123,7 +127,7 @@ $$
 \subsection{Zwanzig Projection as Conditional Expectation}
 We will now show that this projection is equivalent to taking the conditional expectation: 
 $$\mathcal{P}_{\Bphase{}}F \equiv \cexpval{F}{\,\Bphase{}} = \aver{F}_{\Bphase{}}\,$$ 
-with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for a specific value of the CG variables $\Bphase{}(\Aphase{})$ \cite{Chorin2000,DiPasquale2019}. This is done because it will be useful for the following sections.
+with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for a specific value $\bfa$ of the CG variables $\Bphase{}(\Aphase{})$ \cite{Chorin2000,DiPasquale2019}. This is done because it will be useful for the following sections.
 
 Let $A$ be a phase function in the Liouville space (see appendix \ref{App:C}).
 We now focus our attention on a set of functions 
@@ -162,7 +166,7 @@ where $\Bphase{0}=\Bphase{}(\Aphase{0})$. Applying the identity operator $\idpro
  \exp{\Lio t}\pproj\Lio\,\Bphase{0} + \exp{\Lio t}\qproj\Lio\,\Bphase{0}\,. 
 \end{equation}
 
-Now if we make in the Dunhamel-Dyson operator identity (\ref{Eq:DysId}) for the exponential operator $exp(-(A+B)t)$, the substitutions $A=\Lio\qproj$ and $B=\Lio\pproj$, we get
+Now if we make in the Dunhamel-Dyson operator identity for the exponential operator $exp(-(A+B)t)$, see appendix \ref{App:D}, the substitutions $A=\Lio\qproj$ and $B=\Lio\pproj$, we get
 $$
 \exp{-\Lio t} = \exp{-\Lio\qproj t}-\int_0^{t}\exp{-\Lio\qproj s}\,\Lio\pproj \,\exp{-\Lio(t-s)}\,\diff s\,,
 $$
@@ -272,7 +276,7 @@ We can now rewrite eq. (\ref{Eq:fricmatrix}) as
 therefore, from eq. (\ref{Eq:MZequation}), $\bffricmat$ is a friction matrix, whose components can be written in Green-Kubo form \cite{Kauzlaric2011}.
 
 Recall that we are not interested in solving the equation (\ref{Eq:MZequation}) for a specific initial condition $\Bphase{}(\Aphase{0})$, but rather for an ensemble of initial conditions $\Aphase{0}$ satisfying $\Bphase{}(\Aphase{0})=\bfa(0)$ for some fixed $\bfa(0)=\bfA(\Aphase{})$, where $\bfA(\Aphase{})$ is a generic set of CG variables, and with $\Aphase{0}$ distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa(0)$. It is important to highlight here that the complexity of the equation (\ref{Eq:MZequation}) is not reduced with respect the starting equation (\ref{Eq:MotionEqGamma}), it has simply been shifted into the calculation of the \emph{orthogonal dynamics}. However close to equilibrium, the term $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ is uncorrelated with the projected variables $\Bphase{}$ and therefore approximated as a random noise. 
-The proof of this statement is based on the Mori projector $\pproj^{M}$, see section \ref{Sec:MoriProj}, which, as we said, is a special case of the Zwanzig projector when the system is near the equilibrium \cite{Kauzlaric2011}. If we now consider eq. (\ref{Eq:RAndomForce}), we can write:
+The proof of this statement is based on the scalar product defined in the Liouville space and the Mori projector $\pproj^{M}$, see section \ref{Sec:MoriProj}, which, as we said, is a special case of the Zwanzig projector when the system is near the equilibrium \cite{Kauzlaric2011}. If we now consider eq. (\ref{Eq:RAndomForce}), we can write:
 \begin{equation*}
 \begin{split}
  \cip{ \fprojbf_{\Bphase{}}(t,\Aphase{0}) ,\, \Bphase{}^*(\Aphase{0}) } &= 
@@ -302,6 +306,44 @@ In the next chapter we will derive more explicit forms of the terms appearing in
 
 \chapter{Canonical Mapping and Coarse-Graining}
 \label{Sec:CanMapp&CG}
+
+\section{Definition and Notation}
+In the present work we have said that we consider two resolution levels for a given molecular system. The first one, at high resolution, is the fine-grained (FG) system composed by $\nfg$ particles, while the second one, at low resolution, is the CG system composed by $\ncg$ particles. The term \emph{particles} is used to indicate either an ``atom'', the fundamental particles that interacts in the FG system, or a larger group of ``atoms'', called \emph{bead}, that interacts in the CG system. 
+
+We will assume that the chemical structure of the molecular system is fixed, i.e. no reactions occur, the connectivity of the ``atoms'' is specified at the outset allowing us to fix a global index for the particles in the FG system, and that each ``atom'' is mapped to a fixed (unique) particle in the CG system.
+Following \cite{Noid2008}, we can summarise the notation and the definition that we will use, and that we have already used, in the following way:
+\begin{itemize}
+\item[-] lower case letters (e.g. $i,j$) refer to particles in the FG system, while capital letters (e.g. $I,J$) label the particles (``atoms'' or beads) in the CG system;
+\item[-] the mass of the $j$-th atom in FG system will be indicated with a lower case $m$ as $m_j$, while the mass of the $J$-th particle in CG system will be indicated as $M_J$;
+\item[-] the set of ``atoms'' included within the bead of index $J$ is define as
+$$ S_J \coloneqq \bp{j\in\bp{1,\ldots,\nfg}: \text{the $j$-th atom forms part of CG particle $J$}}\,.$$
+\item[-] the number of ``atoms'' corresponding to CG particle $J$ will be referred to as $ s_J = \# S_J $;
+\item[-] the index of the CG particle containing the $k$-th ``atom'' will be referred to as $J_k$; 
+\item[-] FG phase space variables are denoted with lower case letters: 
+  $$\Aphase{}=\cip{\Aphase{\bfr},\Aphase{\bfp}}=\cip{\bfr_1,\ldots,\bfr_{\nfg},\bfp_1,\ldots,\bfp_{\nfg}}\,;$$
+\item[-] CG phase space variables are denoted using capital letters:
+  $$\Bphase{}=\cip{\Bphase{\bfR},\Bphase{\bfP}} = \cip{\bfR_1,\ldots,\bfR_{\ncg},\bfP_1,\ldots,\bfP_{\ncg}}\,.$$
+\end{itemize}
+A general CG (hybrid) system may include particles corresponding to single ``atoms'', i.e. $J$ for which $s_J=1$, and into proper beads, i.e. $J$ for which $s_J>1$. The number of ``atoms'' in the CG system will be denoted as
+$$N^A \coloneqq \#\bp{J\in\bp{1,\ldots,\ncg}: s_J=1}\,,$$  
+while the number of beads is denoted as $N^B \coloneqq \ncg-N^A$.
+For notational convenience, we will assume that the indices are ordered in such way that indices $J\in\bp{1,\ldots,N^A}$ correspond to atoms, and $J\in\bp{N^A+1,\ldots,\ncg}$ corresponds to beads. 
+A sketch of a possible mapping between FG and CG systems is shown in fig.~\ref{Fig:sketch}.
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.6\textwidth]{mappingFG-CG.png}
+    \caption{Sketch of the mapping of a molecule from the FG system to the CG system where the index mapping functions between the different resolutions are highlighted. In the picture, $\NA{}=6$, $\ncg=8$, therefore, $S_1=\{4\},\,S_2=\{5\},\,\ldots,\,S_6=\{9\},\,S_7=\{1,\,2,\,3\},\,S_8=\{10,\,11,\,12\}$. \cite{DiPasquale2019}}
+    \label{Fig:sketch}
+\end{figure}
+
+\section{A particular class of mapping operator}
+The mapping operators are a collection of functions defined in the FG system that specify the physical meaning of CG variables, i.e. they fix the CG variables will be observables of the FG system. Therefore they are functions
+$$\Psi,\Phi\colon  \real^{6\nfg}  \to  \real^{6\ncg}$$ such that 
+\begin{align*}
+\Aphase{}  &\mapsto \Psi(\Aphase{}) \eqqcolon \Bphase{\bfR}(\Aphase{})\,,\\
+\Aphase{}  &\mapsto \Phi(\Aphase{}) \eqqcolon \Bphase{\bfP}(\Aphase{})\,.
+\end{align*}
+
 
 
 
@@ -419,8 +461,8 @@ The set of all events, such as all the possible outcomes of an experiment, is ca
 \end{defin}
 
 \begin{defin}[\textbf{$\sigma$-algebra}]
-A collection $\mathscr{F}$ of subset of $\Omega$ is called $\sigma$-algebra on $\Omega$ if\footnote{We use the following convention:
-\[ \mathbb{N}\coloneqq\{1,2,3,\dots\} \subseteq \{0,1,2,3,\dots\}\eqqcolon\mathbb{Z}^+\quad\mathrm{and}\quad\mathbb{R}^+\coloneqq[0,+\infty)\,. \]}
+A collection $\mathscr{F}$ of subset of $\Omega$ is called $\sigma$-algebra on $\Omega$ if\footnote{We use `$\coloneqq$' to signify `is defined to equal', and the following convention:
+$$\mathbb{N}\coloneqq\{1,2,3,\dots\} \subseteq \{0,1,2,3,\dots\}\eqqcolon\mathbb{Z}^+\quad\mathrm{and}\quad\mathbb{R}^+\coloneqq[0,+\infty)\,. $$}
 \begin{compactenum}[(i)] 
 \item $\Omega\in\mathscr{F}$; 
 \item $F\in\mathscr{F}\,\implies\, F^c\coloneqq\,\Omega\setminus F\in\mathscr{F}$;
@@ -508,7 +550,7 @@ and then
 $$\mathbb{E}\sqp{h(X)}=\int_{\mathbb{R}}h(x)\,\mathbb{P}_X(\diff x)\,.$$
 Furthermore, if $f_X$ is a pdf of $X$ and
 \[
-\mathbb{E}\sqp{|h(X)|}<\infty\;\Longleftrightarrow\;\int_{\mathbb{R}}|h(x)|\,f_X(x)\,\diff x<\infty\,,
+\mathbb{E}\sqp{|h(X)|}<\infty\;\iff\;\int_{\mathbb{R}}|h(x)|\,f_X(x)\,\diff x<\infty\,,
 \] 
 then
 \[
