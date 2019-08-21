@@ -46,11 +46,11 @@ Qfull=Q;
 
 
 # Compute autocorrelation stats
-(StressStats,StressMean,MomStats,MomMean) = ConstrainedAutocorr(P,Q,C,S);
+(StressStats,StressMean,StressSqMean,MomStats,MomMean,MomSqMean) = ConstrainedAutocorr(P,Q,C,S);
 
 # Use PyPlot to plot autocorrelation of momenta
-# A=MomStats.-kron((MomMean.^2)',ones(S.NumLags));
-# plot(S.dt*S.LagStep*[0:S.NumLags-1;],A./A[1])
+A=MomStats.-kron((MomMean.^2)',ones(S.NumLags));
+plot(S.dt*S.LagStep*[0:S.NumLags-1;],A./A[1])
 # savefig("OrthocorrM.svg")
 # open("./P.csv","w+") do x
 #     writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] A./A[1] ] );
