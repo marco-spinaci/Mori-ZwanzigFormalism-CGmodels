@@ -27,7 +27,7 @@
 
 # julia Data_Analysis/Maxwell-Boltzmann_distribution/MBd.jl
 
-gnuplot Data_Analysis/Maxwell-Boltzmann_distribution/plot_MBd.gp
+# gnuplot Data_Analysis/Maxwell-Boltzmann_distribution/plot_MBd.gp
 
 
 ##############################################################################################################################

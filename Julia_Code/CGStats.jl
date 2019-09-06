@@ -11,8 +11,8 @@ export Simulator
 # Functions to output raw trajectory data
 export FullTraj, LangevinFullTraj, ConstrainedTraj, LangConstrainedTraj, ApproximateTraj
 # High-level function to extract data
-export VEffConstrained, VEffConstrainedLangDyn, ConstrainedAutocorr, FullAutocorr, ApproximateAutocorr, ConstrainedAutocorrPar, FullAutocorrPar,
-  ApproximateAutocorrPar
+export VEffConstrained, VEffConstrainedLangDyn, ConstrainedAutocorr, ConstrainedAutocorrLangDyn, FullAutocorr, FullAutocorrLangDyn, ApproximateAutocorr,
+  ConstrainedAutocorrPar, ConstrainedAutocorrLangDynPar, FullAutocorrPar, FullAutocorrLangDynPar, ApproximateAutocorrPar
 # Orthogonal dynamics sampling
 export ConstrainedSample, ConstrSampleLangDyn
 # Functions to extract approximate dynamics
@@ -22,18 +22,18 @@ export ApproxMeanForce, ApproxMeanStresses, ApproxFlucStep, ComputeVEff
 # Simulator type, encoding parameters #
 #######################################
 @with_kw struct Simulator
-  dt::Float64		= 1e-4
-  Stochdt::Float64	= 1e-4
-  FullSteps::Int	= Int(1e5)
-  OrthoSteps::Int 	= 1
-  ApproxSteps::Int	= Int(1e5)
-  FullTime::Float64	= FullSteps*dt
+  dt::Float64		  = 1e-4
+  Stochdt::Float64	  = 1e-4
+  FullSteps::Int	  = Int(1e5)
+  OrthoSteps::Int 	  = 1
+  ApproxSteps::Int	  = Int(1e5)
+  FullTime::Float64	  = FullSteps*dt
   ApproxTime::Float64 = ApproxSteps*dt
-  LagStep			= 400
-  NumLags			= 30
-  MacroSamples::Int	= 50
-  OrthoSamples::Int	= Int(1e5)
-  Moments::Int		= 2
+  LagStep			  = 400
+  NumLags			  = 30
+  MacroSamples::Int	  = 50
+  OrthoSamples::Int	  = Int(1e5)
+  Moments::Int		  = 2
 end
 
 #############################################
@@ -226,8 +226,8 @@ end
 ################################
 # Orthogonal dynamics sampling #
 ################################
-function ConstrainedSample(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,
-						S::Simulator,Obs=(P,Q,C) -> 0)
+function ConstrainedSample(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S::Simulator,Obs=(P,Q,C) -> 0)
+
   # Mean Forces
   StressMoments = zeros(C.ConstrainedBeads-1,S.Moments);
 
@@ -269,8 +269,8 @@ function ConstrainedSample(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,
   return StressMoments,P,Q
 end
 
-function ConstrSampleLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,
-						S::Simulator,Obs=(P,Q,C) -> 0)
+function ConstrSampleLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S::Simulator,Obs=(P,Q,C) -> 0)
+
   # Mean Forces
   StressMoments = zeros(C.ConstrainedBeads-1,S.Moments);
 
@@ -301,19 +301,19 @@ function ConstrSampleLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,
   # Efinal = Potential(Q,C);
   # Hfinal = Efinal + KineticEnergy(P,C);
 
-  #println("        Error in momentum constraint = ",maximum(abs.(PCG-C.PhiConstr*P)));
-  #println("        Error in position constraint = ",maximum(abs.(QCG-C.PsiConstr*Q)));
-  #println("        Relative error in energy     = ",abs(Hfinal/H0-1));
-  #if Obs!=0
-  #  println("        Value of observable          = ",ObsMean);
-  #end
+  # println("        Error in momentum constraint = ",maximum(abs.(PCG-C.PhiConstr*P)));
+  # println("        Error in position constraint = ",maximum(abs.(QCG-C.PsiConstr*Q)));
+  # println("        Relative error in energy     = ",abs(Hfinal/H0-1));
+  # if Obs!=0
+   # println("        Value of observable          = ",ObsMean);
+  # end
 
   StressMoments ./= S.OrthoSamples
   return StressMoments,P,Q
 end
 
-function ConstrainedAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
-							C::Chain,S::Simulator)
+function ConstrainedAutocorr(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S::Simulator)
+
   # Mean Forces
   StressStats 	= zeros(S.NumLags,C.ConstrainedBeads-1);
   StressStorage = zeros(S.NumLags,C.ConstrainedBeads-1);
@@ -332,7 +332,7 @@ function ConstrainedAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
     m = 0;
     while m < S.NumLags
         for i = 1:S.LagStep
-          (P,Q,F) = LangDynConstrainedStep(P,Q,F,C,S.dt);  #ConstrainedStep
+          (P,Q,F) = ConstrainedStep(P,Q,F,C,S.dt);
         end
 
         m+=1;
@@ -352,7 +352,7 @@ function ConstrainedAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
   while s < S.OrthoSamples
     # Advance to next sample time
     for i = 1:S.LagStep
-      (P,Q,F) = LangDynConstrainedStep(P,Q,F,C,S.dt); #ConstrainedStep
+      (P,Q,F) = ConstrainedStep(P,Q,F,C,S.dt);
     end
 
     # Record successful sample.
@@ -365,7 +365,7 @@ function ConstrainedAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
 
     # Update moment estimators
     StressMean += SigmaCG;
-    StressSqMean += SigmaCG.^2
+    StressSqMean += SigmaCG.^2;
 
     # Update momentum storage
     PCG = C.PhiConstr*P;
@@ -374,7 +374,7 @@ function ConstrainedAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
 
     # Update moment estimators
     MomMean += PCG;
-    MomSqMean += PCG.^2
+    MomSqMean += PCG.^2;
 
     # Add to estimator of expectation of product
     StressStats += StressStorage.*kron(SigmaCG',ones(S.NumLags));
@@ -389,15 +389,105 @@ function ConstrainedAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
   StressStats /= S.OrthoSamples;
   MomStats /= S.OrthoSamples;
 
-#   Efinal = Potential(Q,C);
-#   Hfinal = Efinal + KineticEnergy(P,C);
+  # Efinal = Potential(Q,C);
+  # Hfinal = Efinal + KineticEnergy(P,C);
 
-  #println("        Error in momentum constraint = ",maximum(abs(PCG-C.PhiConstr*P)));
-  #println("        Error in position constraint = ",maximum(abs(QCG-C.PsiConstr*Q)));
-  #println("        Relative error in energy     = ",abs(Hfinal/H0-1));
-  #if Obs!=0
-  #  println("        Value of observable          = ",ObsMean);
-  #end
+  # println("        Error in momentum constraint = ",maximum(abs(PCG-C.PhiConstr*P)));
+  # println("        Error in position constraint = ",maximum(abs(QCG-C.PsiConstr*Q)));
+  # println("        Relative error in energy     = ",abs(Hfinal/H0-1));
+  # if Obs!=0
+   # println("        Value of observable          = ",ObsMean);
+  # end
+
+  return StressStats,StressMean,StressSqMean,MomStats,MomMean,MomSqMean
+end
+
+function ConstrainedAutocorrLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S::Simulator)
+
+  # Mean Forces
+  StressStats 	= zeros(S.NumLags,C.ConstrainedBeads-1);
+  StressStorage = zeros(S.NumLags,C.ConstrainedBeads-1);
+  StressMean   	= zeros(C.ConstrainedBeads-1);
+  StressSqMean 	= zeros(C.ConstrainedBeads-1);
+  MomStats    	= zeros(S.NumLags,C.ConstrainedBeads);
+  MomStorage 	= zeros(S.NumLags,C.ConstrainedBeads);
+  MomMean	    = zeros(C.ConstrainedBeads);
+  MomSqMean 	= zeros(C.ConstrainedBeads);
+
+  # E0  = Potential(Q,C);
+  F   = Forces(Q,C);
+  # H0  = E0 + KineticEnergy(P,C);
+
+  # first run the dynamics for one window
+    m = 0;
+    while m < S.NumLags
+        for i = 1:S.LagStep
+          (P,Q,F) = LangDynConstrainedStep(P,Q,F,C,S.dt);
+        end
+
+        m+=1;
+
+        SigmaCG = C.PhiFConstr*Stresses(Q,C);
+        StressStorage = circshift(StressStorage,(1,0));
+        StressStorage[1,:] = SigmaCG;
+
+        PCG = C.PhiConstr*P;
+        MomStorage = circshift(MomStorage,(1,0));
+        MomStorage[1,:] = PCG;
+    end
+
+  # Now start sampling
+  s=0;
+
+  while s < S.OrthoSamples
+    # Advance to next sample time
+    for i = 1:S.LagStep
+      (P,Q,F) = LangDynConstrainedStep(P,Q,F,C,S.dt);
+    end
+
+    # Record successful sample.
+    s+=1;
+
+    # Update stress storage
+    SigmaCG = C.PhiFConstr*Stresses(Q,C);
+    StressStorage = circshift(StressStorage,(1,0));
+    StressStorage[1,:] = SigmaCG;
+
+    # Update moment estimators
+    StressMean += SigmaCG;
+    StressSqMean += SigmaCG.^2;
+
+    # Update momentum storage
+    PCG = C.PhiConstr*P;
+    MomStorage = circshift(MomStorage,(1,0));
+    MomStorage[1,:] = PCG;
+
+    # Update moment estimators
+    MomMean += PCG;
+    MomSqMean += PCG.^2;
+
+    # Add to estimator of expectation of product
+    StressStats += StressStorage.*kron(SigmaCG',ones(S.NumLags));
+    MomStats += MomStorage.*kron(PCG',ones(S.NumLags));
+  end
+
+  StressMean /= S.OrthoSamples;
+  StressSqMean /= S.OrthoSamples;
+  MomMean /= S.OrthoSamples;
+  MomSqMean /= S.OrthoSamples;
+
+  StressStats /= S.OrthoSamples;
+  MomStats /= S.OrthoSamples;
+
+  # Efinal = Potential(Q,C);
+  # Hfinal = Efinal + KineticEnergy(P,C);
+
+  # println("        Error in momentum constraint = ",maximum(abs(PCG-C.PhiConstr*P)));
+  # println("        Error in position constraint = ",maximum(abs(QCG-C.PsiConstr*Q)));
+  # println("        Relative error in energy     = ",abs(Hfinal/H0-1));
+  # if Obs!=0
+   # println("        Value of observable          = ",ObsMean);
+  # end
 
   return StressStats,StressMean,StressSqMean,MomStats,MomMean,MomSqMean
 end
@@ -405,9 +495,8 @@ end
 ###################################
 # Full Trajectory Autocorrelation #
 ###################################
+function FullAutocorr(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S::Simulator,MeanForce)
 
-function FullAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
-							C::Chain,S::Simulator,MeanForce)
   # Mean Forces
   StressStats 	= zeros(S.NumLags,C.NBeads);
   StressStorage = zeros(S.NumLags,C.NBeads);
@@ -426,14 +515,14 @@ function FullAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
     m = 0;
     while m < S.NumLags
         for i = 1:S.LagStep
-          (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt); #LeapfrogStep
+          (P,Q,F) = LeapfrogStep(P,Q,F,C,S.dt);
         end
 
         m+=1;
 
         FCG = MeanForce(C.Psi*Q);
-	      SigmaCG = C.PhiF*Stresses(Q,C)-FCG;
-	      StressStorage = circshift(StressStorage,(1,0));
+	    SigmaCG = C.PhiF*Stresses(Q,C)-FCG;
+	    StressStorage = circshift(StressStorage,(1,0));
         StressStorage[1,:] = SigmaCG;
 
         PCG = C.Phi*P;
@@ -448,7 +537,7 @@ function FullAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
     while s < S.OrthoSamples
       # Advance to next sample time
       for i = 1:S.LagStep
-        (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt); #LeapfrogStep
+        (P,Q,F) = LeapfrogStep(P,Q,F,C,S.dt);
       end
 
       # Record successful sample.
@@ -486,15 +575,110 @@ function FullAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
     StressStats /= S.OrthoSamples;
     MomStats /= S.OrthoSamples;
 
-    #   Efinal = Potential(Q,C);
-    #   Hfinal = Efinal + KineticEnergy(P,C);
+    # Efinal = Potential(Q,C);
+    # Hfinal = Efinal + KineticEnergy(P,C);
 
-    #println("        Error in momentum constraint = ",maximum(abs(PCG-C.PhiConstr*P)));
-    #println("        Error in position constraint = ",maximum(abs(QCG-C.PsiConstr*Q)));
-    #println("        Relative error in energy     = ",abs(Hfinal/H0-1));
-    #if Obs!=0
-    #  println("        Value of observable          = ",ObsMean);
-    #end
+    # println("        Error in momentum constraint = ",maximum(abs(PCG-C.PhiConstr*P)));
+    # println("        Error in position constraint = ",maximum(abs(QCG-C.PsiConstr*Q)));
+    # println("        Relative error in energy     = ",abs(Hfinal/H0-1));
+    # if Obs!=0
+     # println("        Value of observable          = ",ObsMean);
+    # end
+
+    return StressStats,StressMean,StressSqMean,MomStats,MomMean,MomSqMean
+end
+
+function FullAutocorrLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S::Simulator,MeanForce)
+
+  # Mean Forces
+  StressStats 	= zeros(S.NumLags,C.NBeads);
+  StressStorage = zeros(S.NumLags,C.NBeads);
+  StressMean   	= zeros(C.NBeads);
+  StressSqMean 	= zeros(C.NBeads);
+  MomStats    	= zeros(S.NumLags,C.NBeads);
+  MomStorage 	= zeros(S.NumLags,C.NBeads);
+  MomMean	= zeros(C.NBeads);
+  MomSqMean = zeros(C.NBeads);
+
+  # E0  = Potential(Q,C);
+  F   = Forces(Q,C);
+  # H0  = E0 + KineticEnergy(P,C);
+
+  # first run the dynamics for one window
+    m = 0;
+    while m < S.NumLags
+        for i = 1:S.LagStep
+          (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
+        end
+
+        m+=1;
+
+        FCG = MeanForce(C.Psi*Q);
+        SigmaCG = C.PhiF*Stresses(Q,C)-FCG;
+		# SigmaCG = C.PhiF*Stresses(Q,C);
+        StressStorage = circshift(StressStorage,(1,0));
+        StressStorage[1,:] = SigmaCG;
+
+        PCG = C.Phi*P;
+        MomStorage = circshift(MomStorage,(1,0));
+        MomStorage[1,:] = PCG;
+    end
+
+
+    ### Now start sampling
+    s=0;
+
+    while s < S.OrthoSamples
+      # Advance to next sample time
+      for i = 1:S.LagStep
+        (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
+      end
+
+      # Record successful sample.
+      s+=1;
+
+      # Update STRESS storage
+      FCG = MeanForce(C.Psi*Q);
+      SigmaCG = C.PhiF*Stresses(Q,C)-FCG;
+	  # SigmaCG = C.PhiF*Stresses(Q,C);
+      StressStorage = circshift(StressStorage,(1,0));
+      StressStorage[1,:] = SigmaCG;
+
+      # Update STRESS estimators
+      StressMean += SigmaCG;
+      StressSqMean += SigmaCG.^2;
+
+      # Update MOMENTUM storage
+      PCG = C.Phi*P;
+      MomStorage = circshift(MomStorage,(1,0));
+      MomStorage[1,:] = PCG;
+
+      # Update MOMENTUM estimators
+      MomMean += PCG;
+      MomSqMean += PCG.^2;
+
+      # Add to estimator of expectation of product
+      StressStats += StressStorage.*kron(SigmaCG',ones(S.NumLags));
+      MomStats += MomStorage.*kron(PCG',ones(S.NumLags));
+    end
+
+    StressMean /= S.OrthoSamples;
+    StressSqMean /= S.OrthoSamples;
+    MomMean /= S.OrthoSamples;
+    MomSqMean /= S.OrthoSamples;
+
+    StressStats /= S.OrthoSamples;
+    MomStats /= S.OrthoSamples;
+
+    # Efinal = Potential(Q,C);
+    # Hfinal = Efinal + KineticEnergy(P,C);
+
+    # println("        Error in momentum constraint = ",maximum(abs(PCG-C.PhiConstr*P)));
+    # println("        Error in position constraint = ",maximum(abs(QCG-C.PsiConstr*Q)));
+    # println("        Relative error in energy     = ",abs(Hfinal/H0-1));
+    # if Obs!=0
+     # println("        Value of observable          = ",ObsMean);
+    # end
 
     return StressStats,StressMean,StressSqMean,MomStats,MomMean,MomSqMean
 end
@@ -581,15 +765,15 @@ function ApproximateAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
   StressStats /= S.OrthoSamples;
   MomStats /= S.OrthoSamples;
 
-#   Efinal = Potential(Q,C);
-#   Hfinal = Efinal + KineticEnergy(P,C);
+  # Efinal = Potential(Q,C);
+  # Hfinal = Efinal + KineticEnergy(P,C);
 
-  #println("        Error in momentum constraint = ",maximum(abs(PCG-C.PhiConstr*P)));
-  #println("        Error in position constraint = ",maximum(abs(QCG-C.PsiConstr*Q)));
-  #println("        Relative error in energy     = ",abs(Hfinal/H0-1));
-  #if Obs!=0
-  #  println("        Value of observable          = ",ObsMean);
-  #end
+  # println("        Error in momentum constraint = ",maximum(abs(PCG-C.PhiConstr*P)));
+  # println("        Error in position constraint = ",maximum(abs(QCG-C.PsiConstr*Q)));
+  # println("        Relative error in energy     = ",abs(Hfinal/H0-1));
+  # if Obs!=0
+	  # println("        Value of observable          = ",ObsMean);
+  # end
 
   return StressStats,StressMean,StressSqMean,MomStats,MomMean,MomSqMean
 end
@@ -609,7 +793,6 @@ function Observables(P,Q,C::Chain)
 
   return [mean(Obs),dot(Obs,Obs)/C.NPart]
 end
-
 
 """
     CGObservables(P,Q,C::Chain)
@@ -791,10 +974,10 @@ function ConstrainedAutocorrPar(C::Chain,S::Simulator)
             QQ = Q;
             # Get distances between CG particles
             println("      Sample ",ii,"  over fine-grained variables...");
-#            RSamples[ii,:] = CGDists(QQ,C);
-#            PSamples[ii,:] = C.PsiFConstr*PP;
+            # RSamples[ii,:] = CGDists(QQ,C);
+            # PSamples[ii,:] = C.PsiFConstr*PP;
             # Print max: if it gets too large, the integrator becomes unstable.
-#            println("        Maximum distance = ",maximum(RSamples[ii,:]));
+            # println("        Maximum distance = ",maximum(RSamples[ii,:]));
             (StressStats[ii,:,:],StressMean[ii,:],StressSqMean[ii,:],MomStats[ii,:,:],MomMean[ii,:,:],MomSqMean[ii,:]) = remotecall_fetch(ConstrainedAutocorr,p,PP,
             					    QQ,C,S);
             println("      Sample ",ii," complete!");
@@ -809,14 +992,14 @@ function ConstrainedAutocorrPar(C::Chain,S::Simulator)
   for i=1:S.NumLags
       StressAutocorr[:,i,:] = (StressStats[:,i,:].-StressMean[:,:].^2)./(StressSqMean[:,:].-StressMean[:,:].^2);
   end
-  StressAutocorr = mean(mean(StressAutocorr,1),3);
+  StressAutocorr = mean(mean(StressAutocorr,dims=1),dims=3);
   StressAutocorr = reshape(StressAutocorr,length(StressAutocorr));
 
   MomAutocorr = zeros(S.MacroSamples,S.NumLags,C.ConstrainedBeads)
   for i=1:S.NumLags
       MomAutocorr[:,i,:] = (MomStats[:,i,:].-MomMean[:,:].^2)./(MomSqMean[:,:].-MomMean[:,:].^2);
   end
-  MomAutocorr = mean(mean(MomAutocorr,1),3);
+  MomAutocorr = mean(mean(MomAutocorr,dims=1),dims=3);
   MomAutocorr = reshape(MomAutocorr,length(MomAutocorr));
 
   println(" ConstrainedAutocorrPar Done!")
@@ -824,6 +1007,89 @@ function ConstrainedAutocorrPar(C::Chain,S::Simulator)
   return StressAutocorr, MomAutocorr
 end
 
+function ConstrainedAutocorrLangDynPar(C::Chain,S::Simulator)
+  if S.dt > 0.1*sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt));
+    warn("Timestep = ",S.dt,
+      " not ≪ shortest timescale = ",sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt)));
+  end
+
+  # Generate initial condition
+  (P,Q,F,H,PCG,QCG) = InitConds(C);
+
+  println("Equilibration ");
+  # Run in to equilibrate
+  for i = 1:S.FullSteps
+    (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt)
+  end
+  println("Equilibration done");
+
+
+  # Set up storage
+  StressStats 	= SharedArray{Float64}(S.MacroSamples,S.NumLags,C.ConstrainedBeads-1);
+  StressMean   	= SharedArray{Float64}(S.MacroSamples,C.ConstrainedBeads-1);
+  StressSqMean 	= SharedArray{Float64}(S.MacroSamples,C.ConstrainedBeads-1);
+  MomStats  = SharedArray{Float64}(S.MacroSamples,S.NumLags,C.ConstrainedBeads);
+  MomMean	= SharedArray{Float64}(S.MacroSamples,C.ConstrainedBeads);
+  MomSqMean = SharedArray{Float64}(S.MacroSamples,C.ConstrainedBeads);
+
+
+  # Perform sampling
+  np = nprocs()
+  ss = 0
+
+  println("Macrosampling ");
+  @sync begin
+    while ss < S.MacroSamples
+      for p=1:np
+        if p != myid() || np == 1
+          if ss == S.MacroSamples
+            break
+          end
+          println("    Starting macrosample ", ss+1);
+          for i = 1:S.FullSteps
+            (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt)
+          end
+
+          ss+=1;
+
+          @async begin
+            ii = ss;
+            PP = P;
+            QQ = Q;
+            # Get distances between CG particles
+            println("      Sample ",ii,"  over fine-grained variables...");
+            # RSamples[ii,:] = CGDists(QQ,C);
+            # PSamples[ii,:] = C.PsiFConstr*PP;
+            # Print max: if it gets too large, the integrator becomes unstable.
+            # println("        Maximum distance = ",maximum(RSamples[ii,:]));
+            (StressStats[ii,:,:],StressMean[ii,:],StressSqMean[ii,:],MomStats[ii,:,:],MomMean[ii,:,:],MomSqMean[ii,:]) =
+			              remotecall_fetch(ConstrainedAutocorrLangDyn,p,PP,QQ,C,S);
+            println("      Sample ",ii," complete!");
+          end
+        end
+      end
+    end
+  end
+
+  # Now compute autocorrelations
+  StressAutocorr = zeros(S.MacroSamples,S.NumLags,C.ConstrainedBeads-1)
+  for i=1:S.NumLags
+      StressAutocorr[:,i,:] = (StressStats[:,i,:].-StressMean[:,:].^2)./(StressSqMean[:,:].-StressMean[:,:].^2);
+  end
+  StressAutocorr = mean(mean(StressAutocorr,dims=1),dims=3);
+  StressAutocorr = reshape(StressAutocorr,length(StressAutocorr));
+
+  MomAutocorr = zeros(S.MacroSamples,S.NumLags,C.ConstrainedBeads)
+  for i=1:S.NumLags
+      MomAutocorr[:,i,:] = (MomStats[:,i,:].-MomMean[:,:].^2)./(MomSqMean[:,:].-MomMean[:,:].^2);
+  end
+  MomAutocorr = mean(mean(MomAutocorr,dims=1),dims=3);
+  MomAutocorr = reshape(MomAutocorr,length(MomAutocorr));
+
+  println(" ConstrainedAutocorrParLangDyn Done!")
+
+  return StressAutocorr, MomAutocorr
+end
 
 function FullAutocorrPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanData::Array{Float64,1})
   if S.dt > 0.1*sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt));
@@ -879,10 +1145,10 @@ function FullAutocorrPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanDat
             QQ = Q;
             # Get distances between CG particles
             println("      Sample ",ii,"  over fine-grained variables...");
-            #RSamples[ii,:] = CGDists(QQ,C);
-            #PSamples[ii,:] = C.PsiFConstr*PP;
+            # RSamples[ii,:] = CGDists(QQ,C);
+            # PSamples[ii,:] = C.PsiFConstr*PP;
             # Print max: if it gets too large, the integrator becomes unstable.
-            #println("        Maximum distance = ",maximum(RSamples[ii,:]));
+            # println("        Maximum distance = ",maximum(RSamples[ii,:]));
             (StressStats[ii,:,:],StressMean[ii,:],StressSqMean[ii,:],MomStats[ii,:,:],MomMean[ii,:],MomSqMean[ii,:]) = remotecall_fetch(FullAutocorr,p,PP,QQ,C,S,MeanForce);
             println("      Sample ",ii," complete!");
           end
@@ -897,17 +1163,107 @@ function FullAutocorrPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanDat
   for i=1:S.NumLags
       StressAutocorr[:,i,:] = (StressStats[:,i,:].-StressMean[:,:].^2)./(StressSqMean[:,:].-StressMean[:,:].^2);
   end
-  StressAutocorr = mean(mean(StressAutocorr,1),3);
+  StressAutocorr = mean(mean(StressAutocorr,dims=1),dims=3);
   StressAutocorr = reshape(StressAutocorr,length(StressAutocorr));
 
   MomAutocorr = zeros(S.MacroSamples,S.NumLags,C.NBeads)
   for i=1:S.NumLags
       MomAutocorr[:,i,:] = (MomStats[:,i,:].-MomMean[:,:].^2)./(MomSqMean[:,:].-MomMean[:,:].^2);
   end
-  MomAutocorr = mean(mean(MomAutocorr,1),3);
+  MomAutocorr = mean(mean(MomAutocorr,dims=1),dims=3);
   MomAutocorr = reshape(MomAutocorr,length(MomAutocorr));
 
   println(" FullAutocorrPar Done!")
+
+
+
+  return StressAutocorr, MomAutocorr
+end
+
+function FullAutocorrLangDynPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanData::Array{Float64,1})
+  if S.dt > 0.1*sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt));
+    warn("Timestep = ",S.dt,
+      " not ≪ shortest timescale = ",sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt)));
+  end
+
+  # Generate initial condition
+  (P,Q,F,H,PCG,QCG) = InitConds(C);
+
+  # Generate mean force function
+  MeanForce = X -> ApproxMeanStresses(X,dQData,FmeanData,C);
+
+  println("Equilibration ");
+  # Run in to equilibrate
+  for i = 1:S.FullSteps
+    (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt)
+  end
+  println("Equilibration done");
+
+
+  # Set up storage
+  StressStats 	= SharedArray{Float64}(S.MacroSamples,S.NumLags,C.NBeads);
+  StressMean   	= SharedArray{Float64}(S.MacroSamples,C.NBeads);
+  StressSqMean  = SharedArray{Float64}(S.MacroSamples,C.NBeads);
+  MomStats    	= SharedArray{Float64}(S.MacroSamples,S.NumLags,C.NBeads);
+  MomMean	= SharedArray{Float64}(S.MacroSamples,C.NBeads);
+  MomSqMean	= SharedArray{Float64}(S.MacroSamples,C.NBeads);
+
+
+  # Perform sampling
+  np = nprocs()
+  ss = 0
+
+  println("Macrosampling ");
+  @sync begin
+    while ss < S.MacroSamples
+      for p=1:np
+        if p != myid() || np == 1
+          if ss == S.MacroSamples
+            break
+          end
+          println("    Starting macrosample ", ss+1);
+          for i = 1:S.FullSteps
+            (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt)
+          end
+
+          ss+=1;
+
+          @async begin
+            ii = ss;
+            PP = P;
+            QQ = Q;
+            # Get distances between CG particles
+            println("      Sample ",ii,"  over fine-grained variables...");
+            # RSamples[ii,:] = CGDists(QQ,C);
+            # PSamples[ii,:] = C.PsiFConstr*PP;
+            # Print max: if it gets too large, the integrator becomes unstable.
+            # println("        Maximum distance = ",maximum(RSamples[ii,:]));
+            (StressStats[ii,:,:],StressMean[ii,:],StressSqMean[ii,:],MomStats[ii,:,:],MomMean[ii,:],MomSqMean[ii,:]) =
+			                                                                         remotecall_fetch(FullAutocorrLangDyn,p,PP,QQ,C,S,MeanForce);
+            println("      Sample ",ii," complete!");
+          end
+        end
+      end
+    end
+  end
+
+
+  # Compute autocorrelations
+  StressAutocorr = zeros(S.MacroSamples,S.NumLags,C.NBeads)
+  for i=1:S.NumLags
+      StressAutocorr[:,i,:] = (StressStats[:,i,:].-StressMean[:,:].^2)./(StressSqMean[:,:].-StressMean[:,:].^2);
+  end
+  StressAutocorr = mean(mean(StressAutocorr,dims=1),dims=3);
+  StressAutocorr = reshape(StressAutocorr,length(StressAutocorr));
+
+  MomAutocorr = zeros(S.MacroSamples,S.NumLags,C.NBeads)
+  for i=1:S.NumLags
+      MomAutocorr[:,i,:] = (MomStats[:,i,:].-MomMean[:,:].^2)./(MomSqMean[:,:].-MomMean[:,:].^2);
+  end
+  MomAutocorr = mean(mean(MomAutocorr,dims=1),dims=3);
+  MomAutocorr = reshape(MomAutocorr,length(MomAutocorr));
+
+  println(" FullAutocorrParLangDyn Done!")
 
 
 
@@ -981,9 +1337,6 @@ function ApproximateAutocorrPar(C::Chain,S::Simulator,dQData::Array{Float64,1},F
 
   return StressAutocorr, MomAutocorr
 end
-
-
-
 
 ###################
 # Data processing #

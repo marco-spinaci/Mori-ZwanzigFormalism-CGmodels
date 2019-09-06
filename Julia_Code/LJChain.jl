@@ -57,7 +57,7 @@ pattern Patt.
   GammaTilde::Array{Float64,2}  = Diagonal(ones(NPart))*MInv*Gamma
   # Full CG Projections
   Phi::Array{Float64,2}	= kron(Diagonal(ones(NBeads)),ones(Float64,length(Patt))')
-  Psi 				= kron(Diagonal(ones(NBeads)),MassPatt'./BeadMass)
+  Psi 				    = kron(Diagonal(ones(NBeads)),MassPatt'./BeadMass)
   #useless? ##Xi 					= MInv\(Diagonal(ones(NPart))-Phi'Psi)*MInv;
   #useless? ##Zeta 					= Diagonal(ones(NPart))-Psi'Phi;
 

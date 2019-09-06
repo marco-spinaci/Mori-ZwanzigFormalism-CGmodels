@@ -12,8 +12,8 @@ S = Simulator(); # dt=1e-4, FullSteps=Int(1e5),  OrthoSteps=1, OrthoSamples=Int(
 
 ####################################################################################################
 
-# (P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
-#
+(P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
+
 # (Pstore,Qstore,Fstore) = FullTraj(P0,Q0,C,S);
 #
 # Pi = Pstore[:,end];
