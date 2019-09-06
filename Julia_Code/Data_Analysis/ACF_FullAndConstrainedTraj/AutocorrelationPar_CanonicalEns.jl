@@ -8,7 +8,7 @@ addprocs(Sys.CPU_THREADS);
 
 @everywhere include("LJChain.jl")
 @everywhere include("CGStats.jl")
-using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra,StatsBase,DelimitedFiles,PyPlot
+using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra,StatsBase,DelimitedFiles # add Pyplot if necessary
 
 
 # Set up simulation parameters.
