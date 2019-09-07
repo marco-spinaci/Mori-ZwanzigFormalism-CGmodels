@@ -7,7 +7,9 @@
 #############################################################################################################################
 #### Autocorrelation Full and Ortho Orthogonal Dynamics
 
-julia ./Data_Analysis/ACF_FullAndConstrainedTraj/AutocorrelationPar_CanonicalEns.jl
+fold="./Data_Analysis/ACF_FullAndConstrainedTraj" 
+
+julia $fold/AutocorrelationPar_CanonicalEns.jl
 
 # nohup julia ./Data_Analysis/ACF_FullAndConstrainedTraj/AutocorrelationPar_CanonicalEns.jl &
 
