@@ -58,3 +58,22 @@ open("./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/OrthocorrF.csv","w+") 
 end
 # plot(S.dt*S.LagStep*[0:S.NumLags-1;],StressAutocorr);
 # savefig("./Data_Analysis/AC_FullAndConstrainedTraj/Plots/OrthocorrF.svg");
+
+
+
+# # Compute autocorrelation stats for APPROXIMATE dynamics
+# (StressAutocorr,MomAutocorr) = ApproximateAutocorrPar(C,S,RR,Fmean,Fstd*0.5);
+#
+# # Use PyPlot to plot autocorrelation of momenta
+# open("./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/ApproximatecorrP.csv","w+") do x
+#     writedlm(x,[ S.Stochdt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
+# end
+# # plot(S.Stochdt*S.LagStep*[0:S.NumLags-1;],MomAutocorr);
+# # savefig("./Data_Analysis/AC_FullAndConstrainedTraj/Plots/ApproximatecorrP.svg");
+#
+# # Use PyPlot to plot autocorrelation of forces
+# open("./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/ApproximatecorrF.csv","w+") do x
+#     writedlm(x,[ S.Stochdt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
+# end
+# # plot(S.Stochdt*S.LagStep*[0:S.NumLags-1;],StressAutocorr);
+# # savefig("./Data_Analysis/AC_FullAndConstrainedTraj/Plots/ApproximatecorrF.svg");

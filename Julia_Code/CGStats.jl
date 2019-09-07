@@ -1323,14 +1323,14 @@ function ApproximateAutocorrPar(C::Chain,S::Simulator,dQData::Array{Float64,1},F
   for i=1:S.NumLags
       StressAutocorr[:,i,:] = (StressStats[:,i,:].-StressMean[:,:].^2)./(StressSqMean[:,:].-StressMean[:,:].^2);
   end
-  StressAutocorr = mean(mean(StressAutocorr,1),3); #TODO: Check averaging
+  StressAutocorr = mean(mean(StressAutocorr,dims=1),dims=3);
   StressAutocorr = reshape(StressAutocorr,length(StressAutocorr));
 
   MomAutocorr = zeros(S.MacroSamples,S.NumLags,C.NBeads)
   for i=1:S.NumLags
       MomAutocorr[:,i,:] = (MomStats[:,i,:].-MomMean[:,:].^2)./(MomSqMean[:,:].-MomMean[:,:].^2);
   end
-  MomAutocorr = mean(mean(MomAutocorr,1),3);
+  MomAutocorr = mean(mean(MomAutocorr,dims=1),dims=3);
   MomAutocorr = reshape(MomAutocorr,length(MomAutocorr));
 
   println(" ApproximateAutocorrPar Done!")
