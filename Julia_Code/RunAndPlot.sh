@@ -5,6 +5,14 @@
 #############################################################################################################################
 
 #############################################################################################################################
+#### Autocorrelation Full and Ortho Orthogonal Dynamics
+
+julia ./Data_Analysis/ACF_FullAndConstrainedTraj/AutocorrelationPar_CanonicalEns.jl
+
+
+
+
+#############################################################################################################################
 #### LangevinFullTraj_TestAndAutocorP
 
 # fold="./LangevinFullTraj_TestAndAutocor"
