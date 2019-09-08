@@ -2,9 +2,9 @@ set terminal postscript eps color enhanced "Times-Roman" 12
 set size 1.1,1.1
 set grid
 
-set output "| epstopdf -f -o=./Data_Analysis/ACF_FullAndConstrainedTraj/Plots/AutocorrFullandOrtho.pdf"
+set output "| epstopdf -f -o=./Data_Analysis/ACF_FullAndConstrainedTraj/Plots/AutocorrFullandOrtho1.pdf"
 set multiplot layout 1,2 title "Time autocorrelation function (ACF) of forces and momenta\n \n\
-[System C, NBeads=10, Gamma=1, Beta=1, dt=10^{-3}, FullSteps=10^6, OrthoSamples=10^5, NumLags=10^4, MacroSamples=4]" font ",14" margins 0.12, 1, 0.09, 0.88 spacing 0.1
+[System C, NBeads=10, Gamma=1, Beta=1, dt=10^{-3}, FullSteps=10^6, OrthoSamples=10^5, NumLags=10^4, MacroSamples=100]" font ",14" margins 0.12, 1, 0.09, 0.88 spacing 0.1
 set xlabel "{{/RomanOblique t}}"
 set logscale x
 set format x "10^{%L}"
