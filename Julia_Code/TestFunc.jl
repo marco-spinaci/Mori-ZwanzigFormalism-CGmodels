@@ -1,18 +1,36 @@
+# NB: to run this script from the terminal is not necessary to give the following command "julia -p n scritpt.jl"
+#     because I explicitly added in the script the command-line option "-p n".
+
 using Distributed
+
+# Set up parallel computing
+addprocs(Sys.CPU_THREADS);
 
 @everywhere include("LJChain.jl")
 @everywhere include("CGStats.jl")
-
-using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra,StatsBase
+using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra,StatsBase,DelimitedFiles # add Pyplot if necessary
 
 
 C = Chain();
-S = Simulator(); # dt=1e-4, FullSteps=Int(1e5),  OrthoSteps=1, OrthoSamples=Int(1e5)
+S = Simulator(dt=1e-3,Stochdt=1e-4,FullSteps=Int(1e4),OrthoSamples=Int(1e3),LagStep=10,NumLags=1000,MacroSamples=4);
+# S = Simulator(); # dt=1e-4, FullSteps=Int(1e5),  OrthoSteps=1, OrthoSamples=Int(1e5)
 
+# (P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
 
 ####################################################################################################
 
-(P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
+(RR,PP,Veff,Fmean,Fstd) = VEffConstrained(C,S);
+
+P = randn(C.NBeads);
+Q = [0.0:C.BeadsDist:C.BeadsDist*(C.NBeads-1);];
+
+# Pstore,Qstore,Fstore = ApproximateTraj(P0,Q0,RR,Fmean,Fstd,C,S);
+(StressStats,StressMean,StressSqMean,MomStats,MomMean,MomSqMean) = ApproximateAutocorr(P,Q,C,S,RR,Fmean,Fstd);
+
+# (P,Q,F) = ApproxDynStep(P,Q,F,MeanForce,FlucStep,C,S.Stochdt);
+# PNext = ApproxFlucStep(P,Q,RR,Fstd,C,S.Stochdt)
+
+#####################################################################################################
 
 # (Pstore,Qstore,Fstore) = FullTraj(P0,Q0,C,S);
 #

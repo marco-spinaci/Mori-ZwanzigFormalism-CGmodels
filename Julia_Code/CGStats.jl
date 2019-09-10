@@ -690,7 +690,7 @@ function ApproximateAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
   F = MeanForce(Q);
 
   # Set up approximate fluctuation generator
-  FlucStep = (X,Y) -> ApproxFlucStep(X,Y,dQData,FstdData,C,S.Stochdt)
+  FlucStep = (X,Y) -> ApproxFlucStep(X,Y,dQData,FstdData,C,S.Stochdt);
 
   # Mean Forces
   StressStats 	= zeros(S.NumLags,C.NBeads);
@@ -741,7 +741,7 @@ function ApproximateAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
 
     # Update moment estimators
     StressMean += SigmaCG;
-    StressSqMean += SigmaCG.^2
+    StressSqMean += SigmaCG.^2;
 
     # Update momentum storage
     PCG = P;

@@ -10,20 +10,20 @@ addprocs(Sys.CPU_THREADS);
 
 @everywhere include("LJChain.jl")
 @everywhere include("CGStats.jl")
-using Main.LJChain,Main.CGStats,DelimitedFiles,SharedArrays,Plots
+using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra,StatsBase,DelimitedFiles
 
 #################################################################################
-# General system
+## General system
 
-# C = Chain();
-# S = Simulator(OrthoSamples=Int(1e2),MacroSamples=1000);
-#
+# C = Chain();     # system C ≣ [Patt=[0,1,0],NBeads=10,ConstrainedBeads=2,SEps=1,LEps=100,SM=10,LM=1,Dist=1,Beta=1,Gamma=1]
+# S = Simulator(); # [dt=1e-4,Stochdt=1e-4,FullSteps=Int(1e5),OrthoSteps=1,ApproxSteps=Int(1e5),OrthoSamples=Int(1e5),MacroSamples=50,LagStep=400,NumLags=30]
+
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
 
 #################################################################################
 
-S = Simulator(OrthoSamples=Int(1e3),MacroSamples=50);
+S = Simulator(dt=1e-3,FullSteps=Int(1e6),OrthoSamples=Int(1e6),MacroSamples=100);
 
 #################################################################################
 ## system A
@@ -69,29 +69,29 @@ S = Simulator(OrthoSamples=Int(1e3),MacroSamples=50);
 #    writedlm(x,Fstd);
 #end
 
-############################################################################################
+#########################################################################################
 # system C ( [0,1,0], SM (mass of 0 particles)=10, LM (mass of 1 particles)=1, γ=1, β=1 )
-C = Chain(Beta=100,Gamma=1e5);
+C = Chain();
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
 # Write data to file
-open("../Outcomes/ABCD_Systems/R_sC_B100_G1e5.csv","w+") do x
+open("./ABCD_Systems/Outcomes/RR_sC.csv","w+") do x
    writedlm(x,RR);
 end
-open("../Outcomes/ABCD_Systems/P_sC_B100_G1e5.csv","w+") do x
+open("./ABCD_Systems/Outcomes/PP_sC.csv","w+") do x
    writedlm(x,PP);
 end
-open("../Outcomes/ABCD_Systems/Veff_sC_B100_G1e5.csv","w+") do x
+open("./ABCD_Systems/Outcomes/Veff_sC.csv","w+") do x
    writedlm(x,Veff);
 end
-open("../Outcomes/ABCD_Systems/Fmean_sC_B100_G1e5.csv","w+") do x
+open("./ABCD_Systems/Outcomes/Fmean_sC.csv","w+") do x
    writedlm(x,Fmean);
 end
-open("../Outcomes/ABCD_Systems/Fstd_sC_B100_G1e5.csv","w+") do x
+open("./ABCD_Systems/Outcomes/Fstd_sC.csv","w+") do x
    writedlm(x,Fstd);
 end
 
-##############################################################################################
+#################################################################################
 ## system D
 #C = Chain(SEps=10,LEps=.1);
 #(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
@@ -113,4 +113,6 @@ end
 #    writedlm(x,Fstd);
 #end
 
+
+#################################################################################
 end # @time
