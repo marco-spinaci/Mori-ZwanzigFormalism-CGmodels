@@ -13,7 +13,6 @@ using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra
 
 C = Chain();
 S = Simulator(dt=1e-3,Stochdt=1e-3,FullSteps=Int(1e4),OrthoSamples=Int(1e3),ApproxSteps=Int(1e4),LagStep=10,NumLags=100,MacroSamples=30);
-# S = Simulator(); # dt=1e-4, FullSteps=Int(1e5),  OrthoSteps=1, OrthoSamples=Int(1e5)
 
 # (P0,Q0,F0,H0,PCG0,QCG0) = InitConds(C);
 
@@ -23,8 +22,6 @@ S = Simulator(dt=1e-3,Stochdt=1e-3,FullSteps=Int(1e4),OrthoSamples=Int(1e3),Appr
 
 P = randn(C.NBeads);
 Q = [0.0:C.BeadsDist:C.BeadsDist*(C.NBeads-1);];
-# P0CG = C.Phi*P0
-# Q0CG = C.Psi*Q0
 
 
 Pstore,Qstore,Fstore = ApproximateTraj(P,Q,RR,Fmean,Fstd,C,S);
