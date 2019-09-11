@@ -27,8 +27,8 @@ Q = [0.0:C.BeadsDist:C.BeadsDist*(C.NBeads-1);];
 # Q0CG = C.Psi*Q0
 
 
-Pstore,Qstore,Fstore = ApproximateTraj(P,Q,RR,Fmean,Fstd,C,S);
-# (StressStats,StressMean,StressSqMean,MomStats,MomMean,MomSqMean) = ApproximateAutocorr(P,Q,C,S,RR,Fmean,Fstd);
+# Pstore,Qstore,Fstore = ApproximateTraj(P,Q,RR,Fmean,Fstd,C,S);
+(StressStats,StressMean,StressSqMean,MomStats,MomMean,MomSqMean) = ApproximateAutocorr(P,Q,C,S,RR,Fmean,Fstd);
 
 # (P,Q,F) = ApproxDynStep(P,Q,F,MeanForce,FlucStep,C,S.Stochdt);
 # PNext = ApproxFlucStep(P,Q,RR,Fstd,C,S.Stochdt)
