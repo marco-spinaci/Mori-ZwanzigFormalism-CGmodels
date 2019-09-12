@@ -23,103 +23,103 @@ using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra
 
 #####################################################################################################
 
-S = Simulator(dt=1e-3,FullSteps=Int(1e6),OrthoSamples=Int(1e6),MacroSamples=100);
+S = Simulator(dt=1e-3,FullSteps=Int(1e6),OrthoSamples=Int(1e6),MacroSamples=1000);
 
 ######################################################################################################
 ## system A
 ## ( [0,1,0], SM (mass of 0 particles), LM (mass of 1 particles), SEps=1.0, LEps=100.0, γ=1, β=1 )
 
-C = Chain(SM=1,LM=10);
-(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-
-# Write data to file
-open("./ABCD_Systems/Outcomes/RR_sA.csv","w+") do x
-   writedlm(x,RR);
-end
-open("./ABCD_Systems/Outcomes/PP_sA.csv","w+") do x
-   writedlm(x,PP);
-end
-open("./ABCD_Systems/Outcomes/Veff_sA.csv","w+") do x
-   writedlm(x,Veff);
-end
-open("./ABCD_Systems/Outcomes/Fmean_sA.csv","w+") do x
-   writedlm(x,Fmean);
-end
-open("./ABCD_Systems/Outcomes/Fstd_sA.csv","w+") do x
-   writedlm(x,Fstd);
-end
+# C = Chain(SM=1,LM=10);
+# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+#
+# # Write data to file
+# open("./ABCD_Systems/Outcomes/RR_sA.csv","w+") do x
+#    writedlm(x,RR);
+# end
+# open("./ABCD_Systems/Outcomes/PP_sA.csv","w+") do x
+#    writedlm(x,PP);
+# end
+# open("./ABCD_Systems/Outcomes/Veff_sA.csv","w+") do x
+#    writedlm(x,Veff);
+# end
+# open("./ABCD_Systems/Outcomes/Fmean_sA.csv","w+") do x
+#    writedlm(x,Fmean);
+# end
+# open("./ABCD_Systems/Outcomes/Fstd_sA.csv","w+") do x
+#    writedlm(x,Fstd);
+# end
 
 #################################################################################
 ## system B
 ## ( [0,1,0], SM (mass of 0 particles), LM (mass of 1 particles), γ=1, β=1 )
 
-C = Chain(SM=1,LM=10,SEps=10,LEps=.1);
-(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-
-# Write data to file
-open("./ABCD_Systems/Outcomes/RR_sB.csv","w+") do x
-   writedlm(x,RR);
-end
-open("./ABCD_Systems/Outcomes/PP_sB.csv","w+") do x
-   writedlm(x,PP);
-end
-open("./ABCD_Systems/Outcomes/Veff_sB.csv","w+") do x
-   writedlm(x,Veff);
-end
-open("./ABCD_Systems/Outcomes/Fmean_sB.csv","w+") do x
-   writedlm(x,Fmean);
-end
-open("./ABCD_Systems/Outcomes/Fstd_sB.csv","w+") do x
-   writedlm(x,Fstd);
-end
+# C = Chain(SM=1,LM=10,SEps=10,LEps=.1);
+# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+#
+# # Write data to file
+# open("./ABCD_Systems/Outcomes/RR_sB.csv","w+") do x
+#    writedlm(x,RR);
+# end
+# open("./ABCD_Systems/Outcomes/PP_sB.csv","w+") do x
+#    writedlm(x,PP);
+# end
+# open("./ABCD_Systems/Outcomes/Veff_sB.csv","w+") do x
+#    writedlm(x,Veff);
+# end
+# open("./ABCD_Systems/Outcomes/Fmean_sB.csv","w+") do x
+#    writedlm(x,Fmean);
+# end
+# open("./ABCD_Systems/Outcomes/Fstd_sB.csv","w+") do x
+#    writedlm(x,Fstd);
+# end
 
 ######################################################################################################
 ## system C
 ## ( [0,1,0], SM (mass of 0 particles)=10, LM (mass of 1 particles)=1, SEps=1.0, LEps=100.0, γ=1, β=1 )
 
-# C = Chain();
-# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-#
-# # Write data to file
-# open("./ABCD_Systems/Outcomes/RR_sC.csv","w+") do x
-#    writedlm(x,RR);
-# end
-# open("./ABCD_Systems/Outcomes/PP_sC.csv","w+") do x
-#    writedlm(x,PP);
-# end
-# open("./ABCD_Systems/Outcomes/Veff_sC.csv","w+") do x
-#    writedlm(x,Veff);
-# end
-# open("./ABCD_Systems/Outcomes/Fmean_sC.csv","w+") do x
-#    writedlm(x,Fmean);
-# end
-# open("./ABCD_Systems/Outcomes/Fstd_sC.csv","w+") do x
-#    writedlm(x,Fstd);
-# end
+C = Chain();
+(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+
+# Write data to file
+open("./ABCD_Systems/Outcomes/RR_sC.csv","w+") do x
+   writedlm(x,RR);
+end
+open("./ABCD_Systems/Outcomes/PP_sC.csv","w+") do x
+   writedlm(x,PP);
+end
+open("./ABCD_Systems/Outcomes/Veff_sC.csv","w+") do x
+   writedlm(x,Veff);
+end
+open("./ABCD_Systems/Outcomes/Fmean_sC.csv","w+") do x
+   writedlm(x,Fmean);
+end
+open("./ABCD_Systems/Outcomes/Fstd_sC.csv","w+") do x
+   writedlm(x,Fstd);
+end
 
 #################################################################################
 ## system D
 # ( [0,1,0], SM (mass of 0 particles)=10, LM (mass of 1 particles)=1, γ=1, β=1 )
 
-C = Chain(SEps=10,LEps=.1);
-(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-
-# Write data to file
-open("./ABCD_Systems/Outcomes/RR_sD.csv","w+") do x
-   writedlm(x,RR);
-end
-open("./ABCD_Systems/Outcomes/PP_sD.csv","w+") do x
-   writedlm(x,PP);
-end
-open("./ABCD_Systems/Outcomes/Veff_sD.csv","w+") do x
-   writedlm(x,Veff);
-end
-open("./ABCD_Systems/Outcomes/Fmean_sD.csv","w+") do x
-   writedlm(x,Fmean);
-end
-open("./ABCD_Systems/Outcomes/Fstd_sD.csv","w+") do x
-   writedlm(x,Fstd);
-end
+# C = Chain(SEps=10,LEps=.1);
+# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+#
+# # Write data to file
+# open("./ABCD_Systems/Outcomes/RR_sD.csv","w+") do x
+#    writedlm(x,RR);
+# end
+# open("./ABCD_Systems/Outcomes/PP_sD.csv","w+") do x
+#    writedlm(x,PP);
+# end
+# open("./ABCD_Systems/Outcomes/Veff_sD.csv","w+") do x
+#    writedlm(x,Veff);
+# end
+# open("./ABCD_Systems/Outcomes/Fmean_sD.csv","w+") do x
+#    writedlm(x,Fmean);
+# end
+# open("./ABCD_Systems/Outcomes/Fstd_sD.csv","w+") do x
+#    writedlm(x,Fstd);
+# end
 
 
 #################################################################################
