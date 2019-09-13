@@ -214,6 +214,9 @@ function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
 
   # Do simulation.
   for i = 2:S.ApproxSteps
+	println("");
+	println("ITERATION ",i," OF ",S.ApproxSteps," IN THE FUNCTION ApproximateTraj. Timestep = ",S.Stochdt);
+	println(" Start...");
     (P,Q,F) = ApproxDynStep(P,Q,F,MeanForce,FlucStep,C,S.Stochdt);
     Pstore[i,:] = P;
     Qstore[i,:] = Q;
@@ -1378,7 +1381,10 @@ function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::
   # First compute inter-bead distances.
   dQ = circshift(Q,-1)-Q;
   dQ[C.NBeads] += C.Period;
-
+  println("");
+  println("       INTER-BEAD DISTANCES COMPUTED IN ApproxMeanStresses");
+  println("       dQ = ",dQ);
+  println("");
   # Next, for each inter-bead distance, compute the stress
   for i=1:length(dQ)
     # Define (diagonal) weight matrix
