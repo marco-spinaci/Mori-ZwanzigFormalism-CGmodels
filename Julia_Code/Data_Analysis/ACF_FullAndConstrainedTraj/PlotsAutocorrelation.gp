@@ -19,7 +19,7 @@ set ylabel "{{/RomanOblique ACF of the FORCES}}"
 # B = 0.01
 # w = 0.1
 # fit f(x) "./Outcomes/OrthocorrF.csv" via t,A,B,w
-p "./Outcomes/FullcorrF_1.csv" u 1:2 w l lw 1 t "Full Dynamics",\
+p "./Outcomes/FullcorrF_1.csv" u 1:2 w l lw 1 t "Orhogonal Component - Full Dynamics",\
   "./Outcomes/OrthocorrF_1.csv" u 1:2 w d lw 4 t "Orthogonal Dynamics"
   # , f(x) t "FIT Orthogonal Dynamics"
 

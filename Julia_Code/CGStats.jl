@@ -1382,15 +1382,17 @@ function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::
   # Next, for each inter-bead distance, compute the stress
   for i=1:length(dQ)
     # Define (diagonal) weight matrix
+	# println(" ITERATION =",i," ; dQ = ",dQ[i]);
+	# println(" dQvals =",dQvals);
+	# println(" EXP = ",exp.(-(dQvals .- dQ[i]).^2 ./ σ^2));
     W = spdiagm(0 => exp.(-(dQvals .- dQ[i]).^2 ./ σ^2));
-
-    # Form Jacobian matrix
+	# Form Jacobian matrix
     J = ones(N+1,length(dQvals));
     for j=1:N
       J[j+1,:] = (dQ[i] .- dQvals).^j;
     end
 
-    K = J*W
+    K = J*W;
     c = (K*J')\(K*Fvals);
 
     Sigma[i] = c[1];
@@ -1408,7 +1410,7 @@ function ApproxMeanForce(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Arr
 				C::Chain,σ::Float64=0.1,N::Int=2)
 
   F = zeros(size(Q));
-  Sigma = ApproxMeanStresses(Q,dQvals,Fvals,C,σ,N)
+  Sigma = ApproxMeanStresses(Q,dQvals,Fvals,C,σ,N);
   F = Sigma-circshift(Sigma,1);
 
   return F
@@ -1419,7 +1421,7 @@ function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Fl
 	StressSqvals::Array{Float64,1},C::Chain,dt::Float64,σ::Float64=0.1,N::Int=2)
 
   # Set up storage for diffusivity
-  Gvec = zeros(size(Q));
+  Gvec = zeros(size(Q,1));
 
   # Compute inter-bead distances
   dQ = circshift(Q,-1)-Q;
@@ -1437,7 +1439,7 @@ function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Fl
     end
 
     # Least squares approximation of interpolant coefficients
-    K = J*W
+	K = J*W;
     coeffs = (K*J')\(K*StressSqvals);
 
     # Extract value of interpolant

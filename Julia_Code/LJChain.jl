@@ -240,11 +240,15 @@ Computes forward step of Langevin dynamics with timestep dt using Leimkuhler-Mat
 is evaluated after performing `half' of the deterministic part of the timestep.
 """
 function ApproxDynStep(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Float64,1},MeanForce,FlucStep,C::Chain,dt)
+  println("   F =",F);
+  println("   P =",P);
   PNext = P+0.5*dt*F;			# B
   QNext = Q+0.5*dt/C.BeadMass*PNext;  	# A
   PNext = FlucStep(PNext,QNext);
   QNext = QNext+0.5.*dt/C.BeadMass*PNext;         	 # A
+  println("   Q = ",QNext);
   FNext = MeanForce(QNext);	  			 # Force evaluation
+  println("  FNext =",FNext);
   PNext = PNext+0.5*dt*FNext;                		 # B
   return PNext,QNext,FNext
 end
