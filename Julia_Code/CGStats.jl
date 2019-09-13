@@ -1397,7 +1397,8 @@ function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::
     for j=1:N
       J[j+1,:] = (dQ[i] .- dQvals).^j;
     end
-
+	# println("       JACOBIAN MATRIX IN 	ApproxMeanStresses");
+	# println("       J = ",J);
     K = J*W;
     c = (K*J')\(K*Fvals);
 
@@ -1432,6 +1433,9 @@ function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Fl
   # Compute inter-bead distances
   dQ = circshift(Q,-1)-Q;
   dQ[C.NBeads] += C.Period;
+  println("");
+  println("       INTER-BEAD DISTANCES COMPUTED IN ApproxFlucStep");
+  println("       dQ = ",dQ);
 
   # For each inter-bead distance, compute diffusivity
   for i=1:length(dQ)
@@ -1446,6 +1450,8 @@ function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Fl
 
     # Least squares approximation of interpolant coefficients
 	K = J*W;
+	# println("       Product between Jacobian matrix and diagonal weight matrix");
+	# println("       K = ",K);
     coeffs = (K*J')\(K*StressSqvals);
 
     # Extract value of interpolant
