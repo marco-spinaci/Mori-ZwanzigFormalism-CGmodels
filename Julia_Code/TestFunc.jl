@@ -12,26 +12,27 @@ using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra
 
 
 C = Chain();
-S = Simulator(dt=1e-4,Stochdt=1e-6,FullSteps=Int(1e5),OrthoSamples=Int(1e5),ApproxSteps=Int(1e5),LagStep=10,NumLags=100,MacroSamples=8);
+S = Simulator(dt=1e-4,Stochdt=1e-5,FullSteps=Int(1e5),OrthoSamples=Int(1e5),ApproxSteps=Int(1e5),LagStep=10,NumLags=100,MacroSamples=50);
 
-# (P,Q,F,H,PCG,QCG) = InitConds(C);
-# P0CG = C.Phi*P;
-# Q0CG = C.Psi*Q;
+(P,Q,F,H,PCG,QCG) = InitConds(C);
+println("F =",F);
+P0CG = C.Phi*P;
+Q0CG = C.Psi*Q;
 
 ####################################################################################################
 
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrained(C,S);
 
-P = randn(C.NBeads);
+# P = randn(C.NBeads);
 # Q = [0.0:C.BeadsDist:C.BeadsDist*(C.NBeads-1);];
-Q = [2.0:3.0:30.0;];
+# Q = [2.0:3.0:30.0;];
 
 # CG = readdlm("ABCD_Systems/Outcomes/sC_100.csv",Float64);
 # RR = CG[:,1];
 # Fmean = CG[:,4];
 # Fstd = CG[:,5];
 
-Pstore,Qstore,Fstore = ApproximateTraj(P,Q,RR,Fmean,Fstd,C,S);
+Pstore,Qstore,Fstore = ApproximateTraj(P0CG,Q0CG,RR,Fmean,Fstd,C,S);
 # (StressStats,StressMean,StressSqMean,MomStats,MomMean,MomSqMean) = ApproximateAutocorr(P,Q,C,S,RR,Fmean,Fstd);
 
 # (P,Q,F) = ApproxDynStep(P,Q,F,MeanForce,FlucStep,C,S.Stochdt);
