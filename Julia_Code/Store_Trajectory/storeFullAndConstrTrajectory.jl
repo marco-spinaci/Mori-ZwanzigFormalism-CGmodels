@@ -60,7 +60,7 @@ println(" ...Momenta of single bead computed!");
 # Write data to file
 Pb = zeros(S.FullSteps,nsamples);
 Pb[:,1:3] = P;
-open("Store_FullandConstrainedTrajectory/P_compMBdBETA(1e-2).csv","w+") do x
+open("Store_FullandConstrainedTrajectory/Outcomes/P_compMBdBETA(1e-2).csv","w+") do x
     writedlm(x,Pb);
 end
 
