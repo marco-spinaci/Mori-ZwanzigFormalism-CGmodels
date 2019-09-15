@@ -86,8 +86,8 @@ function LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
   println("  NPart, number of particles simulated = ",C.NPart);
   println("  Beta, temperature parameter = ",C.Beta);
   println("  Gamma, friction coefficient = ",C.Gamma);
-  println("  dt, time step size = ",S.dt," seconds.");
-  println("  Total simulation time = ",S.FullTime," seconds.");
+  println("  dt, time step size = ",S.dt);
+  println("  Total simulation time = ",S.FullTime);
 
   # Set up.
   P = P0; Q = Q0; F = Forces(Q,C);
