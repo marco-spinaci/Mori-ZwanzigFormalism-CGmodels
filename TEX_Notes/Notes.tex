@@ -78,7 +78,8 @@ corresponding to the positions and momenta of particles in the CG system compose
 The time evolution of a function of phase variables is given by
 \begin{equation}\label{Eq:MotionEqGamma}
   \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\Bphase{}(\Aphase{}(t))\,,
-  \quad\Bphase{}(\Aphase{}(0)) = \Bphase{}(\Aphase{0})\,.
+  \quad\Bphase{}(\Aphase{}(0)) \equiv \Bphase{}(\Aphase{0})\,.
+%  \quad \Lio\equiv iL\coloneqq \bp{ \ldots,\Ham}
 \end{equation}
 Here, the operator $\Lio\equiv iL$ is the \emph{Liouvillian}, see appendix \ref{App:C}, and the formal solution is given by
 \begin{equation}\label{Eq:SolLiouville}
@@ -90,6 +91,7 @@ This solution implicitly depends upon the full evolution of the FG system, there
 We also assume that the state of the system is described by the canonical equilibrium distribution\footnote{Different choices are possible. For example it is also perfectly possible to carry out the same derivation using the micro-canonical equilibrium measure.} $\rho^{eq}(\Aphase{})$, and so that that the probability equilibrium measure is given by the Gibbs measure on the FG phase-space $X=\real^{6\nfg}$:
 \begin{equation}\label{Eq:GibbsMeas}
  \mathbb{P}(\diff\Aphase{})=\rho^{eq}(\Aphase{})\diff\Aphase{}=\frac{1}{\partf}\exp{-\beta\Ham(\Aphase{})}\diff\Aphase{}\,.
+% \qquad X=\real^{6\nfg}\,;
 \end{equation}
 
 The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables $\Bphase{}(\Aphase{})$ by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves leading to a closed equation for the CG variables. 
@@ -117,10 +119,10 @@ The projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary func
 For a given $\Aphase{}$ we determine the numerical values $\bfa$ of observables, $\bfa=\Bphase{}(\Aphase{})$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondence surface $S(\bfa)$, while the \textit{structure function} in the denominator $\Omega(\Bphase{}(\Aphase{}))=\Omega(\bfa)$ allows us to spread this amount on the surface $S(\bfa)$.
 Therefore, loosely speaking, $\mathcal{P}_{\Bphase{}}$ ``average'' the function $F(\Aphase{})$ over the surface $S(\bfa)$. 
 The fact that $\mathcal{P}_{\Bphase{}}$ is a projection operator can be easily verified by showing that it satisfies the necessary and
-sufficient condition for a projection operator, $\mathcal{P}_{\Bphase{}}^2=\mathcal{P}_{\Bphase{}}$ \cite{Zwanzig1961}.
-We can define the \emph{complementary orthogonal projection} $\qproj_{\Bphase{}}$ as
+sufficient condition for a projection operator, $\mathcal{P}_{\bfa}^2=\mathcal{P}_{\bfa}$ \cite{Zwanzig1961}.
+We can define the \emph{complementary orthogonal projection} $\qproj_{\bfa}$ as %\Bphase{}
 $$
- \qproj_{\Bphase{}}=\idproj-\pproj_{\Bphase{}}\,,
+ \qproj_{\bfa}=\idproj-\pproj_{\bfa}\,,
 $$  
 where $\idproj$ is the identity operator.
 
@@ -147,7 +149,7 @@ for any phase function $B$ in the Liouville space.
 Since that the observed value of the phase function $f(\Aphase{})$ is the expected value $\mathbb{E}[f]$, see definition \ref{Def:E[...]}, with respect to the Gibbs measure (\ref{Eq:GibbsMeas}), we can interpret the phase function as random variable.  
 Therefore, the projection operator has a nice interpretation as a conditional expectation over the CG variables:
 \begin{equation}\label{ConExp}
- \mathcal{P}_{\bfa}B = \cexpval{B}{\,\bfA(\Aphase{})=\bfa}\,.
+ \mathcal{P}_{\bfa}F = \cexpval{F}{\,\bfA(\Aphase{})=\bfa}\,.
 \end{equation}
 For the mathematical details of the conditional expectation see theorem \ref{Th:CondExp}. 
 We stress here that the conditional expectation \ref{ConExp}, which we rewrite as  $\cexpval{B}{\,\bfa}$, is a function of $\bfa$, is a linear operator and represents the best approximation of $B$ compared to any function of $\bfa$, is therefore an orthogonal projection. For further details on the last property, see the definition \ref{Def:ExpOrthProj}.
@@ -258,6 +260,11 @@ so we get
     - \int_0^t \nabla_{\bfa}\,\entropy\cip{\bfa(t-s)}\fricmat\cip{\bfa(t-s),s} \diff s +{}\\
     + \frac{1}{\beta}\int_0^t \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s} \diff s + \fprojbf_{\Bphase{}}(t,\Aphase{0})\,, 
 \end{multline}
+%\begin{equation*}
+% \totd{\Bphase{t}}{t} = \pproj_{\bfa(t)}\Lio\,\Bphase{0} 
+%    \,-\, \int_0^t \nabla_{\bfa}\,\entropy\cip{\bfa(t-s)}\fricmat\cip{\bfa(t-s),s}\, \diff s 
+%    \,+\, \frac{1}{\beta}\int_0^t \nabla_{\bfa}\,\cdot\,\fricmat\cip{\bfa(t-s),s}\, \diff s \,+\, \fprojbf_{\Bphase{}}(t,\Aphase{0}) 
+%\end{equation*}
 where we have defined
 \begin{align}
  \label{Eq:Lamba(GammaT)}
@@ -273,6 +280,13 @@ We can now rewrite eq. (\ref{Eq:fricmatrix}) as
    \beta\,\pproj_{\bfa}\sqp{ \cip{ \qproj_{\bfa}\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } }={}\\ 
  = \beta\pproj_{\bfa} \sqp{\fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(t,\Aphase{0})}\,,
 \end{multline}
+\begin{align*}
+ \fricmat\cip{\bfa,s} &\coloneqq 
+   \beta\,\pproj_{\bfa}\sqp{ \cip{ \qproj_{\bfa}\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } } \\  
+   &\equiv
+   \beta\,\cexpval{\fprojbf_{\Bphase{}}(0,\Aphase{0})\otimes\fprojbf_{\Bphase{}}(t,\Aphase{0})}{\,\bfa}
+   \equiv \beta\,\aver{\fprojbf_{\Bphase{}}(0,\Aphase{0})\otimes\fprojbf_{\Bphase{}}(t,\Aphase{0})}_{\bfa}  
+\end{align*}
 therefore, from eq. (\ref{Eq:MZequation}), $\bffricmat$ is a friction matrix, whose components can be written in Green-Kubo form \cite{Kauzlaric2011}.
 
 Recall that we are not interested in solving the equation (\ref{Eq:MZequation}) for a specific initial condition $\Bphase{}(\Aphase{0})$, but rather for an ensemble of initial conditions $\Aphase{0}$ satisfying $\Bphase{}(\Aphase{0})=\bfa(0)$ for some fixed $\bfa(0)=\bfA(\Aphase{})$, where $\bfA(\Aphase{})$ is a generic set of CG variables, and with $\Aphase{0}$ distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa(0)$. It is important to highlight here that the complexity of the equation (\ref{Eq:MZequation}) is not reduced with respect the starting equation (\ref{Eq:MotionEqGamma}), it has simply been shifted into the calculation of the \emph{orthogonal dynamics}. However close to equilibrium, the term $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ is uncorrelated with the projected variables $\Bphase{}$ and therefore approximated as a random noise. 
@@ -317,6 +331,7 @@ Following \cite{Noid2008}, we can summarise the notation and the definition that
 \item[-] the mass of the $j$-th atom in FG system will be indicated with a lower case $m$ as $m_j$, while the mass of the $J$-th particle in CG system will be indicated as $M_J$;
 \item[-] the set of ``atoms'' included within the bead of index $J$ is define as
 $$ S_J \coloneqq \bp{j\in\bp{1,\ldots,\nfg}: \text{the $j$-th atom forms part of CG particle $J$}}\,.$$
+$$ s_I = \# \bp{i\in\bp{1,\ldots,\nfg}: \text{the $i$-th atom forms part of CG particle $I$}}\,. $$
 \item[-] the number of ``atoms'' corresponding to CG particle $J$ will be referred to as $ s_J = \# S_J $;
 \item[-] the index of the CG particle containing the $k$-th ``atom'' will be referred to as $J_k$; 
 \item[-] FG phase space variables are denoted with lower case letters: 

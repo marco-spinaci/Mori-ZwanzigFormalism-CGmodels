@@ -1346,6 +1346,7 @@ end
 ###################
 function ComputeVEff(R,P,M)
   l = length(R)
+
   RR = reshape(R[:,:],l)
   i = sortperm(RR)
   RR = RR[i];
