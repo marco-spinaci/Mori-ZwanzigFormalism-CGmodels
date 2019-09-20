@@ -32,7 +32,7 @@ S = Simulator(dt=1e-4,Stochdt=1e-5,FullSteps=Int(1e5),OrthoSamples=Int(1e5),Appr
 # Fmean = CG[:,4];
 # Fstd = CG[:,5];
 
-# Pstore,Qstore,Fstore = ApproximateTraj(P0CG,Q0CG,RR,Fmean,Fstd,C,S);
+Pstore,Qstore,Fstore = ApproximateTraj(P0CG,Q0CG,RR,Fmean,Fstd,C,S);
 # (StressStats,StressMean,StressSqMean,MomStats,MomMean,MomSqMean) = ApproximateAutocorr(P,Q,C,S,RR,Fmean,Fstd);
 
 # (P,Q,F) = ApproxDynStep(P,Q,F,MeanForce,FlucStep,C,S.Stochdt);
