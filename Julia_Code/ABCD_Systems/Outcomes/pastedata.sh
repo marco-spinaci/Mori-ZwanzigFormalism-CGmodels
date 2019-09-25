@@ -9,3 +9,4 @@
 
 paste RR_sD.csv PP_sD.csv Veff_sD.csv Fmean_sD.csv Fstd_sD.csv > sD_2000.csv
 rm RR_sD.csv PP_sD.csv Veff_sD.csv Fmean_sD.csv Fstd_sD.csv
+ 
