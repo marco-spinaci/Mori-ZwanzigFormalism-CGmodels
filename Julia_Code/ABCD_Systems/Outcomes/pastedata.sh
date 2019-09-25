@@ -4,8 +4,8 @@
 # paste RR_sB.csv PP_sB.csv Veff_sB.csv Fmean_sB.csv Fstd_sB.csv > sB_100.csv
 # rm RR_sB.csv PP_sB.csv Veff_sB.csv Fmean_sB.csv Fstd_sB.csv
 
-paste RR_sC.csv PP_sC.csv Veff_sC.csv Fmean_sC.csv Fstd_sC.csv > sC_2000.csv
-rm RR_sC.csv PP_sC.csv Veff_sC.csv Fmean_sC.csv Fstd_sC.csv
+# paste RR_sC.csv PP_sC.csv Veff_sC.csv Fmean_sC.csv Fstd_sC.csv > sC_2000.csv
+# rm RR_sC.csv PP_sC.csv Veff_sC.csv Fmean_sC.csv Fstd_sC.csv
 
-# paste RR_sD.csv PP_sD.csv Veff_sD.csv Fmean_sD.csv Fstd_sD.csv > sD_100.csv
-# rm RR_sD.csv PP_sD.csv Veff_sD.csv Fmean_sD.csv Fstd_sD.csv
+paste RR_sD.csv PP_sD.csv Veff_sD.csv Fmean_sD.csv Fstd_sD.csv > sD_2000.csv
+rm RR_sD.csv PP_sD.csv Veff_sD.csv Fmean_sD.csv Fstd_sD.csv

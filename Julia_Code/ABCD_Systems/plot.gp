@@ -49,35 +49,35 @@ set grid
 
 
 ## system C
-set output "| epstopdf -f -o=./ABCD_Systems/Plots/sC_1500.pdf"
-set multiplot layout 2,2 title "System C, Constrained beds 2, Beta=1, Gamma=1,\n\n\
- dt=10^{-3}, FullSteps=10^6, OrthoSamples=10^6, MacroSamples=1500, Time required for execution = 40h" font ",14" margins 0.12, 1, 0.09, 0.88 spacing 0.1
-
-set ylabel "{{/RomanOblique Mean Force}}"
-p "./ABCD_Systems/Outcomes/sC_1500.csv" u 1:4 w l lw 2 lc rgb "red"
-set ylabel "{{/RomanOblique Fluctuating Force}}"
-p "./ABCD_Systems/Outcomes/sC_1500.csv" u 1:5 w l lw 2 lc rgb "blue"
-set ylabel "{{/RomanOblique Effective Potential}}"
-p "./ABCD_Systems/Outcomes/sC_1500.csv" u 1:3 w l lw 2 lc rgb "green"
-
-unset multiplot
-set output
+# set output "| epstopdf -f -o=./ABCD_Systems/Plots/sC_2000.pdf"
+# set multiplot layout 2,2 title "System C, Constrained beds 2, Beta=1, Gamma=1,\n\n\
+#  dt=10^{-3}, FullSteps=10^6, OrthoSamples=10^6, MacroSamples=2000, Time required for execution = 54h" font ",14" margins 0.12, 1, 0.09, 0.88 spacing 0.1
+#
+# set ylabel "{{/RomanOblique Mean Force}}"
+# p "./ABCD_Systems/Outcomes/sC_2000.csv" u 1:4 w l lw 2 lc rgb "red"
+# set ylabel "{{/RomanOblique Fluctuating Force}}"
+# p "./ABCD_Systems/Outcomes/sC_2000.csv" u 1:5 w l lw 2 lc rgb "blue"
+# set ylabel "{{/RomanOblique Effective Potential}}"
+# p "./ABCD_Systems/Outcomes/sC_2000.csv" u 1:3 w l lw 2 lc rgb "green"
+#
+# unset multiplotz
+# set output
 
 
 ## system D
-# set output "| epstopdf -f -o=./ABCD_Systems/Plots/sD_100.pdf"
-# set multiplot layout 2,2 title "System D, Constrained beds 2, Beta=1, Gamma=1,\n\n\
-#  dt=10^{-3}, FullSteps=10^6, OrthoSamples=10^6, MacroSamples=100" font ",14" margins 0.12, 1, 0.09, 0.88 spacing 0.1
-#
-# set ylabel "{{/RomanOblique Mean Force}}"
-# p "./ABCD_Systems/Outcomes/sD_100.csv" u 1:4 w l lw 2 lc rgb "red"
-# set ylabel "{{/RomanOblique Fluctuating Force}}"
-# p "./ABCD_Systems/Outcomes/sD_100.csv" u 1:5 w l lw 2 lc rgb "blue"
-# set ylabel "{{/RomanOblique Effective Potential}}"
-# p "./ABCD_Systems/Outcomes/sD_100.csv" u 1:3 w l lw 2 lc rgb "green"
-#
-# unset multiplot
-# set output
+set output "| epstopdf -f -o=./ABCD_Systems/Plots/sD_2000.pdf"
+set multiplot layout 2,2 title "System D, Constrained beds 2, Beta=1, Gamma=1,\n\n\
+ dt=10^{-3}, FullSteps=10^6, OrthoSamples=10^6, MacroSamples=2000" font ",14" margins 0.12, 1, 0.09, 0.88 spacing 0.1
+
+set ylabel "{{/RomanOblique Mean Force}}"
+p "./ABCD_Systems/Outcomes/sD_2000.csv" u 1:4 w l lw 2 lc rgb "red"
+set ylabel "{{/RomanOblique Fluctuating Force}}"
+p "./ABCD_Systems/Outcomes/sD_2000.csv" u 1:5 w l lw 2 lc rgb "blue"
+set ylabel "{{/RomanOblique Effective Potential}}"
+p "./ABCD_Systems/Outcomes/sD_2000.csv" u 1:3 w l lw 2 lc rgb "green"
+
+unset multiplot
+set output
 
 ##################################################################################################################
 
