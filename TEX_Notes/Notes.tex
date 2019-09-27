@@ -42,59 +42,63 @@
 
 \part{Theoretical Background}
 
-\chapter{Mori-Zwanzig Theory}
-The Mori-Zwanzig theory allows to observe the evolution of a dynamical system through the projection on a subset of its degrees of freedom, this is done through \emph{projection operator techniques}.
+\chapter{Mori-Zwanzig Formalism}
+The Mori-Zwanzig formalism allows to study the evolution of a dynamical system through the projection on a subset of its degrees of freedom. This operation is done through \emph{projection operator techniques}.
 
-The \emph{projection operator technique} are powerful tools for the study of irreversible processes in many-body systems \cite{Grabert:Projection}. These tools has been introduced into statistical physics by S. Nakajima in 1958 and R. Zwanzig in 1960. The former to study the quantum statistical mechanics of steady diffusion \cite{Nakajima1958}, and the latter to give a new formulation of methods introduced in the statistical-mechanical theory of irreversibility \cite{Zwanzig1960}. In particular R. Zwanzig has developed the technique into a powerful tool for deriving formally accurate motion equations for classical or quantal probability densities \cite{Zwanzig1961,Zwanzig1964}. Later in 1965, H. Mori proposed a different tool, which leads to the linear \emph{generalized Langevin equation} (GLE), an equation of the form 
+The \emph{projection operator technique} is a collection of powerful tools for the study of irreversible processes in many-body systems \cite{Grabert:Projection}. These tools were introduced into statistical physics by S. Nakajima in 1958 and R. Zwanzig in 1960. The former used them to study the quantum statistical mechanics of steady diffusion \cite{Nakajima1958}, while the latter to give a new formulation of methods introduced in the statistical-mechanical theory of irreversibility \cite{Zwanzig1960}. In particular, R. Zwanzig developed the technique into a powerful tool for deriving formally accurate equations of motion for classical or quantum probability densities \cite{Zwanzig1961,Zwanzig1964}. Later in 1965, H. Mori proposed a different tool, which leads to the following linear \emph{generalized Langevin equation} (GLE)
 \begin{equation}\label{generalGLE}
- \frac{\diff A}{\diff t}=i\Omega A(t)-\int_0^t\,\diff\tau K(\tau)A(t-\tau)+F(t)
+ \frac{\diff A}{\diff t}=i\Omega A(t)-\int_0^t\,\diff\tau K(\tau)A(t-\tau)+F(t)\,,
 \end{equation}
-where $\Omega$, $K(t)$ and $F(t)$ are well-defined functions, called the frequency, memory function, and random force respectively.
-This equation describes the non-equilibrium evolution of any set of functions $A(t)$ defined on the phase-space of the arbitrary microscopic system, close to thermal equilibrium \cite{Mori1965}. To now these variables $A(t)$ are called collective variables, relevant variables, coarse-grained (CG) variables or collective modes, depending on the context.
-Some years later in 1973 R. Zwanzig derived a class of generalized Langevin equations describing the motion of a system interacting with a heat bath, this GLE is exact but differs from that obtained by Mori's scheme for two reasons: for the presence of an arbitrary nonlinear force and for the fact that its validity is not restricted to small deviations from the thermal equilibrium \cite{Zwanzig1973}.
-In recent years D. Kauzlari\'c et all showed, in their work on the calculation of the friction matrix in the coarse-grained description of an atomistic system, that Mori GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables (the functions $A(t)$ in the equation (\ref{generalGLE})) evolve in a time scale much larger than the memory time scale \cite{Kauzlaric2011}.
+where $\Omega$, $K(t)$ and $F(t)$ are well-defined quantities called frequency, memory function, and random force, respectively.
+This equation describes the non-equilibrium evolution of any set of functions $A(t)$ defined on the phase-space of the arbitrary microscopic system, close to thermal equilibrium \cite{Mori1965}. These variables $A(t)$ are called collective variables, relevant variables, coarse-grained (CG) variables or collective modes, depending on the context.
 
-These techniques are know in various context as well as in transport theory. For example in the dynamic light scattering or in the liquids theory, the GLE is used to compute time-correlation functions under circumstances where the usual phenomenological equations do not apply. Indeed through the equation (\ref{generalGLE}) can be obtained an equation for the time correlation function $C(t)$:  
+\noindent
+Some years later in 1973 R. Zwanzig derived a class of generalized Langevin equations describing the motion of a system interacting with a heat bath. This GLE is exact but differs from that obtained by Mori's scheme for two reasons: for the presence of an arbitrary nonlinear force and for the fact that its validity is not restricted to small deviations from the thermal equilibrium \cite{Zwanzig1973}.
+
+\noindent
+In recent years D. Kauzlari\'c \emph{et al.} \cite{Kauzlaric2011} showed in their work on the calculation of the friction matrix in the coarse-grained description of an atomistic system that Mori's GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables (the functions $A(t)$ in the equation (\ref{generalGLE})) have a characteristic time scale much larger than the memory time scale.
+
+These techniques are known in various context as well as in transport theory. For example, in the dynamic light scattering or in the liquids theory, the GLE is used to compute time-correlation functions under circumstances where the usual phenomenological equations do not apply. Indeed, the Mori-Zwanzig formalism can be used to obtain an equation for the time correlation function $C(t)$:  
 \begin{equation}
  \frac{\diff C(t)}{\diff t}=i\Omega\, C(t)-\int_0^t\,\diff\tau K(\tau)C(t-\tau)\,.
 \end{equation}
-This is called the \emph{memory-function equation} and the random force appears implicitly in $K(t)$ \cite{Berne:DynamicLightScatt,hansen2006}.
+This equation can be derived from the equation (\ref{generalGLE}), is called the \emph{memory-function equation} and the random force appears implicitly in $K(t)$ \cite{Berne:DynamicLightScatt,hansen2006}.
 
-If the dynamical system considered is Hamiltonian, in the Mori-Zwanzig theory we can use two equivalent approaches. 
-The former applying the projection operator in a Hilbert space of probability densities function (pdf) to the Liouville equation, obtained the generalized Fokker-Planck and master equations \cite{Kinjo2007,Zwanzig1960,Zwanzig1961,Zwanzig1964}.
-While the latter, applying the projection operator in the Liouville space, see appendix \ref{App:C}, to the equation of motion of time-dependent property phase function, obtained GLE and transport equation \cite{DiPasquale2019,Hijon2010,Mori1965,Nordholm1975,Zwanzig1973}.
+If the dynamical system considered is Hamiltonian, in the Mori-Zwanzig formalism we can use two equivalent approaches:
+\begin{enumerate}
+  \item applying the projection operator in a Hilbert space of probability densities function (pdf) to the Liouville equation, obtained the generalized Fokker-Planck and master equations \cite{Kinjo2007,Zwanzig1960,Zwanzig1961,Zwanzig1964};
+  \item applying the projection operator in the Liouville space (see appendix \ref{App:C}) to the equation of motion of time-dependent phase-space function, the GLE and the transport equation are obtained \cite{DiPasquale2019,Hijon2010,Mori1965,Nordholm1975,Zwanzig1973}.
+\end{enumerate}
 The mathematical equivalence of these two approaches is given by the duality between Liouville space and the space of densities of states, in complete analogy with the Schr\"odinger and Heisenberg pictures in Quantum Mechanics. 
 
-In what follows, we choose to follow the second approach since this results in a more physically-intuitive derivation and we will derive the GLE for the CG variables with the \emph{Zwanzig projection} and the \emph{Mori projection}, respectively.
+\noindent
+In what follows, we choose to follow the second approach since this results in a more physically-intuitive derivation. Here, we will derive the GLE for the CG variables with the \emph{Zwanzig projection} and the \emph{Mori projection}, respectively.
 
-We assume that at the microscopic level the system is well described by classical mechanics and is composed by $\nfg$ particles. We will refer to it as the \emph{fine-grained} (FG) system. The microscopic state is characterised by variable $\Aphase{}(t)$ in $6\nfg$-dimensional phase-space. To derive a reduced description of this system, we consider a smaller set of phase function $\Bphase{}(\Aphase{})$, which we call observables\footnote{
-Throughout the present section, these observables could be quite general,
-but we will later apply the derivation made here to the particular choice 
-\begin{equation*}
- \Bphase{}(\Aphase{}) = \cip{ \Bphase{\bfR}(\Aphase{}),\Bphase{\bfP}(\Aphase{}) } 
-       = (\bfR_1(\Aphase{}),\ldots,\bfR_{\ncg}(\Aphase{}),\bfP_1(\Aphase{}),\ldots,\bfP_{\ncg}(\Aphase{}))\,,
-\end{equation*}
-corresponding to the positions and momenta of particles in the CG system composed of $\ncg$ particles.}.
+We assume that, at the microscopic level, the system is well described by classical mechanics and is composed by $\nfg$ particles. We will refer to it as the \emph{fine-grained} (FG) system. The microscopic state is characterised by the function $\Aphase{}(t)$ in a $6\nfg$-dimensional phase-space. 
+
+\noindent
+To derive a reduced description of this system, we consider a smaller set of phase function $\Bphase{}(\Aphase{})$, which we call observables\footnote{
+Throughout the present section, these observables could be quite general, but we will later apply the derivation made here to a particular choice.
+}.
 The time evolution of a function of phase variables is given by
 \begin{equation}\label{Eq:MotionEqGamma}
   \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\Bphase{}(\Aphase{}(t))\,,
   \quad\Bphase{}(\Aphase{}(0)) \equiv \Bphase{}(\Aphase{0})\,.
-%  \quad \Lio\equiv iL\coloneqq \bp{ \ldots,\Ham}
 \end{equation}
-Here, the operator $\Lio\equiv iL$ is the \emph{Liouvillian}, see appendix \ref{App:C}, and the formal solution is given by
+Here, the operator $\Lio\equiv iL$ is the \emph{Liouvillian} (see appendix \ref{App:C}) and the formal solution is given by
 \begin{equation}\label{Eq:SolLiouville}
 	\Bphase{}(\Aphase{}(t)) = \exp{\Lio t}\,\Bphase{}(\Aphase{0})\,,
 \end{equation}
 where the exponential operator is defined through its Taylor expansion.
 This solution implicitly depends upon the full evolution of the FG system, therefore this equation does not provide a self-consistent evolution equation for the observables. 
 
-We also assume that the state of the system is described by the canonical equilibrium distribution\footnote{Different choices are possible. For example it is also perfectly possible to carry out the same derivation using the micro-canonical equilibrium measure.} $\rho^{eq}(\Aphase{})$, and so that that the probability equilibrium measure is given by the Gibbs measure on the FG phase-space $X=\real^{6\nfg}$:
+We also assume that the state of the system is described by the canonical equilibrium distribution\footnote{Different choices are possible. For example it is also perfectly possible to carry out the same derivation using the micro-canonical equilibrium measure.} $\rho^{eq}(\Aphase{})$, so that the probability equilibrium measure is given by the Gibbs measure on the FG phase-space $X=\real^{6\nfg}$:
 \begin{equation}\label{Eq:GibbsMeas}
  \mathbb{P}(\diff\Aphase{})=\rho^{eq}(\Aphase{})\diff\Aphase{}=\frac{1}{\partf}\exp{-\beta\Ham(\Aphase{})}\diff\Aphase{}\,.
 % \qquad X=\real^{6\nfg}\,;
 \end{equation}
 
-The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables $\Bphase{}(\Aphase{})$ by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves leading to a closed equation for the CG variables. 
+The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables $\Bphase{}(\Aphase{})$ by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves, leading to a closed equation for the CG variables. 
 
 %For example, with the \emph{Zwanzig projection} this is done by projecting the equation for the observables $\Bphase{}(\Aphase{})$ onto the space of functions of the CG variables, which may be regarded as a subspace of the FG observable space\footnote{This is true as long as some very broad measurability assumptions on the CG variables chosen are met; in practice, choosing CG variables which are continuous and differentiable in the FG variables is already sufficient, and this particular choice is implicitly assumed in the derivation presented here. In theory however, much more general choices can be made.}.
 
@@ -103,7 +107,6 @@ The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}
 
 \section{Zwanzig approach}
 \subsection{The Zwanzig Projection}
-
 We denote the \emph{Zwanzig projection} as $\mathcal{P}_{\Bphase{}}$:
 \begin{equation}\label{Eq:proj}
 	\mathcal{P}_{\Bphase{}}F(\Aphase{}) = \frac{1}{\Omega(\Bphase{}(\Aphase{}))} \int_X F(\Aphase{}')\,\dirac{\Bphase{}(\Aphase{}')-\Bphase{}(\Aphase{})}\rho^{eq}(\Aphase{}')\diff\Aphase{}'
@@ -113,46 +116,48 @@ where $F(\Aphase{})$ is a generic function acting on the space-phase and the nor
 \begin{equation}\label{eq:structurefunc}
 	\Omega(\Bphase{}(\Aphase{})) = \int_X\dirac{\Bphase{}(\Aphase{}')-\Bphase{}(\Aphase{})}\mathbb{P}(\diff\Aphase{}')\,.
 \end{equation}
-In other words, \textit{structure function} represents the number of micro-states compatible with the macro-state $\Bphase{}(\Aphase{}')=\Bphase{}(\Aphase{})$ \cite{Hijon2010}.
-  
-The projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary function $F(\Aphase{})$ that part, $\mathcal{P}_{\Bphase{}}F(\Aphase{})$, which depends on $\Aphase{}$ only through $\Bphase{}(\Aphase{})$. 
-For a given $\Aphase{}$ we determine the numerical values $\bfa$ of observables, $\bfa=\Bphase{}(\Aphase{})$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondence surface $S(\bfa)$, while the \textit{structure function} in the denominator $\Omega(\Bphase{}(\Aphase{}))=\Omega(\bfa)$ allows us to spread this amount on the surface $S(\bfa)$.
-Therefore, loosely speaking, $\mathcal{P}_{\Bphase{}}$ ``average'' the function $F(\Aphase{})$ over the surface $S(\bfa)$. 
+In other words, the \textit{structure function} represents the number of micro-states compatible with the macro-state $\Bphase{}(\Aphase{}')=\Bphase{}(\Aphase{})$ \cite{Hijon2010}. While, the projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary function $F(\Aphase{})$ the part, $\mathcal{P}_{\Bphase{}}F(\Aphase{})$, which depends on $\Aphase{}$ only through $\Bphase{}(\Aphase{})$.
+
+\noindent
+If we introduce a set of fixed values $\bfa$ such that for a given $\Aphase{}$ we have $\Bphase{}(\Aphase{})=\bfa$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondent surface $S(\bfa)$, while the \textit{structure function} in the denominator $\Omega(\Bphase{}(\Aphase{}))=\Omega(\bfa)$ allows us to spread this amount on the surface $S(\bfa)$.
+Therefore, loosely speaking, $\mathcal{P}_{\Bphase{}}$ ``averages'' the function $F(\Aphase{})$ over the surface $S(\bfa)$ in case the observables $\Bphase{}(\Aphase{})$ are equal to $\bfa$ for a given $\Aphase{}$.
+
 The fact that $\mathcal{P}_{\Bphase{}}$ is a projection operator can be easily verified by showing that it satisfies the necessary and
-sufficient condition for a projection operator, $\mathcal{P}_{\bfa}^2=\mathcal{P}_{\bfa}$ \cite{Zwanzig1961}.
-We can define the \emph{complementary orthogonal projection} $\qproj_{\bfa}$ as %\Bphase{}
+sufficient condition for a projection operator, $\mathcal{P}_{\Bphase{}}^2=\mathcal{P}_{\Bphase{}}$ \cite{Zwanzig1961}.
+So we can define the \emph{complementary orthogonal projection} $\qproj_{\Bphase{}}$ as
 $$
- \qproj_{\bfa}=\idproj-\pproj_{\bfa}\,,
+ \qproj_{\Bphase{}}=\idproj-\pproj_{\Bphase{}}\,,
 $$  
 where $\idproj$ is the identity operator.
 
+
 \subsection{Zwanzig Projection as Conditional Expectation}
 We will now show that this projection is equivalent to taking the conditional expectation: 
-$$\mathcal{P}_{\Bphase{}}F \equiv \cexpval{F}{\,\Bphase{}} = \aver{F}_{\Bphase{}}\,$$ 
-with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for a specific value $\bfa$ of the CG variables $\Bphase{}(\Aphase{})$ \cite{Chorin2000,DiPasquale2019}. This is done because it will be useful for the following sections.
+$$\mathcal{P}_{\Bphase{}}F \equiv \cexpval{F}{\,\Bphase{}} \equiv \aver{F}_{\Bphase{}}\,$$ 
+with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for specific values $\bfa$ of the CG variables $\Bphase{}(\Aphase{})$ \cite{Chorin2000,DiPasquale2019}. This property will be used in the following sections.
 
-Let $A$ be a phase function in the Liouville space (see appendix \ref{App:C}).
-We now focus our attention on a set of functions 
+Let $A(\Aphase{})$ be a phase function in the Liouville space (see appendix \ref{App:C}).
+We now focus our attention on the set of functions 
 $$
 \bfA(\Aphase{})=\bp{ A_I\in L^2\cip{X,\mathbb{P}}\,,\;\;\mathrm{where}\;\; I=1,\ldots,\ncg \;\;\mathrm{and}\;\; \ncg\le\nfg }\,,
 $$
-i.e. on the set of CG variables $\Bphase{}$, which define a space $V=\real^{\ncg}$. Given a phase function $B$, we define the projection operator over the CG space $V$ as
+i.e. on the set of CG variables $\Bphase{}$, which define a space $V=\real^{\ncg}$. Given a phase function $B(\Aphase{})$, we define the projection operator over the CG space $V$ as
 \begin{equation*}
- \mathcal{P}_{\bfa}B = \int_{A^{-1}\cip{\bp{\bfa}}}B(\Aphase{})\mathbb{P}_{\bfa}(\diff\Aphase{})\,,
+ \mathcal{P}_{\bfa}B(\Aphase{}) = \int_{A^{-1}\cip{\bp{\bfa}}}B(\Aphase{})\mathbb{P}_{\bfa}(\diff\Aphase{})\,,
 \end{equation*}
 where $A^{-1}\cip{\bp{\bfa}}=\bp{\Aphase{} \in X:\;\bfA(\Aphase{})= \bfa}$ is the preimage of $\Bphase{}\in \real^{\ncg}$ for some fixed $\bfa$ and $\mathbb{P}_{\bfa}\cip{\diff \Aphase{}}$ is the measure which satisfies
 $$
 \int_V\cip{\int_{A^{-1}\cip{\bp{\bfa}}}B(\Aphase{})\mathbb{P}_{\bfa}(\diff\Aphase{})}\diff \bfa = \int_X B\cip{\Aphase{}}\mathbb{P}\cip{\diff\Aphase{}}\,,
 $$
-for any phase function $B$ in the Liouville space.
+for any phase function $B(\Aphase{})$ in the Liouville space.
 
-Since that the observed value of the phase function $f(\Aphase{})$ is the expected value $\mathbb{E}[f]$, see definition \ref{Def:E[...]}, with respect to the Gibbs measure (\ref{Eq:GibbsMeas}), we can interpret the phase function as random variable.  
+Since the observed value of the phase function $f(\Aphase{})$ is the expected value $\mathbb{E}[f]$ (see definition \ref{Def:E[...]}) with respect to the Gibbs measure (\ref{Eq:GibbsMeas}), we can interpret the phase function as a random variable.  
 Therefore, the projection operator has a nice interpretation as a conditional expectation over the CG variables:
 \begin{equation}\label{ConExp}
- \mathcal{P}_{\bfa}F = \cexpval{F}{\,\bfA(\Aphase{})=\bfa}\,.
+ \mathcal{P}_{\bfa}B(\Aphase{}) = \cexpval{B(\Aphase{})}{\,\bfA(\Aphase{})=\bfa}\,.
 \end{equation}
 For the mathematical details of the conditional expectation see theorem \ref{Th:CondExp}. 
-We stress here that the conditional expectation \ref{ConExp}, which we rewrite as  $\cexpval{B}{\,\bfa}$, is a function of $\bfa$, is a linear operator and represents the best approximation of $B$ compared to any function of $\bfa$, is therefore an orthogonal projection. For further details on the last property, see the definition \ref{Def:ExpOrthProj}.
+We stress here that the conditional expectation \ref{ConExp}, which we rewrite as  $\cexpval{B}{\,\bfa}$, is a function of $\bfa$, is a linear operator and represents the best approximation of $B$ compared to any function of $\bfa$, and therefore it is an orthogonal projection. For further details on the last property, see the definition \ref{Def:ExpOrthProj}.
 
 
 \subsection{Generalized Langevin Equation}
@@ -168,7 +173,7 @@ where $\Bphase{0}=\Bphase{}(\Aphase{0})$. Applying the identity operator $\idpro
  \exp{\Lio t}\pproj\Lio\,\Bphase{0} + \exp{\Lio t}\qproj\Lio\,\Bphase{0}\,. 
 \end{equation}
 
-Now if we make in the Dunhamel-Dyson operator identity for the exponential operator $exp(-(A+B)t)$, see appendix \ref{App:D}, the substitutions $A=\Lio\qproj$ and $B=\Lio\pproj$, we get
+Now if we make in the Dunhamel-Dyson operator identity for the exponential operator $\exp{-(U+V)\,t}$ (see appendix \ref{App:D}) the substitutions $U=\Lio\qproj$ and $V=\Lio\pproj$, we get
 $$
 \exp{-\Lio t} = \exp{-\Lio\qproj t}-\int_0^{t}\exp{-\Lio\qproj s}\,\Lio\pproj \,\exp{-\Lio(t-s)}\,\diff s\,,
 $$
@@ -176,9 +181,9 @@ and if we take the adjoint of both side, we obtain that
 \begin{equation}
  \exp{\Lio t} = \exp{\qproj\Lio t} + \int_0^t \exp{\Lio (t-s)}\,\pproj\Lio\,\exp{\qproj\Lio s}\,\diff s\,,
 \end{equation}
-where we used the fact that the projection operators $\pproj$ and $\qproj$ are Hermitian operator, while the liouvillian $\Lio$ is anti-Hermitian.
+where we used the fact that the projection operators $\pproj$ and $\qproj$ are Hermitian operator, while the liouvillian $\Lio$ is anti-Hermitian, i.e. $(f,\Lio\, g)=-(\Lio\, f,g)$ for all $f,g$ in the Liouville space.
 
-We can rewrite the second term on the RHS of eq. (\ref{Eq:MoIdProj}) as
+We can rewrite the second term on the RHS of equation (\ref{Eq:MoIdProj}) as
 \begin{equation}\label{Eq:PezzoEqEvoluz}
  \exp{\Lio t}\qproj\Lio\,\Bphase{0} = \exp{\qproj\Lio t}\qproj\Lio\,\Bphase{0} + 
  \int_0^t \exp{\Lio(t-s)}\,\pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0}\,\diff s\,, 
@@ -191,7 +196,7 @@ and, considering the projection on the CG variables such that $A(\Aphase{})=\bfa
    = -\frac{1}{\Omega(\bfa)} \int\diff\Aphase{0}\rho^{eq}(\Aphase{0}) 
          \sqp{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } \Lio\,\dirac{\Bphase{}(\Aphase{0})-\bfa}\,.
 \end{multline*}
-Here, we used the fact that $\Lio$ is skew-symmetric (anti-Hermitian) on the Liouville space, i.e. $(f,\Lio\, g)=-(\Lio\, f,g)$ for all $f,g$ in the Liouville space. Using the chain rule for time differentiation\footnote{ 
+Here, we used the fact that $\Lio$ is skew-symmetric (anti-Hermitian) on the Liouville space. Using the chain rule for time differentiation\footnote{ 
 For a generic function on the CG space: 
 $$
  \totd{B(\Bphase{})}{t}=\Lio\,B(\Bphase{})=\dot{\Bphase{}}\cdot\nabla_{\Bphase{}}B(\Bphase{})=
@@ -221,12 +226,16 @@ We can rewrite the equation obtained as
     \nabla_{\bfa}\cdot\pproj\sqp{ \cip{ \Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } ={}\\
   = - \nabla_{\bfa}\,\entropy\cip{\bfa}\fricmat\cip{\bfa,s} + \frac{1}{\beta}\, \nabla_{\bfa}\cdot\fricmat\cip{\bfa,s}\,,
 \end{multline}
-where $\beta=\cip{\kb T}^{-1}$ and we have introduced two new functions. 
+where $\beta=\cip{\kb T}^{-1}$ and we have introduced two new functions.
+
+\noindent
 The former 
 \begin{equation}\label{Eq:Entropy(FreeE)}
   \entropy\cip{\bfa}\coloneqq -\frac{1}{\beta}\ln \Omega\cip{\bfa}
 \end{equation}
-is interpreted, since it has units of energy, as a contribution to the free energy of the system, in view of the definition of $\Omega(\bfa)$ in eq. (\ref{eq:structurefunc}). We note that in \cite{Hijon2010}, the alternative quantity $\mathcal{S}(\bfa) = \kb\ln{\Omega(\bfa)}$ is defined, which is an entropy. Both definitions are identical up to a multiplicative factor, and depend upon on the assumed temperature of the system.
+is interpreted, since it has units of energy, as the entropic contribution to the Helmholtz free energy of the system, in view of the definition of $\Omega(\bfa)$ in the equation (\ref{eq:structurefunc}). We note that in \cite{Hijon2010}, the alternative quantity $\mathcal{S}(\bfa) = \kb\ln{\Omega(\bfa)}$ is defined, which is an entropy. Both definitions are identical up to a multiplicative factor, and depend on the assumed temperature of the system.
+
+\noindent
 Instead, the latter function is a positive definite memory matrix:
 \begin{equation}
 \begin{split}\label{Eq:fricmatrix}
@@ -241,13 +250,14 @@ Instead, the latter function is a positive definite memory matrix:
 \end{equation}
 where we used the fact that $\pproj\qproj=0$.
 
-Inserting eq. (\ref{Eq:PezzoInt}) in eq. (\ref{Eq:PezzoEqEvoluz}), the eq. (\ref{Eq:MoIdProj}) becomes
+\noindent
+Inserting equation (\ref{Eq:PezzoInt}) in the equation (\ref{Eq:PezzoEqEvoluz}), equation (\ref{Eq:MoIdProj}) becomes
 \begin{multline}
  \totd{\Bphase{t}}{t} = \exp{\Lio t}\pproj\Lio\,\Bphase{0} + \exp{\Lio t}\qproj\Lio\,\Bphase{0} ={}\\
    = \exp{\Lio t}\pproj\Lio\,\Bphase{0} - \int_0^t \exp{\Lio(t-s)}\,\nabla_{\bfa}\,\entropy\cip{\bfa}\fricmat\cip{\bfa,s} \diff s +{}\\
    + \frac{1}{\beta}\int_0^t \exp{\Lio(t-s)}\,\nabla_{\bfa}\cdot\fricmat\cip{\bfa,s} \diff s + \exp{\qproj\Lio t}\qproj\Lio\,\Bphase{0}\,. 
 \end{multline}
-Now, since for any $f\cip{\Bphase{t}}$ we have $\exp{\Lio t}f\cip{\Bphase{0}}=f\cip{\Bphase{t}}$, the terms in equation become:
+Now, since for any $f\cip{\Bphase{t}}$ we have $\exp{\Lio t}f\cip{\Bphase{0}}=f\cip{\Bphase{t}}$, the terms in the equation can be rewritten as:
 \begin{align*}
   \exp{\Lio t}\pproj_{\bfa}\Lio\,\Bphase{0} &= \pproj_{\bfa(t)}\Lio\,\Bphase{0}\,,\\
   \exp{\Lio(t-s)}\,\nabla_{\bfa}\,\entropy\cip{\bfa}\fricmat\cip{\bfa,s} &= 
@@ -743,7 +753,7 @@ thus we obtained
 
 \chapter{Dunhamel-Dyson operator identity}
 \label{App:D}
-The \emph{resolvent} of an operator is define as its Laplace transform. We consider the resolvent of an exponential operator $exp(At)$:
+The \emph{resolvent} of an operator is define as its Laplace transform. We consider the resolvent of an exponential operator $\exp{At}$:
 \begin{multline*}
 R_A(s) = \int_0^{\infty} \exp{-st}\exp{-At}\,\diff t = \int_0^{\infty} \exp{-st}\sum_{n=0}^{\infty}\frac{(-At)^n}{n!} \,\diff t ={}\\
    = \sum_{n=0}^{\infty}\frac{(-A)^n}{n!}\int_0^{\infty} \exp{-st}\, t^n\, \diff t =
@@ -752,7 +762,7 @@ R_A(s) = \int_0^{\infty} \exp{-st}\exp{-At}\,\diff t = \int_0^{\infty} \exp{-st}
      \frac{1}{s}\sum_{n=0}^{\infty}\cip{\frac{-A}{s}}^n = \frac{1}{s}\cip{\idproj+\frac{A}{s}}^{-1} = \cip{s+A}^{-1}, 
 \end{multline*}
 where we used the definition of gamma function $\Gamma$ and the fact that $\Gamma(n+1)=n!$. 
-Therefore, the resolvent of the exponential operator of $-(A+B)t$ is given by 
+Therefore, the resolvent of the exponential operator $\exp{-(A+B)\,t}$ is given by 
 $$ 
  R_{A,B}(s)=\cip{s+A+B}^{-1}\,.
 $$ 
@@ -789,11 +799,14 @@ Since the equality holds for all values of $s$, the integrands must be equal, so
 \begin{equation}\label{Eq:DysId}
  \exp{-(A+B)t} = \exp{-At}-\int_0^{t}\exp{-Au}\,B \,\exp{-(A+B)(t-u)}\,\diff u\,.
 \end{equation}
-The derivation that we have used here is only valid if both of the operators $A$ and $B$ have no explicit time dependence. If we consider the operators $exp(-(A+B)t)$ and $exp(-At)$, then we get
+The derivation that we have used here is only valid if both of the operators $A$ and $B$ have no explicit time dependence. 
+
+\noindent
+If we consider the operators $\exp{-(A+B)\,t}$ and $\exp{-At}$, then we get
 \begin{equation}\label{Eq:IIDysId}
  \exp{(A+B)t} = \exp{At}+\int_0^{t}\exp{Au}\,B \,\exp{(A+B)(t-u)}\,\diff u\,.
 \end{equation}
-The equations obtained (\ref{Eq:DysId}) and (\ref{Eq:IIDysId}) are the Dyson operator identities, and when applied to propagators they are know as \emph{Dyson decomposition} and \emph{second Dyson decomposition} respectively \cite{evans2008}. 
+The equations obtained (\ref{Eq:DysId}) and (\ref{Eq:IIDysId}) are the Dyson operator identities, and when applied to propagators they are known as \emph{Dyson decomposition} and \emph{second Dyson decomposition} respectively \cite{evans2008}. 
 
 
 \end{appendices}
