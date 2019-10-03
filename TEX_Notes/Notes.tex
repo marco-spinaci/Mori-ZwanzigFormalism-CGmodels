@@ -251,7 +251,7 @@ Instead, the latter function is a positive definite memory matrix:
 where we used the fact that $\pproj\qproj=0$.
 
 \noindent
-Inserting equation (\ref{Eq:PezzoInt}) in the equation (\ref{Eq:PezzoEqEvoluz}), equation (\ref{Eq:MoIdProj}) becomes
+Inserting eq.~(\ref{Eq:PezzoInt}) in the eq.~(\ref{Eq:PezzoEqEvoluz}), eq.~(\ref{Eq:MoIdProj}) becomes
 \begin{multline}
  \totd{\Bphase{t}}{t} = \exp{\Lio t}\pproj\Lio\,\Bphase{0} + \exp{\Lio t}\qproj\Lio\,\Bphase{0} ={}\\
    = \exp{\Lio t}\pproj\Lio\,\Bphase{0} - \int_0^t \exp{\Lio(t-s)}\,\nabla_{\bfa}\,\entropy\cip{\bfa}\fricmat\cip{\bfa,s} \diff s +{}\\
@@ -285,22 +285,24 @@ where we have defined
 \end{align} 
 The quantity $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ still depends on the FG variables, and is given by the solution of an auxiliary set of equations called \emph{orthogonal dynamics equations} \cite{Givon2005}, which we will discuss in the following sections.  
 We can now rewrite eq. (\ref{Eq:fricmatrix}) as
-\begin{multline}\label{Eq:FRICmatrixRF}
- \fricmat\cip{\bfa,s} \coloneqq 
-   \beta\,\pproj_{\bfa}\sqp{ \cip{ \qproj_{\bfa}\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } }={}\\ 
- = \beta\pproj_{\bfa} \sqp{\fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(t,\Aphase{0})}\,,
-\end{multline}
-\begin{align*}
- \fricmat\cip{\bfa,s} &\coloneqq 
-   \beta\,\pproj_{\bfa}\sqp{ \cip{ \qproj_{\bfa}\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } } \\  
-   &\equiv
-   \beta\,\cexpval{\fprojbf_{\Bphase{}}(0,\Aphase{0})\otimes\fprojbf_{\Bphase{}}(t,\Aphase{0})}{\,\bfa}
-   \equiv \beta\,\aver{\fprojbf_{\Bphase{}}(0,\Aphase{0})\otimes\fprojbf_{\Bphase{}}(t,\Aphase{0})}_{\bfa}  
-\end{align*}
-therefore, from eq. (\ref{Eq:MZequation}), $\bffricmat$ is a friction matrix, whose components can be written in Green-Kubo form \cite{Kauzlaric2011}.
+\begin{align}\label{Eq:FRICmatrixRF}
+ \nonumber
+ \fricmat\cip{\bfa,s} \coloneqq& 
+   \,\beta\,\pproj_{\bfa}\sqp{ \cip{ \qproj_{\bfa}\Lio\,\Bphase{0}} \otimes 
+   \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } }={}\\ 
+ =& \,\beta\,\pproj_{\bfa} \sqp{\fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(t,\Aphase{0})}\,,
+\end{align}
+%\begin{align*}
+% \fricmat\cip{\bfa,s} &\coloneqq 
+%   \beta\,\pproj_{\bfa}\sqp{ \cip{ \qproj_{\bfa}\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } } \\  
+%   &\equiv
+%   \beta\,\cexpval{\fprojbf_{\Bphase{}}(0,\Aphase{0})\otimes\fprojbf_{\Bphase{}}(t,\Aphase{0})}{\,\bfa}
+%   \equiv \beta\,\aver{\fprojbf_{\Bphase{}}(0,\Aphase{0})\otimes\fprojbf_{\Bphase{}}(t,\Aphase{0})}_{\bfa}  
+%\end{align*}
+therefore, from eq.~(\ref{Eq:MZequation}), $\bffricmat$ is a friction matrix, whose components can be written in Green-Kubo form \cite{Kauzlaric2011}.
 
-Recall that we are not interested in solving the equation (\ref{Eq:MZequation}) for a specific initial condition $\Bphase{}(\Aphase{0})$, but rather for an ensemble of initial conditions $\Aphase{0}$ satisfying $\Bphase{}(\Aphase{0})=\bfa(0)$ for some fixed $\bfa(0)=\bfA(\Aphase{})$, where $\bfA(\Aphase{})$ is a generic set of CG variables, and with $\Aphase{0}$ distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa(0)$. It is important to highlight here that the complexity of the equation (\ref{Eq:MZequation}) is not reduced with respect the starting equation (\ref{Eq:MotionEqGamma}), it has simply been shifted into the calculation of the \emph{orthogonal dynamics}. However close to equilibrium, the term $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ is uncorrelated with the projected variables $\Bphase{}$ and therefore approximated as a random noise. 
-The proof of this statement is based on the scalar product defined in the Liouville space and the Mori projector $\pproj^{M}$, see section \ref{Sec:MoriProj}, which, as we said, is a special case of the Zwanzig projector when the system is near the equilibrium \cite{Kauzlaric2011}. If we now consider eq. (\ref{Eq:RAndomForce}), we can write:
+Recall that we are not interested in solving the equation (\ref{Eq:MZequation}) for a specific initial condition $\Bphase{}(\Aphase{0})$, but rather for an ensemble of initial conditions $\Aphase{0}$ satisfying $\Bphase{}(\Aphase{0})=\bfa(0)$ for some fixed $\bfa(0)=\bfA(\Aphase{})$, where $\bfA(\Aphase{})$ is a generic set of CG variables, and with $\Aphase{0}$ distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa(0)$. It is important to highlight here that the complexity of the equation (\ref{Eq:MZequation}) is not reduced with respect the starting equation (\ref{Eq:MotionEqGamma}), it has simply been shifted into the calculation of the \emph{orthogonal dynamics}. However, close to equilibrium, the term $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ is uncorrelated with the projected variables $\Bphase{}$ and therefore approximated as random noise. 
+The proof of this statement is based on the scalar product defined in the Liouville space and the Mori projector $\pproj^{M}$ (see section \ref{Sec:MoriProj}) which, as we said, is a special case of the Zwanzig projector when the system is near equilibrium \cite{Kauzlaric2011}. If we now consider eq.~(\ref{Eq:RAndomForce}), we can write:
 \begin{equation*}
 \begin{split}
  \cip{ \fprojbf_{\Bphase{}}(t,\Aphase{0}) ,\, \Bphase{}^*(\Aphase{0}) } &= 
@@ -313,17 +315,17 @@ The proof of this statement is based on the scalar product defined in the Liouvi
 \end{split}
 \end{equation*}
 where we used the idempotent property of the projector and the definition of $\qproj^M$, the complement of $\pproj^M$.
-In the Langevin description of the dynamics of a system, the random force has the property of being uncorrelated from the velocity of the particle. For the same reason, being the dynamic of $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ orthogonal to that of $\Bphase{}$, i.e. they are uncorrelated, we can identity it as random force acting on the system.
+In the Langevin description of the dynamics of a system, the random force has the property of being uncorrelated from the velocity of the particle. For the same reason, being the dynamic of $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ orthogonal to that of $\Bphase{}$, i.e. they are uncorrelated, we can identify it as a random force acting on the system.
 
-With this in mind, we can rewrite eq. (\ref{Eq:MZequation}) as an integro-differential equation with a random-source term which is usually referred to as the \emph{Generalized Langevin Equation} (GLE):
+With this in mind, we can rewrite eq.~(\ref{Eq:MZequation}) as an integro-differential equation with a random-source term which is usually referred to as a \emph{Generalized Langevin Equation} (GLE):
 \begin{multline}\label{Eq:ZwanGLE}
  \totd{\Bphase{t}}{t} = \Lambda\cip{\Bphase{t}} 
     - \int_0^t \nabla_{\bfa}\,\entropy\cip{\bfa(t-s)}\fricmat\cip{\bfa(t-s),s} \diff s +{}\\
     + \frac{1}{\beta}\int_0^t \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s} \diff s + \mathbf{F}(t)\,, 
 \end{multline}
-where $\mathbf{F}(t)$ is interpreted as a zero-mean random process whose statistical properties are specified by eq. (\ref{Eq:RAndomForce}) in which $\Aphase{0}$ is random and distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa(0)$.
+where $\mathbf{F}(t)$ is interpreted as a zero-mean random process whose statistical properties are specified by eq.~(\ref{Eq:RAndomForce}).
 
-The terms involving the friction matrix turn out to be the most difficult to compute in a real calculation because of the memory effect. We will briefly discuss the friction matrix and the memory effects but a more thorough analysis of these terms is left for future works. 
+The terms involving the friction matrix turn out to be the most difficult to compute in a real calculation because of the memory effect. We will briefly discuss the friction matrix and the memory effects, but a more thorough analysis of these terms is left for future works. 
 In the next chapter we will derive more explicit forms of the terms appearing in eq. (\ref{Eq:MZequation}) for a CG system, for specific choices of the CG variables which arises naturally from physical considerations, namely canonical mappings (i.e. transformations).
 %We will show how these formal expressions can be computed from MD simulations for a simple system represented by a one dimensional chain composed by atoms with different mass connected through a Lennard-Jones potential. The scale separation hypothesis will be discussed for this simple system.
 
