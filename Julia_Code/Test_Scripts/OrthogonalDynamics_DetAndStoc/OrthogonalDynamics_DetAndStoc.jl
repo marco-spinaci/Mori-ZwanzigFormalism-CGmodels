@@ -1,5 +1,5 @@
-include("../LJChain.jl")
-include("../CGStats.jl")
+include("../LJChain.include")
+jl("../CGStats.jl")
 
 using Main.LJChain,Main.CGStats,Plots,Statistics,DelimitedFiles
 

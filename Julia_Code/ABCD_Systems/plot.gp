@@ -7,7 +7,7 @@ unset key
 set grid
 
 ######################################################################
-# file "C_B*_G*.csv"
+# file "s*_*.csv"
 # num.col.     valori
 #   1     ->    RR
 #   2     ->    PP

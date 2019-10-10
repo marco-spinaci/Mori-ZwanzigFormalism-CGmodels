@@ -1406,7 +1406,7 @@ function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::
     Sigma[i] = c[1];
   end
 
-  return Sigma
+  return Sigma, dQ
 end
 
 """
@@ -1418,10 +1418,10 @@ function ApproxMeanForce(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Arr
 				C::Chain,σ::Float64=0.1,N::Int=2)
 
   F = zeros(size(Q));
-  Sigma = ApproxMeanStresses(Q,dQvals,Fvals,C,σ,N);
+  Sigma, dQ = ApproxMeanStresses(Q,dQvals,Fvals,C,σ,N);
   F = Sigma-circshift(Sigma,1);
 
-  return F
+  return F, Sigma, dQ
 end
 
 
@@ -1475,7 +1475,7 @@ function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Fl
   c3 = sqrt(C.BeadMass)*sqrt.(1.0 .- c1.^2).*randn(C.NBeads);
 
   # Generate new momenta and return
-  return F.vectors*(c1.*(F.vectors'*P)+c3);
+  return F.vectors*(c1.*(F.vectors'*P)+c3), Gvec, dQ
 end
 
 end # module CGStats
