@@ -115,8 +115,11 @@ dQ = Rmin .+ rand(Float64, N) .* (Rmax - Rmin);
 # Mean Force
 Sigma = zeros(size(dQ));
 for i in 1:length(dQ)
-    if dQ[i] < 0.2
-        W = 1;
+    if dQ[i] < 0.9
+        m = (- 9620.78 + 11462.61) / (1.09-0.95);
+        q = -9620.78 - m * 1.09;
+        Sigma[i] = m * dQ[i] + q;
+        continue
     elseif dQ[i] > 3.78
         W = spdiagm(0 => exp.(-(RR .- 3.78) .^2 ./ σ^2));
         J = ones(3, length(RR));
@@ -142,15 +145,10 @@ end
 # Fluctuating Force
 Gvec = zeros(size(dQ,1));
 for i=1:length(dQ)
-    if dQ[i] < 0.2
-        W = 1;
-        J = ones(3, length(RR));
-        for j=1:2
-            J[j+1,:] = (dQ[i] .- RR).^j;
-        end
-        K = J * W;
-        coeffs = (K * J') \ (K * Fstd);
-        Gvec[i] = coeffs[1];
+    if dQ[i] < 0.9
+        m = (7237.78 - 8523.99) / (1.09-0.94);
+        q = 7237.78 - m * 1.09;
+        Gvec[i] = m * dQ[i] + q;
         continue
     elseif dQ[i] > 3.78
         W = spdiagm(0 => exp.(-(RR .- 3.78) .^2 ./ σ^2));
