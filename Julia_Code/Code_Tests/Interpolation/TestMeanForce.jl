@@ -106,8 +106,8 @@ Fstd = CG[:, 5];
 
 N = 1000;
 σ = 0.1;
-Rmin = -1;
-Rmax = 8;
+Rmin = -10;
+Rmax = 10;
 
 dQ = Rmin .+ rand(Float64, N) .* (Rmax - Rmin);
 # dQ = [5,6,6.11,6.13,6.14,6.15,6.17,6.18,6.19,6.3];
@@ -146,8 +146,8 @@ end
 Gvec = zeros(size(dQ,1));
 for i=1:length(dQ)
     if dQ[i] < 0.9
-        m = (7237.78 - 8523.99) / (1.09-0.94);
-        q = 7237.78 - m * 1.09;
+        m = (6464.26 - 8859.34) / (1.2-0.90);
+        q = 8859.34 - m * 0.90;
         Gvec[i] = m * dQ[i] + q;
         continue
     elseif dQ[i] > 3.78
@@ -186,11 +186,11 @@ Gvec1 = reshape(Gvec, l);
 Gvec1 = Gvec1[i];
 # println("FF = ", Gvec1);
 
-open("./Test_Scripts/TestInterpolation/Outcomes/RFmean_algInt_test.csv", "w+") do x
+open("./Code_Tests/Interpolation/Outcomes/RFmean_algInt_test.csv", "w+") do x
     writedlm(x, [RB Sigma1])
 end
 
-open("./Test_Scripts/TestInterpolation/Outcomes/RFF_algInt_test.csv", "w+") do x
+open("./Code_Tests/Interpolation/Outcomes/RFF_algInt_test.csv", "w+") do x
     writedlm(x, [RB Gvec1])
 end
 
