@@ -24,7 +24,7 @@
 \DeclareMathAlphabet\mathbfcal{OMS}{cmsy}{b}{n}
 \usepackage{mymacrosTESI}
 
-\usepackage{graphicx, sub figure}
+\usepackage{graphicx, subfigure}
 \usepackage[margin=10pt,font=small,labelfont=bf]{caption}
 \graphicspath{ {Figure/} }
 
@@ -472,6 +472,22 @@ The methods that are considered are splitting integrators that decompose the sto
 
 \part{Numerical Experiments}
 \label{Sec:NumExp}
+
+\begin{figure}[htb]
+    \centering
+    \subfigure
+    {\includegraphics[width=0.5\textwidth]{sABCD_100-2000_MF.pdf}}
+    {\includegraphics[width=0.45\textwidth]{MFme.png}}
+    \subfigure
+    {\includegraphics[width=0.5\textwidth]{sABCD_100-2000_FF.pdf}}
+    {\includegraphics[width=0.45\textwidth]{FFme.png}}
+    \subfigure
+    {\includegraphics[width=0.5\textwidth]{sABCD_100-2000_EP.pdf}}
+    {\includegraphics[width=0.45\textwidth]{EPme.png}}    
+    \caption{System A,B,C,D. $Constrained$ $beds$ 2, $\beta=1$, $\gamma=1$, $dt=10^{-3}$, $FullSteps=10^6$, $OrthoSamples=10^6$, $MacroSamples=100/2000$.}
+%    \label{}
+\end{figure}
+
 
 
 
