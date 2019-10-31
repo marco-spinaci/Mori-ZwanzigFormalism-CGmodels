@@ -82,7 +82,7 @@ Fstd = CG[:,5];
 
 
 ## Compute autocorrelation stats for APPROXIMATE DYNAMICS
-(StressAutocorr,MomAutocorr) = ApproximateAutocorrPar(C,S,RR,Fmean,Fstd); #Fstd*0.5
+(StressAutocorr,MomAutocorr) = ApproximateAutocorrPar(C,S,RR,Fmean,Fstd*0.5); #Fstd*0.5
 
 open("./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/ApproximatecorrP_test.csv","w+") do x
     writedlm(x,[ S.Stochdt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
