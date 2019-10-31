@@ -198,11 +198,11 @@ function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
   P = P0; Q = Q0;
 
   # Generate mean force function
-  MeanForce = X -> ApproxMeanForce(X,dQData,FmeanData,C);
+  MeanForce = X -> ApproxMeanForce(X,dQData,FmeanData,C)[1];
   F = MeanForce(Q0);
 
   # Set up approximate fluctuation generator
-  FlucStep = (X,Y) -> ApproxFlucStep(X,Y,dQData,FstdData,C,S.Stochdt)
+  FlucStep = (X,Y) -> ApproxFlucStep(X,Y,dQData,FstdData,C,S.Stochdt)[1];
 
   # Set up storage
   Pstore = zeros(S.ApproxSteps,length(P0));
@@ -689,11 +689,11 @@ end
 function ApproximateAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
 							C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanData::Array{Float64,1},FstdData::Array{Float64,1})
   # Generate mean force function
-  MeanForce = X -> ApproxMeanForce(X,dQData,FmeanData,C);
+  MeanForce = X -> ApproxMeanForce(X,dQData,FmeanData,C)[1];
   F = MeanForce(Q);
 
   # Set up approximate fluctuation generator
-  FlucStep = (X,Y) -> ApproxFlucStep(X,Y,dQData,FstdData,C,S.Stochdt);
+  FlucStep = (X,Y) -> ApproxFlucStep(X,Y,dQData,FstdData,C,S.Stochdt)[1];
 
   # Mean Forces
   StressStats 	= zeros(S.NumLags,C.NBeads);
@@ -1104,7 +1104,7 @@ function FullAutocorrPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanDat
   (P,Q,F,H,PCG,QCG) = InitConds(C);
 
   # Generate mean force function
-  MeanForce = X -> ApproxMeanStresses(X,dQData,FmeanData,C);
+  MeanForce = X -> ApproxMeanStresses(X,dQData,FmeanData,C)[1];
 
   println("Equilibration ");
   # Run in to equilibrate
@@ -1178,8 +1178,6 @@ function FullAutocorrPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanDat
 
   println(" FullAutocorrPar Done!")
 
-
-
   return StressAutocorr, MomAutocorr
 end
 
@@ -1193,7 +1191,7 @@ function FullAutocorrLangDynPar(C::Chain,S::Simulator,dQData::Array{Float64,1},F
   (P,Q,F,H,PCG,QCG) = InitConds(C);
 
   # Generate mean force function
-  MeanForce = X -> ApproxMeanStresses(X,dQData,FmeanData,C);
+  MeanForce = X -> ApproxMeanStresses(X,dQData,FmeanData,C)[1];
 
   println("Equilibration ");
   # Run in to equilibrate
@@ -1375,51 +1373,74 @@ end
 
 	Generates approximate mean stresses based on precomputed data dQvals, Fvals and Chain parameters.
 """
-function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},
-				C::Chain,σ::Float64=0.1,N::Int=2)
+function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain,σ::Float64=0.1,N::Int=2)
+
   Sigma = zeros(size(Q));
 
-  # First compute inter-bead distances.
-  dQ = circshift(Q,-1)-Q;
+  ### First compute inter-bead distances.
+  dQ = circshift(Q, -1) - Q;
   dQ[C.NBeads] += C.Period;
   # println("");
   # println("       INTER-BEAD DISTANCES COMPUTED IN ApproxMeanStresses");
   # println("       dQ = ",dQ);
   # println("");
-  # Next, for each inter-bead distance, compute the stress
-  for i=1:length(dQ)
-    # Define (diagonal) weight matrix
-	# println(" ITERATION =",i," ; dQ = ",dQ[i]);
-	# println(" dQvals =",dQvals);
-	# println(" EXP = ",exp.(-(dQvals .- dQ[i]).^2 ./ σ^2));
-    W = spdiagm(0 => exp.(-(dQvals .- dQ[i]).^2 ./ σ^2));
-	# Form Jacobian matrix
-    J = ones(N+1,length(dQvals));
-    for j=1:N
-      J[j+1,:] = (dQ[i] .- dQvals).^j;
-    end
-	# println("       JACOBIAN MATRIX IN 	ApproxMeanStresses");
-	# println("       J = ",J);
-    K = J*W;
-    c = (K*J')\(K*Fvals);
 
-    Sigma[i] = c[1];
+  ### Next, for each inter-bead distance, compute the stress
+  for i=1:length(dQ)
+	  if dQ[i] < 0.9
+		  m = (- 9620.78 + 11462.61) / (1.09-0.95);
+		  q = -9620.78 - m * 1.09;
+		  Sigma[i] = m * dQ[i] + q;
+		  continue
+	  elseif dQ[i] > 3.78
+		  ### Define (diagonal) weight matrix
+		  W = spdiagm(0 => exp.(-(dQvals .- 3.78) .^2 ./ σ^2));
+
+		  ### Form Jacobian matrix
+		  J = ones(N+1, length(dQvals));
+		  for j = 1:N
+			  J[j+1, :] = (3.78 .- dQvals).^j;
+		  end
+
+		  K = J * W;
+		  c = (K * J') \ (K * Fvals);
+
+		  Sigma[i] = c[1];
+		  continue;
+	  else
+		  ### Define (diagonal) weight matrix
+		  W = spdiagm(0 => exp.(-(dQvals .- dQ[i]) .^2 ./ σ^2));
+	  end
+	  # println(" ITERATION =",i," ; dQ = ",dQ[i]);
+	  # println(" dQvals =",dQvals);
+	  # println(" EXP = ",exp.(-(dQvals .- dQ[i]).^2 ./ σ^2));
+
+	  ### Form Jacobian matrix
+      J = ones(N+1, length(dQvals));
+      for j = 1:N
+		  J[j+1, :] = (dQ[i] .- dQvals).^j;
+	  end
+	  # println("       JACOBIAN MATRIX IN 	ApproxMeanStresses");
+	  # println("       J = ",J);
+	  K = J * W;
+	  c = (K * J') \ (K * Fvals);
+
+	  Sigma[i] = c[1];
   end
 
   return Sigma, dQ
 end
 
 """
-    F = ApproxMeanForce(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain)
+    F, Sigma, dQ = ApproxMeanForce(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain)
 
-	Generates approximate mean forces based on precomputed data dQvals, Fvals and Chain parameters.
+	Generates approximate mean forces F based on precomputed data dQvals, Fvals and Chain parameters.
 """
-function ApproxMeanForce(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},
-				C::Chain,σ::Float64=0.1,N::Int=2)
+function ApproxMeanForce(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain,σ::Float64=0.1,N::Int=2)
 
   F = zeros(size(Q));
-  Sigma, dQ = ApproxMeanStresses(Q,dQvals,Fvals,C,σ,N);
-  F = Sigma-circshift(Sigma,1);
+  (Sigma, dQ) = ApproxMeanStresses(Q, dQvals, Fvals, C, σ, N);
+  F = Sigma - circshift(Sigma, 1);
 
   return F, Sigma, dQ
 end
@@ -1428,54 +1449,78 @@ end
 function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Float64,1},
 	StressSqvals::Array{Float64,1},C::Chain,dt::Float64,σ::Float64=0.1,N::Int=2)
 
-  # Set up storage for diffusivity
+  ### Set up storage for diffusivity
   Gvec = zeros(size(Q,1));
 
-  # Compute inter-bead distances
-  dQ = circshift(Q,-1)-Q;
+  ### Compute inter-bead distances
+  dQ = circshift(Q, -1) - Q;
   dQ[C.NBeads] += C.Period;
   # println("");
   # println("       INTER-BEAD DISTANCES COMPUTED IN ApproxFlucStep");
   # println("       dQ = ",dQ);
 
-  # For each inter-bead distance, compute diffusivity
+  ### For each inter-bead distance, compute diffusivity
   for i=1:length(dQ)
-    # Define (diagonal) weight matrix
-    W = spdiagm(0 => exp.(-(dQvals .- dQ[i]).^2/σ^2));
+	  if dQ[i] < 0.9
+		  m = (6464.26 - 8859.34) / (1.2-0.90);
+		  q = 8859.34 - m * 0.90;
+		  Gvec[i] = m * dQ[i] + q;
+		  continue
+	  elseif dQ[i] > 3.78
+		  ### Define (diagonal) weight matrix
+		  W = spdiagm(0 => exp.(-(dQvals .- 3.78) .^2 ./ σ^2));
 
-    # Form Jacobian matrix
-    J = ones(N+1,length(dQvals));
-    for j=1:N
+		  ### Form Jacobian matrix
+		  J = ones(N+1, length(dQvals));
+		  for j = 1:N
+			  J[j+1, :] = (3.78 .- dQvals).^j;
+		  end
+
+		  ### Least squares approximation of interpolant coefficients
+		  K = J * W;
+		  coeffs = (K * J') \ (K * StressSqvals);
+
+		  ### Extract value of interpolant
+		  Gvec[i] = coeffs[1];
+		  continue
+	  else
+		  ### Define (diagonal) weight matrix
+	      W = spdiagm(0 => exp.(-(dQvals .- dQ[i]).^2/σ^2));
+	  end
+
+    ### Form Jacobian matrix
+    J = ones(N+1, length(dQvals));
+    for j = 1:N
       J[j+1,:] = (dQ[i] .- dQvals).^j;
     end
 
-    # Least squares approximation of interpolant coefficients
-	K = J*W;
+    ### Least squares approximation of interpolant coefficients
+	K = J * W;
 	# println("       Product between Jacobian matrix and diagonal weight matrix");
 	# println("       K = ",K);
-    coeffs = (K*J')\(K*StressSqvals);
+    coeffs = (K * J') \ (K * StressSqvals);
 
-    # Extract value of interpolant
+    ### Extract value of interpolant
     Gvec[i] = coeffs[1];
   end
 
-  # Set diffusivity to zero if negative.
-  Gvec = max.(Gvec,0);
+  ### Set diffusivity to zero if negative.
+  Gvec = max.(Gvec, 0);
 
-  # Form memory matrix
+  ### Form memory matrix
   Gamma = diagm(0 => Gvec) - circshift(diagm(0 => Gvec), -1);
   Gamma = (Gamma - circshift(Gamma,1));
 
-  # Perform eigenvalue decomposition
+  ### Perform eigenvalue decomposition
   F = eigen(Gamma);
   F.values[1] = 0;
 
-  # Calculate exact Ornstein-Uhlenbeck step using decomposition
-  c1 = exp.(-F.values/(2*C.BeadMass)*dt);
-  c3 = sqrt(C.BeadMass)*sqrt.(1.0 .- c1.^2).*randn(C.NBeads);
+  ### Calculate exact Ornstein-Uhlenbeck step using decomposition
+  c1 = exp.(-F.values / (2 * C.BeadMass) * dt);
+  c3 = sqrt(C.BeadMass) * sqrt.(1.0 .- c1.^2) .* randn(C.NBeads);
 
-  # Generate new momenta and return
-  return F.vectors*(c1.*(F.vectors'*P)+c3), Gvec, dQ
+  ### Generate new momenta and return
+  return F.vectors * (c1 .* (F.vectors' * P) + c3), Gvec, dQ
 end
 
 end # module CGStats

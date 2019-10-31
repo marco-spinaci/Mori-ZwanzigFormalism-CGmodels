@@ -327,7 +327,7 @@ With this in mind, we can rewrite eq.~(\ref{Eq:MZequation}) as an integro-differ
 where $\mathbf{F}(t)$ is interpreted as a zero-mean random process whose statistical properties are specified by eq.~(\ref{Eq:RAndomForce}).
 
 The terms involving the friction matrix turn out to be the most difficult to compute in a real calculation because of the memory effect. We will briefly discuss the friction matrix and the memory effects, but a more thorough analysis of these terms is left for future works. 
-In the next chapter we will derive more explicit forms of the terms appearing in eq. (\ref{Eq:MZequation}) for a CG system, for specific choices of the CG variables which arises naturally from physical considerations, namely canonical mappings (i.e. transformations).
+In the next chapter we will derive more explicit forms of the terms appearing in eq. (\ref{Eq:ZwanGLE}) for a CG system, for specific choices of the CG variables which arises naturally from physical considerations, namely canonical mappings (i.e. transformations).
 %We will show how these formal expressions can be computed from MD simulations for a simple system represented by a one dimensional chain composed by atoms with different mass connected through a Lennard-Jones potential. The scale separation hypothesis will be discussed for this simple system.
 
 
@@ -335,16 +335,15 @@ In the next chapter we will derive more explicit forms of the terms appearing in
 \label{Sec:CanMapp&CG}
 
 \section{Definition and Notation}
-In the present work we have said that we consider two resolution levels for a given molecular system. The first one, at high resolution, is the fine-grained (FG) system composed by $\nfg$ particles, while the second one, at low resolution, is the CG system composed by $\ncg$ particles. The term \emph{particles} is used to indicate either an ``atom'', the fundamental particles that interacts in the FG system, or a larger group of ``atoms'', called \emph{bead}, that interacts in the CG system. 
+In the present work we have said that we consider two resolution levels for a given molecular system. The first one, at high resolution, is the fine-grained (FG) system composed by $\nfg$ particles, while the second one, at low resolution, is the CG system composed by $\ncg$ particles. The term \emph{particles} is used to indicate either an ``atom'', the fundamental particles that interacts in the FG system, or a larger group of ``atoms'' that interacts in the CG system, called \emph{bead}. 
 
 We will assume that the chemical structure of the molecular system is fixed, i.e. no reactions occur, the connectivity of the ``atoms'' is specified at the outset allowing us to fix a global index for the particles in the FG system, and that each ``atom'' is mapped to a fixed (unique) particle in the CG system.
 Following \cite{Noid2008}, we can summarise the notation and the definition that we will use, and that we have already used, in the following way:
 \begin{itemize}
 \item[-] lower case letters (e.g. $i,j$) refer to particles in the FG system, while capital letters (e.g. $I,J$) label the particles (``atoms'' or beads) in the CG system;
-\item[-] the mass of the $j$-th atom in FG system will be indicated with a lower case $m$ as $m_j$, while the mass of the $J$-th particle in CG system will be indicated as $M_J$;
+\item[-] the mass of the $j$-th atom in FG system will be indicated as $m_j$, while the mass of the $J$-th particle in CG system will be indicated as $M_J$;
 \item[-] the set of ``atoms'' included within the bead of index $J$ is define as
 $$ S_J \coloneqq \bp{j\in\bp{1,\ldots,\nfg}: \text{the $j$-th atom forms part of CG particle $J$}}\,.$$
-$$ s_I = \# \bp{i\in\bp{1,\ldots,\nfg}: \text{the $i$-th atom forms part of CG particle $I$}}\,. $$
 \item[-] the number of ``atoms'' corresponding to CG particle $J$ will be referred to as $ s_J = \# S_J $;
 \item[-] the index of the CG particle containing the $k$-th ``atom'' will be referred to as $J_k$; 
 \item[-] FG phase space variables are denoted with lower case letters: 
@@ -360,7 +359,7 @@ A sketch of a possible mapping between FG and CG systems is shown in fig.~\ref{F
 \begin{figure}[htb]
     \centering
     \includegraphics[width=0.6\textwidth]{mappingFG-CG.png}
-    \caption{Sketch of the mapping of a molecule from the FG system to the CG system where the index mapping functions between the different resolutions are highlighted. In the picture, $\NA{}=6$, $\ncg=8$, therefore, $S_1=\{4\},\,S_2=\{5\},\,\ldots,\,S_6=\{9\},\,S_7=\{1,\,2,\,3\},\,S_8=\{10,\,11,\,12\}$. \cite{DiPasquale2019}}
+    \caption{Sketch of the mapping of a molecule from the FG system to the CG system where the index mapping functions between the different resolutions are highlighted. In the picture, $\ncg=8$, $\NA{}=6$, therefore, $S_1=\{4\},\,S_2=\{5\},\,\ldots,\,S_6=\{9\},\,S_7=\{1,\,2,\,3\},\,S_8=\{10,\,11,\,12\}$. \cite{DiPasquale2019}}
     \label{Fig:sketch}
 \end{figure}
 
@@ -493,7 +492,7 @@ The methods that are considered are splitting integrators that decompose the sto
  \end{subfigure}\\
  \begin{subfigure}[b]{0.5\linewidth}
   \centering
-  \includegraphics[width=\textwidth]{sABCD_100-2000_MF.pdf}
+  \includegraphics[width=\textwidth]{sABCD_2000_MF.pdf}
  \end{subfigure}%
  \begin{subfigure}[b]{0.5\linewidth}
   \centering
@@ -501,7 +500,7 @@ The methods that are considered are splitting integrators that decompose the sto
  \end{subfigure}\\
   \begin{subfigure}[b]{0.5\linewidth}
   \centering
-  \includegraphics[width=\textwidth]{sABCD_100-2000_FF.pdf}
+  \includegraphics[width=\textwidth]{sABCD_2000_FF.pdf}
  \end{subfigure}%
  \begin{subfigure}[b]{0.5\linewidth}
   \centering
@@ -509,13 +508,13 @@ The methods that are considered are splitting integrators that decompose the sto
  \end{subfigure}\\
  \begin{subfigure}[b]{0.5\linewidth}
   \centering
-  \includegraphics[width=\textwidth]{sABCD_100-2000_EP.pdf}
+  \includegraphics[width=\textwidth]{sABCD_2000_EP.pdf}
  \end{subfigure}%
  \begin{subfigure}[b]{0.5\linewidth}
   \centering
   \includegraphics[width=0.90\textwidth]{EPme.png}
  \end{subfigure}\\
- \caption{System A,B,C,D. $Constrained$ $beads$ 2, $\beta=1$, $\gamma=1$, $dt=10^{-3}$, $FullSteps=10^6$, $OrthoSamples=10^6$, $MacroSamples=100/2000$.}
+ \caption{Canonical Ensemble (N,V,T): $\text{Constrained beads}=2$, $\beta=1$, $\gamma=1$, $dt=10^{-3}$, $FullSteps=10^6$, $OrthoSamples=10^6$, $MacroSamples=2000$. Microcanonical Ensemble (N,V,E): see work of Di Pasquale \emph{et al.} \cite{DiPasquale2019}.}
 \end{figure}
 
 \newpage
@@ -526,7 +525,7 @@ The methods that are considered are splitting integrators that decompose the sto
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=0.75\textwidth]{AutocorrFullandOrtho_11.pdf}
- \caption{Time autocorrelation function (ACF) of forces and momenta. System C, $NBeads 10$, $\beta=1$, $\gamma=1$, $dt=10^{-3}$, $FullSteps=10^6$, $OrthoSamples=10^6$, $NumLags=10^4$, $MacroSamples=100$.} 
+ \caption{Time autocorrelation function (ACF) of forces and momenta. System C, $NBeads=10$, $\beta=1$, $\gamma=1$, $dt=10^{-3}$, $FullSteps=10^6$, $OrthoSamples=10^6$, $NumLags=10^4$, $MacroSamples=100$.} 
 \end{figure}
 
 \newpage

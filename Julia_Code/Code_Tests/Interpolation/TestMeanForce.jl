@@ -112,7 +112,7 @@ Rmax = 10;
 dQ = Rmin .+ rand(Float64, N) .* (Rmax - Rmin);
 # dQ = [5,6,6.11,6.13,6.14,6.15,6.17,6.18,6.19,6.3];
 
-# Mean Force
+### Mean Force
 Sigma = zeros(size(dQ));
 for i in 1:length(dQ)
     if dQ[i] < 0.9
@@ -142,7 +142,7 @@ for i in 1:length(dQ)
     Sigma[i] = c[1];
 end
 
-# Fluctuating Force
+### Fluctuating Force
 Gvec = zeros(size(dQ,1));
 for i=1:length(dQ)
     if dQ[i] < 0.9
@@ -171,6 +171,8 @@ for i=1:length(dQ)
     coeffs = (K * J') \ (K * Fstd);
     Gvec[i] = coeffs[1];
 end
+
+###
 
 l = length(dQ[:, 1]);
 RB = reshape(dQ[:, 1], l);
