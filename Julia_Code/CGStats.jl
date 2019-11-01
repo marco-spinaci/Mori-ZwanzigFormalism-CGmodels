@@ -1394,18 +1394,18 @@ function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::
 		  continue
 	  elseif dQ[i] > 3.78
 		  ### Define (diagonal) weight matrix
-		  W = spdiagm(0 => exp.(-(dQvals .- 3.78) .^2 ./ σ^2));
+		  # W = spdiagm(0 => exp.(-(dQvals .- 3.78) .^2 ./ σ^2));
 
 		  ### Form Jacobian matrix
-		  J = ones(N+1, length(dQvals));
-		  for j = 1:N
-			  J[j+1, :] = (3.78 .- dQvals).^j;
-		  end
+		  # J = ones(N+1, length(dQvals));
+		  # for j = 1:N
+			  # J[j+1, :] = (3.78 .- dQvals).^j;
+		  # end
 
-		  K = J * W;
-		  c = (K * J') \ (K * Fvals);
+		  # K = J * W;
+		  # c = (K * J') \ (K * Fvals);
 
-		  Sigma[i] = c[1];
+		  Sigma[i] = 0; #c[1];
 		  continue;
 	  else
 		  ### Define (diagonal) weight matrix
@@ -1468,20 +1468,20 @@ function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Fl
 		  continue
 	  elseif dQ[i] > 3.78
 		  ### Define (diagonal) weight matrix
-		  W = spdiagm(0 => exp.(-(dQvals .- 3.78) .^2 ./ σ^2));
+		  # W = spdiagm(0 => exp.(-(dQvals .- 3.78) .^2 ./ σ^2));
 
 		  ### Form Jacobian matrix
-		  J = ones(N+1, length(dQvals));
-		  for j = 1:N
-			  J[j+1, :] = (3.78 .- dQvals).^j;
-		  end
+		  # J = ones(N+1, length(dQvals));
+		  # for j = 1:N
+			#   J[j+1, :] = (3.78 .- dQvals).^j;
+		  # end
 
 		  ### Least squares approximation of interpolant coefficients
-		  K = J * W;
-		  coeffs = (K * J') \ (K * StressSqvals);
+		  # K = J * W;
+		  # coeffs = (K * J') \ (K * StressSqvals);
 
 		  ### Extract value of interpolant
-		  Gvec[i] = coeffs[1];
+		  Gvec[i] = 0; #coeffs[1];
 		  continue
 	  else
 		  ### Define (diagonal) weight matrix
