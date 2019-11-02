@@ -338,7 +338,7 @@ In the next chapter we will derive more explicit forms of the terms appearing in
 In the present work we have said that we consider two resolution levels for a given molecular system. The first one, at high resolution, is the fine-grained (FG) system composed by $\nfg$ particles, while the second one, at low resolution, is the CG system composed by $\ncg$ particles. The term \emph{particles} is used to indicate either an ``atom'', the fundamental particles that interacts in the FG system, or a larger group of ``atoms'' that interacts in the CG system, called \emph{bead}. 
 
 We will assume that the chemical structure of the molecular system is fixed, i.e. no reactions occur, the connectivity of the ``atoms'' is specified at the outset allowing us to fix a global index for the particles in the FG system, and that each ``atom'' is mapped to a fixed (unique) particle in the CG system.
-Following \cite{Noid2008}, we can summarise the notation and the definition that we will use, and that we have already used, in the following way:
+Following the work of Di Pasquale \emph{et al.} \cite{DiPasquale2019} and Noid \emph{et al.} \cite{Noid2008}, we can summarise the notation and the definition that we will use and that we have already used, in the following way:
 \begin{itemize}
 \item[-] lower case letters (e.g. $i,j$) refer to particles in the FG system, while capital letters (e.g. $I,J$) label the particles (``atoms'' or beads) in the CG system;
 \item[-] the mass of the $j$-th atom in FG system will be indicated as $m_j$, while the mass of the $J$-th particle in CG system will be indicated as $M_J$;
@@ -355,11 +355,11 @@ A general CG (hybrid) system may include particles corresponding to single ``ato
 $$N^A \coloneqq \#\bp{J\in\bp{1,\ldots,\ncg}: s_J=1}\,,$$  
 while the number of beads is denoted as $N^B \coloneqq \ncg-N^A$.
 For notational convenience, we will assume that the indices are ordered in such way that indices $J\in\bp{1,\ldots,N^A}$ correspond to atoms, and $J\in\bp{N^A+1,\ldots,\ncg}$ corresponds to beads. 
-A sketch of a possible mapping between FG and CG systems is shown in fig.~\ref{Fig:sketch}.
+A sketch of a possible mapping between FG and general CG systems is shown in fig.~\ref{Fig:sketch}.
 \begin{figure}[htb]
     \centering
-    \includegraphics[width=0.6\textwidth]{mappingFG-CG.png}
-    \caption{Sketch of the mapping of a molecule from the FG system to the CG system where the index mapping functions between the different resolutions are highlighted. In the picture, $\ncg=8$, $\NA{}=6$, therefore, $S_1=\{4\},\,S_2=\{5\},\,\ldots,\,S_6=\{9\},\,S_7=\{1,\,2,\,3\},\,S_8=\{10,\,11,\,12\}$. \cite{DiPasquale2019}}
+    \includegraphics[width=\textwidth,height=8cm]{DisegnoCGmapping.pdf}
+    \caption{Sketch of the mapping of a molecule from the FG system to the general CG (hybrid) system where the labels of the ``particles'' for the two different resolutions are highlighted. In the picture, $\ncg=7$ and $\NA{}=5$ therefore, $S_1=\{4\},\,S_2=\{5\},\,\ldots,\,S_5=\{11\},\,S_6=\{1,\,2,\,3\},\,S_7=\{7,\,8,\,9\}$.}
     \label{Fig:sketch}
 \end{figure}
 
@@ -367,8 +367,8 @@ A sketch of a possible mapping between FG and CG systems is shown in fig.~\ref{F
 The mapping operators are a collection of functions defined in the FG system that specify the physical meaning of CG variables, i.e. they fix the CG variables will be observables of the FG system. Therefore they are functions
 $$\Psi,\Phi\colon  \real^{6\nfg}  \to  \real^{6\ncg}$$ such that 
 \begin{align*}
-\Aphase{}  &\mapsto \Psi(\Aphase{}) \eqqcolon \Bphase{\bfR}(\Aphase{})\,,\\
-\Aphase{}  &\mapsto \Phi(\Aphase{}) \eqqcolon \Bphase{\bfP}(\Aphase{})\,.
+\Aphase{}  &\mapsto \Psi(\Aphase{}) \eqqcolon \Bphase{\bfR}(\Aphase{})=\cip{\bfR_1,\ldots,\bfR_{\ncg}}\,,\\
+\Aphase{}  &\mapsto \Phi(\Aphase{}) \eqqcolon \Bphase{\bfP}(\Aphase{})=\cip{\bfP_1,\ldots,\bfP_{\ncg}}\,.
 \end{align*}
 
 
@@ -472,6 +472,9 @@ The methods that are considered are splitting integrators that decompose the sto
 
 \part{Numerical Experiments}
 \label{Sec:NumExp}
+In the chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equations of motion for generic CG (hybrid) system. Here, we numerically investigate the effects of some of choices and assumptions made when the FG system is coarse-grained. We will extend the numerical implementation and the analysis made by Di Pasquale \emph{et al.} \cite{DiPasquale2019} to the canonical ensemble. 
+
+They developed an open-source parallel code, written in Julia v0.6.2, 
 
 \begin{figure}[!htb]
  \centering
