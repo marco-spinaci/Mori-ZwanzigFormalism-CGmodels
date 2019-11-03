@@ -25,10 +25,13 @@ set ylabel "{{/Roman ACF of the FORCES}}"
 # B = 0.01
 # w = 0.1
 # fit f(x) "./Outcomes/OrthocorrF.csv" via t,A,B,w
-p "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/FullcorrF_test.csv" u 1:2 w l lw 4 t "Full Dynamics", \
-  "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/FullcorrF_testOC.csv" u 1:2 w l lw 4 t "Orthogonal Component - Full Dynamics", \
-  "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/OrthocorrF_test.csv" u 1:2 w d lw 8 t "Orthogonal Dynamics", \
-  "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/ApproximatecorrF_test.csv" u 1:2 w d lw 8 t "Approximate Dynamics"
+p "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/OrthocorrF_test.csv" u 1:2 w d lw 8 t "Orthogonal Dynamics", \
+  "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/OrthocorrF_1.csv" u 1:2 w l lw 2 t "Orthogonal Dynamics"
+
+# p "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/FullcorrF_test.csv" u 1:2 w l lw 4 t "Full Dynamics", \
+  # "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/FullcorrF_testOC.csv" u 1:2 w l lw 4 t "Orthogonal Component - Full Dynamics", \
+  # "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/OrthocorrF_test.csv" u 1:2 w d lw 8 t "Orthogonal Dynamics", \
+  # "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/ApproximatecorrF_test.csv" u 1:2 w d lw 8 t "Approximate Dynamics"
   # , f(x) t "FIT Orthogonal Dynamics"
 
 set ylabel "{{/Roman ACF of the MOMENTA}}"
@@ -37,10 +40,13 @@ set ylabel "{{/Roman ACF of the MOMENTA}}"
 # B = 0.1
 # w = -0.1
 # fit f(x) "./Outcomes/FullcorrP.csv" via t,A,B,w
-p "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/FullcorrP_test.csv" u 1:2 w l lw 4 t "Full Dynamics", \
-  "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/FullcorrP_testOC.csv" u 1:2 w l lw 4 t "Full Dynamics test (OC)", \
-  "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/OrthocorrP_test.csv" u 1:2 w d lw 8 t "Orthogonal Dynamics", \
-  "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/ApproximatecorrP_test.csv" u 1:2 w d lw 8 t "Approximate Dynamics"
+p "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/OrthocorrP_test.csv" u 1:2 w d lw 8 t "Orthogonal Dynamics", \
+  "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/OrthocorrP_1.csv" u 1:2 w l lw 2 t "Orthogonal Dynamics"
+
+# p "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/FullcorrP_test.csv" u 1:2 w l lw 4 t "Full Dynamics", \
+  # "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/FullcorrP_testOC.csv" u 1:2 w l lw 4 t "Full Dynamics test (OC)", \
+  # "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/OrthocorrP_test.csv" u 1:2 w d lw 8 t "Orthogonal Dynamics", \
+  # "./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/ApproximatecorrP_test.csv" u 1:2 w d lw 8 t "Approximate Dynamics"
 # , f(x) t "FIT"
 
 unset multiplot
