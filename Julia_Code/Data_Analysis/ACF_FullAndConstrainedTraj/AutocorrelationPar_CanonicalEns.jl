@@ -66,11 +66,11 @@ Fstd = CG[:,5];
 ## Compute autocorrelation stats for CONSTRAINED DYNAMICS
 (StressAutocorr,MomAutocorr) = ConstrainedAutocorrLangDynPar(C,S);
 
-open("./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/OrthocorrP_test.csv","w+") do x
+open("./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/OrthocorrP.csv","w+") do x
     writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
 end
 
-open("./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/OrthocorrF_test.csv","w+") do x
+open("./Data_Analysis/ACF_FullAndConstrainedTraj/Outcomes/OrthocorrF.csv","w+") do x
     writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
 end
 
