@@ -3,7 +3,7 @@ set size 1.1,1
 set grid
 
 set xlabel "{{/RomanOblique p}}"
-set xrange [-20:20]
+set xrange [-30:30]
 # set xtics 5
 
 set ylabel "{{/Roman pdf (p)}}"
