@@ -14,12 +14,12 @@ set format y "10^{%L}"
 set key font ",12"
 
 
-set output "| epstopdf -f -o=Data_Analysis/PDF/Plots/HistPDF_test.pdf"
+set output "| epstopdf -f -o=Data_Analysis/PDF/Plots/HistPDF.pdf"
 
-set multiplot title "TEST" font ",28" layout 1,2 margins 0.15, 1, 0.09, 0.88 spacing 0.1
+set multiplot layout 1,2 margins 0.15, 1, 0.09, 0.88 spacing 0.1 #title "TEST" font ",28"
 
-p "Data_Analysis/PDF/Outcomes/HistP_test.csv" u 1:2 w d lw 8 t "full dynamics, #step 10^5", \
-  "Code_Tests/Maxwell-Boltzmann_distribution/HistMaxBolt_dt1e-4_B1.csv" u 1:2 w l lw 2 t "full dynamics, #step 10^7"
+p "Data_Analysis/PDF/Outcomes/HistP.csv" u 1:2 w d lw 8 t "full dynamics", \
+  # "Code_Tests/Maxwell-Boltzmann_distribution/HistMaxBolt_dt1e-4_B1.csv" u 1:2 w l lw 2 t "full dynamics, #step 10^7"
 
 unset multiplot
 
