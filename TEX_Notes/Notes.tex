@@ -475,7 +475,7 @@ The methods that are considered are splitting integrators that decompose the sto
 
 \part{Numerical Experiments}
 \label{Sec:NumExp}
-In the chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equations of motion for generic CG (hybrid) system. Here, we numerically investigate the effects of some of choices and assumptions made when the FG system is coarse-grained. To do this, we  we have extended the numerical implementation and the analysis made by Di Pasquale \emph{et al.} \cite{DiPasquale2019} to the canonical ensemble. 
+In the chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equations of motion for generic CG (hybrid) system. Here, we numerically investigate the effects of some of choices and assumptions made when the FG system is coarse-grained. To do this, we have extended the numerical implementation and the analysis made by Di Pasquale \emph{et al.} \cite{DiPasquale2019} to the canonical ensemble. 
 
 Di Pasquale \emph{et al.} developed an open-source parallel code, written in Julia v0.6.2 \cite{thomas_hudson_2018_1226590}, to solve the full, constrained and coarse-grained dynamics in the microcanonical ensemble for a simple one-dimensional system. To extend the code to the canonical ensemble we introduced the integrators described in the chapter \ref{Sec:NumMet}, after updating the code to the latest version of Julia, v1.2.0.
 
@@ -484,11 +484,47 @@ The system studied is a linear periodic chain of $\nfg$ atoms of two different s
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=0.95\textwidth]{chain}
- \caption{Sketch of the one-dimensional chain composed by $\nfg$ atoms of two different species. The two species are indicated as red and blue particles, and they differ for mass and stiffness. Small red spheres represent atoms of mass $m$ and big blue spheres represent atoms of mass $M$. The beads are indicated as a sphere that surrounding three atoms.}
+ \caption{Sketch of the one-dimensional chain composed by $\nfg$ atoms of two different species. The two species are indicated as red and blue particles, and they differ for mass and stiffness. Small red spheres represent atoms of mass $m$ and big blue spheres represent atoms of mass $M$. The beads are indicated as a sphere that surrounding three atoms and their number is given by $\ncg$.}
  \label{Fig:sketchRepPatt}
 \end{figure}
 
+This system is the same studied by Di Pasquale \emph{et al.}. They have studied such a simple system to better understand which of the assumptions made are valid, and which might fail in a more complex system. We made this choice to compare the results obtained with those of their work and to compare the results in the two ensemble.
+
+
 \section{Case studies}
+The test cases studied are composed of atoms with two different masses: $m=1$ and $M=10$.
+The repeating pattern has been chosen to consist of three atoms in two different configuration: two atoms of mass $m$ and a single atom of mass $M$ ($m-M-m$) or vice versa ($M-m-M$). The number of beads is set to $\ncg=10$, of course by fixing the number of beads we fix the number of atoms also, $\nfg=3\,\ncg=30$.
+The stiffness of the interactions of the two different species of atoms is described by means of inter-atomic potential, which is a simple 12-6 Lennard-Jones potential.
+
+Following the work of Di Pasquale \emph{et al.}, we assume periodic boundary condition and that there are nearest neighbour interactions. 
+
+\noindent
+So the inter-atomic potential is given by 
+\begin{equation}
+ \begin{split}
+  	\pot_{i,i+1}(r) &= 4\,\epsilon_{i,i+1} \sqp{\cip{\frac{\sigma_{i,i+1}}{r}}^{12} - \cip{\frac{\sigma_{i,i+1}}{r}}^6} \\
+	&= \epsilon_{i,i+1} \sqp{\cip{\frac{r^*_{i,i+1}}{r}}^{12} - 2\cip{\frac{r^*_{i,i+1}}{r}}^6}
+ \end{split}
+\end{equation} 
+Here, we choose $\sigma_{i,i+1}=2^{-1/6}$ so that the minimum value of the potential is obtained for $r^*_{i,i+1}=1$, while the well-depth will be varied to analyse the effect of the stiffness of the interactions: $\epsilon_{i,i+1}\in\bp{0.1,1,100}$. In the case of interaction between two different species of atoms, a combination rule called the Lorentz-Berthelot mixing rule is imposed to determine the new values of the parameters $\epsilon_{i,i+1}$. So we get
+\begin{equation}
+  \epsilon_{i,i+1} = \begin{cases}
+    \sqrt{\epsilon^a\epsilon^b} & i = 1,\, 2,\, 4,\, 5,\, \dots,\, \nfg-2,\, \nfg-1; \\
+    \epsilon^a\;\;(\mbox{or}\,\,\epsilon^b) & i = 3,\, 6,\, \dots,\, \nfg;
+  \end{cases}
+\end{equation}
+where $\epsilon^a$ and $\epsilon^b$ are two different values for the parameter $\epsilon$ taken from the set $\bp{0.1,1,100}$.
+
+\noindent
+While the Hamiltonian for a generic system $X$ is given by
+\begin{equation}
+ \begin{split}
+  	\Ham^X(\bfr,\bfp) &= \frac12 \, \bfp^T\,(M^X)^{-1}\,\bfp\,+\sum_{i=1}^{\nfg-1}\pot^X_{i,i+1}\cip{\bfr_{i+1}-\bfr_i}\,+ \\
+	&+ \pot^X_{\nfg,1}\cip{\bfr_1-\bfr_\nfg+r^*\nfg},
+ \end{split}
+ \label{eq:1DHamiltonian}
+\end{equation}
+where $\bfr$ and $\bfp$ are respectively the positions and momenta of the atoms in the system $X$ considered, and where the mass matrix $M^X$ and pair potentials $\pot^X_{i,i+1}$ have been chosen with the relevant parameters. The final term takes into account the periodic boundary conditions, i.e. we assume that the two ends of the linear chain behave as if they were connected to each other.
 
 
 
