@@ -18,7 +18,7 @@ using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra
 C = Chain(); # system C ≣ [Patt=[0,1,0],NBeads=10,ConstrainedBeads=2,SEps=1,LEps=100,SM=10,LM=1,Dist=1,Beta=1,Gamma=1]
 
 # S = Simulator(); # [dt=1e-4,Stochdt=1e-4,FullSteps=Int(1e5),OrthoSteps=1,ApproxSteps=Int(1e5),OrthoSamples=Int(1e5),MacroSamples=50,LagStep=400,NumLags=30]
-S = Simulator(dt=1e-3,Stochdt=1e-4,FullSteps=Int(1e7),ApproxSteps=Int(1e8));
+S = Simulator(dt=1e-3,Stochdt=1e-4,FullSteps=Int(1e4),ApproxSteps=Int(1e8));
 
 #################################################################################
 # Generate initial data
@@ -31,7 +31,7 @@ Q0CG = C.Psi*Q0;
 # Generate effective potential data
 
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-CG = readdlm("ABCD_Systems/Outcomes/sC_1000.csv",Float64);
+CG = readdlm("ABCD_Systems/Outcomes/sC_2000.csv",Float64);
 RR = CG[:,1];
 Fmean = CG[:,4];
 Fstd = CG[:,5];
@@ -41,7 +41,7 @@ Fstd = CG[:,5];
 
 PFull,QFull,FFull,Kmean,Hmean = LangevinFullTraj(P0,Q0,C,S);
 # PApprox,QApprox,FApprox = ApproximateTraj(P0CG,Q0CG,RR,Fmean,Fstd,C,S);
-PApprox2,QApprox2,FApprox2 = ApproximateTraj(P0CG,Q0CG,RR,Fmean,Fstd*0,C,S);
+# PApprox2,QApprox2,FApprox2 = ApproximateTraj(P0CG,Q0CG,RR,Fmean,Fstd*0,C,S);
 
 #################################################################################
 # Write data to file
@@ -66,15 +66,15 @@ end
 #     writedlm(x,FApprox);
 # end
 
-open("Store_Trajectory/Outcomes/PApprox2.csv","w+") do x
-    writedlm(x,PApprox2);
-end
-open("Store_Trajectory/Outcomes/QApprox2.csv","w+") do x
-    writedlm(x,QApprox2);
-end
-open("Store_Trajectory/Outcomes/FApprox2.csv","w+") do x
-    writedlm(x,FApprox2);
-end
+# open("Store_Trajectory/Outcomes/PApprox2.csv","w+") do x
+#     writedlm(x,PApprox2);
+# end
+# open("Store_Trajectory/Outcomes/QApprox2.csv","w+") do x
+#     writedlm(x,QApprox2);
+# end
+# open("Store_Trajectory/Outcomes/FApprox2.csv","w+") do x
+#     writedlm(x,FApprox2);
+# end
 
 #################################################################################
 end # @time
