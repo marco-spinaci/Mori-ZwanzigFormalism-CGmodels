@@ -4,13 +4,13 @@ include("../../CGStats.jl")
 using Main.LJChain,Main.CGStats,StatsBase,DelimitedFiles
 
 C = Chain();
-S = Simulator(FullSteps=Int(1e4));
+S = Simulator();
 
 ### FULL DYNAMICS
 
 ## pdf(P)
 
-P = readdlm("~/Desktop/PFull.csv", Float64);
+P = readdlm("/home/pmams3/Desktop/PFull.csv", Float64);
 
 h1 = fit(Histogram, P[:, 1]);
 
@@ -26,9 +26,10 @@ end
 
 ## pdf(Q)
 
-Q = readdlm("~/Desktop/QFull.csv", Float64);
-dQ = zeros(S.FullSteps, C.NBeads);
-for i in 1:S.FullSteps
+Q = readdlm("/home/pmams3/Desktop/QFull.csv", Float64);
+l = size(Q,1);
+dQ = zeros(l, C.NBeads);
+for i in 1:l
     dQ[i, :] = circshift(Q[i, :], -1) - Q[i, :];
     dQ[i, C.NBeads] += C.Period;
 end
