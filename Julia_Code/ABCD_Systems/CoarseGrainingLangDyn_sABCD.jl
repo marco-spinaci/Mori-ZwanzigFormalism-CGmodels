@@ -27,7 +27,7 @@ S = Simulator(dt=1e-3,FullSteps=Int(1e6),OrthoSamples=Int(1e6),MacroSamples=4000
 
 ######################################################################################################
 ## system A
-## ( [0,1,0], SM (mass of 0 particles), LM (mass of 1 particles), SEps=1.0, LEps=100.0, γ=1, β=1 )
+## ( [0,1,0], SM (mass of particles 0), LM (mass of particles 1), SEps=1.0, LEps=100.0, γ=1, β=1 )
 
 # C = Chain(SM=1,LM=10);
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
@@ -51,7 +51,7 @@ S = Simulator(dt=1e-3,FullSteps=Int(1e6),OrthoSamples=Int(1e6),MacroSamples=4000
 
 #################################################################################
 ## system B
-## ( [0,1,0], SM (mass of 0 particles), LM (mass of 1 particles), γ=1, β=1 )
+## ( [0,1,0], SM (mass of particles 0), LM (mass of particles 1), γ=1, β=1 )
 
 # C = Chain(SM=1,LM=10,SEps=10,LEps=.1);
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
@@ -75,7 +75,7 @@ S = Simulator(dt=1e-3,FullSteps=Int(1e6),OrthoSamples=Int(1e6),MacroSamples=4000
 
 ######################################################################################################
 ## system C
-## ( [0,1,0], SM (mass of 0 particles)=10, LM (mass of 1 particles)=1, SEps=1.0, LEps=100.0, γ=1, β=1 )
+## ( [0,1,0], SM (mass of particles 0) = 10, LM (mass of particles 1) = 1, SEps=1.0, LEps=100.0, γ=1, β=1 )
 
 # C = Chain();
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
@@ -99,7 +99,7 @@ S = Simulator(dt=1e-3,FullSteps=Int(1e6),OrthoSamples=Int(1e6),MacroSamples=4000
 
 #################################################################################
 ## system D
-## ( [0,1,0], SM (mass of 0 particles)=10, LM (mass of 1 particles)=1, γ=1, β=1 )
+## ( [0,1,0], SM (mass of particles 0) = 10, LM (mass of particles 1) = 1, γ=1, β=1 )
 
 C = Chain(SEps=10,LEps=.1);
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);

@@ -29,6 +29,8 @@
 \usepackage[labelfont=bf,list=true]{subcaption}
 \graphicspath{ {Figure/} }
 
+\usepackage{booktabs}
+
 \usepackage[titletoc,page]{appendix}
 
 \begin{document}
@@ -322,7 +324,7 @@ With this in mind, we can rewrite eq.~(\ref{Eq:MZequation}) as an integro-differ
 \begin{multline}\label{Eq:ZwanGLE}
  \totd{\Bphase{t}}{t} = \Lambda\cip{\Bphase{t}} 
     - \int_0^t \nabla_{\bfa}\,\entropy\cip{\bfa(t-s)}\fricmat\cip{\bfa(t-s),s} \diff s +{}\\
-    + \frac{1}{\beta}\int_0^t \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s} \diff s + \mathbf{F}(t)\,, 
+    + \frac{1}{\beta}\int_0^t \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s} \diff s + \fprojbf_{\Bphase{}}(t)\,, 
 \end{multline}
 where $\mathbf{F}(t)$ is interpreted as a zero-mean random process whose statistical properties are specified by eq.~(\ref{Eq:RAndomForce}).
 
@@ -372,7 +374,64 @@ $$\Psi,\Phi\colon  \real^{6\nfg}  \to  \real^{6\ncg}$$ such that
 \Aphase{}  &\mapsto \Phi(\Aphase{}) \eqqcolon \Bphase{\bfP}(\Aphase{})=\cip{\bfP_1,\ldots,\bfP_{\ncg}}\,.
 \end{align*}
 
+\section{Separability and effective interactions}
+\paragraph{the Potential Energy of the CG particles:}
+\begin{align}\label{Eq:EntrInt}
+  \entropy_{\bfR}(\Bphase{\bfR})
+  &=-\frac{1}{\beta} \log{} \bigg(\int\diff\Aphase{\bfr}' \frac{1}{\mathcal{\mathcal{Z}_{\bfR}}}
+    \exp{-\beta \big[\pot^{AA}(\bfr')+\pot^{AB}(\bfr)+\pot^{BB}(\bfr')\big]}\prod_{J=1}^{\ncg}
+    \dirac{\Psi_{J}(\bfr')-\bfR_{J}} \bigg) \nonumber 	\\
+  & = \pot^{AA}\Big(\{\bfR_I\}_{I=1}^{\NA{}}\Big)  \nonumber\\
+  &\qquad - \frac{1}{\beta} \log{}  \cip{\int{\diff\Aphase{\bfr}' \frac{1}{\mathcal{\mathcal{Z}_{\bfR}}}
+    \exp{\big[{{-\beta \big(\pot^{AB}(\{\bfR_I\}_{I=1}^{\NA{}},\bfr') +\pot^{BB}(\bfr') \big)}\big]}}}
+    \prod_{J=\NA{}+1}^{\NB{}}\dirac{\Psi_{J}(\bfr')-\bfR_{J}}}  \nonumber 	\\
+  & = \pot^{AA}\Big(\{\bfR_I\}_{I=1}^{\NA{}}\Big) + \Veff(\Bphase{\bfR}).
+\end{align}
 
+
+
+\section{Final system of equations}
+
+\begin{align}
+ \nonumber
+ \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}} \\
+ \nonumber 
+ \pard{\bfP_{K}}{t} &= -\omega_{\NA{} K} \pard{\pot^{AA}}{\bfR_{K}} - \pard{\Veff}{\bfR_{K}} 
+ - \sum_{J=1}^{\ncg}\,\int_{0}^{t}\,\fricmat_{KJ}(t-s,s)\,\frac{1}{M_J} \bfP_J(t-s) \,\diff s \\
+ &+ \beta^{-1} \sum_{J=1}^{\ncg} \,\int_{0}^{t} \pard{}{\bfR_{J}}\fricmat_{KJ}(s)\diff s + \fprojbf_{K}(t)
+ \label{Eq:DevB} 
+\end{align}
+%
+where $\omega_{N^AK}$ is equal to zero whenever the difference between the first and second subscript is negative and one otherwise.
+
+
+\section{Orthogonal Dynamics}
+
+\begin{align}
+	\totd{\bfr_k}{t} &= \frac{\bfp_k}{m_{k}} \\
+	\totd{\bfp_k}{t} &= - \pard{U(\Aphase{\bfr})}{\bfr_k} + \frac{m_k}{M_I}\sum_{i\in S_I}\pard{U(\Aphase{\bfr})}{\bfr_i}
+	\label{Eq:orth} 
+\end{align}
+
+\section{Markovian approximation of the Memory Kernel}
+\label{Sec:MarkovApprox}
+
+\begin{align}
+ \label{Eq:MarFric1}
+ \bffricmat(\Bphase{},t) \approx \tilde{\bffricmat}(\Bphase{})\delta(t).
+\end{align}
+
+Assuming the approximation \ref{Eq:MarFric1} is valid, the equations of motion for the atomistic/CG system eq.~(\ref{Eq:DevB}) become:
+
+\begin{align}
+ \label{Eq:MarkovApprox}
+ \nonumber
+ \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}} \\
+ \nonumber
+ \pard{\bfP_{K}}{t} &= -\omega_{\NA{}K}\pard{\pot^{AA}}{\bfr_{K}} -\pard{\Veff}{\bfR_{K}} 
+ - \sum_{J=1}^{\ncg}{{\tilde{\fricmat}_{IJ}}\frac{\bfP_{J}}{M_{J}} }+{}\\
+ &+ \beta^{-1} \sum_{J=1}^{\ncg}  {{ \pard{}{\bfR_{J}}\tilde{\fricmat}_{KJ}(s)}} + \fprojbf_{K}(t) 
+\end{align}
 
 
 
@@ -475,7 +534,9 @@ The methods that are considered are splitting integrators that decompose the sto
 
 \part{Numerical Experiments}
 \label{Sec:NumExp}
-In the chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equations of motion for generic CG (hybrid) system. Here, we numerically investigate the effects of some of choices and assumptions made when the FG system is coarse-grained. To do this, we have extended the numerical implementation and the analysis made by Di Pasquale \emph{et al.} \cite{DiPasquale2019} to the canonical ensemble. 
+
+\chapter{The studied system}
+In the chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equations of motion for generic CG (hybrid) system. Here, we numerically investigate the effects of some of choices and assumptions made when the FG system is coarse-grained in the canonical ensemble. To do this, we have extended the numerical implementation and the analysis made by Di Pasquale \emph{et al.} \cite{DiPasquale2019}. 
 
 Di Pasquale \emph{et al.} developed an open-source parallel code, written in Julia v0.6.2 \cite{thomas_hudson_2018_1226590}, to solve the full, constrained and coarse-grained dynamics in the microcanonical ensemble for a simple one-dimensional system. To extend the code to the canonical ensemble we introduced the integrators described in the chapter \ref{Sec:NumMet}, after updating the code to the latest version of Julia, v1.2.0.
 
@@ -488,21 +549,19 @@ The system studied is a linear periodic chain of $\nfg$ atoms of two different s
  \label{Fig:sketchRepPatt}
 \end{figure}
 
-This system is the same studied by Di Pasquale \emph{et al.}. They have studied such a simple system to better understand which of the assumptions made are valid, and which might fail in a more complex system. We made this choice to compare the results obtained with those of their work and to compare the results in the two ensemble.
+This system is the same studied by Di Pasquale \emph{et al.}, who have studied such a simple system to better understand which of the assumptions made are valid, and which might fail in a more complex system. We made this choice to compare the results obtained with those of their work and to compare the results in the two ensemble.
 
 
-\section{Case studies}
-The test cases studied are composed of atoms with two different masses: $m=1$ and $M=10$.
-The repeating pattern has been chosen to consist of three atoms in two different configuration: two atoms of mass $m$ and a single atom of mass $M$ ($m-M-m$) or vice versa ($M-m-M$). The number of beads is set to $\ncg=10$, of course by fixing the number of beads we fix the number of atoms also, $\nfg=3\,\ncg=30$.
-The stiffness of the interactions of the two different species of atoms is described by means of inter-atomic potential, which is a simple 12-6 Lennard-Jones potential.
+\section{Test cases considered}
+The test cases studied are composed of atoms with two different masses, set to $m=1$ and $M=10$.
+The repeating pattern has been chosen to consist of three atoms in two different configuration: two atoms of mass $m$ and a single atom of mass $M$ ($m-M-m$) or vice versa ($M-m-M$). The number of beads is set to $\ncg=10$, of course by fixing the number of beads we fix the number of atoms also, as $\nfg=3\,\ncg=30$.
+The stiffness of the interactions of the two different species of atoms is described by means of inter-atomic potential, which is a simple 12-6 Lennard-Jones potential. In the following, the parameters such as temperature and time step are expressed in terms of dimensionless units, i.e. the so-called Lennard-Jones reduced units, see Tuckerman pp.125-127 \cite{tuckerman2010}.
 
-Following the work of Di Pasquale \emph{et al.}, we assume periodic boundary condition and that there are nearest neighbour interactions. 
-
-\noindent
-So the inter-atomic potential is given by 
+Following the work of Di Pasquale \emph{et al.}, we assume periodic boundary condition and nearest neighbour interactions. 
+The inter-atomic potential for a generic system $X$ is given by 
 \begin{equation}
  \begin{split}
-  	\pot_{i,i+1}(r) &= 4\,\epsilon_{i,i+1} \sqp{\cip{\frac{\sigma_{i,i+1}}{r}}^{12} - \cip{\frac{\sigma_{i,i+1}}{r}}^6} \\
+  	\pot^X_{i,i+1}(r) &= 4\,\epsilon_{i,i+1} \sqp{\cip{\frac{\sigma_{i,i+1}}{r}}^{12} - \cip{\frac{\sigma_{i,i+1}}{r}}^6} \\
 	&= \epsilon_{i,i+1} \sqp{\cip{\frac{r^*_{i,i+1}}{r}}^{12} - 2\cip{\frac{r^*_{i,i+1}}{r}}^6}
  \end{split}
 \end{equation} 
@@ -514,9 +573,7 @@ Here, we choose $\sigma_{i,i+1}=2^{-1/6}$ so that the minimum value of the poten
   \end{cases}
 \end{equation}
 where $\epsilon^a$ and $\epsilon^b$ are two different values for the parameter $\epsilon$ taken from the set $\bp{0.1,1,100}$.
-
-\noindent
-While the Hamiltonian for a generic system $X$ is given by
+The Hamiltonian is given by
 \begin{equation}
  \begin{split}
   	\Ham^X(\bfr,\bfp) &= \frac12 \, \bfp^T\,(M^X)^{-1}\,\bfp\,+\sum_{i=1}^{\nfg-1}\pot^X_{i,i+1}\cip{\bfr_{i+1}-\bfr_i}\,+ \\
@@ -524,13 +581,68 @@ While the Hamiltonian for a generic system $X$ is given by
  \end{split}
  \label{eq:1DHamiltonian}
 \end{equation}
-where $\bfr$ and $\bfp$ are respectively the positions and momenta of the atoms in the system $X$ considered, and where the mass matrix $M^X$ and pair potentials $\pot^X_{i,i+1}$ have been chosen with the relevant parameters. The final term takes into account the periodic boundary conditions, i.e. we assume that the two ends of the linear chain behave as if they were connected to each other.
+where $M^X$ is the mass matrix, $\bfr$ and $\bfp$ are respectively the positions and momenta of the atoms in the system $X$ considered. 
+The final term takes into account the periodic boundary conditions, i.e. the assumption that the two ends of the linear chain behave as if they were connected to each other.
 
+We considered four test cases denoted as $A$, $B$, $C$, $D$:
+\begin{itemize}
+ \item the pairs $A$ and $B$, and $C$ and $D$ have the same repeating pattern respectively $m-M-m$ and $M-m-M$, but different interactions among the atoms;
+ \item the pairs $A$ and $C$, and $B$ and $D$ have the same `internal' interactions (i.e. interactions among atoms belonging to the same bead) and same inter-beads interactions (i.e. interactions among atoms in different beads). Of course they have a different repeating pattern.
+\end{itemize}
+A summary of the four cases and the set values is given in the table \ref{Tab:Cases}.
+\begin{table}[htb]
+ \centering
+ \begin{tabular}{c c c c c c} 
+  \toprule[1.1pt]
+   &  & \multicolumn{4}{c}{Interactions ($\epsilon_{i,i+1}$)} \\
+  \cmidrule(l){3-6}
+  System & Bead structure & $m-m$ & $M-M$ & Internal & Inter-bead \\
+  \midrule
+  $A$ & $m-M-m$ & $1$ & $100$ & $10$ & $1$ \\ 
+  $B$ & $m-M-m$ & $10$ & $0.1$ & $1$  & $10$ \\  
+  $C$ & $M-m-M$ & $100$ & $1$ & $10$ & $1$ \\
+  $D$ & $M-m-M$ & $0.1$ & $10$ & $1$ & $10$ \\
+  \bottomrule[1.1pt]
+ \end{tabular}
+ \caption{Summary of parameters in the 4 configurations considered. `Internal' interactions are between the atoms of different masses ($m-M$), while inter-bead interactions are between atoms of the same mass ($m-m$ or $M-M$ depending on the case under consideration).}
+ \label{Tab:Cases}
+\end{table}
 
+The dynamics were implemented using the integrators described in the chapter \ref{Sec:NumMet}. The time step chosen was $\Delta t=10^{-3}$, which is smaller than the shortest timescale in the system: $\Delta t \leq min\;\sqrt{M/\pot^{''}_{i,i+1}(1)}\approx 5.89 \times 10^{-3}$ see \cite{DiPasquale2019}.   
+Below, we will show the results and analysis of the simulations of different dynamics:
+\begin{itemize}
+ \item[-] the \emph{Fine-Grained Dynamics} (FGD) when solving eq.~(\ref{Eq:MotionEq}) with the Hamiltonian defined in eq.~(\ref{eq:1DHamiltonian}):
+ \[
+ \totd{\Aphase{}(t)}{t} = \bp{\Aphase{},\Ham^X} = iL\,\Aphase{}\,;
+ \]
+ \item[-] the \emph{Orthogonal Dynamics} (OD) when solving eq.~(\ref{Eq:orth}):
+ \[
+  \totd{\bfr_k}{t} = \frac{\bfp_k}{m_{k}}\,;\qquad
+  \totd{\bfp_k}{t} = - \pard{\pot^X(\Aphase{\bfr})}{\bfr_k} + \frac{m_k}{M_I}\sum_{i\in S_I}\pard{\pot^X(\Aphase{\bfr})}{\bfr_i}\,; 
+ \]
+ \item[-] the \emph{Deterministic Coarse-Grained Dynamics} (DCGD) when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, neglecting the dissipative and fluctuating terms:
+ \[
+ \pard{\bfR_{K}}{t} = \frac{\bfP_{K}}{M_{K}}\,; \qquad
+ \pard{\bfP_{K}}{t} = -\pard{\Veff}{\bfR_{K}}\,;  
+ \]
+ \item[-] the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD) when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, with the memory and fluctuating terms replaced by a position-dependent Langevin dynamics, i.e., memory and fluctuating terms depends on the inter-particle distance.
+% \begin{align}
+% \nonumber
+% \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}}\,; \\
+% \nonumber
+% \pard{\bfP_{K}}{t} &= -\pard{\Veff}{\bfR_{K}} - \sum_{J=1}^{\ncg}{{\tilde{\fricmat}_{IJ}}\frac{\bfP_{J}}{M_{J}} } 
+% + \beta^{-1} \sum_{J=1}^{\ncg}  {{ \pard{}{\bfR_{J}}\tilde{\fricmat}_{KJ}(s)}} + \fprojbf_{K}(t) \,.
+% \end{align}
+\end{itemize}
+As we said, to numerically integrate FGD and OD we have used respectively the BAOAB integrator and the geodesic-BAOAB integrator (see chapter \ref{Sec:NumMet}). While, to numerically integrate MMZD we have used a version of the BAOAB integrator adapted to the case of non-constant diffusion, developed by Di Pasquale \emph{et al.} \cite{DiPasquale2019}. 
 
 
 \section{Sampling Algorithm}
+Now, we give an idea of the sampling implemented in the code by Di Pasquale \emph{et al.}, to compute an approximation of the effective potential, given in eq.~(\ref{Eq:EntrInt}), and the friction matrix, as given in eq.~(\ref{Eq:FRICmatrixRF})
 
+
+
+\chapter{Numerical results}
 \section{Data-driven approximation of the effective potential}
 \begin{figure}[!htb]
  \begin{subfigure}[b]{0.5\linewidth}
