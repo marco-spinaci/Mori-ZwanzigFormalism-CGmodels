@@ -33,6 +33,10 @@
 
 \usepackage[titletoc,page]{appendix}
 
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+
 \begin{document}
 
 %  \begin{center}
@@ -638,7 +642,29 @@ As we said, to numerically integrate FGD and OD we have used respectively the BA
 
 
 \section{Sampling Algorithm}
-Now, we give an idea of the sampling implemented in the code by Di Pasquale \emph{et al.}, to compute an approximation of the effective potential, given in eq.~(\ref{Eq:EntrInt}), and the friction matrix, as given in eq.~(\ref{Eq:FRICmatrixRF})
+The code developed by Di Pasquale \emph{et al.} allows a relatively simple recalibration of the test system through the Julia ``types'', which are initialized by the user to fix all the parameters of the simulation, including the repeating pattern of the beads, the number of beads, the mass and stiffness of the inter-atomic potentials.
+
+Here, we give an idea of the sampling implemented in the code to compute an approximation of the effective potential, given in eq.~(\ref{Eq:EntrInt}), and the friction matrix, as given in eq.~(\ref{Eq:FRICmatrixRF}). The idea is to sample using the OD.
+
+First, the initial conditions for the simulation are fixed, so that the momenta are distributed according to the Boltzmann distribution and the positions lie in equilibrium positions. Then the trajectory of the FGD is computed and samples of the positions and momenta are stored. These samples are used to determine the CG positions and momenta, and are used as initial condition for computing the trajectories of the OD. Along this trajectories, time averages of the first and second moment of the effective force between beads are stored. The first moment gives the value of the mean force acting between adjacent beads given the position of the center of mass, while the second moment is used to compute the friction matrix. All this allows to parallelize the code, since the sampling steps of the OD can run at the same time without having communication between the processes. Finally, by integrating the mean force with respect to the distance $R$ between the beads, the effective potential $\Veff$ is obtained.
+
+This method is very similar to the force-matching method \cite{Ercolessi1994,Izvekov2004}, the difference is that here we derive directly the effective potential from the sampling performed during the OD simulations.
+
+Below we show the algorithm published in the work of Di Pasquale \emph{et al.}:
+\begin{algorithm} [H]
+\begin{algorithmic}[1]
+  \Procedure{Constrained Sample}{Configuration of atomistic system, target$_1$, target$_2$}
+  \State Generate initial condition for fine-grained system
+   \While{$\#$ of samples $<$ target$_1$}
+   \State Run fine-grained dynamics to generate initial condition for constrained dynamics
+   \While{length of constrained dynamics trajectory $<$ target$_2$}
+   \State Compute timestep using integrator for constrained dynamics
+   \State Update statistical estimators
+   \EndWhile
+   \EndWhile
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
 
 
