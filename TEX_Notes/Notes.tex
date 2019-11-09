@@ -12,6 +12,9 @@
 
 \usepackage{paralist}
 
+\usepackage{scrextend}
+\addtokomafont{labelinglabel}{\sffamily}
+
 \usepackage{cases}
 
 \usepackage[colorlinks]{hyperref}
@@ -33,7 +36,8 @@
 
 \usepackage[titletoc,page]{appendix}
 
-\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage[chapter]{algorithm}
 \usepackage{algpseudocode}
 
 
@@ -72,7 +76,7 @@ These techniques are known in various context as well as in transport theory. Fo
 This equation can be derived from the equation (\ref{generalGLE}), is called the \emph{memory-function equation} and the random force appears implicitly in $K(t)$ \cite{Berne:DynamicLightScatt,hansen2006}.
 
 If the dynamical system considered is Hamiltonian, in the Mori-Zwanzig formalism we can use two equivalent approaches:
-\begin{enumerate}
+\begin{enumerate}[(i)]
   \item applying the projection operator in a Hilbert space of probability densities function (pdf) to the Liouville equation, obtained the generalized Fokker-Planck and master equations \cite{Kinjo2007,Zwanzig1960,Zwanzig1961,Zwanzig1964};
   \item applying the projection operator in the Liouville space (see appendix \ref{App:C}) to the equation of motion of time-dependent phase-space function, the GLE and the transport equation are obtained \cite{DiPasquale2019,Hijon2010,Mori1965,Nordholm1975,Zwanzig1973}.
 \end{enumerate}
@@ -364,7 +368,7 @@ For notational convenience, we will assume that the indices are ordered in such 
 A sketch of a possible mapping between FG and general CG systems is shown in fig.~\ref{Fig:sketch}.
 \begin{figure}[htb]
     \centering
-    \includegraphics[width=\textwidth]{DisegnoCGmapping.pdf}
+    \includegraphics[width=\textwidth]{CGmapping}
     \caption{Sketch of the mapping of a molecule from the FG system to the general CG (hybrid) system where the labels of the ``particles'' for the two different resolutions are highlighted. In the picture, $\ncg=7$ and $\NA{}=5$ therefore, $S_1=\{4\},\,S_2=\{5\},\,\ldots,\,S_5=\{11\},\,S_6=\{1,\,2,\,3\},\,S_7=\{7,\,8,\,9\}$.}
     \label{Fig:sketch}
 \end{figure}
@@ -540,9 +544,9 @@ The methods that are considered are splitting integrators that decompose the sto
 \label{Sec:NumExp}
 
 \chapter{The studied system}
-In the chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equations of motion for generic CG (hybrid) system. Here, we numerically investigate the effects of some of choices and assumptions made when the FG system is coarse-grained in the canonical ensemble. To do this, we have extended the numerical implementation and the analysis made by Di Pasquale \emph{et al.} \cite{DiPasquale2019}. 
+In the Chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equations of motion for generic CG (hybrid) system. Here, we numerically investigate the effects of some of choices and assumptions made when the FG system is coarse-grained in the canonical ensemble. To do this, we have extended the numerical implementation and the analysis made by Di Pasquale \emph{et al.} \cite{DiPasquale2019}. 
 
-Di Pasquale \emph{et al.} developed an open-source parallel code, written in Julia v0.6.2 \cite{thomas_hudson_2018_1226590}, to solve the full, constrained and coarse-grained dynamics in the microcanonical ensemble for a simple one-dimensional system. To extend the code to the canonical ensemble we introduced the integrators described in the chapter \ref{Sec:NumMet}, after updating the code to the latest version of Julia, v1.2.0.
+Di Pasquale \emph{et al.} developed an open-source parallel code, written in Julia v0.6.2 \cite{thomas_hudson_2018_1226590}, to solve the full, constrained and coarse-grained dynamics in the microcanonical ensemble for a simple one-dimensional system. To extend the code to the canonical ensemble we introduced the integrators described in the Chapter \ref{Sec:NumMet}, after updating the code to the latest version of Julia, v1.2.0.
 
 The system studied is a linear periodic chain of $\nfg$ atoms of two different species, which differ in mass and stiffness. The atoms are arranged in a repeating pattern, and the coarse-grained system is obtained by combining the single repeated units into beads, see fig.~\ref{Fig:sketchRepPatt}. So we will not consider a hybrid system, and the number of beads, $\ncg$, will be equal to the number of times the pattern is repeated in the chain. The CG variables are taken to be the center of mass of each bead and the corresponding momenta, see section \ref{Sec:Mapping}.
 
@@ -612,24 +616,24 @@ A summary of the four cases and the set values is given in the table \ref{Tab:Ca
  \label{Tab:Cases}
 \end{table}
 
-The dynamics were implemented using the integrators described in the chapter \ref{Sec:NumMet}. The time step chosen was $\Delta t=10^{-3}$, which is smaller than the shortest timescale in the system: $\Delta t \leq min\;\sqrt{M/\pot^{''}_{i,i+1}(1)}\approx 5.89 \times 10^{-3}$ see \cite{DiPasquale2019}.   
+The dynamics were implemented using the integrators described in the Chapter \ref{Sec:NumMet}. The time step chosen was $\Delta t=10^{-3}$, which is smaller than the shortest timescale in the system: $\Delta t \leq min\;\sqrt{M/\pot^{''}_{i,i+1}(1)}\approx 5.89 \times 10^{-3}$ see \cite{DiPasquale2019}.   
 Below, we will show the results and analysis of the simulations of different dynamics:
-\begin{itemize}
- \item[-] the \emph{Fine-Grained Dynamics} (FGD) when solving eq.~(\ref{Eq:MotionEq}) with the Hamiltonian defined in eq.~(\ref{eq:1DHamiltonian}):
+\begin{labeling}{(MMZD)}
+\item[(FGD)] the \emph{Fine-Grained Dynamics} when solving eq.~(\ref{Eq:MotionEq}) with the Hamiltonian defined in eq.~(\ref{eq:1DHamiltonian}):
  \[
  \totd{\Aphase{}(t)}{t} = \bp{\Aphase{},\Ham^X} = iL\,\Aphase{}\,;
  \]
- \item[-] the \emph{Orthogonal Dynamics} (OD) when solving eq.~(\ref{Eq:orth}):
+\item[(OD)] the \emph{Orthogonal Dynamics} when solving eq.~(\ref{Eq:orth}):
  \[
   \totd{\bfr_k}{t} = \frac{\bfp_k}{m_{k}}\,;\qquad
   \totd{\bfp_k}{t} = - \pard{\pot^X(\Aphase{\bfr})}{\bfr_k} + \frac{m_k}{M_I}\sum_{i\in S_I}\pard{\pot^X(\Aphase{\bfr})}{\bfr_i}\,; 
  \]
- \item[-] the \emph{Deterministic Coarse-Grained Dynamics} (DCGD) when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, neglecting the dissipative and fluctuating terms:
+\item[(DCGD)] the \emph{Deterministic Coarse-Grained Dynamics} when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, neglecting the dissipative and fluctuating terms:
  \[
  \pard{\bfR_{K}}{t} = \frac{\bfP_{K}}{M_{K}}\,; \qquad
  \pard{\bfP_{K}}{t} = -\pard{\Veff}{\bfR_{K}}\,;  
  \]
- \item[-] the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD) when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, with the memory and fluctuating terms replaced by a position-dependent Langevin dynamics, i.e., memory and fluctuating terms depends on the inter-particle distance.
+\item[(MMZD)] the \emph{Markovian Mori-Zwanzig Dynamics} when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, with the memory and fluctuating terms replaced by a position-dependent Langevin dynamics, i.e., memory and fluctuating terms depends on the inter-particle distance.
 % \begin{align}
 % \nonumber
 % \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}}\,; \\
@@ -637,8 +641,8 @@ Below, we will show the results and analysis of the simulations of different dyn
 % \pard{\bfP_{K}}{t} &= -\pard{\Veff}{\bfR_{K}} - \sum_{J=1}^{\ncg}{{\tilde{\fricmat}_{IJ}}\frac{\bfP_{J}}{M_{J}} } 
 % + \beta^{-1} \sum_{J=1}^{\ncg}  {{ \pard{}{\bfR_{J}}\tilde{\fricmat}_{KJ}(s)}} + \fprojbf_{K}(t) \,.
 % \end{align}
-\end{itemize}
-As we said, to numerically integrate FGD and OD we have used respectively the BAOAB integrator and the geodesic-BAOAB integrator (see chapter \ref{Sec:NumMet}). While, to numerically integrate MMZD we have used a version of the BAOAB integrator adapted to the case of non-constant diffusion, developed by Di Pasquale \emph{et al.} \cite{DiPasquale2019}. 
+\end{labeling}
+As we said, to numerically integrate FGD and OD we have used respectively the BAOAB integrator and the geodesic-BAOAB integrator (see Chapter \ref{Sec:NumMet}). While, to numerically integrate MMZD we have used a version of the BAOAB integrator adapted to the case of non-constant diffusion, developed by Di Pasquale \emph{et al.} \cite{DiPasquale2019}. 
 
 
 \section{Sampling Algorithm}
@@ -650,13 +654,14 @@ First, the initial conditions for the simulation are fixed, so that the momenta 
 
 This method is very similar to the force-matching method \cite{Ercolessi1994,Izvekov2004}, the difference is that here we derive directly the effective potential from the sampling performed during the OD simulations.
 
-Below we show the algorithm published in the work of Di Pasquale \emph{et al.}:
+Below, for further clarification of what we said, we report the algorithm published in the work of Di Pasquale \emph{et al.}:
 \begin{algorithm} [H]
+\caption{Sampling Algorithm \cite{DiPasquale2019}}
 \begin{algorithmic}[1]
   \Procedure{Constrained Sample}{Configuration of atomistic system, target$_1$, target$_2$}
   \State Generate initial condition for fine-grained system
    \While{$\#$ of samples $<$ target$_1$}
-   \State Run fine-grained dynamics to generate initial condition for constrained dynamics
+   \State Run FGD to generate initial condition for constrained dynamics (OD)
    \While{length of constrained dynamics trajectory $<$ target$_2$}
    \State Compute timestep using integrator for constrained dynamics
    \State Update statistical estimators
@@ -670,6 +675,8 @@ Below we show the algorithm published in the work of Di Pasquale \emph{et al.}:
 
 \chapter{Numerical results}
 \section{Data-driven approximation of the effective potential}
+
+
 \begin{figure}[!htb]
  \begin{subfigure}[b]{0.5\linewidth}
   \centering (N,V,T)
