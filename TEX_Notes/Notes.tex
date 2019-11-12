@@ -429,6 +429,15 @@ where $\omega_{N^AK}$ is equal to zero whenever the difference between the first
  \bffricmat(\Bphase{},t) \approx \tilde{\bffricmat}(\Bphase{})\delta(t).
 \end{align}
 
+In this case, $\tilde{\bffricmat}$ is the time independent friction matrix defined as:
+%
+\begin{equation}\label{Eq:MarDeltaFric}
+  \tilde{\bffricmat}(\Bphase{}) := \bffricmat(\Bphase{},0)
+  = \beta\,\aver{\fprojbf_{\Bphase{}}(0,\cdot)\otimes
+    \fprojbf_{\Bphase{}}(0,\cdot)}_{\Bphase{}}.
+\end{equation}
+
+
 Assuming the approximation \ref{Eq:MarFric1} is valid, the equations of motion for the atomistic/CG system eq.~(\ref{Eq:DevB}) become:
 
 \begin{align}
@@ -544,11 +553,11 @@ The methods that are considered are splitting integrators that decompose the sto
 \label{Sec:NumExp}
 
 \chapter{The studied system}
-In the Chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equations of motion for generic CG (hybrid) system. Here, we numerically investigate the effects of some of choices and assumptions made when the FG system is coarse-grained in the canonical ensemble. To do this, we have extended the numerical implementation and the analysis made by Di Pasquale \emph{et al.} \cite{DiPasquale2019}. 
+In Chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equations of motion for generic CG (hybrid) system. Here, we numerically investigate the effects of some of the choices and assumptions made when the FG system is coarse-grained in the canonical ensemble. To do this, we have extended the numerical implementation and the analysis made by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. 
 
 Di Pasquale \emph{et al.} developed an open-source parallel code, written in Julia v0.6.2 \cite{thomas_hudson_2018_1226590}, to solve the full, constrained and coarse-grained dynamics in the microcanonical ensemble for a simple one-dimensional system. To extend the code to the canonical ensemble we introduced the integrators described in the Chapter \ref{Sec:NumMet}, after updating the code to the latest version of Julia, v1.2.0.
 
-The system studied is a linear periodic chain of $\nfg$ atoms of two different species, which differ in mass and stiffness. The atoms are arranged in a repeating pattern, and the coarse-grained system is obtained by combining the single repeated units into beads, see fig.~\ref{Fig:sketchRepPatt}. So we will not consider a hybrid system, and the number of beads, $\ncg$, will be equal to the number of times the pattern is repeated in the chain. The CG variables are taken to be the center of mass of each bead and the corresponding momenta, see section \ref{Sec:Mapping}.
+The studied system is a linear periodic chain of $\nfg$ atoms of two different species, which differ in mass and stiffness. The atoms are arranged in a repeating pattern, and the coarse-grained model is obtained by combining the single repeated units into beads, see fig.~\ref{Fig:sketchRepPatt}. So we will not consider a hybrid system, and the number of beads, $\ncg$, will be equal to the number of times the pattern is repeated in the chain. The CG variables are given by the center of mass of each bead and the corresponding momenta (see section \ref{Sec:Mapping}).
 
 \begin{figure}[!htb]
  \centering
@@ -557,7 +566,7 @@ The system studied is a linear periodic chain of $\nfg$ atoms of two different s
  \label{Fig:sketchRepPatt}
 \end{figure}
 
-This system is the same studied by Di Pasquale \emph{et al.}, who have studied such a simple system to better understand which of the assumptions made are valid, and which might fail in a more complex system. We made this choice to compare the results obtained with those of their work and to compare the results in the two ensemble.
+This system is the same studied by Di Pasquale \emph{et al.}, who have studied such a simple system to better understand which of the assumptions made are valid, and which might fail in a more complex system. We made this choice to compare the results obtained with those of their work and to compare the results of the two ensemble.
 
 
 \section{Test cases considered}
@@ -590,7 +599,7 @@ The Hamiltonian is given by
  \label{eq:1DHamiltonian}
 \end{equation}
 where $M^X$ is the mass matrix, $\bfr$ and $\bfp$ are respectively the positions and momenta of the atoms in the system $X$ considered. 
-The final term takes into account the periodic boundary conditions, i.e. the assumption that the two ends of the linear chain behave as if they were connected to each other.
+The final term takes into account the periodic boundary conditions, i.e., the assumption that the two ends of the linear chain behave as if they were connected to each other.
 
 We considered four test cases denoted as $A$, $B$, $C$, $D$:
 \begin{itemize}
@@ -642,7 +651,7 @@ Below, we will show the results and analysis of the simulations of different dyn
 % + \beta^{-1} \sum_{J=1}^{\ncg}  {{ \pard{}{\bfR_{J}}\tilde{\fricmat}_{KJ}(s)}} + \fprojbf_{K}(t) \,.
 % \end{align}
 \end{labeling}
-As we said, to numerically integrate FGD and OD we have used respectively the BAOAB integrator and the geodesic-BAOAB integrator (see Chapter \ref{Sec:NumMet}). While, to numerically integrate MMZD we have used a version of the BAOAB integrator adapted to the case of non-constant diffusion, developed by Di Pasquale \emph{et al.} \cite{DiPasquale2019}. 
+As we said, to numerically integrate FGD and OD we have used respectively the BAOAB integrator and the geodesic-BAOAB integrator (see Chapter \ref{Sec:NumMet}). While, to numerically integrate MMZD we have used a version of the BAOAB integrator adapted to the case of non-constant diffusion, developed by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. 
 
 
 \section{Sampling Algorithm}
@@ -654,7 +663,7 @@ First, the initial conditions for the simulation are fixed, so that the momenta 
 
 This method is very similar to the force-matching method \cite{Ercolessi1994,Izvekov2004}, the difference is that here we derive directly the effective potential from the sampling performed during the OD simulations.
 
-Below, for further clarification of what we said, we report the algorithm published in the work of Di Pasquale \emph{et al.}:
+Below, for further clarification of what we said, we report the algorithm published in the work of Di Pasquale \emph{et al.}~and implemented in the code:
 \begin{algorithm} [H]
 \caption{Sampling Algorithm \cite{DiPasquale2019}}
 \begin{algorithmic}[1]
@@ -673,46 +682,85 @@ Below, for further clarification of what we said, we report the algorithm publis
 
 
 
-\chapter{Numerical results}
+\chapter{Simulation results}
 \section{Data-driven approximation of the effective potential}
+To improve the computation time required to sample the mean force and thus determine the effective potential, we utilize the translational symmetry of this simple system, the fact that the beads are identical and the assumption that the effective potential can be approximated as a sum of 2-body interactions based on the distance to the nearest-neighbour beads only.
 
+\noindent
+In this way, we can compute the interactions between any combination of beads and assume that the interactions computed are valid for any equivalent pair in the system. So we reduce the dimensionality of the space to be sampled from the total number of coarse-grained variables to simply one, i.e., the inter-bead distance, and of course we simplify the exploration of the entire constrained phase space, as well as the representation and interpolation of the effective potential in the parameter space.
 
+The validity of these assumptions in this simple system considered was verified by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. Naturally in a more realistic system these assumptions could cause a significant deterioration in the accuracy and effectiveness of a systematic MZ projection approach.
+
+%The results obtained are consistent with those published in the work of Di Pasquale \emph{et alii}.
+In fig.~\ref{Fig:meanForce},
+%
 \begin{figure}[!htb]
- \begin{subfigure}[b]{0.5\linewidth}
-  \centering (N,V,T)
- \end{subfigure}%
- \begin{subfigure}[b]{0.5\linewidth}
-  \centering (N,V,E)
- \end{subfigure}\\
- \begin{subfigure}[b]{0.5\linewidth}
-  \centering
-  \includegraphics[width=\textwidth]{sABCD_2000_MF.pdf}
- \end{subfigure}%
- \begin{subfigure}[b]{0.5\linewidth}
-  \centering
-  \includegraphics[width=0.9\textwidth]{MFme.png}
- \end{subfigure}\\
-  \begin{subfigure}[b]{0.5\linewidth}
-  \centering
-  \includegraphics[width=\textwidth]{sABCD_2000_FF.pdf}
- \end{subfigure}%
- \begin{subfigure}[b]{0.5\linewidth}
-  \centering
-  \includegraphics[width=0.90\textwidth]{FFme.png}
- \end{subfigure}\\
- \begin{subfigure}[b]{0.5\linewidth}
-  \centering
-  \includegraphics[width=\textwidth]{sABCD_2000_EP.pdf}
- \end{subfigure}%
- \begin{subfigure}[b]{0.5\linewidth}
-  \centering
-  \includegraphics[width=0.90\textwidth]{EPme.png}
- \end{subfigure}\\
- \caption{Canonical Ensemble (N,V,T): $\text{Constrained beads}=2$, $\beta=1$, $\gamma=1$, $dt=10^{-3}$, $FullSteps=10^6$, $OrthoSamples=10^6$, $MacroSamples=2000$. Microcanonical Ensemble (N,V,E): see work of Di Pasquale \emph{et al.} \cite{DiPasquale2019}.}
+ \centering
+ \includegraphics[width=\textwidth]{sABCD_2000_MF}
+ \caption{Plot of the mean force for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line).}
+ \label{Fig:meanForce}
+\end{figure}
+%
+we show the results of the computation of the mean force for the four different system described in the table \ref{Tab:Cases}. In each case, the trend is rather similar and we observe that the equilibrium bond length lies close to $R=3.1$. As expected, this results are consistent with the ones obtained by Di Pasquale \emph{et al.} in the microcanonical ensemble.
+
+In fig.~\ref{Fig:FF},
+%
+\begin{figure}[!htb]
+ \centering
+ \includegraphics[width=\textwidth]{sABCD_2000_FF}
+ \caption{Plot of the fluctuating part of the force for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line).}
+ \label{Fig:FF}
+\end{figure}
+%
+we report the results for the fluctuating part of the force. Unlike the mean force, the systems with the same stiffness (see table \ref{Tab:Cases}) have a similar trend. In particular, systems B and D with less stiffness of the bonds have noisier and grater magnitude fluctuations than the other two systems.  
+Furthermore, the figure shows how these simple systems have a dependence of fluctuations on the inter-bead distance $R$, and consequently shows how a simple Langevin dynamics, with dissipation and white noise fluctuations having a magnitude independent of the state of the system, is not an adequate approximation.
+
+
+Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integration of the mean force (fig.~\ref{Fig:meanForce}) respect to the inter-bead distance $R$. We observe that the effective potential has similar trends for the four systems despite the fluctuations shown in fig.~\ref{Fig:FF}. This is interesting because even when the effective potential is easily and stably computed, there may be dissipative effects that are not visible in a deterministic effective potential.
+\begin{figure}[!htb]
+ \centering
+ \includegraphics[width=\textwidth]{sABCD_2000_EP}
+ \caption{Plot of the effective potential for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line).}
+ \label{Fig:EP}
 \end{figure}
 
-\newpage
+%\begin{figure}[!htb]
+% \begin{subfigure}[b]{0.5\linewidth}
+%  \centering (N,V,T)
+% \end{subfigure}%
+% \begin{subfigure}[b]{0.5\linewidth}
+%  \centering (N,V,E)
+% \end{subfigure}\\
+% \begin{subfigure}[b]{0.5\linewidth}
+%  \centering
+%  \includegraphics[width=\textwidth]{sABCD_2000_MF.pdf}
+% \end{subfigure}%
+% \begin{subfigure}[b]{0.5\linewidth}
+%  \centering
+%  \includegraphics[width=0.9\textwidth]{MFme.png}
+% \end{subfigure}\\
+%  \begin{subfigure}[b]{0.5\linewidth}
+%  \centering
+%  \includegraphics[width=\textwidth]{sABCD_2000_FF.pdf}
+% \end{subfigure}%
+% \begin{subfigure}[b]{0.5\linewidth}
+%  \centering
+%  \includegraphics[width=0.90\textwidth]{FFme.png}
+% \end{subfigure}\\
+% \begin{subfigure}[b]{0.5\linewidth}
+%  \centering
+%  \includegraphics[width=\textwidth]{sABCD_2000_EP.pdf}
+% \end{subfigure}%
+% \begin{subfigure}[b]{0.5\linewidth}
+%  \centering
+%  \includegraphics[width=0.90\textwidth]{EPme.png}
+% \end{subfigure}\\
+% \caption{Canonical Ensemble (N,V,T): $\text{Constrained beads}=2$, $\beta=1$, $\gamma=1$, $dt=10^{-3}$, $FullSteps=10^6$, $OrthoSamples=10^6$, $MacroSamples=2000$. Microcanonical Ensemble (N,V,E): see work of Di Pasquale \emph{et al.} \cite{DiPasquale2019}.}
+%\end{figure}
+
 \section{Memory kernel approximation}
+The fluctuating force allow to compute the components of the friction matrix eq.~(\ref{Eq:MarDeltaFric})
+
 
 \subsection{Timescale separation and the validity of the memory kernel approximation}
 
