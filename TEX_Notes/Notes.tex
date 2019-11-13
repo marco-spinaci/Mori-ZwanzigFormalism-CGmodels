@@ -181,8 +181,9 @@ Differentiating both sides of the relation (\ref{Eq:SolLiouville}) with respect 
 where $\Bphase{0}=\Bphase{}(\Aphase{0})$. Applying the identity operator $\idproj=\pproj+\qproj$ to the equation obtained, one has
 \begin{equation}\label{Eq:MoIdProj}
  \totd{\Bphase{t}}{t} = \exp{\Lio t}\cip{\pproj+\qproj}\Lio\,\Bphase{0}=
- \exp{\Lio t}\pproj\Lio\,\Bphase{0} + \exp{\Lio t}\qproj\Lio\,\Bphase{0}\,. 
+ \exp{\Lio t}\pproj\Lio\,\Bphase{0} + \exp{\Lio t}\qproj\Lio\,\Bphase{0}\,, 
 \end{equation}
+where we omit the $\bfa$ subscript in the projection operators $\pproj$ and $\qproj$, to simplify the notation.
 
 Now if we make in the Dunhamel-Dyson operator identity for the exponential operator $\exp{-(U+V)\,t}$ (see appendix \ref{App:D}) the substitutions $U=\Lio\qproj$ and $V=\Lio\pproj$, we get
 $$
@@ -300,8 +301,10 @@ We can now rewrite eq. (\ref{Eq:fricmatrix}) as
  \nonumber
  \fricmat\cip{\bfa,s} \coloneqq& 
    \,\beta\,\pproj_{\bfa}\sqp{ \cip{ \qproj_{\bfa}\Lio\,\Bphase{0}} \otimes 
-   \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } }={}\\ 
- =& \,\beta\,\pproj_{\bfa} \sqp{\fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(t,\Aphase{0})}\,,
+   \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } } = {}\\ 
+ \nonumber
+ =& \,\beta\, \pproj_{\bfa} \sqp{ \fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(s,\Aphase{0}) } ={}\\
+ =& \,\beta\, \cexpval{ \fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(s,\Aphase{0}) }{ \,\bfA(\Aphase{})=\bfa }\,,
 \end{align}
 %\begin{align*}
 % \fricmat\cip{\bfa,s} &\coloneqq 
@@ -505,9 +508,10 @@ We can easily show in the stationary limit ($t\gg t_0$) and applying the equipar
 
 %\subsubsection{Langevin Dynamics}
 Langevin dynamics combines a conservative dynamic with the OU stochastic vector field as a forcing for the momentum, so we are assuming that the stochastic force is not affected by the potential:
-\[
+\begin{equation}
+\label{Eq:Lang1Dx}
  M\frac{d^2\mathbf{x}}{dt^2}=-\boldsymbol{\nabla} U(\mathbf{x})-\gamma\,\frac{d\mathbf{x}}{dt}+\sqrt{(2\gamma)/\beta}\,\boldsymbol{\xi}(t)
-\]
+\end{equation}
 where we introduced physical quantities: $M$ is the mass of the particle, $\mathbf{x}$ is the coordinate of position, $\gamma$ is the friction parameter and $\beta=\left( K_BT \right)^{-1}$ is the temperature parameter. We can rewrite the equation as
 \[
 \begin{cases}
@@ -516,12 +520,13 @@ where we introduced physical quantities: $M$ is the mass of the particle, $\math
 \end{cases}
 \]
 and for the canonical coordinates $ \{\mathbf{q}(t),\mathbf{p}(t)\} $ we get 
-\[
+\begin{equation}
+\label{Eq:Lang1Dp}
 \begin{cases}
  d\mathbf{q}=M^{-1}\,\mathbf{p}\,dt \\
  d\mathbf{p}=\left[ -\boldsymbol{\nabla} U(\mathbf{q})-\tilde{\gamma}\,\mathbf{p} \right]\,dt+\sqrt{(2\tilde{\gamma})/\beta}\,M^{1/2}d\mathbf{W}
 \end{cases}
-\]
+\end{equation}
 where $\tilde{\gamma}=\gamma/M$. From the system of two first-order equations can we compute the drift and diffusion coefficients
 \begin{align*}
  \left(A_{\mathbf{q}}\right)_i &= M^{-1}\,p_i\,;  &  \left(B_{\mathbf{q}\mathbf{q}}\right)_{ij} &= \left(B_{\mathbf{p}\mathbf{q}}\right)_{ij}=0\,; \\
@@ -570,6 +575,7 @@ This system is the same studied by Di Pasquale \emph{et al.}, who have studied s
 
 
 \section{Test cases considered}
+\label{Sec:TestCasesConsid}
 The test cases studied are composed of atoms with two different masses, set to $m=1$ and $M=10$.
 The repeating pattern has been chosen to consist of three atoms in two different configuration: two atoms of mass $m$ and a single atom of mass $M$ ($m-M-m$) or vice versa ($M-m-M$). The number of beads is set to $\ncg=10$, of course by fixing the number of beads we fix the number of atoms also, as $\nfg=3\,\ncg=30$.
 The stiffness of the interactions of the two different species of atoms is described by means of inter-atomic potential, which is a simple 12-6 Lennard-Jones potential. In the following, the parameters such as temperature and time step are expressed in terms of dimensionless units, i.e. the so-called Lennard-Jones reduced units, see Tuckerman pp.125-127 \cite{tuckerman2010}.
@@ -684,6 +690,7 @@ Below, for further clarification of what we said, we report the algorithm publis
 
 \chapter{Simulation results}
 \section{Data-driven approximation of the effective potential}
+\label{Sec:EP}
 To improve the computation time required to sample the mean force and thus determine the effective potential, we utilize the translational symmetry of this simple system, the fact that the beads are identical and the assumption that the effective potential can be approximated as a sum of 2-body interactions based on the distance to the nearest-neighbour beads only.
 
 \noindent
@@ -758,11 +765,94 @@ Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integ
 % \caption{Canonical Ensemble (N,V,T): $\text{Constrained beads}=2$, $\beta=1$, $\gamma=1$, $dt=10^{-3}$, $FullSteps=10^6$, $OrthoSamples=10^6$, $MacroSamples=2000$. Microcanonical Ensemble (N,V,E): see work of Di Pasquale \emph{et al.} \cite{DiPasquale2019}.}
 %\end{figure}
 
-\section{Memory kernel approximation}
-The fluctuating force allow to compute the components of the friction matrix eq.~(\ref{Eq:MarDeltaFric})
+\section{Memory kernel approximation and numerical implementation}
+Until now, we have not yet shown how to implement the eq.~(\ref{Eq:MarkovApprox}) to determine MMZD, we have only give an idea in the section~\ref{Sec:TestCasesConsid}. We said that the MMZD is determined by a Langevin equation~(\ref{Eq:Lang1Dp}), where the potential is given by the effective potential and the memory and fluctuating terms depends on the inter-bead distance. 
+
+For the sake of clarity, the eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system is given below
+\begin{equation*}
+\begin{cases}
+ \partial_t\,\bfR_{K} = M_{K}^{-1}\bfP_{K}\,; & \\
+ \partial_t\,\bfP_{K} = -\partial_{\bfR_{K}}\Veff 
+                        - \sum_{J=1}^{\ncg} \tilde{\fricmat}_{KJ} \,M_{J}^{-1}\bfP_{J} 
+                        + \beta^{-1} \sum_{J=1}^{\ncg} \partial_{\bfR_{J}} \tilde{\fricmat}_{KJ}(s) 
+                        + \fprojbf_{K}(t)\,. &  
+\end{cases}
+\end{equation*}
+The components of the friction matrix, i.e., eq.~(\ref{Eq:MarDeltaFric}) 
+\[
+  \tilde{\bffricmat}(\Bphase{}) \coloneqq \bffricmat(\Bphase{},0) =  
+  \beta\, \cexpval{ \fprojbf_{\Bphase{}}(0,\cdot) \otimes \fprojbf_{\Bphase{}}(0,\cdot) }{ \Bphase{} }\,,
+\]
+can be computed by means of the fluctuating force fig.~\ref{Fig:FF}. 
+If we consider the bead $I$ that interacts with bead $I-1$ and bead $I+1$, we can assume that the forces that act on it can be decomposed as independent ``stress'' contributions $\sigma_{I+1,I}$ and $-\sigma_{I,I-1}$. So we can write the $\fricmat_{I,I}$ component of the friction matrix as
+\begin{align*}
+  \fricmat_{I,I}(\bfR) = \cexpval{\fprojbf_I \otimes \fprojbf_I}{\bfR} &=
+           \cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I+1,I}-\sigma_{I,I-1}) }{\bfR} = \\
+  &= \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{\bfR} + \cexpval{ \sigma_{I,I-1} \otimes \sigma_{I,I-1} }{\bfR} \,,
+\end{align*}
+where we considered the cross terms negligible, i.e.,
+\[
+ \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I,I-1} }{\bfR}\approx 0\,,\quad \cexpval{ \sigma_{I,I-1} \otimes \sigma_{I+1,I}}{\bfR}\approx 0\,,
+\]
+We are assuming that the fluctuating forces between adjacent beads are not correlated, since we have made the assumption that pair interactions are sufficient to describe the behaviour of the system.
+
+\noindent
+In the same way, we obtain
+\begin{align*}
+ \fricmat_{I,I+1}(\bfR) &= \cexpval{\fprojbf_I \otimes \fprojbf_{I+1}}{\bfR} = \\
+ &= \cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I+2,I+1}-\sigma_{I+1,I}) }{\bfR} = \\
+ &= -\cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{\bfR} \,, \\
+ \\
+ \fricmat_{I,I-1}(\bfR) &= \cexpval{\fprojbf_I \otimes \fprojbf_{I-1}}{\bfR} = \\
+ &= \cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I,I-1}-\sigma_{I-1,I-2}) }{\bfR} = \\
+ &= -\cexpval{ \sigma_{I,I-1} \otimes \sigma_{I,I-1} }{\bfR} \,.
+\end{align*}
+Therefore given the inter-bead distance $\bfR_{I+1}-\bfR_{I}$, we compute a smooth approximation of the variance of the fluctuating force between beads
+\[
+ \gamma_{I+1,I} \coloneqq \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{ \bfR_{I+1}-\bfR_{I} }\,,
+\]
+and we define the tridiagonal matrix
+\begin{equation}
+ \label{Eq:TridMat}
+ \Sigma_{IJ} = \begin{cases}
+    -\gamma_{I+1,I} & I=J-1 \mod \ncg \,, \\
+    \gamma_{I+1,I} + \gamma_{I,I-1} & I=J \,, \\
+    -\gamma_{I,I-1} & I=J+1 \mod \ncg,
+ \end{cases}
+\end{equation}
+where $I,J \in \bp{1,2,\dots,\ncg}$.
+
+\noindent
+So from the eq.~(\ref{Eq:MarkovApprox}), we have
+\begin{equation*}
+\begin{cases}
+ \partial_t\,\Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,, & \\
+ \partial_t\,\Bphase{\bfP} = -\partial_{\tilde{\bfR}}\Veff 
+                             - \tilde{\fricmat}\, M^{-1}\Bphase{\bfP}  
+                             + \fprojbf(t) \,, &  
+\end{cases}
+\end{equation*}
+%
+that we can rewrite as
+%
+\begin{equation}
+\label{Eq:MMZD}
+\begin{cases}
+ \diff \Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,\diff t \,, & \\
+ \diff \Bphase{\bfP} = \sqp{ - \partial_{\tilde{\bfR}}\Veff - \frac{1}{2}\, \Sigma(\tilde{\bfR}) \,M^{-1} \Bphase{\bfP} }\diff t 
+ + \Sigma (\tilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
+\end{cases}
+\end{equation}
+where $\tilde{\bfR}$ is the inter-bead distance, $\Sigma(\tilde{\bfR})^{1/2}$ is the positive definite square root of the tridiagonal matrix $\Sigma(\tilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W}$ is a Wiener process in $\real^{\ncg}$.
+
+The system of equations obtained allows to describe and implement the MMZD, it is a system analogous to the eq.~(\ref{Eq:Lang1Dp}) that describes the Langevin dynamics. As we said, this system can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system the memory and fluctuating terms depends on the inter-bead distance $\tilde{\bfR}$. 
+
+The mean force, the fluctuating force and therefore the memory terms can be determined through a Kriging-type interpolation algorithm \cite{Jones2001} from the values shown in the Section \ref{Sec:EP}. The Kriging-type interpolation algorithm implemented in the code is a polynomial approximation of a given function, with Gaussian weights (see the supplementary material of work of Di Pasquale \emph{et al.} \cite{DiPasquale2019}).
 
 
 \subsection{Timescale separation and the validity of the memory kernel approximation}
+
+
 
 \begin{figure}[!htb]
  \centering
