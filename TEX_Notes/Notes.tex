@@ -429,19 +429,19 @@ where $\omega_{N^AK}$ is equal to zero whenever the difference between the first
 
 \begin{align}
  \label{Eq:MarFric1}
- \bffricmat(\Bphase{},t) \approx \tilde{\bffricmat}(\Bphase{})\delta(t).
+ \bffricmat(\Bphase{},t) \approx \widetilde{\bffricmat}(\Bphase{})\delta(t).
 \end{align}
 
-In this case, $\tilde{\bffricmat}$ is the time independent friction matrix defined as:
+In this case, $\widetilde{\bffricmat}$ is the time independent friction matrix defined as:
 %
 \begin{equation}\label{Eq:MarDeltaFric}
-  \tilde{\bffricmat}(\Bphase{}) := \bffricmat(\Bphase{},0)
+  \widetilde{\bffricmat}(\Bphase{}) := \bffricmat(\Bphase{},0)
   = \beta\,\aver{\fprojbf_{\Bphase{}}(0,\cdot)\otimes
     \fprojbf_{\Bphase{}}(0,\cdot)}_{\Bphase{}}.
 \end{equation}
 
 
-Assuming the approximation \ref{Eq:MarFric1} is valid, the equations of motion for the atomistic/CG system eq.~(\ref{Eq:DevB}) become:
+Assuming the approximation (\ref{Eq:MarFric1}) is valid, the equations of motion for the atomistic/CG system eq.~(\ref{Eq:DevB}) become:
 
 \begin{align}
  \label{Eq:MarkovApprox}
@@ -449,8 +449,8 @@ Assuming the approximation \ref{Eq:MarFric1} is valid, the equations of motion f
  \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}} \\
  \nonumber
  \pard{\bfP_{K}}{t} &= -\omega_{\NA{}K}\pard{\pot^{AA}}{\bfr_{K}} -\pard{\Veff}{\bfR_{K}} 
- - \sum_{J=1}^{\ncg}{{\tilde{\fricmat}_{IJ}}\frac{\bfP_{J}}{M_{J}} }+{}\\
- &+ \beta^{-1} \sum_{J=1}^{\ncg}  {{ \pard{}{\bfR_{J}}\tilde{\fricmat}_{KJ}(s)}} + \fprojbf_{K}(t) 
+ - \sum_{J=1}^{\ncg}{{\widetilde{\fricmat}_{KJ}}\frac{\bfP_{J}}{M_{J}} }+{}\\
+ &+ \beta^{-1} \sum_{J=1}^{\ncg}  {{ \pard{}{\bfR_{J}}\widetilde{\fricmat}_{KJ}}} + \fprojbf_{K}(t) 
 \end{align}
 
 
@@ -467,12 +467,12 @@ Their results show that the best method to sample the configurational Gibbs-Bolt
 \begin{align*}
  p_{n+1/2} &= p_n-\frac{1}{2}\,\nabla U\left(x_n\right)\,dt\,; \\
  x_{n+1/2} &= x_n+\frac{1}{2}\,M^{-1}\,p_{n+1/2}\,dt\,; \\
- \hat{p}_{n+1/2} &= c_1\,p_{n+1/2}+c_2\,M^{1/2}\,R_{n+1}\,; \\ 
- x_{n+1} &= x_{n+1/2}+\frac{1}{2}\,M^{-1}\,\hat{p}_{n+1/2}\,dt\,; \\
- p_{n+1} &= \hat{p}_{n+1/2}-\frac{1}{2}\,\nabla U\left(x_{n+1}\right)\,dt\,. \\
+ \widehat{p}_{n+1/2} &= c_1\,p_{n+1/2}+c_2\,M^{1/2}\,R_{n+1}\,; \\ 
+ x_{n+1} &= x_{n+1/2}+\frac{1}{2}\,M^{-1}\,\widehat{p}_{n+1/2}\,dt\,; \\
+ p_{n+1} &= \widehat{p}_{n+1/2}-\frac{1}{2}\,\nabla U\left(x_{n+1}\right)\,dt\,. \\
 \end{align*}
 Here, $R_i$ is an N-vector of iid normal random numbers with mean $0$ and variance $1$, $M$ is the diagonal mass matrix, $dt$ is the timestep, 
-\[ c_1=e^{-\tilde{\gamma}\,dt}\quad\text{and}\quad c_2=\sqrt{\left(1-c_1^2\right)/\beta}  \] are evaluated for a given friction parameter $\tilde{\gamma}=\gamma\,M^{-1}$ and a given temperature parameter $\beta=(K_BT)^{-1}$, where $K_B$ is the Boltzmann's constant.
+\[ c_1=e^{-\widetilde{\gamma}\,dt}\quad\text{and}\quad c_2=\sqrt{\left(1-c_1^2\right)/\beta}  \] are evaluated for a given friction parameter $\widetilde{\gamma}=\gamma\,M^{-1}$ and a given temperature parameter $\beta=(K_BT)^{-1}$, where $K_B$ is the Boltzmann's constant.
 
 
 \subsection{An idea of how the BAOAB method was derived}
@@ -524,25 +524,25 @@ and for the canonical coordinates $ \{\mathbf{q}(t),\mathbf{p}(t)\} $ we get
 \label{Eq:Lang1Dp}
 \begin{cases}
  d\mathbf{q}=M^{-1}\,\mathbf{p}\,dt \\
- d\mathbf{p}=\left[ -\boldsymbol{\nabla} U(\mathbf{q})-\tilde{\gamma}\,\mathbf{p} \right]\,dt+\sqrt{(2\tilde{\gamma})/\beta}\,M^{1/2}d\mathbf{W}
+ d\mathbf{p}=\left[ -\boldsymbol{\nabla} U(\mathbf{q})-\widetilde{\gamma}\,\mathbf{p} \right]\,dt+\sqrt{(2\widetilde{\gamma})/\beta}\,M^{1/2}d\mathbf{W}
 \end{cases}
 \end{equation}
-where $\tilde{\gamma}=\gamma/M$. From the system of two first-order equations can we compute the drift and diffusion coefficients
+where $\widetilde{\gamma}=\gamma/M$. From the system of two first-order equations can we compute the drift and diffusion coefficients
 \begin{align*}
  \left(A_{\mathbf{q}}\right)_i &= M^{-1}\,p_i\,;  &  \left(B_{\mathbf{q}\mathbf{q}}\right)_{ij} &= \left(B_{\mathbf{p}\mathbf{q}}\right)_{ij}=0\,; \\
- \left(A_{\mathbf{p}}\right)_i &= \left(-\boldsymbol{\nabla} U(\mathbf{q})-\tilde{\gamma}\,\mathbf{p}\right)_i\,;  &  
-      \left(B_{\mathbf{p}\mathbf{p}}\right)_{ij} &= \frac{2\tilde{\gamma}}{\beta}\,M\,\delta_{ij}\,;
+ \left(A_{\mathbf{p}}\right)_i &= \left(-\boldsymbol{\nabla} U(\mathbf{q})-\widetilde{\gamma}\,\mathbf{p}\right)_i\,;  &  
+      \left(B_{\mathbf{p}\mathbf{p}}\right)_{ij} &= \frac{2\widetilde{\gamma}}{\beta}\,M\,\delta_{ij}\,;
 \end{align*}
 and thus determine the Fokker-Planck operator for the Langevin dynamics
 \begin{multline*}
  \mathscr{L}_{LD}\,\varphi=-M^{-1}\,\sum_i\,p_i\,\partial_{q_i}\,\varphi\,+ 
                           \,\boldsymbol{\nabla}U(\mathbf{q})\,\sum_i\,\partial_{p_i}\,\varphi\,+{}\\                          
-                          +\,\tilde{\gamma}\,\sum_i\,\partial_{p_i}\,p_i\,\varphi\,+
-                          \,\tilde{\gamma}\,\sum_i\,\,p_i\,\partial_{p_i}\,\varphi\,+
-                          \,\tilde{\gamma}\,K_BT\,\sum_i\,M\,\partial_i^2\,\varphi={}\\
+                          +\,\widetilde{\gamma}\,\sum_i\,\partial_{p_i}\,p_i\,\varphi\,+
+                          \,\widetilde{\gamma}\,\sum_i\,\,p_i\,\partial_{p_i}\,\varphi\,+
+                          \,\widetilde{\gamma}\,K_BT\,\sum_i\,M\,\partial_i^2\,\varphi={}\\
                           =-M^{-1}\mathbf{p}\cdot\boldsymbol{\nabla}_{q}\,\varphi\,+
                           \,\boldsymbol{\nabla}U(\mathbf{q})\cdot\boldsymbol{\nabla}_{p}\,\varphi\,+
-                          \,\tilde{\gamma}\, \left[ \,\boldsymbol{\nabla}_{p}(\mathbf{p}\,\varphi)+
+                          \,\widetilde{\gamma}\, \left[ \,\boldsymbol{\nabla}_{p}(\mathbf{p}\,\varphi)+
                           \,K_BT\boldsymbol{\Delta}_{p}\,\varphi \,\right]\,,
 \end{multline*}
 where $\boldsymbol{\Delta}_{p}$ is the mass-weighted Laplacian in the momenta and $\varphi$ is a test function \cite{Risk:TheFPeq}.
@@ -653,8 +653,8 @@ Below, we will show the results and analysis of the simulations of different dyn
 % \nonumber
 % \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}}\,; \\
 % \nonumber
-% \pard{\bfP_{K}}{t} &= -\pard{\Veff}{\bfR_{K}} - \sum_{J=1}^{\ncg}{{\tilde{\fricmat}_{IJ}}\frac{\bfP_{J}}{M_{J}} } 
-% + \beta^{-1} \sum_{J=1}^{\ncg}  {{ \pard{}{\bfR_{J}}\tilde{\fricmat}_{KJ}(s)}} + \fprojbf_{K}(t) \,.
+% \pard{\bfP_{K}}{t} &= -\pard{\Veff}{\bfR_{K}} - \sum_{J=1}^{\ncg}{{\widetilde{\fricmat}_{IJ}}\frac{\bfP_{J}}{M_{J}} } 
+% + \beta^{-1} \sum_{J=1}^{\ncg}  {{ \pard{}{\bfR_{J}}\widetilde{\fricmat}_{KJ}(s)}} + \fprojbf_{K}(t) \,.
 % \end{align}
 \end{labeling}
 As we said, to numerically integrate FGD and OD we have used respectively the BAOAB integrator and the geodesic-BAOAB integrator (see Chapter \ref{Sec:NumMet}). While, to numerically integrate MMZD we have used a version of the BAOAB integrator adapted to the case of non-constant diffusion, developed by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. 
@@ -769,26 +769,27 @@ Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integ
 Until now, we have not yet shown how to implement the eq.~(\ref{Eq:MarkovApprox}) to determine MMZD, we have only give an idea in the section~\ref{Sec:TestCasesConsid}. We said that the MMZD is determined by a Langevin equation~(\ref{Eq:Lang1Dp}), where the potential is given by the effective potential and the memory and fluctuating terms depends on the inter-bead distance. 
 
 For the sake of clarity, the eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system is given below
-\begin{equation*}
+\begin{equation}
+\label{Eq:MarkovApproxCompact}
 \begin{cases}
- \partial_t\,\bfR_{K} = M_{K}^{-1}\bfP_{K}\,; & \\
- \partial_t\,\bfP_{K} = -\partial_{\bfR_{K}}\Veff 
-                        - \sum_{J=1}^{\ncg} \tilde{\fricmat}_{KJ} \,M_{J}^{-1}\bfP_{J} 
-                        + \beta^{-1} \sum_{J=1}^{\ncg} \partial_{\bfR_{J}} \tilde{\fricmat}_{KJ}(s) 
-                        + \fprojbf_{K}(t)\,. &  
+ \partial_t\,\Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,, & \\
+ \partial_t\,\Bphase{\bfP} = -\partial_{\bfR}\Veff 
+                             - \widetilde{\bffricmat}(\Bphase{})\cdot \cip{M^{-1}\Bphase{\bfP}}
+                             + \beta^{-1}\, \boldsymbol{\nabla}_{\Bphase{\bfR}}\cdot\widetilde{\bffricmat}(\Bphase{})
+                             + \fprojbf(t) \,, &  
 \end{cases}
-\end{equation*}
-The components of the friction matrix, i.e., eq.~(\ref{Eq:MarDeltaFric}) 
+\end{equation}
+The components of the time independent friction matrix, i.e., eq.~(\ref{Eq:MarDeltaFric}) 
 \[
-  \tilde{\bffricmat}(\Bphase{}) \coloneqq \bffricmat(\Bphase{},0) =  
+  \widetilde{\bffricmat}(\Bphase{}) \coloneqq \bffricmat(\Bphase{},0) =  
   \beta\, \cexpval{ \fprojbf_{\Bphase{}}(0,\cdot) \otimes \fprojbf_{\Bphase{}}(0,\cdot) }{ \Bphase{} }\,,
 \]
 can be computed by means of the fluctuating force fig.~\ref{Fig:FF}. 
-If we consider the bead $I$ that interacts with bead $I-1$ and bead $I+1$, we can assume that the forces that act on it can be decomposed as independent ``stress'' contributions $\sigma_{I+1,I}$ and $-\sigma_{I,I-1}$. So we can write the $\fricmat_{I,I}$ component of the friction matrix as
+If we consider the bead $I$ that interacts with bead $I-1$ and bead $I+1$, we can assume that the forces that act on it can be decomposed as independent ``stress'' contributions $\sigma_{I+1,I}$ and $-\sigma_{I,I-1}$. So we can write the $\fricmat_{I,I}$ component of the time independent friction matrix as
 \begin{align*}
-  \fricmat_{I,I}(\bfR) = \cexpval{\fprojbf_I \otimes \fprojbf_I}{\bfR} &=
-           \cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I+1,I}-\sigma_{I,I-1}) }{\bfR} = \\
-  &= \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{\bfR} + \cexpval{ \sigma_{I,I-1} \otimes \sigma_{I,I-1} }{\bfR} \,,
+  \fricmat_{I,I}(\bfR) = \beta\,\cexpval{\fprojbf_I \otimes \fprojbf_I}{\bfR} &=
+           \beta\,\cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I+1,I}-\sigma_{I,I-1}) }{\bfR} = \\
+  &= \beta\,\cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{\bfR} + \beta\,\cexpval{ \sigma_{I,I-1} \otimes \sigma_{I,I-1} }{\bfR} \,,
 \end{align*}
 where we considered the cross terms negligible, i.e.,
 \[
@@ -799,19 +800,19 @@ We are assuming that the fluctuating forces between adjacent beads are not corre
 \noindent
 In the same way, we obtain
 \begin{align*}
- \fricmat_{I,I+1}(\bfR) &= \cexpval{\fprojbf_I \otimes \fprojbf_{I+1}}{\bfR} = \\
- &= \cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I+2,I+1}-\sigma_{I+1,I}) }{\bfR} = \\
- &= -\cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{\bfR} \,, \\
+ \fricmat_{I,I+1}(\bfR) &= \beta\,\cexpval{\fprojbf_I \otimes \fprojbf_{I+1}}{\bfR} = \\
+ &= \beta\,\cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I+2,I+1}-\sigma_{I+1,I}) }{\bfR} = \\
+ &= -\beta\,\cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{\bfR} \,, \\
  \\
- \fricmat_{I,I-1}(\bfR) &= \cexpval{\fprojbf_I \otimes \fprojbf_{I-1}}{\bfR} = \\
- &= \cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I,I-1}-\sigma_{I-1,I-2}) }{\bfR} = \\
- &= -\cexpval{ \sigma_{I,I-1} \otimes \sigma_{I,I-1} }{\bfR} \,.
+ \fricmat_{I,I-1}(\bfR) &= \beta\,\cexpval{\fprojbf_I \otimes \fprojbf_{I-1}}{\bfR} = \\
+ &= \beta\,\cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I,I-1}-\sigma_{I-1,I-2}) }{\bfR} = \\
+ &= -\beta\,\cexpval{ \sigma_{I,I-1} \otimes \sigma_{I,I-1} }{\bfR} \,.
 \end{align*}
-Therefore given the inter-bead distance $\bfR_{I+1}-\bfR_{I}$, we compute a smooth approximation of the variance of the fluctuating force between beads
+Therefore given the inter-bead distance $\widetilde{\bfR}=\bfR_{I+1}-\bfR_{I}$, we compute a smooth approximation of the variance of the fluctuating force between beads
 \[
- \gamma_{I+1,I} \coloneqq \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{ \bfR_{I+1}-\bfR_{I} }\,,
+ \gamma_{I+1,I} \coloneqq \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{ \widetilde{\bfR} }\,.
 \]
-and we define the tridiagonal matrix
+We define the tridiagonal matrix
 \begin{equation}
  \label{Eq:TridMat}
  \Sigma_{IJ} = \begin{cases}
@@ -820,34 +821,26 @@ and we define the tridiagonal matrix
     -\gamma_{I,I-1} & I=J+1 \mod \ncg,
  \end{cases}
 \end{equation}
-where $I,J \in \bp{1,2,\dots,\ncg}$.
-
+where $I,J \in \bp{1,2,\dots,\ncg}$, and we can write the time independent friction matrix as 
+\[
+ \widetilde{\bffricmat}(\widetilde{\bfR})=\beta\,\Sigma(\widetilde{\bfR})\,.
+\]
+ 
 \noindent
-So from the eq.~(\ref{Eq:MarkovApprox}), we have
-\begin{equation*}
-\begin{cases}
- \partial_t\,\Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,, & \\
- \partial_t\,\Bphase{\bfP} = -\partial_{\tilde{\bfR}}\Veff 
-                             - \tilde{\fricmat}\, M^{-1}\Bphase{\bfP}  
-                             + \fprojbf(t) \,, &  
-\end{cases}
-\end{equation*}
-%
-that we can rewrite as
-%
+The terms of memory and the fluctuating force may be generated together in order to implement the following system of equations
 \begin{equation}
 \label{Eq:MMZD}
 \begin{cases}
  \diff \Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,\diff t \,, & \\
- \diff \Bphase{\bfP} = \sqp{ - \partial_{\tilde{\bfR}}\Veff - \frac{1}{2}\, \Sigma(\tilde{\bfR}) \,M^{-1} \Bphase{\bfP} }\diff t 
- + \Sigma (\tilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
+ \diff \Bphase{\bfP} = \sqp{ - \partial_{\widetilde{\bfR}}\Veff - \frac{1}{2}\, \Sigma(\widetilde{\bfR}) \,M^{-1} \Bphase{\bfP} }\diff t 
+ + \Sigma (\widetilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
 \end{cases}
 \end{equation}
-where $\tilde{\bfR}$ is the inter-bead distance, $\Sigma(\tilde{\bfR})^{1/2}$ is the positive definite square root of the tridiagonal matrix $\Sigma(\tilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W}$ is a Wiener process in $\real^{\ncg}$.
+where $\Sigma(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W}$ is a Wiener process in $\real^{\ncg}$.
 
-The system of equations obtained allows to describe and implement the MMZD, it is a system analogous to the eq.~(\ref{Eq:Lang1Dp}) that describes the Langevin dynamics. As we said, this system can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system the memory and fluctuating terms depends on the inter-bead distance $\tilde{\bfR}$. 
+The system of equations obtained allows to describe and implement the MMZD, it is a system analogous to the eq.~(\ref{Eq:Lang1Dp}) that describes the Langevin dynamics. As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
 
-The mean force, the fluctuating force and therefore the memory terms can be determined through a Kriging-type interpolation algorithm \cite{Jones2001} from the values shown in the Section \ref{Sec:EP}. The Kriging-type interpolation algorithm implemented in the code is a polynomial approximation of a given function, with Gaussian weights (see the supplementary material of work of Di Pasquale \emph{et al.} \cite{DiPasquale2019}).
+The mean force, the fluctuating force and therefore the memory terms can be determined through a Kriging-type interpolation algorithm \cite{Jones2001} from the values shown in the Section \ref{Sec:EP}. This interpolation algorithm implemented in the code is a polynomial approximation of a given function with Gaussian weights. It allows to determine the new values of the function, filtering the noise resulting from the sampling error (see the supplementary material of the work of Di Pasquale \emph{et al.} \cite{DiPasquale2019}).
 
 
 \subsection{Timescale separation and the validity of the memory kernel approximation}
@@ -985,7 +978,7 @@ Then there exists a random variable $Y\in \mathcal{L}^1\cip{\Omega,\mathscr{G},\
 $$
  \int_G Y\diff\mathbb{P} = \int_G X\diff\mathbb{P}\,,\quad \forall\;G\in\mathscr{G}\,.
 $$
-Moreover, if $\tilde{Y}$ is another random variable that has the same properties as $Y$, then $\tilde{Y}=Y\,a.s.$ (almost surely), i.e. $\mathbb{P}(\tilde{Y}=Y)=1$.
+Moreover, if $\widetilde{Y}$ is another random variable that has the same properties as $Y$, then $\widetilde{Y}=Y\,a.s.$ (almost surely), i.e. $\mathbb{P}(\widetilde{Y}=Y)=1$.
 
 \noindent
 Therefore, $Y$ with these properties is called \textbf{a version of the conditional expectation} $\cexpval{X}{\,\mathscr{G}}$ of $X$ given $\mathscr{G}$, and we write $Y=\cexpval{X}{\,\mathscr{G}}\,a.s.$
