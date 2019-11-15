@@ -584,8 +584,8 @@ Following the work of Di Pasquale \emph{et al.}, we assume periodic boundary con
 The inter-atomic potential for a generic system $X$ is given by 
 \begin{equation}
  \begin{split}
-  	\pot^X_{i,i+1}(r) &= 4\,\epsilon_{i,i+1} \sqp{\cip{\frac{\sigma_{i,i+1}}{r}}^{12} - \cip{\frac{\sigma_{i,i+1}}{r}}^6} \\
-	&= \epsilon_{i,i+1} \sqp{\cip{\frac{r^*_{i,i+1}}{r}}^{12} - 2\cip{\frac{r^*_{i,i+1}}{r}}^6}
+  	\pot^X_{i,i+1}(r) &= 4\,\epsilon_{i,i+1} \sqp{\cip{\frac{\sigma_{i,i+1}}{r}}^{12} - \cip{\frac{\sigma_{i,i+1}}{r}}^6} ={}\\
+	&= \epsilon_{i,i+1} \sqp{\cip{\frac{r^*_{i,i+1}}{r}}^{12} - 2\cip{\frac{r^*_{i,i+1}}{r}}^6} \,.
  \end{split}
 \end{equation} 
 Here, we choose $\sigma_{i,i+1}=2^{-1/6}$ so that the minimum value of the potential is obtained for $r^*_{i,i+1}=1$, while the well-depth will be varied to analyse the effect of the stiffness of the interactions: $\epsilon_{i,i+1}\in\bp{0.1,1,100}$. In the case of interaction between two different species of atoms, a combination rule called the Lorentz-Berthelot mixing rule is imposed to determine the new values of the parameters $\epsilon_{i,i+1}$. So we get
@@ -776,7 +776,7 @@ For the sake of clarity, the eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grai
  \partial_t\,\Bphase{\bfP} = -\partial_{\bfR}\Veff 
                              - \widetilde{\bffricmat}(\Bphase{})\cdot \cip{M^{-1}\Bphase{\bfP}}
                              + \beta^{-1}\, \boldsymbol{\nabla}_{\Bphase{\bfR}}\cdot\widetilde{\bffricmat}(\Bphase{})
-                             + \fprojbf(t) \,, &  
+                             + \fprojbf(t) \,. &  
 \end{cases}
 \end{equation}
 The components of the time independent friction matrix, i.e., eq.~(\ref{Eq:MarDeltaFric}) 
@@ -808,7 +808,7 @@ In the same way, we obtain
  &= \beta\,\cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I,I-1}-\sigma_{I-1,I-2}) }{\bfR} = \\
  &= -\beta\,\cexpval{ \sigma_{I,I-1} \otimes \sigma_{I,I-1} }{\bfR} \,.
 \end{align*}
-Therefore given the inter-bead distance $\widetilde{\bfR}=\bfR_{I+1}-\bfR_{I}$, we compute a smooth approximation of the variance of the fluctuating force between beads
+Therefore given the inter-bead distance $\widetilde{\bfR}=\lvert\bfR_{I+1}-\bfR_{I}\rvert$, we compute a smooth approximation of the variance of the fluctuating force between beads
 \[
  \gamma_{I+1,I} \coloneqq \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{ \widetilde{\bfR} }\,.
 \]
@@ -836,7 +836,7 @@ The terms of memory and the fluctuating force may be generated together in order
  + \Sigma (\widetilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
 \end{cases}
 \end{equation}
-where $\Sigma(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W}$ is a Wiener process in $\real^{\ncg}$.
+where $\Sigma(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W}$ are independent increment of the Wiener process in $\real^{\ncg}$.
 
 The system of equations obtained allows to describe and implement the MMZD, it is a system analogous to the eq.~(\ref{Eq:Lang1Dp}) that describes the Langevin dynamics. As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
 
@@ -845,13 +845,29 @@ The mean force, the fluctuating force and therefore the memory terms can be dete
 
 \subsection{Timescale separation and the validity of the memory kernel approximation}
 
+\begin{figure}[!htb]
+ \centering
+ \includegraphics[width=\textwidth]{ACF_comparison}
+ \caption{ACF comparison}
+ \label{Fig:ACFcomparison}
+\end{figure}
 
 
 \begin{figure}[!htb]
- \centering
- \includegraphics[width=0.75\textwidth]{AutocorrFullandOrtho_11.pdf}
- \caption{Time autocorrelation function (ACF) of forces and momenta. System C, $NBeads=10$, $\beta=1$, $\gamma=1$, $dt=10^{-3}$, $FullSteps=10^6$, $OrthoSamples=10^6$, $NumLags=10^4$, $MacroSamples=100$.} 
+\label{Fig:ACF}
+ \begin{subfigure}[b]{\textwidth}
+  \centering
+   \includegraphics[width=\textwidth]{ACF_F}
+ \end{subfigure}\\
+ \begin{subfigure}[b]{\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{ACF_P}
+ \end{subfigure}\\
+ \caption{ACF}
 \end{figure}
+
+
+
 
 \newpage
 \subsection{The effect of the memory approximation on observed system properties}
