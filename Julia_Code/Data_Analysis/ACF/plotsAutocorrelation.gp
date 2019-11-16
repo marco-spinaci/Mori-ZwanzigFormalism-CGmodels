@@ -29,9 +29,8 @@ set key font ",18"
 set ylabel "{{/Roman ACF of the FORCES}}"
 set output "| epstopdf -f -o=../TEX_Notes/Figure/ACF_F.pdf"
 p "./Data_Analysis/ACF/Outcomes/FullcorrF.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD", \
-  "./Data_Analysis/ACF/Outcomes/FullcorrF_1.csv" u 1:2 w l lw 5 lc 4 dt 4 t "Fluctuating Force - FGD", \
-  "./Data_Analysis/ACF/Outcomes/OrthocorrF.csv" u 1:2 w l lw 5 lc 6 dt 3 t "OD", \
-  "./Data_Analysis/ACF/Outcomes/ApproximatecorrF_test.csv" u 1:2 w l lw 5 lc 7 dt 2 t "MMZD"
+  "./Data_Analysis/ACF/Outcomes/OrthocorrF.csv" u 1:2 w l lw 5 lc 6 dt 2 t "OD", \
+  "./Data_Analysis/ACF/Outcomes/ApproximatecorrF_test.csv" u 1:2 w l lw 5 lc 7 dt 4 t "MMZD"
 set output
   # , f(x) t "FIT Orthogonal Dynamics"
 
@@ -50,7 +49,7 @@ set output
 set ylabel "{{/Roman ACF of the MOMENTA}}"
 set output "| epstopdf -f -o=../TEX_Notes/Figure/ACF_P.pdf"
 p "./Data_Analysis/ACF/Outcomes/FullcorrP.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD", \
-  "./Data_Analysis/ACF/Outcomes/OrthocorrP.csv" u 1:2 w l lw 5 lc 6 dt 3 t "OD", \
+  "./Data_Analysis/ACF/Outcomes/OrthocorrP.csv" u 1:2 w l lw 5 lc 6 dt 2 t "OD", \
   "./Data_Analysis/ACF/Outcomes/ApproximatecorrP_test.csv" u 1:2 w l lw 5 lc 7 dt 4 t "MMZD"
 set output
 
@@ -59,7 +58,8 @@ set output
 
 set ylabel "{{/Roman ACF}}"
 set output "| epstopdf -f -o=../TEX_Notes/Figure/ACF_comparison.pdf"
-p "./Data_Analysis/ACF/Outcomes/FullcorrF_1.csv" u 1:2 w l lw 5 lc 4 dt 4 t " ACF of the Flucutating Force - FGD", \
+p "./Data_Analysis/ACF/Outcomes/FullcorrF.csv" u 1:2 w l lw 5 lc 7 dt 2 t "ACF of the Force - FGD", \
+  "./Data_Analysis/ACF/Outcomes/FullcorrF_1.csv" u 1:2 w l lw 5 lc 6 dt 4 t " ACF of the Flucutating Force - FGD", \
   "./Data_Analysis/ACF/Outcomes/FullcorrP.csv" u 1:2 w l lw 5 lc 2 dt 1 t "ACF of the Momenta - FGD"
 set output
 

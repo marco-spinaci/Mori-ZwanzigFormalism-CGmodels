@@ -337,7 +337,7 @@ With this in mind, we can rewrite eq.~(\ref{Eq:MZequation}) as an integro-differ
     - \int_0^t \nabla_{\bfa}\,\entropy\cip{\bfa(t-s)}\fricmat\cip{\bfa(t-s),s} \diff s +{}\\
     + \frac{1}{\beta}\int_0^t \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s} \diff s + \fprojbf_{\Bphase{}}(t)\,, 
 \end{multline}
-where $\mathbf{F}(t)$ is interpreted as a zero-mean random process whose statistical properties are specified by eq.~(\ref{Eq:RAndomForce}).
+where $\fprojbf_{\Bphase{}}(t)$ is interpreted as a zero-mean random process whose statistical properties are specified by eq.~(\ref{Eq:RAndomForce}).
 
 The terms involving the friction matrix turn out to be the most difficult to compute in a real calculation because of the memory effect. We will briefly discuss the friction matrix and the memory effects, but a more thorough analysis of these terms is left for future works. 
 In the next chapter we will derive more explicit forms of the terms appearing in eq. (\ref{Eq:ZwanGLE}) for a CG system, for specific choices of the CG variables which arises naturally from physical considerations, namely canonical mappings (i.e. transformations).
@@ -408,8 +408,8 @@ $$\Psi,\Phi\colon  \real^{6\nfg}  \to  \real^{6\ncg}$$ such that
  \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}} \\
  \nonumber 
  \pard{\bfP_{K}}{t} &= -\omega_{\NA{} K} \pard{\pot^{AA}}{\bfR_{K}} - \pard{\Veff}{\bfR_{K}} 
- - \sum_{J=1}^{\ncg}\,\int_{0}^{t}\,\fricmat_{KJ}(t-s,s)\,\frac{1}{M_J} \bfP_J(t-s) \,\diff s \\
- &+ \beta^{-1} \sum_{J=1}^{\ncg} \,\int_{0}^{t} \pard{}{\bfR_{J}}\fricmat_{KJ}(s)\diff s + \fprojbf_{K}(t)
+ - \sum_{J=1}^{\ncg}\,\int_{0}^{t}\,\fricmat_{KJ}(t-s,s)\,M_J^{-1}\,\bfP_J(t-s) \,\diff s \\
+ &+ \beta^{-1} \sum_{J=1}^{\ncg} \,\int_{0}^{t} \pard{\fricmat_{KJ}(s)}{\bfR_{J}} \,\diff s + \fprojbf_{K}(t)
  \label{Eq:DevB} 
 \end{align}
 %
@@ -426,11 +426,23 @@ where $\omega_{N^AK}$ is equal to zero whenever the difference between the first
 
 \section{Markovian approximation of the Memory Kernel}
 \label{Sec:MarkovApprox}
+We said that the terms involving the friction matrix turn out to be the most difficult to compute in a real calculation because of the memory effect. 
+The problems to be faced in order to simplify the formulation of the eq.~(\ref{Eq:ZwanGLE}) are given by:
+\begin{itemize}
+\item the calculation of the friction matrix $\bffricmat(t)$, which depends from the orthogonal dynamics, i.e., from all the fast degrees of freedom coarse-grained away (see eq.~(\ref{Eq:FRICmatrixRF}) and eq.~(\ref{Eq:RAndomForce}));   
+\item the integrals that include the friction matrix, which must be computed at each time step (see the RHS of the eq.~(\ref{Eq:ZwanGLE})).
+\end{itemize}
+In the literature there are different ways to consider the friction matrix \cite{Chorin2000,Kauzlaric2011} and how to include memory effects in CG simulations \cite{Izvekov2017,Jung2017,Li2015,Yuanran2018}. 
+The approximation used very often is to consider the CG models as memoryless, i.e. that the CG models satisfy the Markovian property that allows to predict the future with only the present information. This is the so-called ``Markovian approximation''.
 
-\begin{align}
+The validity of this assumption is given by the clear separation of the time scales of the system under examination.
+In particular, in the studied system the assumption is valid if the time scale of variation of the CG variables is much larger than the time scale of decay of the memory matrix (i.e., the friction matrix $\bffricmat(t)$ eq.~(\ref{Eq:FRICmatrixRF})), that is of the time scale in which the fluctuating forces $\fprojbf_{\Bphase{}}(t,\cdot)$, defined in eq.~(\ref{Eq:RAndomForce}), vary.
+
+Therefore to simplify the eq.~(\ref{Eq:ZwanGLE}), we assume that the model under examination satisfies the Markovian property and we approximate the friction matrix as
+\begin{equation}
  \label{Eq:MarFric1}
  \bffricmat(\Bphase{},t) \approx \widetilde{\bffricmat}(\Bphase{})\delta(t).
-\end{align}
+\end{equation}
 
 In this case, $\widetilde{\bffricmat}$ is the time independent friction matrix defined as:
 %
@@ -766,7 +778,7 @@ Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integ
 %\end{figure}
 
 \section{Memory kernel approximation and numerical implementation}
-Until now, we have not yet shown how to implement the eq.~(\ref{Eq:MarkovApprox}) to determine MMZD, we have only give an idea in the section~\ref{Sec:TestCasesConsid}. We said that the MMZD is determined by a Langevin equation~(\ref{Eq:Lang1Dp}), where the potential is given by the effective potential and the memory and fluctuating terms depends on the inter-bead distance. 
+Until now, we have not yet shown how to implement the eq.~(\ref{Eq:MarkovApprox}) to determine MMZD, we have only give an idea in the section~\ref{Sec:TestCasesConsid}. We said that the MMZD is determined by a Langevin-type equation~(\ref{Eq:Lang1Dp}), where the potential is given by the effective potential and the memory and fluctuating terms depends on the inter-bead distance. 
 
 For the sake of clarity, the eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system is given below
 \begin{equation}
@@ -793,7 +805,7 @@ If we consider the bead $I$ that interacts with bead $I-1$ and bead $I+1$, we ca
 \end{align*}
 where we considered the cross terms negligible, i.e.,
 \[
- \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I,I-1} }{\bfR}\approx 0\,,\quad \cexpval{ \sigma_{I,I-1} \otimes \sigma_{I+1,I}}{\bfR}\approx 0\,,
+ \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I,I-1} }{\bfR}\approx 0 \quad\text{and}\quad \cexpval{ \sigma_{I,I-1} \otimes \sigma_{I+1,I}}{\bfR}\approx 0\,.
 \]
 We are assuming that the fluctuating forces between adjacent beads are not correlated, since we have made the assumption that pair interactions are sufficient to describe the behaviour of the system.
 
