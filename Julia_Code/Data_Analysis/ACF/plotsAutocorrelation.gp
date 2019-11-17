@@ -59,7 +59,7 @@ set output
 set ylabel "{{/Roman ACF}}"
 set output "| epstopdf -f -o=../TEX_Notes/Figure/ACF_comparison.pdf"
 p "./Data_Analysis/ACF/Outcomes/FullcorrF.csv" u 1:2 w l lw 5 lc 7 dt 2 t "ACF of the Force - FGD", \
-  "./Data_Analysis/ACF/Outcomes/FullcorrF_1.csv" u 1:2 w l lw 5 lc 6 dt 4 t " ACF of the Flucutating Force - FGD", \
+  "./Data_Analysis/ACF/Outcomes/FullcorrF_OC.csv" u 1:2 w l lw 5 lc 6 dt 4 t " ACF of the Flucutating Force - FGD", \
   "./Data_Analysis/ACF/Outcomes/FullcorrP.csv" u 1:2 w l lw 5 lc 2 dt 1 t "ACF of the Momenta - FGD"
 set output
 

@@ -429,16 +429,16 @@ where $\omega_{N^AK}$ is equal to zero whenever the difference between the first
 We said that the terms involving the friction matrix turn out to be the most difficult to compute in a real calculation because of the memory effect. 
 The problems to be faced in order to simplify the formulation of the eq.~(\ref{Eq:ZwanGLE}) are given by:
 \begin{itemize}
-\item the calculation of the friction matrix $\bffricmat(t)$, which depends from the orthogonal dynamics, i.e., from all the fast degrees of freedom coarse-grained away (see eq.~(\ref{Eq:FRICmatrixRF}) and eq.~(\ref{Eq:RAndomForce}));   
+\item the calculation of the friction matrix $\bffricmat(t)$ eq.~(\ref{Eq:FRICmatrixRF}), which depends from the orthogonal dynamics, i.e., from all the fast degrees of freedom coarse-grained away (see eq.~(\ref{Eq:RAndomForce}));   
 \item the integrals that include the friction matrix, which must be computed at each time step (see the RHS of the eq.~(\ref{Eq:ZwanGLE})).
 \end{itemize}
 In the literature there are different ways to consider the friction matrix \cite{Chorin2000,Kauzlaric2011} and how to include memory effects in CG simulations \cite{Izvekov2017,Jung2017,Li2015,Yuanran2018}. 
-The approximation used very often is to consider the CG models as memoryless, i.e. that the CG models satisfy the Markovian property that allows to predict the future with only the present information. This is the so-called ``Markovian approximation''.
 
+The approximation used very often is to consider the CG models as memoryless, i.e. to assume that the CG models satisfy the Markovian property that allows to predict the future with only the present information. This approximation is the so-called ``Markovian approximation''.
 The validity of this assumption is given by the clear separation of the time scales of the system under examination.
-In particular, in the studied system the assumption is valid if the time scale of variation of the CG variables is much larger than the time scale of decay of the memory matrix (i.e., the friction matrix $\bffricmat(t)$ eq.~(\ref{Eq:FRICmatrixRF})), that is of the time scale in which the fluctuating forces $\fprojbf_{\Bphase{}}(t,\cdot)$, defined in eq.~(\ref{Eq:RAndomForce}), vary.
+In particular, in the studied system the assumption is valid if the time scale of variation of the CG variables is much larger than the time scale of decay of the memory matrix $\bffricmat(t)$ (i.e., the friction matrix), that is of the time scale in which the fluctuating forces $\fprojbf_{\Bphase{}}(t,\cdot)$ defined in eq.~(\ref{Eq:RAndomForce}) vary.
 
-Therefore to simplify the eq.~(\ref{Eq:ZwanGLE}), we assume that the model under examination satisfies the Markovian property and we approximate the friction matrix as
+Therefore to simplify and numerically implement the eq.~(\ref{Eq:ZwanGLE}), we assume that the model under examination satisfies the Markovian property and we approximate the friction matrix as
 \begin{equation}
  \label{Eq:MarFric1}
  \bffricmat(\Bphase{},t) \approx \widetilde{\bffricmat}(\Bphase{})\delta(t).
