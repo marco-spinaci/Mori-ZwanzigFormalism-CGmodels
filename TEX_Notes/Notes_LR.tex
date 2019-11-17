@@ -1,0 +1,1191 @@
+\documentclass[10pt,a4paper]{report}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+\usepackage{paralist}
+
+\usepackage{scrextend}
+\addtokomafont{labelinglabel}{\sffamily}
+
+\usepackage{cases}
+
+\usepackage[colorlinks]{hyperref}
+
+\theoremstyle{definition}
+\newtheorem{defin}{Definition}[chapter]
+\newtheorem{prop}[defin]{Proposition}
+\newtheorem{theorem}[defin]{Theorem}
+
+\DeclareMathAlphabet\mathbfcal{OMS}{cmsy}{b}{n}
+\usepackage{mymacrosTESI}
+
+\usepackage{graphicx}
+\usepackage[margin=10pt,font=small,labelfont=bf]{caption}
+\usepackage[labelfont=bf,list=true]{subcaption}
+\graphicspath{ {Figure/} }
+
+\usepackage{booktabs}
+
+\usepackage[titletoc,page]{appendix}
+
+\usepackage{algorithmicx}
+\usepackage[chapter]{algorithm}
+\usepackage{algpseudocode}
+
+\newcommand{\lr}[1]{\textcolor[rgb]{0.8,0,0}{LR: \textbf{\textit{#1}}}}
+
+\begin{document}
+
+%  \begin{center}
+%   \section*{{\LARGE Notes}}
+%  \end{center}
+
+\tableofcontents
+
+\part{Introduction}
+
+\part{Theoretical Background}
+
+\chapter{Mori-Zwanzig Formalism}
+The Mori-Zwanzig formalism allows to study the evolution of a dynamical system through the projection on a subset of its degrees of freedom. This operation is done through \emph{projection operator techniques}.
+
+The \emph{projection operator technique} is a collection of powerful tools for the study of irreversible processes in many-body systems \cite{Grabert:Projection}. These tools were introduced into statistical physics by S. Nakajima in 1958 \cite{Nakajima1958} and R. Zwanzig in 1960 \cite{Zwanzig1960}. The former used them to study the quantum statistical mechanics of steady diffusion, while the latter to give a new formulation of methods introduced in the statistical-mechanical theory of irreversibility. In particular, R. Zwanzig developed the technique into a powerful tool for deriving formally accurate equations of motion for classical or quantum probability densities \cite{Zwanzig1961,Zwanzig1964}. Later in 1965, H. Mori proposed a different tool, which leads to the following linear \emph{generalized Langevin equation} (GLE)
+\begin{equation}\label{generalGLE}
+ \frac{\diff A}{\diff t}=i\Omega A(t)-\int_0^t\,\diff\tau K(\tau)A(t-\tau)+F(t)\,,
+\end{equation}
+where $\Omega$, $K(t)$ and $F(t)$ are well-defined quantities called frequency, memory function, and random force, respectively.
+This equation describes the non-equilibrium evolution of any set of functions $A(t)$ defined on the phase-space of the arbitrary microscopic system, close to thermal equilibrium \cite{Mori1965}. These variables $A(t)$ are called collective variables, relevant variables, coarse-grained (CG) variables or collective modes, depending on the context.
+
+\noindent
+Some years later in 1973 R. Zwanzig derived a class of generalized Langevin equations describing the motion of a system interacting with a heat bath. This GLE is exact but differs from that obtained by Mori's scheme for two reasons: for the presence of an arbitrary nonlinear force and for the fact that its validity is not restricted to small deviations from the thermal equilibrium \cite{Zwanzig1973}.
+
+\noindent
+In recent years D. Kauzlari\'c \emph{et al.} \cite{Kauzlaric2011} showed in their work on the calculation of the friction matrix in the coarse-grained description of an atomistic system that Mori's GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables (the functions $A(t)$ in the equation (\ref{generalGLE})) have a characteristic time scale much larger than the memory time scale.
+
+These techniques are known in various context as well as in transport theory. For example, in the dynamic light scattering or in the liquids theory, the GLE is used to compute time-correlation functions under circumstances where the usual phenomenological equations do not apply. Indeed, the Mori-Zwanzig formalism can be used to obtain an equation for the time correlation function $C(t)$:  
+\begin{equation}
+ \frac{\diff C(t)}{\diff t}=i\Omega\, C(t)-\int_0^t\,\diff\tau K(\tau)C(t-\tau)\,.
+\end{equation}
+This equation can be derived from the equation (\ref{generalGLE}), is called the \emph{memory-function equation} and the random force appears implicitly in $K(t)$ \cite{Berne:DynamicLightScatt,hansen2006}.
+
+If the dynamical system considered is Hamiltonian, in the Mori-Zwanzig formalism we can use two equivalent approaches:
+\begin{enumerate}[(i)]
+  \item applying the projection operator in a Hilbert space of probability densities function (pdf) to the Liouville equation, obtained the generalized Fokker-Planck and master equations \cite{Kinjo2007,Zwanzig1960,Zwanzig1961,Zwanzig1964};
+  \item applying the projection operator in the Liouville space (see appendix \ref{App:C}) to the equation of motion of time-dependent phase-space function, the GLE and the transport equation are obtained \cite{DiPasquale2019,Hijon2010,Mori1965,Nordholm1975,Zwanzig1973}.
+\end{enumerate}
+The mathematical equivalence of these two approaches is given by the duality between Liouville space and the space of densities of states, in complete analogy with the Schr\"odinger and Heisenberg pictures in Quantum Mechanics. 
+
+\noindent
+In what follows, we choose to follow the second approach since this results in a more physically-intuitive derivation. Here, we will derive the GLE for the CG variables with the \emph{Zwanzig projection} and the \emph{Mori projection}, respectively.
+
+We assume that, at the microscopic level, the system is well described by classical mechanics and is composed by $\nfg$ particles. We will refer to it as the \emph{fine-grained} (FG) system. The microscopic state is characterised by the function $\Aphase{}(t)$ in a $6\nfg$-dimensional phase-space. 
+
+\noindent
+To derive a reduced description of this system, we consider a smaller set of phase function $\Bphase{}(\Aphase{})$, which we call observables\footnote{
+Throughout the present section, these observables could be quite general, but we will later apply the derivation made here to a particular choice.
+}.
+The time evolution of a function of phase variables is given by
+\begin{equation}\label{Eq:MotionEqGamma}
+  \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\Bphase{}(\Aphase{}(t))\,,
+  \quad\Bphase{}(\Aphase{}(0)) \equiv \Bphase{}(\Aphase{0})\,.
+\end{equation}
+Here, the operator $\Lio\equiv iL$ is the \emph{Liouvillian} (see appendix \ref{App:C}) and the formal solution is given by
+\begin{equation}\label{Eq:SolLiouville}
+	\Bphase{}(\Aphase{}(t)) = \exp{\Lio t}\,\Bphase{}(\Aphase{0})\,,
+\end{equation}
+where the exponential operator is defined through its Taylor expansion.
+This solution implicitly depends upon the full evolution of the FG system, therefore this equation does not provide a self-consistent evolution equation for the observables. 
+
+We also assume that the state of the system is described by the canonical equilibrium distribution\footnote{Different choices are possible. For example it is also perfectly possible to carry out the same derivation using the micro-canonical equilibrium measure.} $\rho^{eq}(\Aphase{})$, so that the probability equilibrium measure is given by the Gibbs measure on the FG phase-space $X=\real^{6\nfg}$:
+\begin{equation}\label{Eq:GibbsMeas}
+ \mathbb{P}(\diff\Aphase{})=\rho^{eq}(\Aphase{})\diff\Aphase{}=\frac{1}{\partf}\exp{-\beta\Ham(\Aphase{})}\diff\Aphase{}\,.
+% \qquad X=\real^{6\nfg}\,;
+\end{equation}
+
+The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables $\Bphase{}(\Aphase{})$ by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves, leading to a closed equation for the CG variables. 
+
+%For example, with the \emph{Zwanzig projection} this is done by projecting the equation for the observables $\Bphase{}(\Aphase{})$ onto the space of functions of the CG variables, which may be regarded as a subspace of the FG observable space\footnote{This is true as long as some very broad measurability assumptions on the CG variables chosen are met; in practice, choosing CG variables which are continuous and differentiable in the FG variables is already sufficient, and this particular choice is implicitly assumed in the derivation presented here. In theory however, much more general choices can be made.}.
+
+\section{Mori approach}
+\label{Sec:MoriProj}
+
+\section{Zwanzig approach}
+\subsection{The Zwanzig Projection}
+We denote the \emph{Zwanzig projection} as $\mathcal{P}_{\Bphase{}}$:
+\begin{equation}\label{Eq:proj}
+	\mathcal{P}_{\Bphase{}}F(\Aphase{}) = \frac{1}{\Omega(\Bphase{}(\Aphase{}))} \int_X F(\Aphase{}')\,\dirac{\Bphase{}(\Aphase{}')-\Bphase{}(\Aphase{})}\rho^{eq}(\Aphase{}')\diff\Aphase{}'
+\end{equation}
+where $F(\Aphase{})$ is a generic function acting on the space-phase and the normalisation factor, also called the \textit{structure function}, represents the total volume of the surface $S(\Bphase{}(\Aphase{}))$ in phace-space, which is defined by $\Bphase{}(\Aphase{}')=\Bphase{}(\Aphase{})$:
+%
+\begin{equation}\label{eq:structurefunc}
+	\Omega(\Bphase{}(\Aphase{})) = \int_X\dirac{\Bphase{}(\Aphase{}')-\Bphase{}(\Aphase{})}\mathbb{P}(\diff\Aphase{}')\,.
+\end{equation}
+In other words, the \textit{structure function} represents the number of micro-states compatible with the macro-state $\Bphase{}(\Aphase{}')=\Bphase{}(\Aphase{})$ \cite{Hijon2010}. While, the projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary function $F(\Aphase{})$ the part, $\mathcal{P}_{\Bphase{}}F(\Aphase{})$, which depends on $\Aphase{}$ only through $\Bphase{}(\Aphase{})$.
+
+\noindent
+If we introduce a set of fixed values $\bfa$ such that for a given $\Aphase{}$ we have $\Bphase{}(\Aphase{})=\bfa$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondent surface $S(\bfa)$, while the \textit{structure function} in the denominator $\Omega(\Bphase{}(\Aphase{}))=\Omega(\bfa)$ allows us to spread this amount on the surface $S(\bfa)$.
+Therefore, loosely speaking, $\mathcal{P}_{\Bphase{}}$ ``averages'' the function $F(\Aphase{})$ over the surface $S(\bfa)$ in case the observables $\Bphase{}(\Aphase{})$ are equal to $\bfa$ for a given $\Aphase{}$.
+
+The fact that $\mathcal{P}_{\Bphase{}}$ is a projection operator can be easily verified by showing that it satisfies the necessary and
+sufficient condition for a projection operator, $\mathcal{P}_{\Bphase{}}^2=\mathcal{P}_{\Bphase{}}$ \cite{Zwanzig1961}.
+So we can define the \emph{complementary orthogonal projection} $\qproj_{\Bphase{}}$ as
+$$
+ \qproj_{\Bphase{}}=\idproj-\pproj_{\Bphase{}}\,,
+$$  
+where $\idproj$ is the identity operator.
+
+
+\subsection{Zwanzig Projection as Conditional Expectation}
+We will now show that this projection is equivalent to taking the conditional expectation: 
+$$\mathcal{P}_{\Bphase{}}F \equiv \cexpval{F}{\,\Bphase{}} \equiv \aver{F}_{\Bphase{}}\,$$ 
+with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for specific values $\bfa$ of the CG variables $\Bphase{}(\Aphase{})$ \cite{Chorin2000,DiPasquale2019}. This property will be used in the following sections.
+
+Let $A(\Aphase{})$ be a phase function in the Liouville space (see appendix \ref{App:C}).
+We now focus our attention on the set of functions 
+$$
+\bfA(\Aphase{})=\bp{ A_I\in L^2\cip{X,\mathbb{P}}\,,\;\;\mathrm{where}\;\; I=1,\ldots,\ncg \;\;\mathrm{and}\;\; \ncg\le\nfg }\,,
+$$
+i.e. on the set of CG variables $\Bphase{}$, which define a space $V=\real^{\ncg}$. Given a phase function $B(\Aphase{})$, we define the projection operator over the CG space $V$ as
+\begin{equation*}
+ \mathcal{P}_{\bfa}B(\Aphase{}) = \int_{A^{-1}\cip{\bp{\bfa}}}B(\Aphase{})\mathbb{P}_{\bfa}(\diff\Aphase{})\,,
+\end{equation*}
+where $A^{-1}\cip{\bp{\bfa}}=\bp{\Aphase{} \in X:\;\bfA(\Aphase{})= \bfa}$ is the preimage of $\Bphase{}\in \real^{\ncg}$ for some fixed $\bfa$ and $\mathbb{P}_{\bfa}\cip{\diff \Aphase{}}$ is the measure which satisfies
+$$
+\int_V\cip{\int_{A^{-1}\cip{\bp{\bfa}}}B(\Aphase{})\mathbb{P}_{\bfa}(\diff\Aphase{})}\diff \bfa = \int_X B\cip{\Aphase{}}\mathbb{P}\cip{\diff\Aphase{}}\,,
+$$
+for any phase function $B(\Aphase{})$ in the Liouville space.
+
+Since the observed value of the phase function $f(\Aphase{})$ is the expected value $\mathbb{E}[f]$ (see definition \ref{Def:E[...]}) with respect to the Gibbs measure (\ref{Eq:GibbsMeas}), we can interpret the phase function as a random variable.  
+Therefore, the projection operator has a nice interpretation as a conditional expectation over the CG variables:
+\begin{equation}\label{ConExp}
+ \mathcal{P}_{\bfa}B(\Aphase{}) = \cexpval{B(\Aphase{})}{\,\bfA(\Aphase{})=\bfa}\,.
+\end{equation}
+For the mathematical details of the conditional expectation see theorem \ref{Th:CondExp}. 
+We stress here that the conditional expectation \ref{ConExp}, which we rewrite as  $\cexpval{B}{\,\bfa}$, is a function of $\bfa$, is a linear operator and represents the best approximation of $B$ compared to any function of $\bfa$, and therefore it is an orthogonal projection. For further details on the last property, see the definition \ref{Def:ExpOrthProj}.
+
+
+\subsection{Generalized Langevin Equation}
+We are now in the position to derive the GLE. We will make the derivation considering an ensemble of initial conditions $\Aphase{0}$ satisfying $\Bphase{}(\Aphase{0})=\bfa$ for some fixed $\bfa=\bfA(\Aphase{})$ and with $\Aphase{0}$ distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa$.  
+
+Differentiating both sides of the relation (\ref{Eq:SolLiouville}) with respect to time, we can rewrite the equation (\ref{Eq:MotionEqGamma}) as
+\begin{equation}
+ \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\exp{\Lio t}\,\Bphase{}(\Aphase{0}) = \exp{\Lio t}\Lio\,\Bphase{0}\,, 
+\end{equation}
+where $\Bphase{0}=\Bphase{}(\Aphase{0})$. Applying the identity operator $\idproj=\pproj+\qproj$ to the equation obtained, one has
+\begin{equation}\label{Eq:MoIdProj}
+ \totd{\Bphase{t}}{t} = \exp{\Lio t}\cip{\pproj+\qproj}\Lio\,\Bphase{0}=
+ \exp{\Lio t}\pproj\Lio\,\Bphase{0} + \exp{\Lio t}\qproj\Lio\,\Bphase{0}\,, 
+\end{equation}
+where we omit the $\bfa$ subscript in the projection operators $\pproj$ and $\qproj$, to simplify the notation.
+
+Now if we make in the Dunhamel-Dyson operator identity for the exponential operator $\exp{-(U+V)\,t}$ (see appendix \ref{App:D}) the substitutions $U=\Lio\qproj$ and $V=\Lio\pproj$, we get
+$$
+\exp{-\Lio t} = \exp{-\Lio\qproj t}-\int_0^{t}\exp{-\Lio\qproj s}\,\Lio\pproj \,\exp{-\Lio(t-s)}\,\diff s\,,
+$$
+and if we take the adjoint of both side, we obtain that
+\begin{equation}
+ \exp{\Lio t} = \exp{\qproj\Lio t} + \int_0^t \exp{\Lio (t-s)}\,\pproj\Lio\,\exp{\qproj\Lio s}\,\diff s\,,
+\end{equation}
+where we used the fact that the projection operators $\pproj$ and $\qproj$ are Hermitian operator, while the liouvillian $\Lio$ is anti-Hermitian, i.e. $(f,\Lio\, g)=-(\Lio\, f,g)$ for all $f,g$ in the Liouville space.
+
+We can rewrite the second term on the RHS of equation (\ref{Eq:MoIdProj}) as
+\begin{equation}\label{Eq:PezzoEqEvoluz}
+ \exp{\Lio t}\qproj\Lio\,\Bphase{0} = \exp{\qproj\Lio t}\qproj\Lio\,\Bphase{0} + 
+ \int_0^t \exp{\Lio(t-s)}\,\pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0}\,\diff s\,, 
+\end{equation}
+and, considering the projection on the CG variables such that $A(\Aphase{})=\bfa$, the last part of the integral becomes:
+\begin{multline*}
+ \pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0} = 	
+   \frac{1}{\Omega(\bfa)} \int\diff\Aphase{0}\rho^{eq}(\Aphase{0})\, \dirac{\Bphase{}(\Aphase{0})-\bfa}
+         \sqp{ \Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } ={}\\
+   = -\frac{1}{\Omega(\bfa)} \int\diff\Aphase{0}\rho^{eq}(\Aphase{0}) 
+         \sqp{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } \Lio\,\dirac{\Bphase{}(\Aphase{0})-\bfa}\,.
+\end{multline*}
+Here, we used the fact that $\Lio$ is skew-symmetric (anti-Hermitian) on the Liouville space. Using the chain rule for time differentiation\footnote{ 
+For a generic function on the CG space: 
+$$
+ \totd{B(\Bphase{})}{t}=\Lio\,B(\Bphase{})=\dot{\Bphase{}}\cdot\nabla_{\Bphase{}}B(\Bphase{})=
+   \Lio\,\Bphase{}\cdot\nabla_{\Bphase{}}B(\Bphase{})\,,
+$$
+so we get $ \Lio\,B(\Bphase{})=\Lio\,\Bphase{}\cdot\nabla_{\Bphase{}}B(\Bphase{})$.
+} we can write 
+$$
+ \Lio\,\dirac{\Bphase{}(\Aphase{})-\bfa} = \Lio\,\Bphase{}\cdot\nabla_{\Bphase{}}\dirac{\Bphase{}(\Aphase{})-\bfa} = 
+ - \Lio\,\Bphase{}\cdot\nabla_{\bfa}\,\dirac{\Bphase{}(\Aphase{})-\bfa}
+$$
+where $\nabla_\bfx$ denotes the gradient taken with respect to the variable $\bfx$, and get:
+\begin{multline*}
+\pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0} = \frac{1}{\Omega(\bfa)} \int\diff\Aphase{0}\rho^{eq}(\Aphase{0})\,
+    \sqp{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } \Lio\,\Bphase{0}\cdot\nabla_{\bfa}\,\dirac{\Bphase{}(\Aphase{0})-\bfa} ={}\\
+  = \frac{1}{\Omega(\bfa)}\,\nabla_{\bfa}\cdot\int\diff\Aphase{0}\rho^{eq}(\Aphase{0})\,\bp{ \,\dirac{\Bphase{}(\Aphase{0})-\bfa}   
+    \sqp{ \cip{ \Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0}} } }\,,
+\end{multline*}
+%
+where $\otimes$ represents a tensor product. We used the fact that the divergence of a continuously differentiable second-order tensor field is a first-order tensor field, i.e. $\nabla\cdot\cip{f\bfu\otimes \bfv} = \bfv \cip{\bfu\cdot \nabla f} + f\cip{\nabla\cdot \bfu}\bfv + f\cip{\bfu\cdot\nabla}\bfv$ where $f$ is a generic function and $\bfu$, $\bfv$ two generic vectors.
+We can rewrite the equation obtained as
+\begin{multline}\label{Eq:PezzoInt}
+\pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0} = \frac{1}{\Omega(\bfa)}\, \nabla_{\bfa}\cdot\bp{ \Omega(\bfa)\,
+    \pproj\sqp{ \cip{ \Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } } ={}\\
+  = \frac{\nabla_{\bfa}\Omega(\bfa)}{\Omega(\bfa)}\, \pproj\sqp{ \cip{ \Lio\,\Bphase{0}} 
+    \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } +
+    \nabla_{\bfa}\cdot\pproj\sqp{ \cip{ \Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } ={}\\
+  = - \nabla_{\bfa}\,\entropy\cip{\bfa}\fricmat\cip{\bfa,s} + \frac{1}{\beta}\, \nabla_{\bfa}\cdot\fricmat\cip{\bfa,s}\,,
+\end{multline}
+where $\beta=\cip{\kb T}^{-1}$ and we have introduced two new functions.
+
+\noindent
+The former 
+\begin{equation}\label{Eq:Entropy(FreeE)}
+  \entropy\cip{\bfa}\coloneqq -\frac{1}{\beta}\ln \Omega\cip{\bfa}
+\end{equation}
+is interpreted, since it has units of energy, as the entropic contribution to the Helmholtz free energy of the system, in view of the definition of $\Omega(\bfa)$ in the equation (\ref{eq:structurefunc}). We note that in \cite{Hijon2010}, the alternative quantity $\mathcal{S}(\bfa) = \kb\ln{\Omega(\bfa)}$ is defined, which is an entropy. Both definitions are identical up to a multiplicative factor, and depend on the assumed temperature of the system.
+
+\noindent
+Instead, the latter function is a positive definite memory matrix:
+\begin{equation}
+\begin{split}\label{Eq:fricmatrix}
+	\fricmat\cip{\bfa,s} &\coloneqq \beta\,\pproj\sqp{ \cip{ \Lio\,\Bphase{0}} \otimes 
+	  \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } ={}\\
+	&= \beta\,\bp{ \pproj\sqp{ \cip{ \pproj\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } + 
+	  \pproj\sqp{ \cip{ \qproj\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } } ={}\\
+	&= \beta\,\bp{ \cip{ \pproj\Lio\,\Bphase{0}} \otimes \pproj\sqp{\cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } + 
+	  \pproj\sqp{ \cip{ \qproj\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } } } ={}\\
+	&= \beta\,\pproj\sqp{ \cip{ \qproj\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj\Lio s}\,\qproj\Lio\Bphase{0} } }\,, 
+\end{split}
+\end{equation}
+where we used the fact that $\pproj\qproj=0$.
+
+\noindent
+Inserting eq.~(\ref{Eq:PezzoInt}) in the eq.~(\ref{Eq:PezzoEqEvoluz}), eq.~(\ref{Eq:MoIdProj}) becomes
+\begin{multline}
+ \totd{\Bphase{t}}{t} = \exp{\Lio t}\pproj\Lio\,\Bphase{0} + \exp{\Lio t}\qproj\Lio\,\Bphase{0} ={}\\
+   = \exp{\Lio t}\pproj\Lio\,\Bphase{0} - \int_0^t \exp{\Lio(t-s)}\,\nabla_{\bfa}\,\entropy\cip{\bfa}\fricmat\cip{\bfa,s} \diff s +{}\\
+   + \frac{1}{\beta}\int_0^t \exp{\Lio(t-s)}\,\nabla_{\bfa}\cdot\fricmat\cip{\bfa,s} \diff s + \exp{\qproj\Lio t}\qproj\Lio\,\Bphase{0}\,. 
+\end{multline}
+Now, since for any $f\cip{\Bphase{t}}$ we have $\exp{\Lio t}f\cip{\Bphase{0}}=f\cip{\Bphase{t}}$, the terms in the equation can be rewritten as:
+\begin{align*}
+  \exp{\Lio t}\pproj_{\bfa}\Lio\,\Bphase{0} &= \pproj_{\bfa(t)}\Lio\,\Bphase{0}\,,\\
+  \exp{\Lio(t-s)}\,\nabla_{\bfa}\,\entropy\cip{\bfa}\fricmat\cip{\bfa,s} &= 
+  \nabla_{\bfa}\,\entropy\cip{\bfa(t-s)}\fricmat\cip{\bfa(t-s),s}\,,\\ 
+  \exp{\Lio(t-s)}\,\nabla_{\bfa}\cdot\fricmat\cip{\bfa,s} &= \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s}\,,
+\end{align*} 
+so we get
+\begin{multline}\label{Eq:MZequation}
+ \totd{\Bphase{t}}{t} = \Lambda\cip{\Bphase{t}} 
+    - \int_0^t \nabla_{\bfa}\,\entropy\cip{\bfa(t-s)}\fricmat\cip{\bfa(t-s),s} \diff s +{}\\
+    + \frac{1}{\beta}\int_0^t \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s} \diff s + \fprojbf_{\Bphase{}}(t,\Aphase{0})\,, 
+\end{multline}
+%\begin{equation*}
+% \totd{\Bphase{t}}{t} = \pproj_{\bfa(t)}\Lio\,\Bphase{0} 
+%    \,-\, \int_0^t \nabla_{\bfa}\,\entropy\cip{\bfa(t-s)}\fricmat\cip{\bfa(t-s),s}\, \diff s 
+%    \,+\, \frac{1}{\beta}\int_0^t \nabla_{\bfa}\,\cdot\,\fricmat\cip{\bfa(t-s),s}\, \diff s \,+\, \fprojbf_{\Bphase{}}(t,\Aphase{0}) 
+%\end{equation*}
+where we have defined
+\begin{align}
+ \label{Eq:Lamba(GammaT)}
+ \Lambda\cip{\Bphase{t}} &\coloneqq \pproj_{\bfa(t)}\Lio\,\Bphase{0}\,,\\
+ \label{Eq:RAndomForce}
+ \fprojbf_{\Bphase{}}(t,\Aphase{0}) &\coloneqq \exp{\qproj_{\bfa}\Lio t}\qproj_{\bfa}\Lio\,\Bphase{0} = 
+	   \qproj_{\bfa}\exp{\qproj_{\bfa}\Lio t}\Lio\,\Bphase{0}\,.
+\end{align} 
+The quantity $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ still depends on the FG variables, and is given by the solution of an auxiliary set of equations called \emph{orthogonal dynamics equations} \cite{Givon2005}, which we will discuss in the following sections.  
+We can now rewrite eq. (\ref{Eq:fricmatrix}) as
+\begin{align}\label{Eq:FRICmatrixRF}
+ \nonumber
+ \fricmat\cip{\bfa,s} \coloneqq& 
+   \,\beta\,\pproj_{\bfa}\sqp{ \cip{ \qproj_{\bfa}\Lio\,\Bphase{0}} \otimes 
+   \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } } = {}\\ 
+ \nonumber
+ =& \,\beta\, \pproj_{\bfa} \sqp{ \fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(s,\Aphase{0}) } ={}\\
+ =& \,\beta\, \cexpval{ \fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(s,\Aphase{0}) }{ \,\bfA(\Aphase{})=\bfa }\,,
+\end{align}
+%\begin{align*}
+% \fricmat\cip{\bfa,s} &\coloneqq 
+%   \beta\,\pproj_{\bfa}\sqp{ \cip{ \qproj_{\bfa}\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } } \\  
+%   &\equiv
+%   \beta\,\cexpval{\fprojbf_{\Bphase{}}(0,\Aphase{0})\otimes\fprojbf_{\Bphase{}}(t,\Aphase{0})}{\,\bfa}
+%   \equiv \beta\,\aver{\fprojbf_{\Bphase{}}(0,\Aphase{0})\otimes\fprojbf_{\Bphase{}}(t,\Aphase{0})}_{\bfa}  
+%\end{align*}
+therefore, from eq.~(\ref{Eq:MZequation}), $\bffricmat$ is a friction matrix, whose components can be written in Green-Kubo form \cite{Kauzlaric2011}.
+
+Recall that we are not interested in solving the equation (\ref{Eq:MZequation}) for a specific initial condition $\Bphase{}(\Aphase{0})$, but rather for an ensemble of initial conditions $\Aphase{0}$ satisfying $\Bphase{}(\Aphase{0})=\bfa(0)$ for some fixed $\bfa(0)=\bfA(\Aphase{})$, where $\bfA(\Aphase{})$ is a generic set of CG variables, and with $\Aphase{0}$ distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa(0)$. It is important to highlight here that the complexity of the equation (\ref{Eq:MZequation}) is not reduced with respect the starting equation (\ref{Eq:MotionEqGamma}), it has simply been shifted into the calculation of the \emph{orthogonal dynamics}. However, close to equilibrium, the term $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ is uncorrelated with the projected variables $\Bphase{}$ and therefore approximated as random noise. 
+The proof of this statement is based on the scalar product defined in the Liouville space and the Mori projector $\pproj^{M}$ (see section \ref{Sec:MoriProj}) which, as we said, is a special case of the Zwanzig projector when the system is near equilibrium \cite{Kauzlaric2011}. If we now consider eq.~(\ref{Eq:RAndomForce}), we can write:
+\begin{equation*}
+\begin{split}
+ \cip{ \fprojbf_{\Bphase{}}(t,\Aphase{0}) ,\, \Bphase{}^*(\Aphase{0}) } &= 
+    \cip{ \exp{\qproj_{\bfa}^M\Lio t}\qproj_{\bfa}^M\Lio\,\Bphase{0} ,\, \Bphase{0}^* } = \\
+  &= \cip{ \qproj_{\bfa}^M\exp{\qproj_{\bfa}^M\Lio t}\qproj_{\bfa}^M\Lio\,\Bphase{0} ,\, \Bphase{0}^* } = \\
+  &= \cip{ \qproj_{\bfa}^M \fprojbf_{\Bphase{}}(t,\Aphase{0}) ,\, \Bphase{0}^* } = \\
+  &= \cip{\fprojbf_{\Bphase{}}(t,\Aphase{0}) ,\, \Bphase{0}^* } - 
+  \frac{\cip{\fprojbf_{\Bphase{}}(t,\Aphase{0}) ,\, \Bphase{0}^* }}{\cip{\Bphase{0} ,\, \Bphase{0}^* }}\cip{\Bphase{0} ,\, \Bphase{0}^* } =
+  0\,,
+\end{split}
+\end{equation*}
+where we used the idempotent property of the projector and the definition of $\qproj^M$, the complement of $\pproj^M$.
+In the Langevin description of the dynamics of a system, the random force has the property of being uncorrelated from the velocity of the particle. For the same reason, being the dynamic of $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ orthogonal to that of $\Bphase{}$, i.e. they are uncorrelated, we can identify it as a random force acting on the system.
+
+With this in mind, we can rewrite eq.~(\ref{Eq:MZequation}) as an integro-differential equation with a random-source term which is usually referred to as a \emph{Generalized Langevin Equation} (GLE):
+\begin{multline}\label{Eq:ZwanGLE}
+ \totd{\Bphase{t}}{t} = \Lambda\cip{\Bphase{t}} 
+    - \int_0^t \nabla_{\bfa}\,\entropy\cip{\bfa(t-s)}\fricmat\cip{\bfa(t-s),s} \diff s +{}\\
+    + \frac{1}{\beta}\int_0^t \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s} \diff s + \fprojbf_{\Bphase{}}(t)\,, 
+\end{multline}
+where $\fprojbf_{\Bphase{}}(t)$ is interpreted as a zero-mean random process whose statistical properties are specified by eq.~(\ref{Eq:RAndomForce}).
+
+The terms involving the friction matrix turn out to be the most difficult to compute in a real calculation because of the memory effect. We will briefly discuss the friction matrix and the memory effects, but a more thorough analysis of these terms is left for future works. 
+In the next chapter we will derive more explicit forms of the terms appearing in eq. (\ref{Eq:ZwanGLE}) for a CG system, for specific choices of the CG variables which arises naturally from physical considerations, namely canonical mappings (i.e. transformations).
+%We will show how these formal expressions can be computed from MD simulations for a simple system represented by a one dimensional chain composed by atoms with different mass connected through a Lennard-Jones potential. The scale separation hypothesis will be discussed for this simple system.
+
+
+\chapter{Canonical Mapping and Coarse-Graining}
+\label{Sec:CanMapp&CG}
+
+\section{Definition and Notation}
+In the present work we have said that we consider two resolution levels for a given molecular system. The first one, at high resolution, is the fine-grained (FG) system composed by $\nfg$ particles, while the second one, at low resolution, is the CG system composed by $\ncg$ particles. The term \emph{particles} is used to indicate either an ``atom'', the fundamental particles that interacts in the FG system, or a larger group of ``atoms'' that interacts in the CG system, called \emph{bead}. 
+
+We will assume that the chemical structure of the molecular system is fixed, i.e. no reactions occur, the connectivity of the ``atoms'' is specified at the outset allowing us to fix a global index for the particles in the FG system, and that each ``atom'' is mapped to a fixed (unique) particle in the CG system.
+Following the work of Di Pasquale \emph{et al.} \cite{DiPasquale2019} and Noid \emph{et al.} \cite{Noid2008}, we can summarise the notation and the definition that we will use and that we have already used, in the following way:
+\begin{itemize}
+\item[-] lower case letters (e.g. $i,j$) refer to particles in the FG system, while capital letters (e.g. $I,J$) label the particles (``atoms'' or beads) in the CG system;
+\item[-] the mass of the $j$-th atom in FG system will be indicated as $m_j$, while the mass of the $J$-th particle in CG system will be indicated as $M_J$;
+\item[-] the set of ``atoms'' included within the bead of index $J$ is define as
+$$ S_J \coloneqq \bp{j\in\bp{1,\ldots,\nfg}: \text{the $j$-th atom forms part of CG particle $J$}}\,.$$
+\item[-] the number of ``atoms'' corresponding to CG particle $J$ will be referred to as $ s_J = \# S_J $;
+\item[-] the index of the CG particle containing the $k$-th ``atom'' will be referred to as $J_k$; 
+\item[-] FG phase space variables are denoted with lower case letters: 
+  $$\Aphase{}=\cip{\Aphase{\bfr},\Aphase{\bfp}}=\cip{\bfr_1,\ldots,\bfr_{\nfg},\bfp_1,\ldots,\bfp_{\nfg}}\,;$$
+\item[-] CG phase space variables are denoted using capital letters:
+  $$\Bphase{}=\cip{\Bphase{\bfR},\Bphase{\bfP}} = \cip{\bfR_1,\ldots,\bfR_{\ncg},\bfP_1,\ldots,\bfP_{\ncg}}\,.$$
+\end{itemize}
+A general CG (hybrid) system may include particles corresponding to single ``atoms'', i.e. $J$ for which $s_J=1$, and into proper beads, i.e. $J$ for which $s_J>1$. The number of ``atoms'' in the CG system will be denoted as
+$$N^A \coloneqq \#\bp{J\in\bp{1,\ldots,\ncg}: s_J=1}\,,$$  
+while the number of beads is denoted as $N^B \coloneqq \ncg-N^A$.
+For notational convenience, we will assume that the indices are ordered in such way that indices $J\in\bp{1,\ldots,N^A}$ correspond to atoms, and $J\in\bp{N^A+1,\ldots,\ncg}$ corresponds to beads. 
+A sketch of a possible mapping between FG and general CG systems is shown in fig.~\ref{Fig:sketch}.
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{CGmapping}
+    \caption{Sketch of the mapping of a molecule from the FG system to the general CG (hybrid) system where the labels of the ``particles'' for the two different resolutions are highlighted. In the picture, $\ncg=7$ and $\NA{}=5$ therefore, $S_1=\{4\},\,S_2=\{5\},\,\ldots,\,S_5=\{11\},\,S_6=\{1,\,2,\,3\},\,S_7=\{7,\,8,\,9\}$.}
+    \label{Fig:sketch}
+\end{figure}
+
+\section{A particular class of mapping operator}
+\label{Sec:Mapping}
+The mapping operators are a collection of functions defined in the FG system that specify the physical meaning of CG variables, i.e. they fix the CG variables will be observables of the FG system. Therefore they are functions
+$$\Psi,\Phi\colon  \real^{6\nfg}  \to  \real^{6\ncg}$$ such that 
+\begin{align*}
+\Aphase{}  &\mapsto \Psi(\Aphase{}) \eqqcolon \Bphase{\bfR}(\Aphase{})=\cip{\bfR_1,\ldots,\bfR_{\ncg}}\,,\\
+\Aphase{}  &\mapsto \Phi(\Aphase{}) \eqqcolon \Bphase{\bfP}(\Aphase{})=\cip{\bfP_1,\ldots,\bfP_{\ncg}}\,.
+\end{align*}
+
+\section{Separability and effective interactions}
+\paragraph{the Potential Energy of the CG particles:}
+\begin{align}\label{Eq:EntrInt}
+  \entropy_{\bfR}(\Bphase{\bfR})
+  &=-\frac{1}{\beta} \log{} \bigg(\int\diff\Aphase{\bfr}' \frac{1}{\mathcal{\mathcal{Z}_{\bfR}}}
+    \exp{-\beta \big[\pot^{AA}(\bfr')+\pot^{AB}(\bfr)+\pot^{BB}(\bfr')\big]}\prod_{J=1}^{\ncg}
+    \dirac{\Psi_{J}(\bfr')-\bfR_{J}} \bigg) \nonumber 	\\
+  & = \pot^{AA}\Big(\{\bfR_I\}_{I=1}^{\NA{}}\Big)  \nonumber\\
+  &\qquad - \frac{1}{\beta} \log{}  \cip{\int{\diff\Aphase{\bfr}' \frac{1}{\mathcal{\mathcal{Z}_{\bfR}}}
+    \exp{\big[{{-\beta \big(\pot^{AB}(\{\bfR_I\}_{I=1}^{\NA{}},\bfr') +\pot^{BB}(\bfr') \big)}\big]}}}
+    \prod_{J=\NA{}+1}^{\NB{}}\dirac{\Psi_{J}(\bfr')-\bfR_{J}}}  \nonumber 	\\
+  & = \pot^{AA}\Big(\{\bfR_I\}_{I=1}^{\NA{}}\Big) + \Veff(\Bphase{\bfR}).
+\end{align}
+
+
+
+\section{Final system of equations}
+
+\begin{align}
+ \nonumber
+ \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}} \\
+ \nonumber 
+ \pard{\bfP_{K}}{t} &= -\omega_{\NA{} K} \pard{\pot^{AA}}{\bfR_{K}} - \pard{\Veff}{\bfR_{K}} 
+ - \sum_{J=1}^{\ncg}\,\int_{0}^{t}\,\fricmat_{KJ}(t-s,s)\,M_J^{-1}\,\bfP_J(t-s) \,\diff s \\
+ &+ \beta^{-1} \sum_{J=1}^{\ncg} \,\int_{0}^{t} \pard{\fricmat_{KJ}(s)}{\bfR_{J}} \,\diff s + \fprojbf_{K}(t)
+ \label{Eq:DevB} 
+\end{align}
+%
+where $\omega_{N^AK}$ is equal to zero whenever the difference between the first and second subscript is negative and one otherwise.
+
+
+\section{Orthogonal Dynamics}
+
+\begin{align}
+	\totd{\bfr_k}{t} &= \frac{\bfp_k}{m_{k}} \\
+	\totd{\bfp_k}{t} &= - \pard{U(\Aphase{\bfr})}{\bfr_k} + \frac{m_k}{M_I}\sum_{i\in S_I}\pard{U(\Aphase{\bfr})}{\bfr_i}
+	\label{Eq:orth} 
+\end{align}
+
+\section{Markovian approximation of the Memory Kernel}
+\label{Sec:MarkovApprox}
+We said that the terms involving the friction matrix turn out to be the most difficult to compute in a real calculation because of the memory effect. 
+The problems to be faced in order to simplify the formulation of the eq.~(\ref{Eq:ZwanGLE}) are given by:
+\begin{itemize}
+\item the calculation of the friction matrix $\bffricmat(t)$, which depends from the orthogonal dynamics, i.e., from all the fast degrees of freedom coarse-grained away (see eq.~(\ref{Eq:FRICmatrixRF}) and eq.~(\ref{Eq:RAndomForce}));   
+\item the integrals that include the friction matrix, which must be computed at each time step (see the RHS of the eq.~(\ref{Eq:ZwanGLE})).
+\end{itemize}
+In the literature there are different ways to consider the friction matrix \cite{Chorin2000,Kauzlaric2011} and how to include memory effects in CG simulations \cite{Izvekov2017,Jung2017,Li2015,Yuanran2018}. 
+The approximation used very often is to consider the CG models as memoryless, i.e. that the CG models satisfy the Markovian property that allows to predict the future with only the present information. This is the so-called ``Markovian approximation''.
+
+The validity of this assumption is given by the clear separation of the time scales of the system under examination.
+In particular, in the studied system the assumption is valid if the time scale of variation of the CG variables is much larger than the time scale of decay of the memory matrix (i.e., the friction matrix $\bffricmat(t)$ eq.~(\ref{Eq:FRICmatrixRF})), that is of the time scale in which the fluctuating forces $\fprojbf_{\Bphase{}}(t,\cdot)$, defined in eq.~(\ref{Eq:RAndomForce}), vary.
+
+Therefore to simplify the eq.~(\ref{Eq:ZwanGLE}), we assume that the model under examination satisfies the Markovian property and we approximate the friction matrix as
+\begin{equation}
+ \label{Eq:MarFric1}
+ \bffricmat(\Bphase{},t) \approx \widetilde{\bffricmat}(\Bphase{})\delta(t).
+\end{equation}
+
+In this case, $\widetilde{\bffricmat}$ is the time independent friction matrix defined as:
+%
+\begin{equation}\label{Eq:MarDeltaFric}
+  \widetilde{\bffricmat}(\Bphase{}) := \bffricmat(\Bphase{},0)
+  = \beta\,\aver{\fprojbf_{\Bphase{}}(0,\cdot)\otimes
+    \fprojbf_{\Bphase{}}(0,\cdot)}_{\Bphase{}}.
+\end{equation}
+
+
+Assuming the approximation (\ref{Eq:MarFric1}) is valid, the equations of motion for the atomistic/CG system eq.~(\ref{Eq:DevB}) become:
+
+\begin{align}
+ \label{Eq:MarkovApprox}
+ \nonumber
+ \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}} \\
+ \nonumber
+ \pard{\bfP_{K}}{t} &= -\omega_{\NA{}K}\pard{\pot^{AA}}{\bfr_{K}} -\pard{\Veff}{\bfR_{K}} 
+ - \sum_{J=1}^{\ncg}{{\widetilde{\fricmat}_{KJ}}\frac{\bfP_{J}}{M_{J}} }+{}\\
+ &+ \beta^{-1} \sum_{J=1}^{\ncg}  {{ \pard{}{\bfR_{J}}\widetilde{\fricmat}_{KJ}}} + \fprojbf_{K}(t) 
+\end{align}
+
+
+
+\chapter{Numerical Methods}
+\label{Sec:NumMet}
+
+\section{Langevin Dynamics Integrator: BAOAB method}
+In this thesis the Langevin Dynamics is integrated by using the BAOAB method, which was derived and analysed by B. Leimkuhler and C. Matthews \cite{LeimMatt:LAnDynInt}. 
+
+The aim of their work is to compare Langevin dynamics integrators in term of their invariant distributions and demonstrate a superconvergence property of a certain method in the high friction limit (or in the null mass limit). They coded up the various methods considered and compared the accuracy of configurational sampling for different values of the friction parameter $\gamma$ and for a range of timesteps.
+
+Their results show that the best method to sample the configurational Gibbs-Boltzmann distribution\footnote{This means the calculation of averages of functions of phase space variables of a molecular N-body system modelled at constant temperature.} is the BAOAB method, which is an efficient and easy-to-implement scheme using a single force vector per timestep:
+\begin{align*}
+ p_{n+1/2} &= p_n-\frac{1}{2}\,\nabla U\left(x_n\right)\,dt\,; \\
+ x_{n+1/2} &= x_n+\frac{1}{2}\,M^{-1}\,p_{n+1/2}\,dt\,; \\
+ \widehat{p}_{n+1/2} &= c_1\,p_{n+1/2}+c_2\,M^{1/2}\,R_{n+1}\,; \\ 
+ x_{n+1} &= x_{n+1/2}+\frac{1}{2}\,M^{-1}\,\widehat{p}_{n+1/2}\,dt\,; \\
+ p_{n+1} &= \widehat{p}_{n+1/2}-\frac{1}{2}\,\nabla U\left(x_{n+1}\right)\,dt\,. \\
+\end{align*}
+Here, $R_i$ is an N-vector of normal random numbers with mean $0$ and variance $1$, $M$ is the diagonal mass matrix, $dt$ is the timestep, 
+$c_1=e^{-\widetilde{\gamma}\,dt}$ and $c_2=\sqrt{\left(1-c_1^2\right)/\beta}$ are evaluated for a given friction parameter $\widetilde{\gamma}=\gamma\,M^{-1}$ and for a given temperature parameter $\beta=(K_BT)^{-1}$, where $K_B$ is the Boltzmann's constant.
+
+
+\subsection{An idea of how the BAOAB method was derived}
+
+\lr{questa parte è un po' oscura secondo me... per ora lasciala ma mi dovrai spiegare a cosa serve!}
+
+An It\^o stochastic differential equation (SDE) can be written as
+\[
+  d\mathbf{x}(t)=\mathbf{a} \left[\mathbf{x}(t),t\right] dt+\mathbf{b}\left[\mathbf{x}(t),t\right] d\mathbf{W}(t)\,,
+\]
+where $\mathbf{x}$ are the $n$ stochastic process, $\mathbf{a}(\mathbf{x},t)$ and $\mathbf{b}(\mathbf{x},t)$ are certain know functions, 
+$ d\mathbf{W}\equiv \boldsymbol{\xi}(t)\,dt $ is an $n$ variable Wiener process and $\boldsymbol{\xi}(t)$ is a white noise. This SDE corresponds to a Fokker-Planck equation if the stochastic process described by a conditional probability density $p(\mathbf{x},t\,|\,\mathbf{x_0},t_0)\equiv p$ satisfy 
+\[
+  \partial_t\,p=\mathscr{L}(\mathbf{x},t)\,p
+     =-\sum_i\,\partial_i\left[ A_i(\mathbf{x},t)\,p\, \right]+\frac{1}{2}\sum_{ij}\,\partial_i\partial_j\left[ B_{ij}(\mathbf{x},t)\,p\, \right] 
+\]
+where $\mathscr{L}(\mathbf{x},t)$ is a second-order differential operator and the coefficients of RHS are such that $\mathbf{A}(\mathbf{x},t)=\mathbf{a}(\mathbf{x},t)$ and $\underline{\mathbf{B}}(\mathbf{x},t)=\mathbf{b}(\mathbf{x},t)\textbf{b}^T(\mathbf{x},t)$. The Fokker-Planck equation describes diffusion processes, the vector $\mathbf{A}(\mathbf{x},t)$ is known as the drift vector and the matrix $\underline{\mathbf{B}}(\mathbf{x},t)$ is known as the diffusion matrix. From its definition this matrix is positive semidefinite and symmetric \cite{Gardiner2009}.
+
+Let us consider an Orstein-Uhlenbeck (OU) SDE, that is, an It\^o equation where the coefficients are
+\[
+ \mathbf{a}(\mathbf{x})=-k\,\mathbf{x}\quad\text{and}\quad b=\sqrt{D}
+\]
+here $k$ and $D$ are positive parameters. The solution of one dimensional OU-SDE can be computed by the It\^o's formula applied to $y=xe^{k\,t}$\cite{Gardiner2009}. We get 
+\[
+ x(t)=x_0(t_0)\,e^{-k(t-t_0)}+\sqrt{D}\int_{t_0}^t\,dW(t')e^{-k(t-t')}\,,
+\]
+and the average and variance are respectively:
+\begin{align*}
+ \mathbb{E}[x(t)] &= \mathbb{E}[x_0(t_0)]\,e^{-k(t-t_0)}\,, \\
+ \mathbb{E}\left[ \left( x(t)-\mathbb{E}[x(t)] \right)^2 \right] &= \left[ Var(x_0)-\frac{D}{2k} \right]e^{-2k(t-t_0)}+\frac{D}{2k}\,.
+\end{align*}
+We can easily show in the stationary limit ($t\gg t_0$) and applying the equipartition theorem that the diffusive parameter $D$ is equal to $(2k)/\beta$.
+
+
+%\subsubsection{Langevin Dynamics}
+Langevin dynamics combines a conservative dynamic with the OU stochastic vector field as a forcing for the momentum, so we are assuming that the stochastic force is not affected by the potential:
+\begin{equation}
+\label{Eq:Lang1Dx}
+ M\frac{d^2\mathbf{x}}{dt^2}=-\boldsymbol{\nabla} U(\mathbf{x})-\gamma\,\frac{d\mathbf{x}}{dt}+\sqrt{(2\gamma)/\beta}\,\boldsymbol{\xi}(t)
+\end{equation}
+where we introduced physical quantities: $M$ is the mass of the particle, $\mathbf{x}$ is the coordinate of position, $\gamma$ is the friction parameter and $\beta=\left( K_BT \right)^{-1}$ is the temperature parameter. We can rewrite the equation as
+\[
+\begin{cases}
+ d\mathbf{x}=\mathbf{v}\,dt \\
+ Md\mathbf{v}=\left[ -\boldsymbol{\nabla} U(\mathbf{x})-\gamma\,\mathbf{v} \right]\,dt+\sqrt{(2\gamma)/\beta}\,d\mathbf{W}
+\end{cases}
+\]
+and for the canonical coordinates $ \{\mathbf{q}(t),\mathbf{p}(t)\} $ we get 
+\begin{equation}
+\label{Eq:Lang1Dp}
+\begin{cases}
+ d\mathbf{q}=M^{-1}\,\mathbf{p}\,dt \\
+ d\mathbf{p}=\left[ -\boldsymbol{\nabla} U(\mathbf{q})-\widetilde{\gamma}\,\mathbf{p} \right]\,dt+\sqrt{(2\widetilde{\gamma})/\beta}\,M^{1/2}d\mathbf{W}
+\end{cases}
+\end{equation}
+where $\widetilde{\gamma}=\gamma/M$. From the system of two first-order equations can we compute the drift and diffusion coefficients
+\begin{align*}
+ \left(A_{\mathbf{q}}\right)_i &= M^{-1}\,p_i\,;  &  \left(B_{\mathbf{q}\mathbf{q}}\right)_{ij} &= \left(B_{\mathbf{p}\mathbf{q}}\right)_{ij}=0\,; \\
+ \left(A_{\mathbf{p}}\right)_i &= \left(-\boldsymbol{\nabla} U(\mathbf{q})-\widetilde{\gamma}\,\mathbf{p}\right)_i\,;  &  
+      \left(B_{\mathbf{p}\mathbf{p}}\right)_{ij} &= \frac{2\widetilde{\gamma}}{\beta}\,M\,\delta_{ij}\,;
+\end{align*}
+and thus determine the Fokker-Planck operator for the Langevin dynamics
+\begin{multline*}
+ \mathscr{L}_{LD}\,\varphi=-M^{-1}\,\sum_i\,p_i\,\partial_{q_i}\,\varphi\,+ 
+                          \,\boldsymbol{\nabla}U(\mathbf{q})\,\sum_i\,\partial_{p_i}\,\varphi\,+{}\\                          
+                          +\,\widetilde{\gamma}\,\sum_i\,\partial_{p_i}\,p_i\,\varphi\,+
+                          \,\widetilde{\gamma}\,\sum_i\,\,p_i\,\partial_{p_i}\,\varphi\,+
+                          \,\widetilde{\gamma}\,K_BT\,\sum_i\,M\,\partial_i^2\,\varphi={}\\
+                          =-M^{-1}\mathbf{p}\cdot\boldsymbol{\nabla}_{q}\,\varphi\,+
+                          \,\boldsymbol{\nabla}U(\mathbf{q})\cdot\boldsymbol{\nabla}_{p}\,\varphi\,+
+                          \,\widetilde{\gamma}\, \left[ \,\boldsymbol{\nabla}_{p}(\mathbf{p}\,\varphi)+
+                          \,K_BT\boldsymbol{\Delta}_{p}\,\varphi \,\right]\,,
+\end{multline*}
+where $\boldsymbol{\Delta}_{p}$ is the mass-weighted Laplacian in the momenta and $\varphi$ is a test function \cite{Risk:TheFPeq}.
+
+\subsubsection{Splitting methods}
+
+\subsection{Some more details about the work of B. Leimkuhler and C. Matthews}
+The methods that are considered are splitting integrators that decompose the stochastic vector field which drives the Langevin Dynamics into simpler vector fields which can be solved exactly. Nevertheless, the composition method that results cannot be directly related to a stochastic differential equation, but nonetheless the invariant measure associated to the numerical method can be derived, using the Baker-Campbell-Hausdorff (BCH) expansion, as an asymptotic series in two parameters: the stepsize and the coefficient $\gamma^{-1}$. 
+
+The authors stress that their approach focuses on the truncation error of the invariant distribution, so that the greatest benefit would be seen only when the statistical error is well controlled. Furthermore, they observe that the least biased scheme from the point of view of the error introduced in configurational sampling is also as efficient as the alternatives and the most robust with respect the variation of parameters (stepsize and $\gamma^{-1}$), thus they emphasise that there is no price for the improvement in accuracy \lr{che vuol dire quest'ultima frase?}.
+
+
+
+\part{Numerical Experiments}
+\label{Sec:NumExp}
+
+\chapter{The system under study}
+In Chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equations of motion for generic CG (hybrid) system. Here, we numerically investigate the effects of some of the choices and assumptions made when the FG system is coarse-grained in the canonical ensemble. To do this, we have extended the numerical implementation and the analysis made by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. 
+
+Di Pasquale \emph{et al.} developed an open-source parallel code, written in Julia v0.6.2 \cite{thomas_hudson_2018_1226590}, to solve the full, constrained and coarse-grained dynamics in the microcanonical ensemble for a simple one-dimensional system. To extend the code to the canonical ensemble we introduced the integrators described in the Chapter \ref{Sec:NumMet}, after updating the code to the latest version of Julia, v1.2.0.
+
+The studied system is a linear periodic chain made of $\nfg$ atoms of two different species, which differ in mass and bond stiffness. The atoms are arranged in a repeating pattern, and the coarse-grained model is obtained by combining the single repeated units into beads, see fig.~\ref{Fig:sketchRepPatt}. Therefore, we will not consider a hybrid system, and the number of beads, $\ncg$, will be equal to the number of times the pattern is repeated in the chain. The CG variables are given by the center of mass of each bead and by the corresponding momenta (see section \ref{Sec:Mapping}).
+
+\begin{figure}[!htb]
+ \centering
+ \includegraphics[width=0.95\textwidth]{chain}
+ \caption{Sketch of the one-dimensional chain composed by $\nfg$ atoms of two different species. The two species are indicated as red and blue particles, differing in mass and bond stiffness. Small red spheres represent atoms of mass $m$ and big blue spheres represent atoms of mass $M$. Beads are indicated as yellow spheres that surround three atoms each.}
+ \label{Fig:sketchRepPatt}
+\end{figure}
+
+This system is the same studied by Di Pasquale \emph{et al.}, who have studied such a simple system to better understand which of the assumptions made are valid, and which might fail in a more complex system \lr{che intendi?}. We made this choice to directly compare the results obtained here with those of Ref.~\cite{Pasquale2019}, and to compare the results obtained in the two ensemble.
+
+\section{Test cases considered}
+\label{Sec:TestCasesConsid}
+
+The studied test cases are composed of atoms with two different masses, set to $m=1$ and $M=10$.
+The repeating pattern  consists of three atoms in two different configurations: two atoms of mass $m$ and a single atom of mass $M$ ($m-M-m$) or vice versa ($M-m-M$). The number of beads is set to $\ncg=10$, so that the number of atoms is also fixed, $\nfg=3\,\ncg=30$.
+The bond stiffness between the two different species of atoms is described by means of an inter-atomic potential, which is a simple 12-6 Lennard-Jones potential. In the following, all parameters, such as temperature and time step, are expressed in terms of dimensionless units, \textit{i.e.} the so-called Lennard-Jones reduced units, see Tuckerman pp.125-127 \cite{tuckerman2010}. \lr{Aggiungi un paragrafo sulle LJ units}
+
+Following the work of Di Pasquale \emph{et al.}, we assume periodic boundary conditions and nearest neighbour interactions. 
+The inter-atomic potential for a generic system $X$ is given by 
+\begin{equation}
+ \begin{split}
+  	\pot^X_{i,i+1}(r) &= 4\,\epsilon_{i,i+1} \sqp{\cip{\frac{\sigma_{i,i+1}}{r}}^{12} - \cip{\frac{\sigma_{i,i+1}}{r}}^6} ={}\\
+	&= \epsilon_{i,i+1} \sqp{\cip{\frac{r^*_{i,i+1}}{r}}^{12} - 2\cip{\frac{r^*_{i,i+1}}{r}}^6} \,.
+ \end{split}
+\end{equation} 
+Here, we choose $\sigma_{i,i+1}=2^{-1/6}$ so that the minimum value of the potential is obtained for $r^*_{i,i+1}=1$, while the well-depth will be varied to analyse the effect of the stiffness of the interactions: $\epsilon_{i,i+1}\in\bp{0.1,1,100}$. The interaction between two different species of atoms is set by the so-called Lorentz-Berthelot mixing rule. The parameters $\epsilon_{i,i+1}$ are thus given by
+\begin{equation}
+  \epsilon_{i,i+1} = \begin{cases}
+    \sqrt{\epsilon_\alpha\epsilon_\beta} & i = 1,\, 2,\, 4,\, 5,\, \dots,\, \nfg-2,\, \nfg-1; \\
+    \epsilon_\alpha\;\;(\mbox{or}\,\,\epsilon_\beta) & i = 3,\, 6,\, \dots,\, \nfg;
+  \end{cases}
+\end{equation}
+where $\epsilon_\alpha$ and $\epsilon_\beta$ are two different values for the parameter $\epsilon$ taken from the set $\bp{0.1,1,100}$.
+The Hamiltonian is given by
+\begin{equation}
+ \begin{split}
+  	\Ham^X(\bfr,\bfp) &= \frac12 \, \bfp^T\,(M^X)^{-1}\,\bfp\,+\sum_{i=1}^{\nfg-1}\pot^X_{i,i+1}\cip{\bfr_{i+1}-\bfr_i}\,+ \\
+	&+ \pot^X_{\nfg,1}\cip{\bfr_1-\bfr_\nfg+r^*\nfg},
+ \end{split}
+ \label{eq:1DHamiltonian}
+\end{equation}
+where $M^X$ is the mass matrix, $\bfr$ and $\bfp$ are respectively the positions and momenta of the atoms in the system $X$ considered. 
+The final term takes into account that periodic boundary conditions are in place, \textit{i.e.}, that the two ends of the linear chain behave as if they were connected to each other.
+
+We considered four test cases denoted as $A$, $B$, $C$, $D$:
+\begin{itemize}
+ \item the pairs $A$ and $B$, and $C$ and $D$ have the same repeating pattern  ($m-M-m$ and $M-m-M$, respectively) but different interactions among the atoms;
+ \item the pairs $A$ and $C$, and $B$ and $D$ have the same `internal' interactions (\textit{i.e.} interactions among atoms belonging to the same bead) and the same inter-beads interactions (\textit{i.e.} interactions among atoms in different beads). Of course they have a different repeating pattern.
+\end{itemize}
+A summary of the four cases, with all the parameter values used, is given in the table \ref{Tab:Cases}.
+\begin{table}[htb]
+ \centering
+ \begin{tabular}{c c c c c c} 
+  \toprule[1.1pt]
+   &  & \multicolumn{4}{c}{Interactions ($\epsilon_{i,i+1}$)} \\
+  \cmidrule(l){3-6}
+  System & Bead structure & $m-m$ & $M-M$ & $m-M$ & Inter-bead \\
+  \midrule
+  $A$ & $m-M-m$ & $1$ & $100$ & $10$ & $1$ \\ 
+  $B$ & $m-M-m$ & $10$ & $0.1$ & $1$  & $10$ \\  
+  $C$ & $M-m-M$ & $100$ & $1$ & $10$ & $1$ \\
+  $D$ & $M-m-M$ & $0.1$ & $10$ & $1$ & $10$ \\
+  \bottomrule[1.1pt]
+ \end{tabular}
+ \caption{Summary of parameters in the 4 configurations considered. Intra-beads interactions are always between atoms of different masses ($m-M$), while inter-bead interactions are between atoms of the same mass ($m-m$ or $M-M$ depending on the case under consideration).}
+ \label{Tab:Cases}
+\end{table}
+
+The dynamics were implemented using the integrators described in the Chapter \ref{Sec:NumMet}. The time step chosen was $\Delta t=10^{-3}$, which is smaller than the shortest timescale in the system: $\Delta t \leq min\;\sqrt{M/\pot^{''}_{i,i+1}(1)}\approx 5.89 \times 10^{-3}$, see \cite{DiPasquale2019}.   
+Below, we will show the results and analysis of the simulations of different dynamics:
+\begin{labeling}{(MMZD)}
+\item[(FGD)] the \emph{Fine-Grained Dynamics} when solving eq.~(\ref{Eq:MotionEq}) with the Hamiltonian defined in eq.~(\ref{eq:1DHamiltonian}):
+ \[
+ \totd{\Aphase{}(t)}{t} = \bp{\Aphase{},\Ham^X} = iL\,\Aphase{}\,;
+ \]
+\item[(OD)] the \emph{Orthogonal Dynamics} when solving eq.~(\ref{Eq:orth}):
+ \[
+  \totd{\bfr_k}{t} = \frac{\bfp_k}{m_{k}}\,;\qquad
+  \totd{\bfp_k}{t} = - \pard{\pot^X(\Aphase{\bfr})}{\bfr_k} + \frac{m_k}{M_I}\sum_{i\in S_I}\pard{\pot^X(\Aphase{\bfr})}{\bfr_i}\,; 
+ \]
+\item[(DCGD)] the \emph{Deterministic Coarse-Grained Dynamics} when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, neglecting the dissipative and fluctuating terms:
+ \[
+ \pard{\bfR_{K}}{t} = \frac{\bfP_{K}}{M_{K}}\,; \qquad
+ \pard{\bfP_{K}}{t} = -\pard{\Veff}{\bfR_{K}}\,;  
+ \]
+\item[(MMZD)] the \emph{Markovian Mori-Zwanzig Dynamics} when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, with the memory and fluctuating terms replaced by a position-dependent Langevin dynamics, \textit{i.e.}, memory and fluctuating terms that depend on the inter-particle distance.
+\end{labeling}
+As we said, in order to numerically integrate the FGD and OD we have used respectively the BAOAB and geodesic-BAOAB integrators (see Chapter \ref{Sec:NumMet}). By contrast, to numerically integrate the MMZD we have used a version of the BAOAB integrator adapted to the case of non-constant diffusion, developed by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. 
+
+
+\section{Sampling Algorithm}
+The developed code allows a relatively simple recalibration of the test system through Julia ``types'', which are initialized by the user to fix all the parameters of the simulation, including the repeating pattern of the beads, the number of beads, the mass and stiffness of the inter-atomic potentials.
+
+Here, we give an idea of the sampling implemented in the code to compute an approximation of the effective potential, given in eq.~(\ref{Eq:EntrInt}), and the friction matrix, as given in eq.~(\ref{Eq:FRICmatrixRF}). The idea is to sample using the OD.
+
+First, the initial conditions for the simulation are fixed, so that the momenta are distributed according to the Maxwell-Boltzmann distribution and the positions lie in equilibrium positions \lr{qui con "equilibrium" intendi il minimo del potenziale?}. Then the trajectory of the FGD is computed and samples of the positions and momenta are stored. These samples are used to determine the CG positions and momenta, and are used as initial condition for computing the trajectories of the OD. Along these trajectories, time averages of the first and second moment of the effective force between beads are stored. The first moment gives the value of the mean force acting between adjacent beads given the position of the center of mass, while the second moment is used to compute the friction matrix. Since the sampling steps of the OD can run at the same time without having to communicate between the processes, these procedures can be run in parallel. Finally, by integrating the mean force with respect to the distance $R$ between the beads, the effective potential $\Veff$ is obtained.
+
+This method is very similar to the force-matching method \cite{Ercolessi1994,Izvekov2004}, the difference being that here we derive directly the effective potential from the sampling performed during the OD simulations.
+
+Below, for further clarification of what we said, we report the algorithm published in the work of Di Pasquale \emph{et al.}~and implemented in the code:
+\begin{algorithm} [H]
+\caption{Sampling Algorithm \cite{DiPasquale2019}}
+\begin{algorithmic}[1]
+  \Procedure{Constrained Sample}{Configuration of atomistic system, target$_1$, target$_2$}
+  \State Generate initial condition for fine-grained system
+   \While{$\#$ of samples $<$ target$_1$}
+   \State Run FGD to generate initial condition for constrained dynamics (OD)
+   \While{length of constrained dynamics trajectory $<$ target$_2$}
+   \State Advance the timestep using the integrator for the constrained dynamics
+   \State Update statistical estimators
+   \EndWhile
+   \EndWhile
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\chapter{Simulation results}
+\section{Data-driven approximation of the effective potential}
+\label{Sec:EP}
+To improve the computation time required to sample the mean force and thus determine the effective potential, we utilize the translational symmetry of this simple system, the fact that the beads are identical and the assumption that the effective potential can be approximated as a sum of two-body interactions based on the distance to the nearest-neighbour beads only.
+We thus compute the interactions between any combination of beads and assume that the interactions computed are valid for any equivalent pair in the system. In this way we reduce the dimensionality of the space to be sampled from the total number of coarse-grained variables to simply one, \textit{i.e.}, the inter-bead distance, which simplifies the exploration of the entire constrained phase space, as well as the representation and interpolation of the effective potential in the parameter space.
+
+The validity of these assumptions in this simple system considered was verified by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. Naturally, in a more realistic system these assumptions could cause a significant deterioration in the accuracy and effectiveness of a systematic MZ projection approach.
+
+In fig.~\ref{Fig:meanForce},
+%
+\begin{figure}[!htb]
+ \centering
+ \includegraphics[width=\textwidth]{sABCD_2000_MF}
+ \caption{Plot of the mean force for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{perché la curva di D non tende a 0 per $R \to \infty$?}}
+ \label{Fig:meanForce}
+\end{figure}
+%
+we show the results of the computation of the mean force for the four different systems described in the table \ref{Tab:Cases}. In each case, the trend is rather similar and we observe that the equilibrium bond length lies close to $R=3.1$. As expected, these results are consistent with the ones obtained by Di Pasquale \emph{et al.} in the microcanonical ensemble.
+
+In fig.~\ref{Fig:FF},
+%
+\begin{figure}[!htb]
+ \centering
+ \includegraphics[width=\textwidth]{sABCD_2000_FF}
+ \caption{Plot of the fluctuating part of the force for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{Perché le fluttuazioni di B e D non tendono a 0 per $R \to \infty$?}}
+ \label{Fig:FF}
+\end{figure}
+%
+we report the results for the fluctuating part of the force. Unlike the mean force, the two systems with the same stiffness (see table \ref{Tab:Cases}) follow a similar trend. In particular the two systems with the smallest stiffness, systems B and D, have noisier and larger fluctuations than the other two.  
+Furthermore, the figure shows how these simple systems have a dependence of fluctuations on the inter-bead distance $R$, and consequently shows how a simple Langevin dynamics, with dissipation and white noise fluctuations having a magnitude independent of the state of the system, is not an adequate approximation.\lr{questo è uno spunto interessante... puoi espandere secondo te? Mettere delle referenze?}
+
+Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integration of the mean force (fig.~\ref{Fig:meanForce}) with respect to the inter-bead distance $R$. We observe that the effective potential has similar trends for the four systems, despite the big difference in the fluctuations of the force shown in fig.~\ref{Fig:FF}. Our results thus show that, even when the effective potential is easily and stably computed, there may be dissipative effects that are not visible in a deterministic effective potential.
+\begin{figure}[!htb]
+ \centering
+ \includegraphics[width=\textwidth]{sABCD_2000_EP}
+ \caption{Plot of the effective potential for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{anche qui bisogna sistemare i dati a grandi $R$}}
+ \label{Fig:EP}
+\end{figure}
+
+
+\section{Memory kernel approximation and numerical implementation}
+Until now, we have not yet shown how to implement the eq.~(\ref{Eq:MarkovApprox}) to determine MMZD, but only sketched the basic idea in section~\ref{Sec:TestCasesConsid}. We said that the MMZD is determined by the Langevin-type eq.~(\ref{Eq:Lang1Dp}), where the potential is given by the effective potential and the memory and fluctuating terms depends on the inter-bead distance. 
+
+For the sake of clarity, eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system is given by
+\begin{equation}
+\label{Eq:MarkovApproxCompact}
+\begin{cases}
+ \partial_t\,\Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,, & \\
+ \partial_t\,\Bphase{\bfP} = -\partial_{\bfR}\Veff 
+                             - \widetilde{\bffricmat}(\Bphase{})\cdot \cip{M^{-1}\Bphase{\bfP}}
+                             + \beta^{-1}\, \boldsymbol{\nabla}_{\Bphase{\bfR}}\cdot\widetilde{\bffricmat}(\Bphase{})
+                             + \fprojbf(t) \,. &  
+\end{cases}
+\end{equation}
+The components of the time independent friction matrix, \textit{i.e.}, eq.~(\ref{Eq:MarDeltaFric}) 
+\[
+  \widetilde{\bffricmat}(\Bphase{}) \coloneqq \bffricmat(\Bphase{},0) =  
+  \beta\, \cexpval{ \fprojbf_{\Bphase{}}(0,\cdot) \otimes \fprojbf_{\Bphase{}}(0,\cdot) }{ \Bphase{} }\,,
+\]
+can be computed by means of the fluctuating force (fig.~\ref{Fig:FF}).
+If we consider bead $I$, which interacts with bead $I-1$ and bead $I+1$, we can assume that the forces that act on it can be decomposed as the independent ``stress'' contributions $\sigma_{I+1,I}$ and $-\sigma_{I,I-1}$. Under these conditions we write the $\fricmat_{I,I}$ component of the time independent friction matrix as
+\begin{align*}
+  \fricmat_{I,I}(\bfR) = \beta\,\cexpval{\fprojbf_I \otimes \fprojbf_I}{\bfR} &=
+           \beta\,\cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I+1,I}-\sigma_{I,I-1}) }{\bfR} = \\
+  &= \beta\,\cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{\bfR} + \beta\,\cexpval{ \sigma_{I,I-1} \otimes \sigma_{I,I-1} }{\bfR} \,,
+\end{align*}
+where we consider the cross terms to be negligible, \textit{i.e.},
+\[
+ \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I,I-1} }{\bfR}\approx 0 \quad\text{and}\quad \cexpval{ \sigma_{I,I-1} \otimes \sigma_{I+1,I}}{\bfR}\approx 0\,.
+\]
+In other words, we assume the fluctuating forces between adjacent beads are not correlated, since we have made the assumption that pair interactions are sufficient to describe the behaviour of the system.
+
+\noindent
+In the same way, we obtain
+\begin{align*}
+ \fricmat_{I,I+1}(\bfR) &= \beta\,\cexpval{\fprojbf_I \otimes \fprojbf_{I+1}}{\bfR} = \\
+ &= \beta\,\cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I+2,I+1}-\sigma_{I+1,I}) }{\bfR} = \\
+ &= -\beta\,\cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{\bfR} \,, \\
+ \\
+ \fricmat_{I,I-1}(\bfR) &= \beta\,\cexpval{\fprojbf_I \otimes \fprojbf_{I-1}}{\bfR} = \\
+ &= \beta\,\cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I,I-1}-\sigma_{I-1,I-2}) }{\bfR} = \\
+ &= -\beta\,\cexpval{ \sigma_{I,I-1} \otimes \sigma_{I,I-1} }{\bfR} \,.
+\end{align*}
+Therefore, given the inter-bead distance $\widetilde{\bfR}=\lvert\bfR_{I+1}-\bfR_{I}\rvert$, we compute a smooth approximation of the variance of the fluctuating force between beads
+\[
+ \gamma_{I+1,I} \coloneqq \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{ \widetilde{\bfR} }\,.
+\]
+We define the tridiagonal matrix
+\begin{equation}
+ \label{Eq:TridMat}
+ \Sigma_{IJ} = \begin{cases}
+    -\gamma_{I+1,I} & I=J-1 \mod \ncg \,, \\
+    \gamma_{I+1,I} + \gamma_{I,I-1} & I=J \,, \\
+    -\gamma_{I,I-1} & I=J+1 \mod \ncg,
+ \end{cases}
+\end{equation}
+where $I,J \in \bp{1,2,\dots,\ncg}$, and we can write the time independent friction matrix as 
+\[
+ \widetilde{\bffricmat}(\widetilde{\bfR})=\beta\,\Sigma(\widetilde{\bfR})\,.
+\]
+ 
+\noindent
+The terms of the memory and fluctuating force may be generated together in order to implement the following system of equations\lr{che intendi con "may be generated" e "implement"?}
+\begin{equation}
+\label{Eq:MMZD}
+\begin{cases}
+ \diff \Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,\diff t \,, & \\
+ \diff \Bphase{\bfP} = \sqp{ - \partial_{\widetilde{\bfR}}\Veff - \frac{1}{2}\, \Sigma(\widetilde{\bfR}) \,M^{-1} \Bphase{\bfP} }\diff t 
+ + \Sigma (\widetilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
+\end{cases}
+\end{equation}
+where $\Sigma(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W}$ are independent increment of the Wiener process in $\real^{\ncg}$.
+
+The system of equations obtained allows to describe and implement the MMZD, as it is analogous to the eq.~(\ref{Eq:Lang1Dp}), which describes the Langevin dynamics. As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
+
+The mean force, the fluctuating force and therefore the memory terms can be determined through a Kriging-type interpolation algorithm \cite{Jones2001} from the values shown in the Section \ref{Sec:EP}. This interpolation algorithm, which we have implemented in the code, yields a polynomial approximation of the given function with Gaussian weights. It allows to determine the new values of the function, filtering the noise resulting from the sampling error (see the supplementary material of the work of Di Pasquale \emph{et al.} \cite{DiPasquale2019}).
+
+
+\subsection{Timescale separation and the validity of the memory kernel approximation}
+
+\begin{figure}[!htb]
+ \centering
+ \includegraphics[width=\textwidth]{ACF_comparison}
+ \caption{ACF comparison}
+ \label{Fig:ACFcomparison}
+\end{figure}
+
+
+\begin{figure}[!htb]
+\label{Fig:ACF}
+ \begin{subfigure}[b]{\textwidth}
+  \centering
+   \includegraphics[width=\textwidth]{ACF_F}
+ \end{subfigure}\\
+ \begin{subfigure}[b]{\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{ACF_P}
+ \end{subfigure}\\
+ \caption{ACF}
+\end{figure}
+
+
+
+
+\newpage
+\subsection{The effect of the memory approximation on observed system properties}
+
+
+
+
+\begin{appendices}
+
+\chapter{Elements of Probability Theory}
+\label{App:A}
+We introduce some basic definition and results from probability theory. This material can be found in \cite{Williams1991}. 
+
+\begin{defin}[\textbf{Sample Space}]
+The set of all events, such as all the possible outcomes of an experiment, is called sample space and is denoted by $\Omega$.  
+\end{defin}
+
+\begin{defin}[\textbf{$\sigma$-algebra}]
+A collection $\mathscr{F}$ of subset of $\Omega$ is called $\sigma$-algebra on $\Omega$ if\footnote{We use `$\coloneqq$' to signify `is defined to equal', and the following convention:
+$$\mathbb{N}\coloneqq\{1,2,3,\dots\} \subseteq \{0,1,2,3,\dots\}\eqqcolon\mathbb{Z}^+\quad\mathrm{and}\quad\mathbb{R}^+\coloneqq[0,+\infty)\,. $$}
+\begin{compactenum}[(i)] 
+\item $\Omega\in\mathscr{F}$; 
+\item $F\in\mathscr{F}\,\implies\, F^c\coloneqq\,\Omega\setminus F\in\mathscr{F}$;
+\item $F_n\in\mathscr{F},\,n\in\mathbb{N}\,\implies\,\bigcup_{n\in\mathbb{N}}F_n\in\mathscr{F}$.
+\end{compactenum}   
+\end{defin}
+\noindent
+Intuitively, the $\sigma$-algebra $\mathscr{F}$ contains all the useful information that is available about the random experiment that we are performing. One of its elements is called a $\mathscr{F}$-measurable subset of $\Omega$ or \emph{event}.
+
+\begin{defin}[\textbf{Measurable Space}]
+A pair $(\Omega,\mathscr{F})$, where $\Omega$ is a set and $\mathscr{F}$ is a $\sigma$-algebra on $\Omega$, is called measurable space.
+\end{defin}
+
+\begin{defin}[\textbf{Probability Measure}]
+A probability measure $\mathbb{P}$ on the measurable space $(\Omega,\mathscr{F})$ is a function
+\[
+\mathbb{P}\colon\mathscr{F} \to [0,1];\: F \mapsto \mathbb{P}(F);
+\]
+satisfying
+\begin{compactenum}[(i)] 
+\item $\mathbb{P}(\Omega)=1$; 
+\item if $F_n\in\mathscr{F}$ with $F_n\bigcap F_m=\emptyset$, $n\neq m$ and $n,m\in\mathbb{N},$ then 
+\[ \mathbb{P}\left(\bigcup_{n\in\mathbb{N}}F_n\right)=\sum_{n\in\mathbb{N}}\mathbb{P}\left(F_n\right)\,.\].
+\end{compactenum}
+\end{defin}
+
+\begin{defin}[\textbf{Probability Space}]
+A probability space is a triple $(\Omega,\mathscr{F},\mathbb{P})$ comprising a set $\Omega$, a $\sigma$-algebra $\mathscr{F}$ of subsets of $\Omega$ and a probability measure $\mathbb{P}$ on the measurable space $(\Omega,\mathscr{F})$.
+\end{defin}
+
+\noindent
+Since we are usually interested in the consequence of the outcomes of an experiment, we introduce the notion of random variable that is intuitively a function of the outcomes. We do it following the Williams \cite{Williams1991}, through the definition of measurable function from $(\Omega,\mathscr{F},\mathbb{P})$ to $(\mathbb{R},\mathscr{B}(\mathbb{R}))$\footnote{We will use the notation $\mathscr{B}(\mathbb{R})$ to denote the Borel $\sigma$-algebra of $\mathbb{R}$, the smallest $\sigma$-algebra containing all open sets of $\mathbb{R}$.}. 
+
+\begin{defin}[\textbf{$\mathscr{F}$-measurable function}]
+Let $(\Omega,\mathscr{F},\mathbb{P})$ and $(\mathbb{R},\mathscr{B}(\mathbb{R}))$ be two measurable spaces. 
+The function $\psi\colon \Omega\to\mathbb{R}$ is called $\mathscr{F}$-measurable function if 
+\[
+\psi^{-1}(B)\coloneqq\{\omega\in\Omega\colon \psi(\omega)\in B \}\in\mathscr{F},\quad\forall\, B\in\mathscr{B}(\mathbb{R})\,.
+\]
+\end{defin}
+
+\begin{defin}[\textbf{Random Variable}]\label{Def:rv}
+Let $(\Omega,\mathscr{F},\mathbb{P})$ be a probability space. A random variable is a $\mathscr{F}$-measurable function, thus
+\[
+X\colon \Omega \to\mathbb{R}\,,\quad X^{-1}\colon \mathscr{B}(\mathbb{R})\to\mathscr{F}\,.
+\]
+\end{defin}
+
+\noindent
+Every random variable, carried by some probability triple $(\Omega,\mathscr{F},\mathbb{P})$, induces a probability measure $\mathbb{P}_X$ on $(\mathbb{R},\mathscr{B}(\mathbb{R}))$:
+\begin{align*}
+\mathbb{P}_X\colon \mathscr{B}(\mathbb{R}) &\to [0,1] \\
+B &\mapsto \mathbb{P}_X(B)\coloneqq\mathbb{P}(X\in B)=\mathbb{P}(X^{-1}(B))\,.
+\end{align*}
+The measure $\mathbb{P}_X$ is called \emph{distribution} (or sometimes the \emph{law}) of $X$.
+We can now define the \emph{distribution function} of $X$:
+\begin{align*}
+F_X\colon \mathbb{R} &\to[0,1] \\ 
+x &\mapsto F_X(x) \coloneqq \mathbb{P}\left( \left\lbrace \omega\in\Omega\colon X(\omega)\leq x \right\rbrace \right)=\mathbb{P}\left( X\leq x\right)\,.
+\end{align*}
+This function $F_X$ indicates the likelihood that the random variable $X$ is in $(-\infty,x]$.
+
+\begin{defin}[\textbf{Probability density function}]
+Let $X$ a random variable and $f:\mathbb{R}\to\mathbb{R}$ a function such that 
+\[ f(x)\geq 0 \quad\forall\; x\in\mathbb{R} \qquad\mathrm{and}\qquad \int_{\mathbb{R}	}f(x)\,\mbox{d}x=1\,.\]
+We say that $X$ has a \emph{probability density function} (pdf) $f_X$ if 
+\[ \mathbb{P}\cip{X\in B}=\int_Bf_X(x)\,\mbox{d}x \qquad \forall\; B\in\mathscr{B}(\mathbb{R}) \]
+\end{defin}
+
+\begin{defin}[\textbf{Expected value}]\label{Def:E[...]}
+Let $\mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}}$ be the space of integrable function, see \cite[p. 54]{Williams1991}.
+We define the \emph{expectation} $\mathbb{E}\sqp{X}$ of a random variable $X\in \mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}}$ by 
+\begin{equation*} 
+\mathbb{E}\sqp{X}\coloneqq \int_{\Omega}X\,\mbox{d}\mathbb{P} \equiv \int_{\Omega}X(\omega)\,\mathbb{P}(\diff\omega) = \int_{\mathbb{R}}x\,\mathbb{P}_X(\diff x)\,, 
+\end{equation*}
+In the last equality we changed variable $x=X(\omega)$ and used the definition of distribution of $X$, that is $\mathbb{P}_X(B)=\mathbb{P}(X^{-1}(B))$.
+\end{defin}
+
+\begin{prop}
+Let $h:\mathbb{R}\to\mathbb{R}$ a Borel measurable function and $X\in \mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}}$ a random variable.
+
+\noindent  
+Then $ h(X)\in\mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}}$ if and only if $h\in\mathcal{L}^1\cip{\Omega,\mathscr{B},\mathbb{P}_X}$
+and then
+$$\mathbb{E}\sqp{h(X)}=\int_{\mathbb{R}}h(x)\,\mathbb{P}_X(\diff x)\,.$$
+Furthermore, if $f_X$ is a pdf of $X$ and
+\[
+\mathbb{E}\sqp{|h(X)|}<\infty\;\iff\;\int_{\mathbb{R}}|h(x)|\,f_X(x)\,\diff x<\infty\,,
+\] 
+then
+\[
+\mathbb{E}\sqp{h(X)}=\int_{\mathbb{R}}h(x)\,f_X(x)\,\diff x\,.
+\]
+\end{prop}
+\begin{proof}
+ See Williams \cite[pp.~68-69]{Williams1991}.
+\end{proof}
+
+We now give a central definition of modern probability, that is a fundamental theorem (Kolmogorov, 1933).
+
+\begin{theorem}[\textbf{Conditional expectation}]\label{Th:CondExp}
+Let $\cip{\Omega,\mathscr{F},\mathbb{P}}$ be a probability space, $X \in \mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}}$ a random variable and $\mathscr{G}$ a sub-$\sigma$-algebra of $\mathscr{F}$, $\mathscr{G}\subseteq\mathscr{F}$.
+Then there exists a random variable $Y\in \mathcal{L}^1\cip{\Omega,\mathscr{G},\mathbb{P}}$, that is $\mathscr{G}$-measurable and $\cexp{\abs{Y}}<\infty$, such that
+$$
+ \int_G Y\diff\mathbb{P} = \int_G X\diff\mathbb{P}\,,\quad \forall\;G\in\mathscr{G}\,.
+$$
+Moreover, if $\widetilde{Y}$ is another random variable that has the same properties as $Y$, then $\widetilde{Y}=Y\,a.s.$ (almost surely), i.e. $\mathbb{P}(\widetilde{Y}=Y)=1$.
+
+\noindent
+Therefore, $Y$ with these properties is called \textbf{a version of the conditional expectation} $\cexpval{X}{\,\mathscr{G}}$ of $X$ given $\mathscr{G}$, and we write $Y=\cexpval{X}{\,\mathscr{G}}\,a.s.$
+\end{theorem}
+\begin{proof}
+ See Williams \cite[pp.~85-86]{Williams1991}.
+\end{proof}
+\noindent
+Generally one identifies several versions and speaks of the conditional expectation $\cexpval{X}{\,\mathscr{G}}$, but we should think about it ``$a.s.$''.
+
+Intuitively, we have already said that the $\sigma$-algebra contains all the useful information that is available on an experiment, while a random variable is a function of its outcomes. In the case the only information we have available regarding which sample point $\omega$ has been chosen is the set of values $Z(\omega)$ for every $\mathscr{G}$-measurable random variable $Z$, i.e. the information available is given by the $\sigma$-algebra generated by $Z$, $\sigma(Z)=\mathscr{G}$. Then the random variable $Y(\omega)=\cexpval{X}{\,\mathscr{G}}(\omega)$ is the expected value of $X(\omega)$ given this information. The ``$a.s.$'' ambiguity in the  definition is something with which, in general, one must live.
+ 
+\begin{defin}[\textbf{Conditional expectation as least-squares-best predictor}]\label{Def:ExpOrthProj}
+Let $X \in \mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}}$ be a random variable such that $\cexp{X^2}<\infty$. Then the conditional expectation $Y=\cexpval{X}{\,\mathscr{G}}$ is a version of the orthogonal projection of $X$ onto $\mathcal{L}^2\cip{\Omega,\mathscr{G},\mathbb{P}}$. 
+
+\noindent
+Hence, $Y$ is the least-squares-best $\mathscr{G}$-measurable predictor of $X$: amongst all $\mathscr{G}$-measurable functions, i.e. amongst all predictors which can be computed from the available information, $Y$ minimize $\cexp{\cip{Y-X}^2}$ \cite[p.~85]{Williams1991}. 
+\end{defin}
+In other words, this definition says that $Y=\cexpval{X}{\,\mathscr{G}}$ is a version of the orthogonal projection of $X\in \mathcal{L}^2\cip{\Omega,\mathscr{F},\mathbb{P}}$ onto $\mathcal{L}^2\cip{\Omega,\mathscr{G},\mathbb{P}}$ if 
+$$
+ \cexp{\cip{X-Y}^2}\leq\cexp{\cip{X-Z}^2}\,,
+$$
+$\forall\, Z$ $\mathscr{G}$-measurable such that $\cexp{Z^2}<\infty$.
+
+\noindent 
+For a list of properties of the conditional expectation see \cite[p.~88]{Williams1991}. 
+
+\begin{prop}
+Let $X,Z\in \mathcal{L}^1\cip{\Omega,\mathscr{F},\mathbb{P}}$ be two random variables which have a \emph{joint probability density function} $f_{X,Z}(x,z)$. 
+Then $$f_Z(z)=\int_\real f_{X,Z}(x,z)\diff x$$ acts as pdf for $Z$.
+
+\noindent
+Define the \emph{elementary conditional pdf} $f_{X\lvert Z}$ of $X$ given $Z$ via:
+$$
+f_{X\lvert Z}\cip{x\lvert z} \coloneqq \begin{cases} 
+ f_{X,Z}(x,z)/f_Z(z) & \text{if $f_Z(z)\neq 0$ }\,, \\ 
+ 0 & \text{otherwise}\,.
+\end{cases}
+$$
+Let $h$ be a Borel function on $\real$ such that $\cexp{\abs{h(X)}}<\infty$. Set
+$$
+g(z) \coloneqq \int_{\real} h(x)f_{X\lvert Z}\cip{x\lvert z}\diff x\,,
+$$
+then $Y\coloneqq g(Z)$ is a version of the conditional expectation of $h(X)$ given $\sigma(Z)$, $\cexpval{h(X)}{\,\sigma(Z)}\equiv\cexpval{h(X)}{\,Z}$.
+\end{prop}
+
+\begin{proof}
+We can characterize $\sigma(Z)$ as
+$$\sigma\cip{Z}=\bp{A=Z^{-1}(B)\,,\;\mathrm{for}\,B\in\mathscr{B}(\real)}\subseteq\mathscr{F}$$ where 
+$$Z^{-1}(B)=\bp{\omega\in\Omega\colon Z(\omega)\in B }\in\mathscr{F}\quad\forall\,B\in\mathscr{B}(\real)\,. $$
+We introduce the indicator function of $A$ as
+$$
+I_A(\omega) \coloneqq \begin{cases} 
+ 1 & \text{if $\omega\in A$}\,, \\ 
+ 0 & \text{otherwise}\,,
+\end{cases}
+$$
+and from the characterization of $\sigma(Z)$ one has that $I_A(\omega)=I_B(Z)$, since that $\omega \in A$ if and only if $Z(\omega)\in B$.
+
+\noindent
+Hence, to show that 
+$$
+g(Z)=\cexpval{h(X)}{\,Z}=\int_\real h(x) f_{X\lvert Z}\cip{x\lvert z}  \diff x\,
+$$
+for the theorem (\ref{Th:CondExp}) we must show that
+$$
+\cexp{g(Z)I_{A}}=\cexp{h(X)I_{A}}\quad\forall\,A\in\sigma(Z)\,.
+$$
+So we have, applying Fubini's theorem see \cite[p.~77-79]{Williams1991},
+\begin{multline*}
+\cexp{g(Z)I_{A}}=\cexp{g(Z)I_B(Z)} = \int_B g(z)f_Z(z)\,\diff z ={}\\ 
+ = \int_{\real} g(z)I_B(z)f_Z(z)\,\diff z =\int_{\real}\cip{\int_\real h(x) f_{X\lvert Z}\cip{x\lvert z}\,\diff x}I_B(z)f_Z(z) \,\diff z ={}\\
+   = \int_{\real}\int_{\real} h(x)I_B(z)\,f_{X,Z}(x,z)\,\diff x\,\diff z = \cexp{h(X)I_B(Z)}=\cexp{h(X)I_{A}}\,.
+\end{multline*}
+
+\end{proof}
+
+
+\chapter{Elements of Stochastic Processes}
+
+
+\chapter{Liouville Space}
+\label{App:C}
+In classical mechanics, the phase-space\footnote{
+Mathematically, the space of configuration might be defined by a \emph{manifold} $M$ (either finite or infinite dimensional), and for each position $\bfr\in M$ in that space, the momentum $\bfp$ of the system would take values in the cotangent space $T^*_{\bfr}M$ of that space. This since the velocity $\dot{\bfr}$ naturally lives in the tangent space $T_{\bfr}M$, but the momentum, for its definition, lives naturally in the cotangent space $T^*_{\bfr}M$:
+$$\bfp \coloneqq \pard{L(\bfr,\dot{\bfr})}{\dot{\bfr}},$$ where $L(\bfr,\dot{\bfr})$ is the Lagrangian of the system. 
+Therefore the phase-space is naturally represented by the \emph{cotangent bundle} $$T^*M \coloneqq \bp{\cip{\bfr,\bfp}:\;\bfr\in M,\,\bfp\in T^*_{\bfr}M}\,,$$ which comes with a canonical \emph{symplectic form} $\omega\coloneqq \mbox{d}\bfp \wedge \mbox{d}\bfr$.
+} 
+$X=\mathbb{R}^{6N}$ is the space of all possible states of a physical system composed by N particles. The state is characterized by the instantaneous positions and momenta of the N particles of the system
+\begin{equation}\label{gamma}
+ \Aphase{}=\cip{ \Aphase{\bfr},\Aphase{\bfp} }=\cip{ \bfr_1,\ldots,\bfr_N , \bfp_1,\ldots,\bfp_N }\,.
+\end{equation}
+Let $\Ham:X\to \real$ the Hamiltonian of the system and we define a probability measure of finding the system in state $\Aphase{}$ as 
+$$
+\mathbb{P}(\mbox{d}\Aphase{}) = \rho(\Aphase{})\diff\Aphase{}\,,
+$$
+where $\rho(\Aphase{})$ can be any equilibrium ensemble pdf. For example, in the canonical ensemble $\rho(\Aphase{})=\partf^{-1}e^{-\beta\Ham(\Aphase{})}$ where $\beta=\cip{K_BT}^{-1}>0$ such that $e^{-\beta\Ham(\Aphase{})}$ is integrable with respect to the Lebesgue measure on $X$ and $\partf$ is the canonical partition function, 
+$\partf=\int_Xe^{-\beta\Ham(\Aphase{})}\diff\Aphase{}\,.$
+
+The evolution of a state is obtained in according to the canonical equations of motion as
+\begin{equation}
+\begin{split}\label{Eq:MotionEq}
+  \totd{\Aphase{}}{t} &= \sum_{i=1}^N \sqp{ \pard{\Aphase{}}{\bfr_i} \cdot \dot{\bfr_i}  + \pard{\Aphase{}}{\bfp_i} \cdot \dot{\bfp_i} } ={}\\
+               &=\sum_{i=1}^N \sqp{ \pard{\Aphase{}}{\bfr_i} \cdot \pard{\Ham}{\bfp_i} - \pard{\Aphase{}}{\bfp_i} \cdot \pard{\Ham}{\bfr_i} } 
+               \equiv \bp{\Aphase{},\Ham}
+\end{split}
+\end{equation}
+where $\bp{\Aphase{},\Ham}$ is Poisson bracket of $\Aphase{}$ with the Hamiltonian $\Ham$. The equation obtained indicates that $\bp{\Aphase{},\Ham}$ is a generator of the time evolution of $\Aphase{}(t)$.
+
+The Poisson bracket allows us to introduce an operator $L$ called \emph{Liouvillian} or \emph{Liouville operator} 
+\begin{equation}\label{Eq:liouvilleOperator}
+  iL \coloneqq \bp{ \ldots,\Ham} = \sum_{i=1}^N \sqp{ \pard{\Ham}{\bfp_i}\cdot\pard{}{\bfr_i} - \pard{\Ham}{\bfr_i}\cdot\pard{}{\bfp_i} }
+\end{equation}
+where $i=\sqrt{-1}$.
+
+The equation (\ref{Eq:MotionEq}) can be rewrite as $\mbox{d}\Aphase{}/\mbox{d}t=iL\,\Aphase{}$, which can be formally resolved as
+$$
+ \Aphase{}(t) = e^{iLt} \,\Aphase{}(0)\,,
+$$
+where the operator $exp(iLt)$ is know as the \emph{classical propagator} and defines a mapping in phase-space. 
+
+Let $A:X\to\real$ a \emph{phase functions} satisfying $A\in L^2\cip{X,\mathbb{P}}$, where $L^2\cip{X,\mathbb{P}}$ is the Lebesgue space of square-summable functions and where functions are identified if and only if they differ only on a set of measure zero. If $L^2\cip{X,\mathbb{P}}$ comes with the usual scalar product 
+\begin{equation}\label{eq:innerProd}
+\cip{A,B}=\int_X A(\Aphase{})B(\Aphase{})\, \mathbb{P}(\mbox{d}\Aphase{}) = \int_X A(\Aphase{}) B(\Aphase{})\, \rho(\Aphase{})\,\diff\Aphase{}\,, 
+\end{equation}
+then $L^2\cip{X,\mathbb{P}}$ is a Hilbert space\footnote{
+In general, let $X$ is a set and $\mu$ is a countably additive measure on the $\sigma$-algebra of subsets of $X$. The Hilbert space $L^2\cip{X,\mu}$ is the space of complex-valued measurable functions such that
+$$
+\int_X|f|^2\diff \mu<\infty,
+$$ 
+where functions are identified if and only if they differ only on a set of measure zero and where the inner product of a pair of functions $f$, $g$ in $L^2\cip{X,\mu}$ is defined as
+$$
+\cip{f,g}=\int_Xf^*\,g\,\diff \mu.
+$$
+}. 
+It is simple to show that the rate of change of $A$ is given by $\mbox{d}A/\mbox{d}t=iL\,A$, which formal solution is given by 
+\begin{equation}
+A(\Aphase{},t) = e^{iLt} \,A(\Aphase{},0)\,.
+\end{equation}
+The Hilbert space just defined is often called \emph{Liouville space} because the Liouvillian generates the motion in this space. 
+
+In a similar way to quantum mechanics, we can now show that the Liouvillian $L$ is a linear Hermitian operator, that is $L^{\dagger}=L$ where $L^{\dagger}$ is Hermitian conjugate of $L$, and thereby the \emph{classical propagator} is a unitary operator in the phase-space.
+
+We can now define the \emph{time correlation function} $C(t)$ as
+\begin{equation}
+ C(t) \coloneqq \left\langle A(0)\,A(t)\right\rangle=\int_X A(\Aphase{},0)A(\Aphase{},t)\, \rho(\Aphase{})\diff\Aphase{}\,,
+\end{equation}
+where $\left\langle\ldots\right\rangle$ denotes an ensemble average. This equation can be expressed as 
+\begin{equation*}
+C(t) = \int_X A(\Aphase{})\,e^{iLt}A(\Aphase{})\, \rho	(\Aphase{})\diff\Aphase{} = \cip{A(\Aphase{}), e^{iLt}A(\Aphase{}) } = \cip{ A(0),A(t)}\,,
+\end{equation*}
+thus we obtained
+\begin{equation*}
+ \left\langle A(0)\,A(t)\right\rangle = \cip{ A(0),A(t)}.
+\end{equation*}
+
+\chapter{Dunhamel-Dyson operator identity}
+\label{App:D}
+The \emph{resolvent} of an operator is define as its Laplace transform. We consider the resolvent of an exponential operator $\exp{At}$:
+\begin{multline*}
+R_A(s) = \int_0^{\infty} \exp{-st}\exp{-At}\,\diff t = \int_0^{\infty} \exp{-st}\sum_{n=0}^{\infty}\frac{(-At)^n}{n!} \,\diff t ={}\\
+   = \sum_{n=0}^{\infty}\frac{(-A)^n}{n!}\int_0^{\infty} \exp{-st}\, t^n\, \diff t =
+     \sum_{n=0}^{\infty}\frac{(-A)^n}{n!}\frac{1}{s^{n+1}}\int_0^{\infty} \exp{-st}\, (st)^n\, \diff (st) ={}\\
+   = \sum_{n=0}^{\infty}\frac{(-A)^n}{n!}\frac{\Gamma(n+1)}{s^{n+1}} =
+     \frac{1}{s}\sum_{n=0}^{\infty}\cip{\frac{-A}{s}}^n = \frac{1}{s}\cip{\idproj+\frac{A}{s}}^{-1} = \cip{s+A}^{-1}, 
+\end{multline*}
+where we used the definition of gamma function $\Gamma$ and the fact that $\Gamma(n+1)=n!$. 
+Therefore, the resolvent of the exponential operator $\exp{-(A+B)\,t}$ is given by 
+$$ 
+ R_{A,B}(s)=\cip{s+A+B}^{-1}\,.
+$$ 
+We can rewrite the resolvent obtained through operator identity 
+$$
+(A+B)^{-1}=A^{-1}-A^{-1}B(A+B)^{-1},
+$$
+which is easily verified by algebraic manipulations, we are of course assuming invertibility of the relevant operators. So we obtain
+$$
+ \cip{s+A+B}^{-1}=\cip{s+A}^{-1} - \cip{s+A}^{-1} B\, (s+A+B)^{-1}\,.
+$$ 
+Substituting the integral representation for the resolvent $R_A(s)$ and for the resolvent $R_{A,B}(s)$ into the equation obtained, we get
+\begin{multline*}
+ \int_0^{\infty} \exp{-st}\exp{-(A+B)t}\,\diff t ={}\\ 
+    = \int_0^{\infty} \exp{-st}\exp{-At}\,\diff t -
+      \int_0^{\infty} \exp{-su}\exp{-Au}\,B\,\diff u \int_0^{\infty} \exp{-sv}\exp{-(A+B)v}\,\diff v ={}\\ 
+    = \int_0^{\infty} \exp{-st}\exp{-At}\,\diff t - 
+      \int_0^{\infty}\exp{-Au}\,B \sqp{ \int_0^{\infty} \exp{-s(u+v)}\exp{-(A+B)v}\,\diff v } \diff u\,.
+\end{multline*} 
+Keeping $u$ fixed and changing variable $t=u+v$, we can rewrite the internal integral in the equation to obtain
+\begin{multline*}
+ \int_0^{\infty} \exp{-st}\exp{-(A+B)t}\,\diff t ={}\\ 
+  = \int_0^{\infty} \exp{-st}\exp{-At}\,\diff t 
+  - \int_0^{\infty}\sqp{ \int_u^{\infty}\exp{-Au}\,B \,\exp{-(A+B)(t-u)}\exp{-st}\,\diff t } \diff u\,.
+\end{multline*} 
+The region of integration for the double integral is a triangular region in the $(t,u)$ plane and we can reverse the order of integration in the integral to get 
+\begin{multline*}
+ \int_0^{\infty} \exp{-st}\exp{-(A+B)t}\,\diff t ={}\\ 
+   = \int_0^{\infty} \exp{-st}\exp{-At}\,\diff t - 
+     \int_0^{\infty}\sqp{ \int_0^{t}\exp{-Au}\,B \,\exp{-(A+B)(t-u)}\diff u } \exp{-st}\,\diff t ={}\\
+   = \int_0^{\infty} \exp{-st} \sqp{ \exp{-At}-\int_0^{t}\exp{-Au}\,B\,\exp{-(A+B)(t-u)}\,\diff u }\,\diff t\,. 
+\end{multline*}
+Since the equality holds for all values of $s$, the integrands must be equal, so:
+\begin{equation}\label{Eq:DysId}
+ \exp{-(A+B)t} = \exp{-At}-\int_0^{t}\exp{-Au}\,B \,\exp{-(A+B)(t-u)}\,\diff u\,.
+\end{equation}
+The derivation that we have used here is only valid if both of the operators $A$ and $B$ have no explicit time dependence. 
+
+\noindent
+If we consider the operators $\exp{-(A+B)\,t}$ and $\exp{-At}$, then we get
+\begin{equation}\label{Eq:IIDysId}
+ \exp{(A+B)t} = \exp{At}+\int_0^{t}\exp{Au}\,B \,\exp{(A+B)(t-u)}\,\diff u\,.
+\end{equation}
+The equations obtained (\ref{Eq:DysId}) and (\ref{Eq:IIDysId}) are the Dyson operator identities, and when applied to propagators they are known as \emph{Dyson decomposition} and \emph{second Dyson decomposition} respectively \cite{evans2008}. 
+
+
+\end{appendices}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{\bibname}
+\bibliographystyle{plain}
+\bibliography{biblioTESI}
+
+
+\end{document}
