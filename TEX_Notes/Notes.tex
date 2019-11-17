@@ -337,7 +337,7 @@ With this in mind, we can rewrite eq.~(\ref{Eq:MZequation}) as an integro-differ
     - \int_0^t \nabla_{\bfa}\,\entropy\cip{\bfa(t-s)}\fricmat\cip{\bfa(t-s),s} \diff s +{}\\
     + \frac{1}{\beta}\int_0^t \nabla_{\bfa}\cdot\fricmat\cip{\bfa(t-s),s} \diff s + \fprojbf_{\Bphase{}}(t)\,, 
 \end{multline}
-where $\mathbf{F}(t)$ is interpreted as a zero-mean random process whose statistical properties are specified by eq.~(\ref{Eq:RAndomForce}).
+where $\fprojbf_{\Bphase{}}(t)$ is interpreted as a zero-mean random process whose statistical properties are specified by eq.~(\ref{Eq:RAndomForce}).
 
 The terms involving the friction matrix turn out to be the most difficult to compute in a real calculation because of the memory effect. We will briefly discuss the friction matrix and the memory effects, but a more thorough analysis of these terms is left for future works. 
 In the next chapter we will derive more explicit forms of the terms appearing in eq. (\ref{Eq:ZwanGLE}) for a CG system, for specific choices of the CG variables which arises naturally from physical considerations, namely canonical mappings (i.e. transformations).
@@ -408,8 +408,8 @@ $$\Psi,\Phi\colon  \real^{6\nfg}  \to  \real^{6\ncg}$$ such that
  \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}} \\
  \nonumber 
  \pard{\bfP_{K}}{t} &= -\omega_{\NA{} K} \pard{\pot^{AA}}{\bfR_{K}} - \pard{\Veff}{\bfR_{K}} 
- - \sum_{J=1}^{\ncg}\,\int_{0}^{t}\,\fricmat_{KJ}(t-s,s)\,\frac{1}{M_J} \bfP_J(t-s) \,\diff s \\
- &+ \beta^{-1} \sum_{J=1}^{\ncg} \,\int_{0}^{t} \pard{}{\bfR_{J}}\fricmat_{KJ}(s)\diff s + \fprojbf_{K}(t)
+ - \sum_{J=1}^{\ncg}\,\int_{0}^{t}\,\fricmat_{KJ}(t-s,s)\,M_J^{-1}\,\bfP_J(t-s) \,\diff s \\
+ &+ \beta^{-1} \sum_{J=1}^{\ncg} \,\int_{0}^{t} \pard{\fricmat_{KJ}(s)}{\bfR_{J}} \,\diff s + \fprojbf_{K}(t)
  \label{Eq:DevB} 
 \end{align}
 %
@@ -426,11 +426,23 @@ where $\omega_{N^AK}$ is equal to zero whenever the difference between the first
 
 \section{Markovian approximation of the Memory Kernel}
 \label{Sec:MarkovApprox}
+We said that the terms involving the friction matrix turn out to be the most difficult to compute in a real calculation because of the memory effect. 
+The problems to be faced in order to simplify the formulation of the eq.~(\ref{Eq:ZwanGLE}) are given by:
+\begin{itemize}
+\item the calculation of the friction matrix $\bffricmat(t)$, which depends from the orthogonal dynamics, i.e., from all the fast degrees of freedom coarse-grained away (see eq.~(\ref{Eq:FRICmatrixRF}) and eq.~(\ref{Eq:RAndomForce}));   
+\item the integrals that include the friction matrix, which must be computed at each time step (see the RHS of the eq.~(\ref{Eq:ZwanGLE})).
+\end{itemize}
+In the literature there are different ways to consider the friction matrix \cite{Chorin2000,Kauzlaric2011} and how to include memory effects in CG simulations \cite{Izvekov2017,Jung2017,Li2015,Yuanran2018}. 
+The approximation used very often is to consider the CG models as memoryless, i.e. that the CG models satisfy the Markovian property that allows to predict the future with only the present information. This is the so-called ``Markovian approximation''.
 
-\begin{align}
+The validity of this assumption is given by the clear separation of the time scales of the system under examination.
+In particular, in the studied system the assumption is valid if the time scale of variation of the CG variables is much larger than the time scale of decay of the memory matrix (i.e., the friction matrix $\bffricmat(t)$ eq.~(\ref{Eq:FRICmatrixRF})), that is of the time scale in which the fluctuating forces $\fprojbf_{\Bphase{}}(t,\cdot)$, defined in eq.~(\ref{Eq:RAndomForce}), vary.
+
+Therefore to simplify the eq.~(\ref{Eq:ZwanGLE}), we assume that the model under examination satisfies the Markovian property and we approximate the friction matrix as
+\begin{equation}
  \label{Eq:MarFric1}
  \bffricmat(\Bphase{},t) \approx \widetilde{\bffricmat}(\Bphase{})\delta(t).
-\end{align}
+\end{equation}
 
 In this case, $\widetilde{\bffricmat}$ is the time independent friction matrix defined as:
 %
@@ -584,8 +596,8 @@ Following the work of Di Pasquale \emph{et al.}, we assume periodic boundary con
 The inter-atomic potential for a generic system $X$ is given by 
 \begin{equation}
  \begin{split}
-  	\pot^X_{i,i+1}(r) &= 4\,\epsilon_{i,i+1} \sqp{\cip{\frac{\sigma_{i,i+1}}{r}}^{12} - \cip{\frac{\sigma_{i,i+1}}{r}}^6} \\
-	&= \epsilon_{i,i+1} \sqp{\cip{\frac{r^*_{i,i+1}}{r}}^{12} - 2\cip{\frac{r^*_{i,i+1}}{r}}^6}
+  	\pot^X_{i,i+1}(r) &= 4\,\epsilon_{i,i+1} \sqp{\cip{\frac{\sigma_{i,i+1}}{r}}^{12} - \cip{\frac{\sigma_{i,i+1}}{r}}^6} ={}\\
+	&= \epsilon_{i,i+1} \sqp{\cip{\frac{r^*_{i,i+1}}{r}}^{12} - 2\cip{\frac{r^*_{i,i+1}}{r}}^6} \,.
  \end{split}
 \end{equation} 
 Here, we choose $\sigma_{i,i+1}=2^{-1/6}$ so that the minimum value of the potential is obtained for $r^*_{i,i+1}=1$, while the well-depth will be varied to analyse the effect of the stiffness of the interactions: $\epsilon_{i,i+1}\in\bp{0.1,1,100}$. In the case of interaction between two different species of atoms, a combination rule called the Lorentz-Berthelot mixing rule is imposed to determine the new values of the parameters $\epsilon_{i,i+1}$. So we get
@@ -766,7 +778,7 @@ Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integ
 %\end{figure}
 
 \section{Memory kernel approximation and numerical implementation}
-Until now, we have not yet shown how to implement the eq.~(\ref{Eq:MarkovApprox}) to determine MMZD, we have only give an idea in the section~\ref{Sec:TestCasesConsid}. We said that the MMZD is determined by a Langevin equation~(\ref{Eq:Lang1Dp}), where the potential is given by the effective potential and the memory and fluctuating terms depends on the inter-bead distance. 
+Until now, we have not yet shown how to implement the eq.~(\ref{Eq:MarkovApprox}) to determine MMZD, we have only give an idea in the section~\ref{Sec:TestCasesConsid}. We said that the MMZD is determined by a Langevin-type equation~(\ref{Eq:Lang1Dp}), where the potential is given by the effective potential and the memory and fluctuating terms depends on the inter-bead distance. 
 
 For the sake of clarity, the eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system is given below
 \begin{equation}
@@ -776,7 +788,7 @@ For the sake of clarity, the eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grai
  \partial_t\,\Bphase{\bfP} = -\partial_{\bfR}\Veff 
                              - \widetilde{\bffricmat}(\Bphase{})\cdot \cip{M^{-1}\Bphase{\bfP}}
                              + \beta^{-1}\, \boldsymbol{\nabla}_{\Bphase{\bfR}}\cdot\widetilde{\bffricmat}(\Bphase{})
-                             + \fprojbf(t) \,, &  
+                             + \fprojbf(t) \,. &  
 \end{cases}
 \end{equation}
 The components of the time independent friction matrix, i.e., eq.~(\ref{Eq:MarDeltaFric}) 
@@ -793,7 +805,7 @@ If we consider the bead $I$ that interacts with bead $I-1$ and bead $I+1$, we ca
 \end{align*}
 where we considered the cross terms negligible, i.e.,
 \[
- \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I,I-1} }{\bfR}\approx 0\,,\quad \cexpval{ \sigma_{I,I-1} \otimes \sigma_{I+1,I}}{\bfR}\approx 0\,,
+ \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I,I-1} }{\bfR}\approx 0 \quad\text{and}\quad \cexpval{ \sigma_{I,I-1} \otimes \sigma_{I+1,I}}{\bfR}\approx 0\,.
 \]
 We are assuming that the fluctuating forces between adjacent beads are not correlated, since we have made the assumption that pair interactions are sufficient to describe the behaviour of the system.
 
@@ -808,7 +820,7 @@ In the same way, we obtain
  &= \beta\,\cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I,I-1}-\sigma_{I-1,I-2}) }{\bfR} = \\
  &= -\beta\,\cexpval{ \sigma_{I,I-1} \otimes \sigma_{I,I-1} }{\bfR} \,.
 \end{align*}
-Therefore given the inter-bead distance $\widetilde{\bfR}=\bfR_{I+1}-\bfR_{I}$, we compute a smooth approximation of the variance of the fluctuating force between beads
+Therefore given the inter-bead distance $\widetilde{\bfR}=\lvert\bfR_{I+1}-\bfR_{I}\rvert$, we compute a smooth approximation of the variance of the fluctuating force between beads
 \[
  \gamma_{I+1,I} \coloneqq \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{ \widetilde{\bfR} }\,.
 \]
@@ -836,7 +848,7 @@ The terms of memory and the fluctuating force may be generated together in order
  + \Sigma (\widetilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
 \end{cases}
 \end{equation}
-where $\Sigma(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W}$ is a Wiener process in $\real^{\ncg}$.
+where $\Sigma(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W}$ are independent increment of the Wiener process in $\real^{\ncg}$.
 
 The system of equations obtained allows to describe and implement the MMZD, it is a system analogous to the eq.~(\ref{Eq:Lang1Dp}) that describes the Langevin dynamics. As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
 
@@ -845,13 +857,29 @@ The mean force, the fluctuating force and therefore the memory terms can be dete
 
 \subsection{Timescale separation and the validity of the memory kernel approximation}
 
+\begin{figure}[!htb]
+ \centering
+ \includegraphics[width=\textwidth]{ACF_comparison}
+ \caption{ACF comparison}
+ \label{Fig:ACFcomparison}
+\end{figure}
 
 
 \begin{figure}[!htb]
- \centering
- \includegraphics[width=0.75\textwidth]{AutocorrFullandOrtho_11.pdf}
- \caption{Time autocorrelation function (ACF) of forces and momenta. System C, $NBeads=10$, $\beta=1$, $\gamma=1$, $dt=10^{-3}$, $FullSteps=10^6$, $OrthoSamples=10^6$, $NumLags=10^4$, $MacroSamples=100$.} 
+\label{Fig:ACF}
+ \begin{subfigure}[b]{\textwidth}
+  \centering
+   \includegraphics[width=\textwidth]{ACF_F}
+ \end{subfigure}\\
+ \begin{subfigure}[b]{\textwidth}
+  \centering
+  \includegraphics[width=\textwidth]{ACF_P}
+ \end{subfigure}\\
+ \caption{ACF}
 \end{figure}
+
+
+
 
 \newpage
 \subsection{The effect of the memory approximation on observed system properties}
