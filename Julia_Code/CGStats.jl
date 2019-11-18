@@ -194,6 +194,19 @@ end
     (dQData,FmeanData,FstdData).
 """
 function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64,1},FstdData::Array{Float64,1},C::Chain,S::Simulator)
+ # Report to user.
+ println(Dates.now());
+ if FstdData == 0
+	 println("Running full simulation of DCGD and storing trajectory.");
+ else
+	 println("Running full simulation of MMZD and storing trajectory.");
+ end
+ println("  NPart, number of particles simulated = ",C.NPart);
+ println("  Beta, temperature parameter = ",C.Beta);
+ println("  Gamma, friction coefficient = ",C.Gamma);
+ println("  dt, time step size = ",S.Stochdt);
+ println("  Total simulation time = ",S.ApproxTime);
+
   # Set up initial conditions
   P = P0; Q = Q0;
 
@@ -215,7 +228,7 @@ function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
   # Do simulation.
   for i = 2:S.ApproxSteps
 	# println("");
-	# println("ITERATION ",i," OF ",S.ApproxSteps," IN THE FUNCTION ApproximateTraj. Timestep = ",S.Stochdt);
+	println("ITERATION ",i," OF ",S.ApproxSteps);
 	# println(" Start...");
     (P,Q,F) = ApproxDynStep(P,Q,F,MeanForce,FlucStep,C,S.Stochdt);
     Pstore[i,:] = P;
