@@ -40,6 +40,7 @@
 \usepackage[chapter]{algorithm}
 \usepackage{algpseudocode}
 
+\newcommand{\lr}[1]{\textcolor[rgb]{0.8,0,0}{LR: \textbf{\textit{#1}}}}
 
 \begin{document}
 
@@ -432,7 +433,7 @@ The problems to be faced in order to simplify the formulation of the eq.~(\ref{E
 \item the calculation of the friction matrix $\bffricmat(t)$ eq.~(\ref{Eq:FRICmatrixRF}), which depends from the orthogonal dynamics, i.e., from all the fast degrees of freedom coarse-grained away (see eq.~(\ref{Eq:RAndomForce}));   
 \item the integrals that include the friction matrix, which must be computed at each time step (see the RHS of the eq.~(\ref{Eq:ZwanGLE})).
 \end{itemize}
-In the literature there are different ways to consider the friction matrix \cite{Chorin2000,Kauzlaric2011} and how to include memory effects in CG simulations \cite{Izvekov2017,Jung2017,Li2015,Yuanran2018}. 
+In the literature there are different ways to consider the friction matrix \cite{Chorin2000,Kauzlaric2011} and how to include memory effects in CG simulations \cite{Izvekov2017,Jung2017,Li2015,Yuanran2018}.
 
 The approximation used very often is to consider the CG models as memoryless, i.e. to assume that the CG models satisfy the Markovian property that allows to predict the future with only the present information. This approximation is the so-called ``Markovian approximation''.
 The validity of this assumption is given by the clear separation of the time scales of the system under examination.
@@ -467,15 +468,15 @@ Assuming the approximation (\ref{Eq:MarFric1}) is valid, the equations of motion
 
 
 
-\chapter{Numerical Method}
+\chapter{Numerical Methods}
 \label{Sec:NumMet}
 
 \section{Langevin Dynamics Integrator: BAOAB method}
-In this work we simulated the Langevin Dynamics by the BAOAB method, which was derived and analysed by B. Leimkuhler and C. Matthews \cite{LeimMatt:LAnDynInt}. 
+In this thesis the Langevin Dynamics is integrated by using the BAOAB method, which was derived and analysed by B. Leimkuhler and C. Matthews \cite{LeimMatt:LAnDynInt}. 
 
-The aim of their work is to compare Langevin dynamics integrators in term of their invariant distributions and demonstrate a superconvergence property of a certain method in the high friction limit (or in the null mass limit). Numerically they implemented the various methods considered and compared the accuracy of configurational sampling for different values of the friction parameter $\gamma$ and a range of timesteps.
+The aim of their work is to compare Langevin dynamics integrators in term of their invariant distributions and demonstrate a superconvergence property of a certain method in the high friction limit (or in the null mass limit). They coded up the various methods considered and compared the accuracy of configurational sampling for different values of the friction parameter $\gamma$ and for a range of timesteps.
 
-Their results show that the best method to sample the configurational Gibbs-Boltzmann distribution\footnote{This means the calculation of functions averages of phase space variables of a molecular N-body system modelled at constant temperature.} is the BAOAB method and in the context of molecular dynamics it is a cheap and easy to implement scheme using only a single force vector per timestep:
+Their results show that the best method to sample the configurational Gibbs-Boltzmann distribution\footnote{This means the calculation of averages of functions of phase space variables of a molecular N-body system modelled at constant temperature.} is the BAOAB method, which is an efficient and easy-to-implement scheme using a single force vector per timestep:
 \begin{align*}
  p_{n+1/2} &= p_n-\frac{1}{2}\,\nabla U\left(x_n\right)\,dt\,; \\
  x_{n+1/2} &= x_n+\frac{1}{2}\,M^{-1}\,p_{n+1/2}\,dt\,; \\
@@ -483,24 +484,25 @@ Their results show that the best method to sample the configurational Gibbs-Bolt
  x_{n+1} &= x_{n+1/2}+\frac{1}{2}\,M^{-1}\,\widehat{p}_{n+1/2}\,dt\,; \\
  p_{n+1} &= \widehat{p}_{n+1/2}-\frac{1}{2}\,\nabla U\left(x_{n+1}\right)\,dt\,. \\
 \end{align*}
-Here, $R_i$ is an N-vector of iid normal random numbers with mean $0$ and variance $1$, $M$ is the diagonal mass matrix, $dt$ is the timestep, 
-\[ c_1=e^{-\widetilde{\gamma}\,dt}\quad\text{and}\quad c_2=\sqrt{\left(1-c_1^2\right)/\beta}  \] are evaluated for a given friction parameter $\widetilde{\gamma}=\gamma\,M^{-1}$ and a given temperature parameter $\beta=(K_BT)^{-1}$, where $K_B$ is the Boltzmann's constant.
+Here, $R_i$ is an N-vector of normal random numbers with mean $0$ and variance $1$, $M$ is the diagonal mass matrix, $dt$ is the timestep, 
+$c_1=e^{-\widetilde{\gamma}\,dt}$ and $c_2=\sqrt{\left(1-c_1^2\right)/\beta}$ are evaluated for a given friction parameter $\widetilde{\gamma}=\gamma\,M^{-1}$ and for a given temperature parameter $\beta=(K_BT)^{-1}$, where $K_B$ is the Boltzmann's constant.
 
 
 \subsection{An idea of how the BAOAB method was derived}
 
-%\subsubsection{Background}
+\lr{questa parte è un po' oscura secondo me... per ora lasciala ma mi dovrai spiegare a cosa serve!}
+
 An It\^o stochastic differential equation (SDE) can be written as
 \[
   d\mathbf{x}(t)=\mathbf{a} \left[\mathbf{x}(t),t\right] dt+\mathbf{b}\left[\mathbf{x}(t),t\right] d\mathbf{W}(t)\,,
 \]
 where $\mathbf{x}$ are the $n$ stochastic process, $\mathbf{a}(\mathbf{x},t)$ and $\mathbf{b}(\mathbf{x},t)$ are certain know functions, 
-$ d\mathbf{W}\equiv \boldsymbol{\xi}(t)\,dt $ is an $n$ variable Wiener process and $\boldsymbol{\xi}(t)$ is the white noise. This SDE corresponds an Fokker-Planck equation if the stochastic process described by a conditional probability density $p(\mathbf{x},t\,|\,\mathbf{x_0},t_0)\equiv p$ satisfy 
+$ d\mathbf{W}\equiv \boldsymbol{\xi}(t)\,dt $ is an $n$ variable Wiener process and $\boldsymbol{\xi}(t)$ is a white noise. This SDE corresponds to a Fokker-Planck equation if the stochastic process described by a conditional probability density $p(\mathbf{x},t\,|\,\mathbf{x_0},t_0)\equiv p$ satisfy 
 \[
   \partial_t\,p=\mathscr{L}(\mathbf{x},t)\,p
      =-\sum_i\,\partial_i\left[ A_i(\mathbf{x},t)\,p\, \right]+\frac{1}{2}\sum_{ij}\,\partial_i\partial_j\left[ B_{ij}(\mathbf{x},t)\,p\, \right] 
 \]
-where $\mathscr{L}(\mathbf{x},t)$ is a second-order differential operator and the coefficients of RHS are such that $\mathbf{A}(\mathbf{x},t)=\mathbf{a}(\mathbf{x},t)$ and $\underline{\mathbf{B}}(\mathbf{x},t)=\mathbf{b}(\mathbf{x},t)\textbf{b}^T(\mathbf{x},t)$. The Fokker-Planck equation describes diffusion processes, the vector $\mathbf{A}(\mathbf{x},t)$ is know as drift vector and the matrix $\underline{\mathbf{B}}(\mathbf{x},t)$ is know as the diffusion matrix. From its definition this matrix is positive semidefinite and symmetric \cite{Gardiner2009}.
+where $\mathscr{L}(\mathbf{x},t)$ is a second-order differential operator and the coefficients of RHS are such that $\mathbf{A}(\mathbf{x},t)=\mathbf{a}(\mathbf{x},t)$ and $\underline{\mathbf{B}}(\mathbf{x},t)=\mathbf{b}(\mathbf{x},t)\textbf{b}^T(\mathbf{x},t)$. The Fokker-Planck equation describes diffusion processes, the vector $\mathbf{A}(\mathbf{x},t)$ is known as the drift vector and the matrix $\underline{\mathbf{B}}(\mathbf{x},t)$ is known as the diffusion matrix. From its definition this matrix is positive semidefinite and symmetric \cite{Gardiner2009}.
 
 Let us consider an Orstein-Uhlenbeck (OU) SDE, that is, an It\^o equation where the coefficients are
 \[
@@ -562,37 +564,39 @@ where $\boldsymbol{\Delta}_{p}$ is the mass-weighted Laplacian in the momenta an
 \subsubsection{Splitting methods}
 
 \subsection{Some more details about the work of B. Leimkuhler and C. Matthews}
-The methods that are considered are splitting integrators that decompose the stochastic vector field which drives the Langevin Dynamics into simpler vector fields which can be solved exactly. Nevertheless, the composition method that results cannot be directly related to a stochastic differential equation, but nonetheless the invariant measure associated to the numerical method can be derived, using the Baker-Campbell-Hausdorff (BCH) expansion, as an asymptotic series in two parameters: the stepsize and the coefficient $\gamma^{-1}$. The authors stress that their approach focuses on the truncation error of the invariant distribution, thus the greatest benefit would be seen only when the statistical error is well controlled. Furthermore, they observe that the least biased scheme from the point of view of the error introduced in configurational sampling is also as efficient as the alternatives and the most robust with respect the variation of parameters (stepsize and $\gamma^{-1}$), thus they emphasise that there is no price for the improvement in accuracy.
+The methods that are considered are splitting integrators that decompose the stochastic vector field which drives the Langevin Dynamics into simpler vector fields which can be solved exactly. Nevertheless, the composition method that results cannot be directly related to a stochastic differential equation, but nonetheless the invariant measure associated to the numerical method can be derived, using the Baker-Campbell-Hausdorff (BCH) expansion, as an asymptotic series in two parameters: the stepsize and the coefficient $\gamma^{-1}$. 
+
+The authors stress that their approach focuses on the truncation error of the invariant distribution, so that the greatest benefit would be seen only when the statistical error is well controlled. Furthermore, they observe that the least biased scheme from the point of view of the error introduced in configurational sampling is also as efficient as the alternatives and the most robust with respect the variation of parameters (stepsize and $\gamma^{-1}$), thus they emphasise that there is no price for the improvement in accuracy \lr{che vuol dire quest'ultima frase?}.
 
 
 
 \part{Numerical Experiments}
 \label{Sec:NumExp}
 
-\chapter{The studied system}
+\chapter{The system under study}
 In Chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equations of motion for generic CG (hybrid) system. Here, we numerically investigate the effects of some of the choices and assumptions made when the FG system is coarse-grained in the canonical ensemble. To do this, we have extended the numerical implementation and the analysis made by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. 
 
 Di Pasquale \emph{et al.} developed an open-source parallel code, written in Julia v0.6.2 \cite{thomas_hudson_2018_1226590}, to solve the full, constrained and coarse-grained dynamics in the microcanonical ensemble for a simple one-dimensional system. To extend the code to the canonical ensemble we introduced the integrators described in the Chapter \ref{Sec:NumMet}, after updating the code to the latest version of Julia, v1.2.0.
 
-The studied system is a linear periodic chain of $\nfg$ atoms of two different species, which differ in mass and stiffness. The atoms are arranged in a repeating pattern, and the coarse-grained model is obtained by combining the single repeated units into beads, see fig.~\ref{Fig:sketchRepPatt}. So we will not consider a hybrid system, and the number of beads, $\ncg$, will be equal to the number of times the pattern is repeated in the chain. The CG variables are given by the center of mass of each bead and the corresponding momenta (see section \ref{Sec:Mapping}).
+The studied system is a linear periodic chain made of $\nfg$ atoms of two different species, which differ in mass and bond stiffness. The atoms are arranged in a repeating pattern, and the coarse-grained model is obtained by combining the single repeated units into beads, see fig.~\ref{Fig:sketchRepPatt}. Therefore, we will not consider a hybrid system, and the number of beads, $\ncg$, will be equal to the number of times the pattern is repeated in the chain. The CG variables are given by the center of mass of each bead and by the corresponding momenta (see section \ref{Sec:Mapping}).
 
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=0.95\textwidth]{chain}
- \caption{Sketch of the one-dimensional chain composed by $\nfg$ atoms of two different species. The two species are indicated as red and blue particles, and they differ for mass and stiffness. Small red spheres represent atoms of mass $m$ and big blue spheres represent atoms of mass $M$. The beads are indicated as a sphere that surrounding three atoms and their number is given by $\ncg$.}
+ \caption{Sketch of the one-dimensional chain composed by $\nfg$ atoms of two different species. The two species are indicated as red and blue particles, differing in mass and bond stiffness. Small red spheres represent atoms of mass $m$ and big blue spheres represent atoms of mass $M$. Beads are indicated as yellow spheres that surround three atoms each.}
  \label{Fig:sketchRepPatt}
 \end{figure}
 
-This system is the same studied by Di Pasquale \emph{et al.}, who have studied such a simple system to better understand which of the assumptions made are valid, and which might fail in a more complex system. We made this choice to compare the results obtained with those of their work and to compare the results of the two ensemble.
-
+This system is the same studied by Di Pasquale \emph{et al.}, who have studied such a simple system to better understand which of the assumptions made are valid, and which might fail in a more complex system \lr{che intendi?}. We made this choice to directly compare the results obtained here with those of Ref.~\cite{DiPasquale2019}, and to compare the results obtained in the two ensemble.
 
 \section{Test cases considered}
 \label{Sec:TestCasesConsid}
-The test cases studied are composed of atoms with two different masses, set to $m=1$ and $M=10$.
-The repeating pattern has been chosen to consist of three atoms in two different configuration: two atoms of mass $m$ and a single atom of mass $M$ ($m-M-m$) or vice versa ($M-m-M$). The number of beads is set to $\ncg=10$, of course by fixing the number of beads we fix the number of atoms also, as $\nfg=3\,\ncg=30$.
-The stiffness of the interactions of the two different species of atoms is described by means of inter-atomic potential, which is a simple 12-6 Lennard-Jones potential. In the following, the parameters such as temperature and time step are expressed in terms of dimensionless units, i.e. the so-called Lennard-Jones reduced units, see Tuckerman pp.125-127 \cite{tuckerman2010}.
 
-Following the work of Di Pasquale \emph{et al.}, we assume periodic boundary condition and nearest neighbour interactions. 
+The studied test cases are composed of atoms with two different masses, set to $m=1$ and $M=10$.
+The repeating pattern  consists of three atoms in two different configurations: two atoms of mass $m$ and a single atom of mass $M$ ($m-M-m$) or vice versa ($M-m-M$). The number of beads is set to $\ncg=10$, so that the number of atoms is also fixed, $\nfg=3\,\ncg=30$.
+The bond stiffness between the two different species of atoms is described by means of an inter-atomic potential, which is a simple 12-6 Lennard-Jones potential. In the following, all parameters, such as temperature and time step, are expressed in terms of dimensionless units, \textit{i.e.} the so-called Lennard-Jones reduced units, see Tuckerman pp.125-127 \cite{tuckerman2010}. \lr{Aggiungi un paragrafo sulle LJ units}
+
+Following the work of Di Pasquale \emph{et al.}, we assume periodic boundary conditions and nearest neighbour interactions. 
 The inter-atomic potential for a generic system $X$ is given by 
 \begin{equation}
  \begin{split}
@@ -600,14 +604,14 @@ The inter-atomic potential for a generic system $X$ is given by
 	&= \epsilon_{i,i+1} \sqp{\cip{\frac{r^*_{i,i+1}}{r}}^{12} - 2\cip{\frac{r^*_{i,i+1}}{r}}^6} \,.
  \end{split}
 \end{equation} 
-Here, we choose $\sigma_{i,i+1}=2^{-1/6}$ so that the minimum value of the potential is obtained for $r^*_{i,i+1}=1$, while the well-depth will be varied to analyse the effect of the stiffness of the interactions: $\epsilon_{i,i+1}\in\bp{0.1,1,100}$. In the case of interaction between two different species of atoms, a combination rule called the Lorentz-Berthelot mixing rule is imposed to determine the new values of the parameters $\epsilon_{i,i+1}$. So we get
+Here, we choose $\sigma_{i,i+1}=2^{-1/6}$ so that the minimum value of the potential is obtained for $r^*_{i,i+1}=1$, while the well-depth will be varied to analyse the effect of the stiffness of the interactions: $\epsilon_{i,i+1}\in\bp{0.1,1,100}$. The interaction between two different species of atoms is set by the so-called Lorentz-Berthelot mixing rule. The parameters $\epsilon_{i,i+1}$ are thus given by
 \begin{equation}
   \epsilon_{i,i+1} = \begin{cases}
-    \sqrt{\epsilon^a\epsilon^b} & i = 1,\, 2,\, 4,\, 5,\, \dots,\, \nfg-2,\, \nfg-1; \\
-    \epsilon^a\;\;(\mbox{or}\,\,\epsilon^b) & i = 3,\, 6,\, \dots,\, \nfg;
+    \sqrt{\epsilon_\alpha\epsilon_\beta} & i = 1,\, 2,\, 4,\, 5,\, \dots,\, \nfg-2,\, \nfg-1; \\
+    \epsilon_\alpha\;\;(\mbox{or}\,\,\epsilon_\beta) & i = 3,\, 6,\, \dots,\, \nfg;
   \end{cases}
 \end{equation}
-where $\epsilon^a$ and $\epsilon^b$ are two different values for the parameter $\epsilon$ taken from the set $\bp{0.1,1,100}$.
+where $\epsilon_\alpha$ and $\epsilon_\beta$ are two different values for the parameter $\epsilon$ taken from the set $\bp{0.1,1,100}$.
 The Hamiltonian is given by
 \begin{equation}
  \begin{split}
@@ -617,21 +621,21 @@ The Hamiltonian is given by
  \label{eq:1DHamiltonian}
 \end{equation}
 where $M^X$ is the mass matrix, $\bfr$ and $\bfp$ are respectively the positions and momenta of the atoms in the system $X$ considered. 
-The final term takes into account the periodic boundary conditions, i.e., the assumption that the two ends of the linear chain behave as if they were connected to each other.
+The final term takes into account that periodic boundary conditions are in place, \textit{i.e.}, that the two ends of the linear chain behave as if they were connected to each other.
 
 We considered four test cases denoted as $A$, $B$, $C$, $D$:
 \begin{itemize}
- \item the pairs $A$ and $B$, and $C$ and $D$ have the same repeating pattern respectively $m-M-m$ and $M-m-M$, but different interactions among the atoms;
- \item the pairs $A$ and $C$, and $B$ and $D$ have the same `internal' interactions (i.e. interactions among atoms belonging to the same bead) and same inter-beads interactions (i.e. interactions among atoms in different beads). Of course they have a different repeating pattern.
+ \item the pairs $A$ and $B$, and $C$ and $D$ have the same repeating pattern  ($m-M-m$ and $M-m-M$, respectively) but different interactions among the atoms;
+ \item the pairs $A$ and $C$, and $B$ and $D$ have the same intra-beads interactions (\textit{i.e.} interactions among atoms belonging to the same bead) and the same inter-beads interactions (\textit{i.e.} interactions among atoms in different beads). Of course they have a different repeating pattern.
 \end{itemize}
-A summary of the four cases and the set values is given in the table \ref{Tab:Cases}.
+A summary of the four cases, with all the parameter values used, is given in the table \ref{Tab:Cases}.
 \begin{table}[htb]
  \centering
  \begin{tabular}{c c c c c c} 
   \toprule[1.1pt]
    &  & \multicolumn{4}{c}{Interactions ($\epsilon_{i,i+1}$)} \\
   \cmidrule(l){3-6}
-  System & Bead structure & $m-m$ & $M-M$ & Internal & Inter-bead \\
+  System & Bead structure & $m-m$ & $M-M$ & $m-M$ & Inter-bead \\
   \midrule
   $A$ & $m-M-m$ & $1$ & $100$ & $10$ & $1$ \\ 
   $B$ & $m-M-m$ & $10$ & $0.1$ & $1$  & $10$ \\  
@@ -639,11 +643,11 @@ A summary of the four cases and the set values is given in the table \ref{Tab:Ca
   $D$ & $M-m-M$ & $0.1$ & $10$ & $1$ & $10$ \\
   \bottomrule[1.1pt]
  \end{tabular}
- \caption{Summary of parameters in the 4 configurations considered. `Internal' interactions are between the atoms of different masses ($m-M$), while inter-bead interactions are between atoms of the same mass ($m-m$ or $M-M$ depending on the case under consideration).}
+ \caption{Summary of parameters in the 4 configurations considered. Intra-beads interactions are always between atoms of different masses ($m-M$), while inter-bead interactions are between atoms of the same mass ($m-m$ or $M-M$ depending on the case under consideration).}
  \label{Tab:Cases}
 \end{table}
 
-The dynamics were implemented using the integrators described in the Chapter \ref{Sec:NumMet}. The time step chosen was $\Delta t=10^{-3}$, which is smaller than the shortest timescale in the system: $\Delta t \leq min\;\sqrt{M/\pot^{''}_{i,i+1}(1)}\approx 5.89 \times 10^{-3}$ see \cite{DiPasquale2019}.   
+The dynamics were implemented using the integrators described in the Chapter \ref{Sec:NumMet}. The time step chosen was $\Delta t=10^{-3}$, which is smaller than the shortest timescale in the system: $\Delta t \leq min\;\sqrt{M/\pot^{''}_{i,i+1}(1)}\approx 5.89 \times 10^{-3}$, see \cite{DiPasquale2019}.   
 Below, we will show the results and analysis of the simulations of different dynamics:
 \begin{labeling}{(MMZD)}
 \item[(FGD)] the \emph{Fine-Grained Dynamics} when solving eq.~(\ref{Eq:MotionEq}) with the Hamiltonian defined in eq.~(\ref{eq:1DHamiltonian}):
@@ -660,26 +664,19 @@ Below, we will show the results and analysis of the simulations of different dyn
  \pard{\bfR_{K}}{t} = \frac{\bfP_{K}}{M_{K}}\,; \qquad
  \pard{\bfP_{K}}{t} = -\pard{\Veff}{\bfR_{K}}\,;  
  \]
-\item[(MMZD)] the \emph{Markovian Mori-Zwanzig Dynamics} when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, with the memory and fluctuating terms replaced by a position-dependent Langevin dynamics, i.e., memory and fluctuating terms depends on the inter-particle distance.
-% \begin{align}
-% \nonumber
-% \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}}\,; \\
-% \nonumber
-% \pard{\bfP_{K}}{t} &= -\pard{\Veff}{\bfR_{K}} - \sum_{J=1}^{\ncg}{{\widetilde{\fricmat}_{IJ}}\frac{\bfP_{J}}{M_{J}} } 
-% + \beta^{-1} \sum_{J=1}^{\ncg}  {{ \pard{}{\bfR_{J}}\widetilde{\fricmat}_{KJ}(s)}} + \fprojbf_{K}(t) \,.
-% \end{align}
+\item[(MMZD)] the \emph{Markovian Mori-Zwanzig Dynamics} when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, with the memory and fluctuating terms replaced by a position-dependent Langevin dynamics, \textit{i.e.}, memory and fluctuating terms that depend on the inter-particle distance.
 \end{labeling}
-As we said, to numerically integrate FGD and OD we have used respectively the BAOAB integrator and the geodesic-BAOAB integrator (see Chapter \ref{Sec:NumMet}). While, to numerically integrate MMZD we have used a version of the BAOAB integrator adapted to the case of non-constant diffusion, developed by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. 
+As we said, in order to numerically integrate the FGD and OD we have used respectively the BAOAB and geodesic-BAOAB integrators (see Chapter \ref{Sec:NumMet}). By contrast, to numerically integrate the MMZD we have used a version of the BAOAB integrator adapted to the case of non-constant diffusion, developed by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. 
 
 
 \section{Sampling Algorithm}
-The code developed by Di Pasquale \emph{et al.} allows a relatively simple recalibration of the test system through the Julia ``types'', which are initialized by the user to fix all the parameters of the simulation, including the repeating pattern of the beads, the number of beads, the mass and stiffness of the inter-atomic potentials.
+The developed code allows a relatively simple recalibration of the test system through Julia ``types'', which are initialized by the user to fix all the parameters of the simulation, including the repeating pattern of the beads, the number of beads, the mass and stiffness of the inter-atomic potentials.
 
 Here, we give an idea of the sampling implemented in the code to compute an approximation of the effective potential, given in eq.~(\ref{Eq:EntrInt}), and the friction matrix, as given in eq.~(\ref{Eq:FRICmatrixRF}). The idea is to sample using the OD.
 
-First, the initial conditions for the simulation are fixed, so that the momenta are distributed according to the Boltzmann distribution and the positions lie in equilibrium positions. Then the trajectory of the FGD is computed and samples of the positions and momenta are stored. These samples are used to determine the CG positions and momenta, and are used as initial condition for computing the trajectories of the OD. Along this trajectories, time averages of the first and second moment of the effective force between beads are stored. The first moment gives the value of the mean force acting between adjacent beads given the position of the center of mass, while the second moment is used to compute the friction matrix. All this allows to parallelize the code, since the sampling steps of the OD can run at the same time without having communication between the processes. Finally, by integrating the mean force with respect to the distance $R$ between the beads, the effective potential $\Veff$ is obtained.
+First, the initial conditions for the simulation are fixed, so that the momenta are distributed according to the Maxwell-Boltzmann distribution and the positions lie in equilibrium positions \lr{qui con "equilibrium" intendi il minimo del potenziale?}. Then the trajectory of the FGD is computed and samples of the positions and momenta are stored. These samples are used to determine the CG positions and momenta, and are used as initial condition for computing the trajectories of the OD. Along these trajectories, time averages of the first and second moment of the effective force between beads are stored. The first moment gives the value of the mean force acting between adjacent beads given the position of the center of mass, while the second moment is used to compute the friction matrix. Since the sampling steps of the OD can run at the same time without having to communicate between the processes, these procedures can be run in parallel. Finally, by integrating the mean force with respect to the distance $R$ between the beads, the effective potential $\Veff$ is obtained.
 
-This method is very similar to the force-matching method \cite{Ercolessi1994,Izvekov2004}, the difference is that here we derive directly the effective potential from the sampling performed during the OD simulations.
+This method is very similar to the force-matching method \cite{Ercolessi1994,Izvekov2004}, the difference being that here we derive directly the effective potential from the sampling performed during the OD simulations.
 
 Below, for further clarification of what we said, we report the algorithm published in the work of Di Pasquale \emph{et al.}~and implemented in the code:
 \begin{algorithm} [H]
@@ -690,7 +687,7 @@ Below, for further clarification of what we said, we report the algorithm publis
    \While{$\#$ of samples $<$ target$_1$}
    \State Run FGD to generate initial condition for constrained dynamics (OD)
    \While{length of constrained dynamics trajectory $<$ target$_2$}
-   \State Compute timestep using integrator for constrained dynamics
+   \State Advance the timestep using the integrator for the constrained dynamics
    \State Update statistical estimators
    \EndWhile
    \EndWhile
@@ -698,89 +695,50 @@ Below, for further clarification of what we said, we report the algorithm publis
 \end{algorithmic}
 \end{algorithm}
 
-
-
 \chapter{Simulation results}
 \section{Data-driven approximation of the effective potential}
 \label{Sec:EP}
-To improve the computation time required to sample the mean force and thus determine the effective potential, we utilize the translational symmetry of this simple system, the fact that the beads are identical and the assumption that the effective potential can be approximated as a sum of 2-body interactions based on the distance to the nearest-neighbour beads only.
+To improve the computation time required to sample the mean force and thus determine the effective potential, we utilize the translational symmetry of this simple system, the fact that the beads are identical and the assumption that the effective potential can be approximated as a sum of two-body interactions based on the distance to the nearest-neighbour beads only.
+We thus compute the interactions between any combination of beads and assume that the interactions computed are valid for any equivalent pair in the system. In this way we reduce the dimensionality of the space to be sampled from the total number of coarse-grained variables to simply one, \textit{i.e.}, the inter-bead distance, which simplifies the exploration of the entire constrained phase space, as well as the representation and interpolation of the effective potential in the parameter space.
 
-\noindent
-In this way, we can compute the interactions between any combination of beads and assume that the interactions computed are valid for any equivalent pair in the system. So we reduce the dimensionality of the space to be sampled from the total number of coarse-grained variables to simply one, i.e., the inter-bead distance, and of course we simplify the exploration of the entire constrained phase space, as well as the representation and interpolation of the effective potential in the parameter space.
+The validity of these assumptions in this simple system considered was verified by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. Naturally, in a more realistic system these assumptions could cause a significant deterioration in the accuracy and effectiveness of a systematic MZ projection approach.
 
-The validity of these assumptions in this simple system considered was verified by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. Naturally in a more realistic system these assumptions could cause a significant deterioration in the accuracy and effectiveness of a systematic MZ projection approach.
-
-%The results obtained are consistent with those published in the work of Di Pasquale \emph{et alii}.
 In fig.~\ref{Fig:meanForce},
 %
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_MF}
- \caption{Plot of the mean force for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line).}
+ \caption{Plot of the mean force for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{perché la curva di D non tende a 0 per $R \to \infty$?}}
  \label{Fig:meanForce}
 \end{figure}
 %
-we show the results of the computation of the mean force for the four different system described in the table \ref{Tab:Cases}. In each case, the trend is rather similar and we observe that the equilibrium bond length lies close to $R=3.1$. As expected, this results are consistent with the ones obtained by Di Pasquale \emph{et al.} in the microcanonical ensemble.
+we show the results of the computation of the mean force for the four different systems described in the table \ref{Tab:Cases}. In each case, the trend is rather similar and we observe that the equilibrium bond length lies close to $R=3.1$. As expected, these results are consistent with the ones obtained by Di Pasquale \emph{et al.} in the microcanonical ensemble.
 
 In fig.~\ref{Fig:FF},
 %
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_FF}
- \caption{Plot of the fluctuating part of the force for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line).}
+ \caption{Plot of the fluctuating part of the force for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{Perché le fluttuazioni di B e D non tendono a 0 per $R \to \infty$?}}
  \label{Fig:FF}
 \end{figure}
 %
-we report the results for the fluctuating part of the force. Unlike the mean force, the systems with the same stiffness (see table \ref{Tab:Cases}) have a similar trend. In particular, systems B and D with less stiffness of the bonds have noisier and grater magnitude fluctuations than the other two systems.  
-Furthermore, the figure shows how these simple systems have a dependence of fluctuations on the inter-bead distance $R$, and consequently shows how a simple Langevin dynamics, with dissipation and white noise fluctuations having a magnitude independent of the state of the system, is not an adequate approximation.
+we report the results for the fluctuating part of the force. Unlike the mean force, the two systems with the same stiffness (see table \ref{Tab:Cases}) follow a similar trend. In particular the two systems with the smallest stiffness, systems B and D, have noisier and larger fluctuations than the other two.  
+Furthermore, the figure shows how these simple systems have a dependence of fluctuations on the inter-bead distance $R$, and consequently shows how a simple Langevin dynamics, with dissipation and white noise fluctuations having a magnitude independent of the state of the system, is not an adequate approximation.\lr{questo è uno spunto interessante... puoi espandere secondo te? Mettere delle referenze?}
 
-
-Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integration of the mean force (fig.~\ref{Fig:meanForce}) respect to the inter-bead distance $R$. We observe that the effective potential has similar trends for the four systems despite the fluctuations shown in fig.~\ref{Fig:FF}. This is interesting because even when the effective potential is easily and stably computed, there may be dissipative effects that are not visible in a deterministic effective potential.
+Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integration of the mean force (fig.~\ref{Fig:meanForce}) with respect to the inter-bead distance $R$. We observe that the effective potential has similar trends for the four systems, despite the big difference in the fluctuations of the force shown in fig.~\ref{Fig:FF}. Our results thus show that, even when the effective potential is easily and stably computed, there may be dissipative effects that are not visible in a deterministic effective potential.
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_EP}
- \caption{Plot of the effective potential for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line).}
+ \caption{Plot of the effective potential for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{anche qui bisogna sistemare i dati a grandi $R$}}
  \label{Fig:EP}
 \end{figure}
 
-%\begin{figure}[!htb]
-% \begin{subfigure}[b]{0.5\linewidth}
-%  \centering (N,V,T)
-% \end{subfigure}%
-% \begin{subfigure}[b]{0.5\linewidth}
-%  \centering (N,V,E)
-% \end{subfigure}\\
-% \begin{subfigure}[b]{0.5\linewidth}
-%  \centering
-%  \includegraphics[width=\textwidth]{sABCD_2000_MF.pdf}
-% \end{subfigure}%
-% \begin{subfigure}[b]{0.5\linewidth}
-%  \centering
-%  \includegraphics[width=0.9\textwidth]{MFme.png}
-% \end{subfigure}\\
-%  \begin{subfigure}[b]{0.5\linewidth}
-%  \centering
-%  \includegraphics[width=\textwidth]{sABCD_2000_FF.pdf}
-% \end{subfigure}%
-% \begin{subfigure}[b]{0.5\linewidth}
-%  \centering
-%  \includegraphics[width=0.90\textwidth]{FFme.png}
-% \end{subfigure}\\
-% \begin{subfigure}[b]{0.5\linewidth}
-%  \centering
-%  \includegraphics[width=\textwidth]{sABCD_2000_EP.pdf}
-% \end{subfigure}%
-% \begin{subfigure}[b]{0.5\linewidth}
-%  \centering
-%  \includegraphics[width=0.90\textwidth]{EPme.png}
-% \end{subfigure}\\
-% \caption{Canonical Ensemble (N,V,T): $\text{Constrained beads}=2$, $\beta=1$, $\gamma=1$, $dt=10^{-3}$, $FullSteps=10^6$, $OrthoSamples=10^6$, $MacroSamples=2000$. Microcanonical Ensemble (N,V,E): see work of Di Pasquale \emph{et al.} \cite{DiPasquale2019}.}
-%\end{figure}
 
 \section{Memory kernel approximation and numerical implementation}
-Until now, we have not yet shown how to implement the eq.~(\ref{Eq:MarkovApprox}) to determine MMZD, we have only give an idea in the section~\ref{Sec:TestCasesConsid}. We said that the MMZD is determined by a Langevin-type equation~(\ref{Eq:Lang1Dp}), where the potential is given by the effective potential and the memory and fluctuating terms depends on the inter-bead distance. 
+Until now, we have not yet shown how to implement the eq.~(\ref{Eq:MarkovApprox}) to determine MMZD, but only sketched the basic idea in section~\ref{Sec:TestCasesConsid}. We said that the MMZD is determined by the Langevin-type eq.~(\ref{Eq:Lang1Dp}), where the potential is given by the effective potential and the memory and fluctuating terms depends on the inter-bead distance. 
 
-For the sake of clarity, the eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system is given below
+For the sake of clarity, eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system is given by
 \begin{equation}
 \label{Eq:MarkovApproxCompact}
 \begin{cases}
@@ -791,23 +749,23 @@ For the sake of clarity, the eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grai
                              + \fprojbf(t) \,. &  
 \end{cases}
 \end{equation}
-The components of the time independent friction matrix, i.e., eq.~(\ref{Eq:MarDeltaFric}) 
+The components of the time independent friction matrix, \textit{i.e.}, eq.~(\ref{Eq:MarDeltaFric}) 
 \[
   \widetilde{\bffricmat}(\Bphase{}) \coloneqq \bffricmat(\Bphase{},0) =  
   \beta\, \cexpval{ \fprojbf_{\Bphase{}}(0,\cdot) \otimes \fprojbf_{\Bphase{}}(0,\cdot) }{ \Bphase{} }\,,
 \]
-can be computed by means of the fluctuating force fig.~\ref{Fig:FF}. 
-If we consider the bead $I$ that interacts with bead $I-1$ and bead $I+1$, we can assume that the forces that act on it can be decomposed as independent ``stress'' contributions $\sigma_{I+1,I}$ and $-\sigma_{I,I-1}$. So we can write the $\fricmat_{I,I}$ component of the time independent friction matrix as
+can be computed by means of the fluctuating force (fig.~\ref{Fig:FF}).
+If we consider bead $I$, which interacts with bead $I-1$ and bead $I+1$, we can assume that the forces that act on it can be decomposed as the independent ``stress'' contributions $\sigma_{I+1,I}$ and $-\sigma_{I,I-1}$. Under these conditions we write the $\fricmat_{I,I}$ component of the time independent friction matrix as
 \begin{align*}
   \fricmat_{I,I}(\bfR) = \beta\,\cexpval{\fprojbf_I \otimes \fprojbf_I}{\bfR} &=
            \beta\,\cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I+1,I}-\sigma_{I,I-1}) }{\bfR} = \\
   &= \beta\,\cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{\bfR} + \beta\,\cexpval{ \sigma_{I,I-1} \otimes \sigma_{I,I-1} }{\bfR} \,,
 \end{align*}
-where we considered the cross terms negligible, i.e.,
+where we consider the cross terms to be negligible, \textit{i.e.},
 \[
  \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I,I-1} }{\bfR}\approx 0 \quad\text{and}\quad \cexpval{ \sigma_{I,I-1} \otimes \sigma_{I+1,I}}{\bfR}\approx 0\,.
 \]
-We are assuming that the fluctuating forces between adjacent beads are not correlated, since we have made the assumption that pair interactions are sufficient to describe the behaviour of the system.
+In other words, we assume the fluctuating forces between adjacent beads are not correlated, since we have made the assumption that pair interactions are sufficient to describe the behaviour of the system.
 
 \noindent
 In the same way, we obtain
@@ -820,7 +778,7 @@ In the same way, we obtain
  &= \beta\,\cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I,I-1}-\sigma_{I-1,I-2}) }{\bfR} = \\
  &= -\beta\,\cexpval{ \sigma_{I,I-1} \otimes \sigma_{I,I-1} }{\bfR} \,.
 \end{align*}
-Therefore given the inter-bead distance $\widetilde{\bfR}=\lvert\bfR_{I+1}-\bfR_{I}\rvert$, we compute a smooth approximation of the variance of the fluctuating force between beads
+Therefore, given the inter-bead distance $\widetilde{\bfR}=\lvert\bfR_{I+1}-\bfR_{I}\rvert$, we compute a smooth approximation of the variance of the fluctuating force between beads
 \[
  \gamma_{I+1,I} \coloneqq \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{ \widetilde{\bfR} }\,.
 \]
@@ -839,7 +797,7 @@ where $I,J \in \bp{1,2,\dots,\ncg}$, and we can write the time independent frict
 \]
  
 \noindent
-The terms of memory and the fluctuating force may be generated together in order to implement the following system of equations
+The terms of the memory and fluctuating force may be generated together in order to implement the following system of equations\lr{che intendi con "may be generated" e "implement"?}
 \begin{equation}
 \label{Eq:MMZD}
 \begin{cases}
@@ -850,9 +808,9 @@ The terms of memory and the fluctuating force may be generated together in order
 \end{equation}
 where $\Sigma(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W}$ are independent increment of the Wiener process in $\real^{\ncg}$.
 
-The system of equations obtained allows to describe and implement the MMZD, it is a system analogous to the eq.~(\ref{Eq:Lang1Dp}) that describes the Langevin dynamics. As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
+The system of equations obtained allows to describe and implement the MMZD, as it is analogous to the eq.~(\ref{Eq:Lang1Dp}), which describes the Langevin dynamics. As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
 
-The mean force, the fluctuating force and therefore the memory terms can be determined through a Kriging-type interpolation algorithm \cite{Jones2001} from the values shown in the Section \ref{Sec:EP}. This interpolation algorithm implemented in the code is a polynomial approximation of a given function with Gaussian weights. It allows to determine the new values of the function, filtering the noise resulting from the sampling error (see the supplementary material of the work of Di Pasquale \emph{et al.} \cite{DiPasquale2019}).
+The mean force, the fluctuating force and therefore the memory terms can be determined through a Kriging-type interpolation algorithm \cite{Jones2001} from the values shown in the Section \ref{Sec:EP}. This interpolation algorithm, which we have implemented in the code, yields a polynomial approximation of the given function with Gaussian weights. It allows to determine the new values of the function, filtering the noise resulting from the sampling error (see the supplementary material of the work of Di Pasquale \emph{et al.} \cite{DiPasquale2019}).
 
 
 \subsection{Timescale separation and the validity of the memory kernel approximation}
@@ -896,7 +854,6 @@ The mean force, the fluctuating force and therefore the memory terms can be dete
  \end{subfigure}\\
  \caption{pdf}
 \end{figure}
-
 
 
 
