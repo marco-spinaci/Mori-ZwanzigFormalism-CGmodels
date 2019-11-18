@@ -101,7 +101,7 @@ function LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
 
   # Do simulation.
   for i = 2:S.FullSteps
-	  if i % 1000 == 0
+	  if i % 5e5 == 0
 		  println("    ITERATION ",i," OF ",S.ApproxSteps);
 	  end
 	  (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
@@ -231,7 +231,7 @@ function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
   # Do simulation.
   for i = 2:S.ApproxSteps
 	# println("");
-	if i % 1000 == 0
+	if i % 5e5 == 0
 		println("    ITERATION ",i," OF ",S.ApproxSteps);
 	end
 	# println(" Start...");
