@@ -28,7 +28,7 @@ export ApproxMeanForce, ApproxMeanStresses, ApproxFlucStep, ComputeVEff
   OrthoSteps::Int 	  = 1
   ApproxSteps::Int	  = Int(1e5)
   FullTime::Float64	  = FullSteps*dt
-  ApproxTime::Float64 = ApproxSteps*dt
+  ApproxTime::Float64 = ApproxSteps*Stochdt
   LagStep			  = 400
   NumLags			  = 30
   MacroSamples::Int	  = 50
