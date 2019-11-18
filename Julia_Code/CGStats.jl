@@ -101,12 +101,15 @@ function LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
 
   # Do simulation.
   for i = 2:S.FullSteps
-    (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
-    Pstore[:,i] = P;
-    Qstore[:,i] = Q;
-    Fstore[:,i] = F;
-	K += KineticEnergy(P,C);
-	H += Potential(Q,C) + K;
+	  if i % 1000 == 0
+		  println("    ITERATION ",i," OF ",S.ApproxSteps);
+	  end
+	  (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
+      Pstore[:,i] = P;
+      Qstore[:,i] = Q;
+      Fstore[:,i] = F;
+	  K += KineticEnergy(P,C);
+	  H += Potential(Q,C) + K;
   end
 
   K /= S.FullSteps;
@@ -196,7 +199,7 @@ end
 function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64,1},FstdData::Array{Float64,1},C::Chain,S::Simulator)
  # Report to user.
  println(Dates.now());
- if FstdData == 0
+ if sum(FstdData) == 0
 	 println("Running full simulation of DCGD and storing trajectory.");
  else
 	 println("Running full simulation of MMZD and storing trajectory.");
@@ -228,7 +231,9 @@ function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
   # Do simulation.
   for i = 2:S.ApproxSteps
 	# println("");
-	println("ITERATION ",i," OF ",S.ApproxSteps);
+	if i % 1000 == 0
+		println("    ITERATION ",i," OF ",S.ApproxSteps);
+	end
 	# println(" Start...");
     (P,Q,F) = ApproxDynStep(P,Q,F,MeanForce,FlucStep,C,S.Stochdt);
     Pstore[i,:] = P;
