@@ -11,8 +11,8 @@ S = Simulator();
 
 # P = readdlm("/home/pmams3/Desktop/PFull.csv", Float64);
 P_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/P_FGD.csv", Float64);
-P_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Papprox_DCGD.csv", Float64);
-P_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Papprox_MMZD.csv", Float64);
+P_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/PApprox_DCGD.csv", Float64);
+P_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/PApprox_MMZD.csv", Float64);
 
 h1 = fit(Histogram, P_FGD[:, 1]);
 h2 = fit(Histogram, P_DCGD[:, 1]);
@@ -55,7 +55,7 @@ for i in 1:l
     dQ4[i, C.NBeads] += C.Period;
 end
 
-Q_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Qapprox_DCGD.csv", Float64);
+Q_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_DCGD.csv", Float64);
 l = size(Q_DCGD,1);
 dQ5 = zeros(l, C.NBeads);
 for i in 1:l
@@ -63,7 +63,7 @@ for i in 1:l
     dQ5[i, C.NBeads] += C.Period;
 end
 
-Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Qapprox_MMZD.csv", Float64);
+Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD.csv", Float64);
 l = size(Q_MMZD,1);
 dQ6 = zeros(l, C.NBeads);
 for i in 1:l
