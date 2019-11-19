@@ -10,7 +10,7 @@ set format y "10^{%L}"
 # set multiplot layout 2,1 margins 0.2, 1, 0.09, 0.88 spacing 0.15 #title "TEST" font ",28"
 
 set xlabel "{{/RomanOblique P}}"
-set xrange [-30:30]
+# set xrange [-30:30]
 # set xtics 5
 set ylabel "{{/RomanOblique pdf (P)}}"
 
@@ -23,7 +23,7 @@ p "./Data_Analysis/PDF/Outcomes/HistP_FGD.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD",
 set output
 
 set xlabel "{{/RomanOblique R}}"
-set xrange [2.5:3.8]
+# set xrange [2.5:3.8]
 # set xtics 5
 set ylabel "{{/RomanOblique pdf (R)}}"
 
