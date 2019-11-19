@@ -1467,78 +1467,88 @@ end
 function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Float64,1},
 	StressSqvals::Array{Float64,1},C::Chain,dt::Float64,σ::Float64=0.1,N::Int=2)
 
-  ### Set up storage for diffusivity
-  Gvec = zeros(size(Q,1));
+  if sum(StressSqvals) == 0
+	  ### Set up storage for diffusivity
+	  Gvec = zeros(size(Q,1));
+	  ### Compute inter-bead distances
+	  dQ = circshift(Q, -1) - Q;
+	  dQ[C.NBeads] += C.Period;
 
-  ### Compute inter-bead distances
-  dQ = circshift(Q, -1) - Q;
-  dQ[C.NBeads] += C.Period;
-  # println("");
-  # println("       INTER-BEAD DISTANCES COMPUTED IN ApproxFlucStep");
-  # println("       dQ = ",dQ);
+	  return zeros(size(P,1)), Gvec, dQ
+  else
+	  ### Set up storage for diffusivity
+      Gvec = zeros(size(Q,1));
 
-  ### For each inter-bead distance, compute diffusivity
-  for i=1:length(dQ)
-	  if dQ[i] < 0.9
-		  m = (6464.26 - 8859.34) / (1.2-0.90);
-		  q = 8859.34 - m * 0.90;
-		  Gvec[i] = m * dQ[i] + q;
-		  continue
-	  elseif dQ[i] > 3.78
-		  ### Define (diagonal) weight matrix
-		  # W = spdiagm(0 => exp.(-(dQvals .- 3.78) .^2 ./ σ^2));
+      ### Compute inter-bead distances
+      dQ = circshift(Q, -1) - Q;
+      dQ[C.NBeads] += C.Period;
+      # println("");
+      # println("       INTER-BEAD DISTANCES COMPUTED IN ApproxFlucStep");
+      # println("       dQ = ",dQ);
 
-		  ### Form Jacobian matrix
-		  # J = ones(N+1, length(dQvals));
-		  # for j = 1:N
-			#   J[j+1, :] = (3.78 .- dQvals).^j;
-		  # end
+      ### For each inter-bead distance, compute diffusivity
+      for i=1:length(dQ)
+	      if dQ[i] < 0.9
+		      m = (6464.26 - 8859.34) / (1.2-0.90);
+		      q = 8859.34 - m * 0.90;
+		      Gvec[i] = m * dQ[i] + q;
+		      continue
+	      elseif dQ[i] > 3.78
+		      ### Define (diagonal) weight matrix
+		      # W = spdiagm(0 => exp.(-(dQvals .- 3.78) .^2 ./ σ^2));
 
-		  ### Least squares approximation of interpolant coefficients
-		  # K = J * W;
-		  # coeffs = (K * J') \ (K * StressSqvals);
+		      ### Form Jacobian matrix
+		      # J = ones(N+1, length(dQvals));
+		      # for j = 1:N
+			  #    J[j+1, :] = (3.78 .- dQvals).^j;
+		      # end
 
-		  ### Extract value of interpolant
-		  Gvec[i] = 0; #coeffs[1];
-		  continue
-	  else
-		  ### Define (diagonal) weight matrix
-	      W = spdiagm(0 => exp.(-(dQvals .- dQ[i]).^2/σ^2));
-	  end
+		      ### Least squares approximation of interpolant coefficients
+		      # K = J * W;
+		      # coeffs = (K * J') \ (K * StressSqvals);
 
-    ### Form Jacobian matrix
-    J = ones(N+1, length(dQvals));
-    for j = 1:N
-      J[j+1,:] = (dQ[i] .- dQvals).^j;
-    end
+		      ### Extract value of interpolant
+		      Gvec[i] = 0; #coeffs[1];
+		      continue
+	      else
+		      ### Define (diagonal) weight matrix
+	          W = spdiagm(0 => exp.(-(dQvals .- dQ[i]).^2/σ^2));
+	      end
 
-    ### Least squares approximation of interpolant coefficients
-	K = J * W;
-	# println("       Product between Jacobian matrix and diagonal weight matrix");
-	# println("       K = ",K);
-    coeffs = (K * J') \ (K * StressSqvals);
+        ### Form Jacobian matrix
+        J = ones(N+1, length(dQvals));
+    	for j = 1:N
+            J[j+1,:] = (dQ[i] .- dQvals).^j;
+        end
 
-    ### Extract value of interpolant
-    Gvec[i] = coeffs[1];
+    	### Least squares approximation of interpolant coefficients
+		K = J * W;
+		# println("       Product between Jacobian matrix and diagonal weight matrix");
+		# println("       K = ",K);
+    	coeffs = (K * J') \ (K * StressSqvals);
+
+    	### Extract value of interpolant
+    	Gvec[i] = coeffs[1];
+      end
+
+  	  ### Set diffusivity to zero if negative.
+      Gvec = max.(Gvec, 0);
+
+  	  ### Form memory matrix
+      Gamma = diagm(0 => Gvec) - circshift(diagm(0 => Gvec), -1);
+  	  Gamma = (Gamma - circshift(Gamma,1));
+
+      ### Perform eigenvalue decomposition
+  	  F = eigen(Gamma);
+      F.values[1] = 0;
+
+  	  ### Calculate exact Ornstein-Uhlenbeck step using decomposition
+      c1 = exp.(-F.values / (2 * C.BeadMass) * dt);
+  	  c3 = sqrt(C.BeadMass) * sqrt.(1.0 .- c1.^2) .* randn(C.NBeads);
+
+      ### Generate new momenta and return
+      return F.vectors * (c1 .* (F.vectors' * P) + c3), Gvec, dQ
   end
-
-  ### Set diffusivity to zero if negative.
-  Gvec = max.(Gvec, 0);
-
-  ### Form memory matrix
-  Gamma = diagm(0 => Gvec) - circshift(diagm(0 => Gvec), -1);
-  Gamma = (Gamma - circshift(Gamma,1));
-
-  ### Perform eigenvalue decomposition
-  F = eigen(Gamma);
-  F.values[1] = 0;
-
-  ### Calculate exact Ornstein-Uhlenbeck step using decomposition
-  c1 = exp.(-F.values / (2 * C.BeadMass) * dt);
-  c3 = sqrt(C.BeadMass) * sqrt.(1.0 .- c1.^2) .* randn(C.NBeads);
-
-  ### Generate new momenta and return
-  return F.vectors * (c1 .* (F.vectors' * P) + c3), Gvec, dQ
 end
 
 end # module CGStats
