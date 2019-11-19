@@ -783,21 +783,33 @@ Therefore, given the inter-bead distance $\widetilde{\bfR}=\lvert\bfR_{I+1}-\bfR
  \gamma_{I+1,I} \coloneqq \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{ \widetilde{\bfR} }\,.
 \]
 We define the tridiagonal matrix
-\begin{equation}
- \label{Eq:TridMat}
+\begin{equation*}
  \Sigma_{IJ} = \begin{cases}
     -\gamma_{I+1,I} & I=J-1 \mod \ncg \,, \\
     \gamma_{I+1,I} + \gamma_{I,I-1} & I=J \,, \\
     -\gamma_{I,I-1} & I=J+1 \mod \ncg,
  \end{cases}
-\end{equation}
+\end{equation*}
 where $I,J \in \bp{1,2,\dots,\ncg}$, and we can write the time independent friction matrix as 
-\[
+\begin{equation}
+\label{Eq:TridMat}
  \widetilde{\bffricmat}(\widetilde{\bfR})=\beta\,\Sigma(\widetilde{\bfR})\,.
-\]
- 
+\end{equation}
+So, we can rewrite the eq.~(\ref{Eq:MarkovApproxCompact}) as
+\begin{equation}
+\begin{cases}
+ \partial_t\,\Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,, & \\
+ \partial_t\,\Bphase{\bfP} = -\partial_{\widetilde{\bfR}}\Veff(\widetilde{\bfR}) 
+                             - \beta\,\Sigma(\widetilde{\bfR}) \cdot \cip{M^{-1}\Bphase{\bfP}}
+                             + \fprojbf(t) \,. &  
+\end{cases}
+\end{equation} 
 \noindent
-The terms of the memory and fluctuating force may be generated together in a similar way to the thermal bath of Langevin equation (\ref{Eq:Lang1Dp}), where the diffusive parameter depends on the friction parameter in the stationary limit (see Sec.~\ref{Sec:SDE}).
+The terms of the memory and fluctuating force may be generated together in a similar way to the thermal bath of Langevin equation (\ref{Eq:Lang1Dp}), where the diffusive parameter depends on the friction parameter in the stationary limit (see Sec.~\ref{Sec:SDE}). In fact, by placing
+\[
+ \fprojbf(t) = \sqrt{2\,\Sigma(\widetilde{\bfR})}\, \boldsymbol{\xi}(t)\,,
+\] 
+where $\boldsymbol{\xi}(t)$ is a white noise.
 
 
 \lr{che intendi con "may be generated" e "implement"?}
