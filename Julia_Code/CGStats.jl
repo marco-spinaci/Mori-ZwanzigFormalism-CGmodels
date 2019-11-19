@@ -1545,15 +1545,15 @@ function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Fl
       F.values[1] = 0;
 
   	  ### Calculate exact Ornstein-Uhlenbeck step using decomposition
-      # c1 = exp.(-F.values / (2 * C.BeadMass) * dt);
-	  c1 = F.vectors * exp.(-F.values / (2 * C.BeadMass) * dt) .* F.vectors';
-	  c3 = sqrt(C.BeadMass) * sqrt.(abs.(1.0 .- c1^2)) * randn(C.NBeads);
-	  # c3 = sqrt(C.BeadMass) * sqrt.(1.0 .- c1.^2) .* randn(C.NBeads);
+      c1 = exp.(-F.values / (2 * C.BeadMass) * dt);
+	  # c1 = F.vectors * exp.(-F.values / (2 * C.BeadMass) * dt) .* F.vectors';
+	  # c3 = sqrt(C.BeadMass) * sqrt.(abs.(1.0 .- c1^2)) * randn(C.NBeads);
+	  c3 = sqrt(C.BeadMass) * sqrt.(1.0 .- c1.^2) .* randn(C.NBeads);
 
       ### Generate new momenta and return
 	  # println("PNext = ", c1 * P + c3 )
-	  return c1 * P + c3, Gvec, dQ
-      # return F.vectors * (c1 .* (F.vectors' * P) + c3), Gvec, dQ
+	  # return c1 * P + c3, Gvec, dQ
+      return F.vectors * (c1 .* (F.vectors' * P) + c3), Gvec, dQ
   end
 end
 
