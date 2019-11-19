@@ -489,7 +489,7 @@ $c_1=e^{-\widetilde{\gamma}\,dt}$ and $c_2=\sqrt{\left(1-c_1^2\right)/\beta}$ ar
 
 
 \subsection{An idea of how the BAOAB method was derived}
-
+\label{Sec:SDE}
 \lr{questa parte è un po' oscura secondo me... per ora lasciala ma mi dovrai spiegare a cosa serve!}
 
 An It\^o stochastic differential equation (SDE) can be written as
@@ -797,7 +797,10 @@ where $I,J \in \bp{1,2,\dots,\ncg}$, and we can write the time independent frict
 \]
  
 \noindent
-The terms of the memory and fluctuating force may be generated together in order to implement the following system of equations\lr{che intendi con "may be generated" e "implement"?}
+The terms of the memory and fluctuating force may be generated together in a similar way to the thermal bath of Langevin equation (\ref{Eq:Lang1Dp}), where the diffusive parameter depends on the friction parameter in the stationary limit (see Sec.~\ref{Sec:SDE}).
+
+
+\lr{che intendi con "may be generated" e "implement"?}
 \begin{equation}
 \label{Eq:MMZD}
 \begin{cases}
