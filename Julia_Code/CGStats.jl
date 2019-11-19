@@ -4,7 +4,7 @@
 module CGStats
 
 # Include relevant modules
-using Main.LJChain, Distributed, SharedArrays, Parameters, Statistics, Dates, SparseArrays, LinearAlgebra
+using Main.LJChain, Distributed, SharedArrays, Parameters, Statistics, Dates, SparseArrays, LinearAlgebra, Printf
 
 # Parameter object
 export Simulator
@@ -102,7 +102,7 @@ function LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
   # Do simulation.
   for i = 2:S.FullSteps
 	  if i % 5e5 == 0
-		  println("    ITERATION ",i," OF ",S.ApproxSteps);
+		  @printf "    ITERATION %0.1e OF %0.1e\n" i S.ApproxSteps
 	  end
 	  (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
       Pstore[:,i] = P;
@@ -232,7 +232,7 @@ function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
   for i = 2:S.ApproxSteps
 	# println("");
 	if i % 5e5 == 0
-		println("    ITERATION ",i," OF ",S.ApproxSteps);
+		@printf "    ITERATION %0.1e OF %0.1e\n" i S.ApproxSteps
 	end
 	# println(" Start...");
     (P,Q,F) = ApproxDynStep(P,Q,F,MeanForce,FlucStep,C,S.Stochdt);
