@@ -268,25 +268,25 @@ positions.
 """
 function InitConds(C::Chain)
   # Fix the initial condition for CG variables.
-  P0 = sqrt.(C.MassTotPatt./C.Beta).*randn(C.NPart);
+  P0 = sqrt.(C.MassTotPatt ./ C.Beta).*randn(C.NPart);
   # Set total momentum to 0 to avoid drift.
   P0 .-= mean(P0);
-  P0 *= sqrt.((C.NPart/C.Beta) / KineticEnergy(P0,C));
-  Q0 = convert(Array{Float64,1},range(0.0,stop=(C.NPart-1)*C.Dist,length=C.NPart));
-  Q0 = Q0+0.001*C.Beta*randn(C.NPart)
+  P0 *= sqrt.((C.NPart / C.Beta) / KineticEnergy(P0, C));
+  Q0 = convert(Array{Float64,1}, range(0.0, stop = (C.NPart-1) * C.Dist, length = C.NPart));
+  Q0 = Q0 + 0.001 * C.Beta * randn(C.NPart)
 
   # Fix reference energy
-  E0 = Potential(Q0,C);
-  H0 = KineticEnergy(P0,C) + E0;
+  E0 = Potential(Q0, C);
+  H0 = KineticEnergy(P0, C) + E0;
 
   # Compute initial forces
-  F0 = Forces(Q0,C);
+  F0 = Forces(Q0, C);
 
   # Extract IC for CG variables
-  PCG0 = C.Phi*P0;
-  QCG0 = C.Psi*Q0;
+  PCG0 = C.Phi * P0;
+  QCG0 = C.Psi * Q0;
 
-  return P0,Q0,F0,H0,PCG0,QCG0
+  return P0, Q0, F0, H0, PCG0, QCG0
 end
 
 """

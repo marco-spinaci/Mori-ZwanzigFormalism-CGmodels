@@ -1408,8 +1408,8 @@ function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::
 	  if dQ[i] < 0.9
 		  m = (- 9620.78 + 11462.61) / (1.09-0.95);
 		  q = -9620.78 - m * 1.09;
+
 		  Sigma[i] = m * dQ[i] + q;
-		  continue
 	  elseif dQ[i] > 3.78
 		  ### Define (diagonal) weight matrix
 		  # W = spdiagm(0 => exp.(-(dQvals .- 3.78) .^2 ./ σ^2));
@@ -1424,26 +1424,26 @@ function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::
 		  # c = (K * J') \ (K * Fvals);
 
 		  Sigma[i] = 0; #c[1];
-		  continue;
 	  else
 		  ### Define (diagonal) weight matrix
 		  W = spdiagm(0 => exp.(-(dQvals .- dQ[i]) .^2 ./ σ^2));
-	  end
-	  # println(" ITERATION =",i," ; dQ = ",dQ[i]);
-	  # println(" dQvals =",dQvals);
-	  # println(" EXP = ",exp.(-(dQvals .- dQ[i]).^2 ./ σ^2));
+		  # println(" ITERATION =",i," ; dQ = ",dQ[i]);
+		  # println(" dQvals =",dQvals);
+	  	  # println(" EXP = ",exp.(-(dQvals .- dQ[i]).^2 ./ σ^2));
 
-	  ### Form Jacobian matrix
-      J = ones(N+1, length(dQvals));
-      for j = 1:N
-		  J[j+1, :] = (dQ[i] .- dQvals).^j;
-	  end
-	  # println("       JACOBIAN MATRIX IN 	ApproxMeanStresses");
-	  # println("       J = ",J);
-	  K = J * W;
-	  c = (K * J') \ (K * Fvals);
+	      ### Form Jacobian matrix
+      	  J = ones(N+1, length(dQvals));
+      	  for j = 1:N
+			  J[j+1, :] = (dQ[i] .- dQvals).^j;
+		  end
 
-	  Sigma[i] = c[1];
+		  # println("       JACOBIAN MATRIX IN 	ApproxMeanStresses");
+	  	  # println("       J = ",J);
+	      K = J * W;
+	  	  c = (K * J') \ (K * Fvals);
+
+	      Sigma[i] = c[1];
+	  end
   end
 
   return Sigma, dQ
@@ -1492,7 +1492,6 @@ function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Fl
 		      m = (6464.26 - 8859.34) / (1.2-0.90);
 		      q = 8859.34 - m * 0.90;
 		      Gvec[i] = m * dQ[i] + q;
-		      continue
 	      elseif dQ[i] > 3.78
 		      ### Define (diagonal) weight matrix
 		      # W = spdiagm(0 => exp.(-(dQvals .- 3.78) .^2 ./ σ^2));
@@ -1509,45 +1508,52 @@ function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Fl
 
 		      ### Extract value of interpolant
 		      Gvec[i] = 0; #coeffs[1];
-		      continue
 	      else
 		      ### Define (diagonal) weight matrix
 	          W = spdiagm(0 => exp.(-(dQvals .- dQ[i]).^2/σ^2));
-	      end
 
-        ### Form Jacobian matrix
-        J = ones(N+1, length(dQvals));
-    	for j = 1:N
-            J[j+1,:] = (dQ[i] .- dQvals).^j;
-        end
+			  ### Form Jacobian matrix
+        	  J = ones(N+1, length(dQvals));
+    		  for j = 1:N
+				  J[j+1,:] = (dQ[i] .- dQvals).^j;
+			  end
 
-    	### Least squares approximation of interpolant coefficients
-		K = J * W;
-		# println("       Product between Jacobian matrix and diagonal weight matrix");
-		# println("       K = ",K);
-    	coeffs = (K * J') \ (K * StressSqvals);
+			  ### Least squares approximation of interpolant coefficients
+			  K = J * W;
+			  # println("       Product between Jacobian matrix and diagonal weight matrix");
+			  # println("       K = ",K);
+			  coeffs = (K * J') \ (K * StressSqvals);
 
-    	### Extract value of interpolant
-    	Gvec[i] = coeffs[1];
-      end
+			  ### Extract value of interpolant
+			  Gvec[i] = coeffs[1];
+		  end
+	  end
 
   	  ### Set diffusivity to zero if negative.
-      Gvec = max.(Gvec, 0);
+      Gvec = max.(Gvec, 0); #This function return the maximum of the arguments.
 
-  	  ### Form memory matrix
+  	  ### Form memory matrix (that is a tridiagonal matrix)
       Gamma = diagm(0 => Gvec) - circshift(diagm(0 => Gvec), -1);
   	  Gamma = (Gamma - circshift(Gamma,1));
+	  # println("GAMMA = ", Gamma)
 
       ### Perform eigenvalue decomposition
-  	  F = eigen(Gamma);
+  	  F = eigen(Gamma); # Computes the eigenvalue decomposition, returning an Eigen factorization object F
+	                    # which contains the eigenvalues in F.values and the eigenvectors in the columns of the matrix F.vectors.
+	  # println("EIGENVALUES = ", F.values)
+	  # println("EIGENVECTOR = ", F.vectors)
       F.values[1] = 0;
 
   	  ### Calculate exact Ornstein-Uhlenbeck step using decomposition
-      c1 = exp.(-F.values / (2 * C.BeadMass) * dt);
-  	  c3 = sqrt(C.BeadMass) * sqrt.(1.0 .- c1.^2) .* randn(C.NBeads);
+      # c1 = exp.(-F.values / (2 * C.BeadMass) * dt);
+	  c1 = F.vectors * exp.(-F.values / (2 * C.BeadMass) * dt) .* F.vectors';
+	  c3 = sqrt(C.BeadMass) * sqrt.(abs.(1.0 .- c1^2)) * randn(C.NBeads);
+	  # c3 = sqrt(C.BeadMass) * sqrt.(1.0 .- c1.^2) .* randn(C.NBeads);
 
       ### Generate new momenta and return
-      return F.vectors * (c1 .* (F.vectors' * P) + c3), Gvec, dQ
+	  # println("PNext = ", c1 * P + c3 )
+	  return c1 * P + c3, Gvec, dQ
+      # return F.vectors * (c1 .* (F.vectors' * P) + c3), Gvec, dQ
   end
 end
 
