@@ -23,8 +23,7 @@ p "./Data_Analysis/PDF/Outcomes/HistP_FGD.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD",
 set output
 
 set xlabel "{{/RomanOblique R}}"
-unset xrange
-# set xrange [-30:30]
+set xrange [2.5:3.8]
 # set xtics 5
 set ylabel "{{/RomanOblique pdf (R)}}"
 
