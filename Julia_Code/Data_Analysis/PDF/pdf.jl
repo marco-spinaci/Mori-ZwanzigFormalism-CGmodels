@@ -44,29 +44,29 @@ open("Data_Analysis/PDF/Outcomes/HistP_MMZD.csv", "w+") do x
 end
 
 
-######################### pdf(P) ###############################################
+######################### pdf(R) ###############################################
 
 # Q = readdlm("/home/pmams3/Desktop/QFull.csv", Float64);
 Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Q_FGD.csv", Float64);
-l = size(Q_FGD,1);
-dQ4 = zeros(l, C.NBeads);
-for i in 1:l
+lf = size(Q_FGD,1);
+dQ4 = zeros(lf, C.NBeads);
+for i in 1:lf
     dQ4[i, :] = circshift(Q_FGD[i, :], -1) - Q_FGD[i, :];
     dQ4[i, C.NBeads] += C.Period;
 end
 
 Q_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_DCGD.csv", Float64);
-l = size(Q_DCGD,1);
-dQ5 = zeros(l, C.NBeads);
-for i in 1:l
+ld = size(Q_DCGD,1);
+dQ5 = zeros(ld, C.NBeads);
+for i in 1:ld
     dQ5[i, :] = circshift(Q_DCGD[i, :], -1) - Q_DCGD[i, :];
     dQ5[i, C.NBeads] += C.Period;
 end
 
 Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD.csv", Float64);
-l = size(Q_MMZD,1);
-dQ6 = zeros(l, C.NBeads);
-for i in 1:l
+lm = size(Q_MMZD,1);
+dQ6 = zeros(lm, C.NBeads);
+for i in 1:lm
     dQ6[i, :] = circshift(Q_MMZD[i, :], -1) - Q_MMZD[i, :];
     dQ6[i, C.NBeads] += C.Period;
 end
