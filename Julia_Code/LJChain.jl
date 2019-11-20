@@ -70,6 +70,7 @@ pattern Patt.
   #useless? ##ZetaConstr 					= Diagonal(ones(NPart))-PsiConstr'PhiConstr;
   MomProj 						= I - PsiConstr'*PhiConstr # this is correct up to a constant pinv(Matrix(PsiConstr))*PhiConstr
   NetMomProj					= I - ones(NPart)*pinv(ones(NPart))
+  NetMomProjCG					= I - ones(NBeads)*pinv(ones(NBeads))
 
   # Relative CG projections between identical beads (full and constrained)
   PhiF::Array{Float64,2} 		= kron(Diagonal(ones(NBeads)),[zeros(Float64,length(Patt)-1);1.0])'  # Forces between beads
@@ -268,7 +269,7 @@ Computes forward step of Deterministic CG Dynamics in the Canonical ensemble wit
 function DetCGDynNVTStep(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Float64,1},MeanForce,C::Chain,dt::Float64)
   PNext = P + 0.5.*F.*dt 	                      		    # B
   QNext = Q + 0.5.*dt./C.BeadMass.*PNext;                   # A
-  PNext = C.NetMomProj*OrnUhlenbeckPartDCG(PNext,C,dt);     # O
+  PNext = C.NetMomProjCG*OrnUhlenbeckPartDCG(PNext,C,dt);     # O
   QNext = QNext+0.5.*dt/C.BeadMass.*PNext;            		# A
   FNext = MeanForce(QNext);                       		    # Force evaluation
   PNext = PNext + 0.5.*FNext.*dt;                		    # B
