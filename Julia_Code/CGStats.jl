@@ -267,9 +267,9 @@ function DetCGCanEnsTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
   F = MeanForce(Q0);
 
   # Set up storage
-  Pstore = zeros(S.FullSteps/100,length(P0));
-  Qstore = zeros(S.FullSteps/100,length(P0));
-  Fstore = zeros(S.FullSteps/100,length(P0));
+  Pstore = zeros(Int(S.FullSteps/100),length(P0));
+  Qstore = zeros(Int(S.FullSteps/100),length(P0));
+  Fstore = zeros(Int(S.FullSteps/100),length(P0));
   Pstore[1,:] = P;
   Qstore[1,:] = Q;
   Fstore[1,:] = F;
