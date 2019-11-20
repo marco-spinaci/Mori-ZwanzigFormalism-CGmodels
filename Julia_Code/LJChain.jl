@@ -17,7 +17,8 @@ export Chain, LennardJones, LennardJonesPrime, Potential, Forces, Stresses,
   KineticEnergy
 export InitConds, CGDists
 # Time stepping functions
-export LeapfrogStep, ConstrainedStep, ApproxDynStep, LangDynIntegrators, LangDynConstrainedStep, OrnUhlenbeckPart
+export LeapfrogStep, ConstrainedStep, ApproxDynStep, LangDynIntegrators, LangDynConstrainedStep, OrnUhlenbeckPart,
+  DetCGDynNVTStep, OrnUhlenbeckPartDCG
 
 """
     Chain(Patt,NBeads,SM,LM,SEps,LEps,Dist,Beta,Gamma)
@@ -55,6 +56,7 @@ pattern Patt.
   EpsPatt::Array{Float64,1} 	= (sqrt.(LEps)*LTotPatt+sqrt.(SEps)*STotPatt).*circshift(sqrt.(LEps)*LTotPatt+sqrt.(SEps)*STotPatt,-1)
   # Friction coefficient for Langevin dynamics
   GammaTilde::Array{Float64,2}  = Diagonal(ones(NPart))*MInv*Gamma
+  GammaTildeCG::Array{Float64,2}  = Diagonal(ones(NBeads))/BeadMass*Gamma
   # Full CG Projections
   Phi::Array{Float64,2}	= kron(Diagonal(ones(NBeads)),ones(Float64,length(Patt))')
   Psi 				    = kron(Diagonal(ones(NBeads)),MassPatt'./BeadMass)
@@ -255,6 +257,31 @@ function ApproxDynStep(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Float64,
      # println(" ...end");
   PNext = PNext + 0.5.*FNext.*dt;               # B
   return PNext,QNext,FNext
+end
+
+"""
+    (PNext,QNext,FNext) = DetCGDynNVTStep(P,Q,F,MeanForce,C::Chain,dt)
+
+Computes forward step of Deterministic CG Dynamics in the Canonical ensemble with timestep dt using Leimkuhler-Matthews
+"BAOAB" integrator; diffusion coefficient is evaluated after performing `half' of the deterministic part of the timestep.
+"""
+function DetCGDynNVTStep(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Float64,1},MeanForce,C::Chain,dt::Float64)
+  PNext = P + 0.5.*F.*dt 	                      		    # B
+  QNext = Q + 0.5.*dt./C.BeadMass.*PNext;                   # A
+  PNext = C.NetMomProj*OrnUhlenbeckPartDCG(PNext,C,dt);     # O
+  QNext = QNext+0.5.*dt/C.BeadMass.*PNext;            		# A
+  FNext = MeanForce(QNext);                       		    # Force evaluation
+  PNext = PNext + 0.5.*FNext.*dt;                		    # B
+  return PNext,QNext,FNext
+end
+
+function OrnUhlenbeckPartDCG(P::Array{Float64,1},C::Chain,dt::Float64)
+ 	# Calculate exact Ornstein-Uhlenbeck step using decomposition
+	c1 = exp(-C.GammaTildeCG*dt);
+	c3 = sqrt(1/C.Beta)*sqrt(Diagonal(ones(C.NBeads))-c1^2);
+
+	# Generate new momenta and return
+	return c1*P+c3*sqrt(C.BeadMass)*randn(C.NBeads)
 end
 
 # Initial condition generation

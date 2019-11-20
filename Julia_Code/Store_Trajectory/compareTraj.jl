@@ -44,7 +44,7 @@ Fstd = CG[:, 5];
 # (PApprox, QApprox, FApprox) = ApproximateTraj(P0CG, Q0CG, RR, Fmean, Fstd, C, S);
 
 ## DCGD
-# (PApprox2, QApprox2, FApprox2) = ApproximateTraj(P0CG, Q0CG, RR, Fmean, Fstd*0, C, S);
+# (PApprox2, QApprox2, FApprox2) = DetCGCanEnsTraj(P0CG, Q0CG, RR, Fmean, C, S);
 
 #########################################################################################
 # Write data to file

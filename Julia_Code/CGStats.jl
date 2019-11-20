@@ -9,7 +9,7 @@ using Main.LJChain, Distributed, SharedArrays, Parameters, Statistics, Dates, Sp
 # Parameter object
 export Simulator
 # Functions to output raw trajectory data
-export FullTraj, LangevinFullTraj, ConstrainedTraj, LangConstrainedTraj, ApproximateTraj
+export FullTraj, LangevinFullTraj, ConstrainedTraj, LangConstrainedTraj, ApproximateTraj, DetCGCanEnsTraj
 # High-level function to extract data
 export VEffConstrained, VEffConstrainedLangDyn, ConstrainedAutocorr, ConstrainedAutocorrLangDyn, FullAutocorr, FullAutocorrLangDyn, ApproximateAutocorr,
   ConstrainedAutocorrPar, ConstrainedAutocorrLangDynPar, FullAutocorrPar, FullAutocorrLangDynPar, ApproximateAutocorrPar
@@ -200,7 +200,7 @@ function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
  # Report to user.
  println(Dates.now());
  if sum(FstdData) == 0
-	 println("Running full simulation of DCGD and storing trajectory.");
+	 println("Running full simulation of DCGD in NVE ensemble and storing trajectory.");
  else
 	 println("Running full simulation of MMZD and storing trajectory.");
  end
@@ -230,12 +230,57 @@ function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
 
   # Do simulation.
   for i = 2:S.ApproxSteps
-	# println("");
 	if i % 5e5 == 0
 		@printf "    ITERATION %0.3e OF %0.3e\n" i S.ApproxSteps
 	end
 	# println(" Start...");
     (P,Q,F) = ApproxDynStep(P,Q,F,MeanForce,FlucStep,C,S.Stochdt);
+    Pstore[i,:] = P;
+    Qstore[i,:] = Q;
+    Fstore[i,:] = F;
+  end
+
+  return Pstore,Qstore,Fstore
+end
+
+"""
+    (Pstore,Qstore,Fstore) = DetCGCanEnsTraj(P0,Q0,dQData,FmeanData,C::Chain,S::Simulator)
+
+    Outputs full trajectory data for Deterministi CG dynamics in the canonical ensemble, using
+    approximate potential generated from data encoded in 2 vectors (dQData,FmeanData).
+"""
+function DetCGCanEnsTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64,1},C::Chain,S::Simulator)
+ # Report to user.
+ println(Dates.now());
+ println("Running full simulation of DCGD in NVT ensemble and storing trajectory.");
+ println("  NPart, number of particles simulated = ",C.NPart);
+ println("  Beta, temperature parameter = ",C.Beta);
+ println("  Gamma, friction coefficient = ",C.Gamma);
+ println("  dt, time step size = ",S.dt);
+ println("  Total simulation time = ",S.FullTime);
+
+  # Set up initial conditions
+  P = P0; Q = Q0;
+
+  # Generate mean force function
+  MeanForce = X -> ApproxMeanForce(X,dQData,FmeanData,C)[1];
+  F = MeanForce(Q0);
+
+  # Set up storage
+  Pstore = zeros(S.ApproxSteps,length(P0));
+  Qstore = zeros(S.ApproxSteps,length(P0));
+  Fstore = zeros(S.ApproxSteps,length(P0));
+  Pstore[1,:] = P;
+  Qstore[1,:] = Q;
+  Fstore[1,:] = F;
+
+  # Do simulation.
+  for i = 2:S.FullSteps
+	if i % 5e5 == 0
+		@printf "    ITERATION %0.3e OF %0.3e\n" i S.FullSteps
+	end
+	# println(" Start...");
+    (P,Q,F) = DetCGDynNVTStep(P,Q,F,MeanForce,C,S.dt);
     Pstore[i,:] = P;
     Qstore[i,:] = Q;
     Fstore[i,:] = F;

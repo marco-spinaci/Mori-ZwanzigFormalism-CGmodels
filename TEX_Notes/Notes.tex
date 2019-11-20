@@ -442,11 +442,9 @@ In particular, in the studied system the assumption is valid if the time scale o
 Therefore to simplify and numerically implement the eq.~(\ref{Eq:ZwanGLE}), we assume that the model under examination satisfies the Markovian property and we approximate the friction matrix as
 \begin{equation}
  \label{Eq:MarFric1}
- \bffricmat(\Bphase{},t) \approx \widetilde{\bffricmat}(\Bphase{})\delta(t).
+ \bffricmat(\Bphase{},t) \approx \widetilde{\bffricmat}(\Bphase{})\delta(t)\,,
 \end{equation}
-If 
-In this case, $\widetilde{\bffricmat}$ is the time independent friction matrix defined as:
-%
+Where $\widetilde{\bffricmat}$ is the time independent friction matrix defined as
 \begin{equation}\label{Eq:MarDeltaFric}
   \widetilde{\bffricmat}(\Bphase{}) := \bffricmat(\Bphase{},0)
   = \beta\,\aver{\fprojbf_{\Bphase{}}(0,\cdot)\otimes
@@ -820,7 +818,7 @@ where $\boldsymbol{\xi}(t)$ is a white noise, we get from the eq.~(\ref{Eq:MApCo
                      + \Sigma (\widetilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
 \end{cases}
 \end{equation}
-where $\Sigma(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W} \equiv \boldsymbol{\xi}(t) \,\diff t$ are independent increment of the Wiener process in $\real^{\ncg}$.
+where $\Sigma(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W} \equiv \boldsymbol{\xi}(t) \,\diff t$ are independent increments of the Wiener process in $\real^{\ncg}$.
 
 The system of equations obtained allows to describe and implement the MMZD, as it is analogous to the eq.~(\ref{Eq:Lang1Dp}), which describes the Langevin dynamics. In fact, if we take $\gamma=\frac{\beta}{2}\, \Sigma(\widetilde{\bfR})$ in the eq.~(\ref{Eq:Lang1Dp}), we find the system of equations (\ref{Eq:MMZD}). As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
 
