@@ -279,7 +279,7 @@ function DetCGCanEnsTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
   j = 2;
   for i = 2:S.FullSteps
 	  if i % 5e4 == 0
-		  @printf "    ITERATION %0.3e OF %0.3e\n" i S.FullSteps
+		  @printf "    ITERATION %0.2e OF %0.2e\n" i S.FullSteps
 	  end
 
 	  (P,Q,F) = DetCGDynNVTStep(P,Q,F,MeanForce,C,S.dt);
