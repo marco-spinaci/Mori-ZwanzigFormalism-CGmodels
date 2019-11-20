@@ -68,7 +68,7 @@ This equation describes the non-equilibrium evolution of any set of functions $A
 Some years later in 1973 R. Zwanzig derived a class of generalized Langevin equations describing the motion of a system interacting with a heat bath. This GLE is exact but differs from that obtained by Mori's scheme for two reasons: for the presence of an arbitrary nonlinear force and for the fact that its validity is not restricted to small deviations from the thermal equilibrium \cite{Zwanzig1973}.
 
 \noindent
-In recent years D. Kauzlari\'c \emph{et al.} \cite{Kauzlaric2011} showed in their work on the calculation of the friction matrix in the coarse-grained description of an atomistic system that Mori's GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables (the functions $A(t)$ in the equation (\ref{generalGLE})) have a characteristic time scale much larger than the memory time scale.
+In recent years D. Kauzlari\'c \textit{et al.}~\cite{Kauzlaric2011} showed in their work on the calculation of the friction matrix in the coarse-grained description of an atomistic system that Mori's GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables (the functions $A(t)$ in the equation (\ref{generalGLE})) have a characteristic time scale much larger than the memory time scale.
 
 These techniques are known in various context as well as in transport theory. For example, in the dynamic light scattering or in the liquids theory, the GLE is used to compute time-correlation functions under circumstances where the usual phenomenological equations do not apply. Indeed, the Mori-Zwanzig formalism can be used to obtain an equation for the time correlation function $C(t)$:  
 \begin{equation}
@@ -304,8 +304,10 @@ We can now rewrite eq. (\ref{Eq:fricmatrix}) as
    \,\beta\,\pproj_{\bfa}\sqp{ \cip{ \qproj_{\bfa}\Lio\,\Bphase{0}} \otimes 
    \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } } = {}\\ 
  \nonumber
- =& \,\beta\, \pproj_{\bfa} \sqp{ \fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(s,\Aphase{0}) } ={}\\
- =& \,\beta\, \cexpval{ \fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(s,\Aphase{0}) }{ \,\bfA(\Aphase{})=\bfa }\,,
+ =& \,\beta\, \pproj_{\bfa} \sqp{ \fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(s,\Aphase{0}) } \equiv{}\\
+ \nonumber
+ \equiv& \,\beta\, \aver{ \fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(s,\Aphase{0}) }_{\bfa} \equiv{}\\
+ \equiv& \,\beta\, \cexpval{ \fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(s,\Aphase{0}) }{ \,\bfA(\Aphase{})=\bfa }\,,
 \end{align}
 %\begin{align*}
 % \fricmat\cip{\bfa,s} &\coloneqq 
@@ -352,7 +354,7 @@ In the next chapter we will derive more explicit forms of the terms appearing in
 In the present work we have said that we consider two resolution levels for a given molecular system. The first one, at high resolution, is the fine-grained (FG) system composed by $\nfg$ particles, while the second one, at low resolution, is the CG system composed by $\ncg$ particles. The term \emph{particles} is used to indicate either an ``atom'', the fundamental particles that interacts in the FG system, or a larger group of ``atoms'' that interacts in the CG system, called \emph{bead}. 
 
 We will assume that the chemical structure of the molecular system is fixed, i.e. no reactions occur, the connectivity of the ``atoms'' is specified at the outset allowing us to fix a global index for the particles in the FG system, and that each ``atom'' is mapped to a fixed (unique) particle in the CG system.
-Following the work of Di Pasquale \emph{et al.} \cite{DiPasquale2019} and Noid \emph{et al.} \cite{Noid2008}, we can summarise the notation and the definition that we will use and that we have already used, in the following way:
+Following the work of Di Pasquale \textit{et al.}~\cite{DiPasquale2019} and Noid \textit{et al.}~\cite{Noid2008}, we can summarise the notation and the definition that we will use and that we have already used, in the following way:
 \begin{itemize}
 \item[-] lower case letters (e.g. $i,j$) refer to particles in the FG system, while capital letters (e.g. $I,J$) label the particles (``atoms'' or beads) in the CG system;
 \item[-] the mass of the $j$-th atom in FG system will be indicated as $m_j$, while the mass of the $J$-th particle in CG system will be indicated as $M_J$;
@@ -439,37 +441,42 @@ The approximation used very often is to consider the CG models as memoryless, i.
 The validity of this assumption is given by the clear separation of the time scales of the system under examination \cite{DiPasquale2019,Hijon2010,Hijon2006}.
 In particular, in the studied system the assumption is valid if the time scale of variation of the CG variables is much larger than the time scale of decay of the memory matrix $\bffricmat(t)$ (i.e., the friction matrix), that is of the time scale in which the fluctuating forces $\fprojbf_{\Bphase{}}(t,\cdot)$ defined in eq.~(\ref{Eq:RAndomForce}) vary.
 
-Therefore to simplify and numerically implement the eq.~(\ref{Eq:ZwanGLE}), we assume that the model under examination satisfies the Markovian property and we approximate the friction matrix as
+Therefore to simplify and numerically implement the eq.~(\ref{Eq:ZwanGLE}), we assume that the model under examination satisfies the Markovian property and that the friction matrix can be approximated as
 \begin{equation}
  \label{Eq:MarFric1}
  \bffricmat(\Bphase{},t) \approx \widetilde{\bffricmat}(\Bphase{})\delta(t)\,,
 \end{equation}
-Where $\widetilde{\bffricmat}$ is the time independent friction matrix defined as
+where $\widetilde{\bffricmat}$ is the time independent friction matrix defined as
 \begin{equation}\label{Eq:MarDeltaFric}
-  \widetilde{\bffricmat}(\Bphase{}) := \bffricmat(\Bphase{},0)
+  \widetilde{\bffricmat}(\Bphase{}) \coloneqq \bffricmat(\Bphase{},0)
   = \beta\,\aver{\fprojbf_{\Bphase{}}(0,\cdot)\otimes
     \fprojbf_{\Bphase{}}(0,\cdot)}_{\Bphase{}}.
 \end{equation}
-
-
-Assuming the approximation (\ref{Eq:MarFric1}) is valid, the equations of motion for the atomistic/CG system eq.~(\ref{Eq:DevB}) become:
-
-\begin{align}
+Furthermore, if $\bffricmat(\Bphase{},t)$ exhibits exponential decay in $t$ at a sufficiently large rate uniformly on the phase-space, then the integrals involving the memory kernel may be approximated using Laplace's method (see Ref.~\cite{DiPasquale2019}).
+So, the second equation of the system (\ref{Eq:DevB}) becomes
+\begin{multline}	
  \label{Eq:MarkovApprox}
- \nonumber
- \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}} \\
- \nonumber
- \pard{\bfP_{K}}{t} &= -\omega_{\NA{}K}\pard{\pot^{AA}}{\bfr_{K}} -\pard{\Veff}{\bfR_{K}} 
- - \sum_{J=1}^{\ncg}{{\widetilde{\fricmat}_{KJ}}\frac{\bfP_{J}}{M_{J}} }+{}\\
- &+ \beta^{-1} \sum_{J=1}^{\ncg}  {{ \pard{}{\bfR_{J}}\widetilde{\fricmat}_{KJ}}} + \fprojbf_{K}(t) 
-\end{align}
+  \pard{\bfP_{K}}{t} = -\omega_{\NA{}K} \, \pard{\pot^{AA}}{\bfr_{K}} 
+                       -\pard{\Veff}{\bfR_{K}} -{}\\
+                       - \sum_{J=1}^{\ncg}\, \widetilde{\fricmat}_{KJ} \, \frac{\bfP_{J}}{M_{J}} 
+                       + \beta^{-1} \sum_{J=1}^{\ncg}\, \pard{\widetilde{\fricmat}_{KJ}}{\bfR_{J}} 
+                       + \fprojbf_{K}(t)\,,
+\end{multline}
+where the derivatives of $\widetilde{\bffricmat}$ with respect to $\bfP_{J}$ vanish because the time independent friction matrix is a function of $\Bphase{\bfR}$ alone, and it is a symmetric matrix, \textit{i.e.} $\widetilde{\fricmat}_{KJ}=\widetilde{\fricmat}_{JK}$. This is easy to verify, as by making the terms explicit in the definition (\ref{Eq:MarDeltaFric}) we get
+\begin{multline}
+\label{Eq:convFlucF}
+  \aver{\fprojbf_K(0,\cdot) \otimes \fprojbf_J(0,\cdot)}_{\Bphase{}} = \aver{\Lio_\qproj\bfP_K \otimes \Lio_\qproj\bfP_J}_{\Bphase{}} ={}\\
+  = \aver{ \cip{ \pard{\Veff}{\bfR_{K}} - \sum_{i\in S_K} \pard{U}{\bfr_{i}} } 
+  \cip{ \pard{\Veff}{\bfR_{J}} - \sum_{j\in S_J} \pard{U}{\bfr_{j}} }}_{\Bphase{}}\,.
+\end{multline}
 
+The validity of the Markovian approximation has been repeatedly questioned in literature, we do not give details in this section but we will return to this point later when we discuss the numerical results. We want to stress here that we use the Markovian approximation only as a means of simplifying the calculation. As we said at the beginning of this section there are more refined methods to consider the friction matrix and to include memory effects in CG simulations, we will consider them in future work.
 
 
 \chapter{Numerical Methods}
 \label{Sec:NumMet}
 
-\section{Langevin Dynamics Integrator: BAOAB method}
+\section{Langevin Dynamics Integrator: the BAOAB method}
 In this thesis the Langevin Dynamics is integrated by using the BAOAB method, which was derived and analysed by B. Leimkuhler and C. Matthews \cite{LeimMatt:LAnDynInt}. 
 
 The aim of their work is to compare Langevin dynamics integrators in term of their invariant distributions and demonstrate a superconvergence property of a certain method in the high friction limit (or in the null mass limit). They coded up the various methods considered and compared the accuracy of configurational sampling for different values of the friction parameter $\gamma$ and for a range of timesteps.
@@ -485,86 +492,13 @@ Their results show that the best method to sample the configurational Gibbs-Bolt
 Here, $R_i$ is an N-vector of normal random numbers with mean $0$ and variance $1$, $M$ is the diagonal mass matrix, $dt$ is the timestep, 
 $c_1=e^{-\widetilde{\gamma}\,dt}$ and $c_2=\sqrt{\left(1-c_1^2\right)/\beta}$ are evaluated for a given friction parameter $\widetilde{\gamma}=\gamma\,M^{-1}$ and for a given temperature parameter $\beta=(K_BT)^{-1}$, where $K_B$ is the Boltzmann's constant.
 
-
-\subsection{An idea of how the BAOAB method was derived}
-\label{Sec:SDE}
-\lr{questa parte è un po' oscura secondo me... per ora lasciala ma mi dovrai spiegare a cosa serve!}
-
-An It\^o stochastic differential equation (SDE) can be written as
-\[
-  d\mathbf{x}(t)=\mathbf{a} \left[\mathbf{x}(t),t\right] dt+\mathbf{b}\left[\mathbf{x}(t),t\right] d\mathbf{W}(t)\,,
-\]
-where $\mathbf{x}$ are the $n$ stochastic process, $\mathbf{a}(\mathbf{x},t)$ and $\mathbf{b}(\mathbf{x},t)$ are certain know functions, 
-$ d\mathbf{W}\equiv \boldsymbol{\xi}(t)\,dt $ is an $n$ variable Wiener process and $\boldsymbol{\xi}(t)$ is a white noise. This SDE corresponds to a Fokker-Planck equation if the stochastic process described by a conditional probability density $p(\mathbf{x},t\,|\,\mathbf{x_0},t_0)\equiv p$ satisfy 
-\[
-  \partial_t\,p=\mathscr{L}(\mathbf{x},t)\,p
-     =-\sum_i\,\partial_i\left[ A_i(\mathbf{x},t)\,p\, \right]+\frac{1}{2}\sum_{ij}\,\partial_i\partial_j\left[ B_{ij}(\mathbf{x},t)\,p\, \right] 
-\]
-where $\mathscr{L}(\mathbf{x},t)$ is a second-order differential operator and the coefficients of RHS are such that $\mathbf{A}(\mathbf{x},t)=\mathbf{a}(\mathbf{x},t)$ and $\underline{\mathbf{B}}(\mathbf{x},t)=\mathbf{b}(\mathbf{x},t)\textbf{b}^T(\mathbf{x},t)$. The Fokker-Planck equation describes diffusion processes, the vector $\mathbf{A}(\mathbf{x},t)$ is known as the drift vector and the matrix $\underline{\mathbf{B}}(\mathbf{x},t)$ is known as the diffusion matrix. From its definition this matrix is positive semidefinite and symmetric \cite{Gardiner2009}.
-
-Let us consider an Orstein-Uhlenbeck (OU) SDE, that is, an It\^o equation where the coefficients are
-\[
- \mathbf{a}(\mathbf{x})=-k\,\mathbf{x}\quad\text{and}\quad b=\sqrt{D}
-\]
-here $k$ and $D$ are positive parameters. The solution of one dimensional OU-SDE can be computed by the It\^o's formula applied to $y=xe^{k\,t}$\cite{Gardiner2009}. We get 
-\[
- x(t)=x_0(t_0)\,e^{-k(t-t_0)}+\sqrt{D}\int_{t_0}^t\,dW(t')e^{-k(t-t')}\,,
-\]
-and the average and variance are respectively:
-\begin{align*}
- \mathbb{E}[x(t)] &= \mathbb{E}[x_0(t_0)]\,e^{-k(t-t_0)}\,, \\
- \mathbb{E}\left[ \left( x(t)-\mathbb{E}[x(t)] \right)^2 \right] &= \left[ Var(x_0)-\frac{D}{2k} \right]e^{-2k(t-t_0)}+\frac{D}{2k}\,.
-\end{align*}
-We can easily show in the stationary limit ($t\gg t_0$) and applying the equipartition theorem that the diffusive parameter $D$ is equal to $(2k)/\beta$.
-
-
-%\subsubsection{Langevin Dynamics}
-Langevin dynamics combines a conservative dynamic with the OU stochastic vector field as a forcing for the momentum, so we are assuming that the stochastic force is not affected by the potential:
-\begin{equation}
-\label{Eq:Lang1Dx}
- M\frac{d^2\mathbf{x}}{dt^2}=-\boldsymbol{\nabla} U(\mathbf{x})-\gamma\,\frac{d\mathbf{x}}{dt}+\sqrt{(2\gamma)/\beta}\,\boldsymbol{\xi}(t)
-\end{equation}
-where we introduced physical quantities: $M$ is the mass of the particle, $\mathbf{x}$ is the coordinate of position, $\gamma$ is the friction parameter and $\beta=\left( K_BT \right)^{-1}$ is the temperature parameter. We can rewrite the equation as
-\[
-\begin{cases}
- d\mathbf{x}=\mathbf{v}\,dt \\
- Md\mathbf{v}=\left[ -\boldsymbol{\nabla} U(\mathbf{x})-\gamma\,\mathbf{v} \right]\,dt+\sqrt{(2\gamma)/\beta}\,d\mathbf{W}
-\end{cases}
-\]
-and for the canonical coordinates $ \{\mathbf{q}(t),\mathbf{p}(t)\} $ we get 
-\begin{equation}
-\label{Eq:Lang1Dp}
-\begin{cases}
- d\mathbf{q}=M^{-1}\,\mathbf{p}\,dt \\
- d\mathbf{p}=\left[ -\boldsymbol{\nabla} U(\mathbf{q})-\widetilde{\gamma}\,\mathbf{p} \right]\,dt+\sqrt{(2\widetilde{\gamma})/\beta}\,M^{1/2}d\mathbf{W}
-\end{cases}
-\end{equation}
-where $\widetilde{\gamma}=\gamma/M$. From the system of two first-order equations can we compute the drift and diffusion coefficients
-\begin{align*}
- \left(A_{\mathbf{q}}\right)_i &= M^{-1}\,p_i\,;  &  \left(B_{\mathbf{q}\mathbf{q}}\right)_{ij} &= \left(B_{\mathbf{p}\mathbf{q}}\right)_{ij}=0\,; \\
- \left(A_{\mathbf{p}}\right)_i &= \left(-\boldsymbol{\nabla} U(\mathbf{q})-\widetilde{\gamma}\,\mathbf{p}\right)_i\,;  &  
-      \left(B_{\mathbf{p}\mathbf{p}}\right)_{ij} &= \frac{2\widetilde{\gamma}}{\beta}\,M\,\delta_{ij}\,;
-\end{align*}
-and thus determine the Fokker-Planck operator for the Langevin dynamics
-\begin{multline*}
- \mathscr{L}_{LD}\,\varphi=-M^{-1}\,\sum_i\,p_i\,\partial_{q_i}\,\varphi\,+ 
-                          \,\boldsymbol{\nabla}U(\mathbf{q})\,\sum_i\,\partial_{p_i}\,\varphi\,+{}\\                          
-                          +\,\widetilde{\gamma}\,\sum_i\,\partial_{p_i}\,p_i\,\varphi\,+
-                          \,\widetilde{\gamma}\,\sum_i\,\,p_i\,\partial_{p_i}\,\varphi\,+
-                          \,\widetilde{\gamma}\,K_BT\,\sum_i\,M\,\partial_i^2\,\varphi={}\\
-                          =-M^{-1}\mathbf{p}\cdot\boldsymbol{\nabla}_{q}\,\varphi\,+
-                          \,\boldsymbol{\nabla}U(\mathbf{q})\cdot\boldsymbol{\nabla}_{p}\,\varphi\,+
-                          \,\widetilde{\gamma}\, \left[ \,\boldsymbol{\nabla}_{p}(\mathbf{p}\,\varphi)+
-                          \,K_BT\boldsymbol{\Delta}_{p}\,\varphi \,\right]\,,
-\end{multline*}
-where $\boldsymbol{\Delta}_{p}$ is the mass-weighted Laplacian in the momenta and $\varphi$ is a test function \cite{Risk:TheFPeq}.
-
-\subsubsection{Splitting methods}
-
 \subsection{Some more details about the work of B. Leimkuhler and C. Matthews}
 The methods that are considered are splitting integrators that decompose the stochastic vector field which drives the Langevin Dynamics into simpler vector fields which can be solved exactly. Nevertheless, the composition method that results cannot be directly related to a stochastic differential equation, but nonetheless the invariant measure associated to the numerical method can be derived, using the Baker-Campbell-Hausdorff (BCH) expansion, as an asymptotic series in two parameters: the stepsize and the coefficient $\gamma^{-1}$. 
 
-The authors stress that their approach focuses on the truncation error of the invariant distribution, so that the greatest benefit would be seen only when the statistical error is well controlled. Furthermore, they observe that the least biased scheme from the point of view of the error introduced in configurational sampling is also as efficient as the alternatives and the most robust with respect the variation of parameters (stepsize and $\gamma^{-1}$), thus they emphasise that there is no price for the improvement in accuracy \lr{che vuol dire quest'ultima frase?}.
+The authors stress that their approach focuses on the truncation error of the invariant distribution, so that the greatest benefit would be seen only when the statistical error is well controlled. Furthermore, they observe that the least biased scheme from the point of view of the error introduced in configurational sampling is also as efficient as the alternatives and the most robust with respect the variation of parameters (stepsize and $\gamma^{-1}$).
+
+
+\section{Constrained Langevin Dynamics Integrator: the geodesic BAOAB method}
 
 
 
@@ -572,9 +506,9 @@ The authors stress that their approach focuses on the truncation error of the in
 \label{Sec:NumExp}
 
 \chapter{The system under study}
-In Chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equations of motion for generic CG (hybrid) system. Here, we numerically investigate the effects of some of the choices and assumptions made when the FG system is coarse-grained in the canonical ensemble. To do this, we have extended the numerical implementation and the analysis made by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. 
+In Chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equations of motion for generic CG (hybrid) system. Here, we numerically investigate the effects of some of the choices and assumptions made when the FG system is coarse-grained in the canonical ensemble. To do this, we have extended the numerical implementation and the analysis made by Di Pasquale \textit{et al.}~\cite{DiPasquale2019}. 
 
-Di Pasquale \emph{et al.} developed an open-source parallel code, written in Julia v0.6.2 \cite{thomas_hudson_2018_1226590}, to solve the full, constrained and coarse-grained dynamics in the microcanonical ensemble for a simple one-dimensional system. To extend the code to the canonical ensemble we introduced the integrators described in the Chapter \ref{Sec:NumMet}, after updating the code to the latest version of Julia, v1.2.0.
+Di Pasquale \textit{et al.}~developed an open-source parallel code, written in Julia v0.6.2 \cite{thomas_hudson_2018_1226590}, to solve the full, constrained and coarse-grained dynamics in the microcanonical ensemble for a simple one-dimensional system. To extend the code to the canonical ensemble we introduced the integrators described in the Chapter \ref{Sec:NumMet}, after updating the code to the latest version of Julia, v1.2.0.
 
 The studied system is a linear periodic chain made of $\nfg$ atoms of two different species, which differ in mass and bond stiffness. The atoms are arranged in a repeating pattern, and the coarse-grained model is obtained by combining the single repeated units into beads, see fig.~\ref{Fig:sketchRepPatt}. Therefore, we will not consider a hybrid system, and the number of beads, $\ncg$, will be equal to the number of times the pattern is repeated in the chain. The CG variables are given by the center of mass of each bead and by the corresponding momenta (see section \ref{Sec:Mapping}).
 
@@ -585,16 +519,15 @@ The studied system is a linear periodic chain made of $\nfg$ atoms of two differ
  \label{Fig:sketchRepPatt}
 \end{figure}
 
-This system is the same studied by Di Pasquale \emph{et al.} \cite{DiPasquale2019}. We made this choice to directly compare the results obtained here with those of their work, and to compare the results obtained in the two ensemble.
+This system is the same studied by Di Pasquale \textit{et al.}~\cite{DiPasquale2019}. We made this choice to directly compare the results obtained here with those of their work, and to compare the results obtained in the two ensemble.
 
 \section{Test cases considered}
 \label{Sec:TestCasesConsid}
 
 The studied test cases are composed of atoms with two different masses, set to $m=1$ and $M=10$.
 The repeating pattern  consists of three atoms in two different configurations: two atoms of mass $m$ and a single atom of mass $M$ ($m-M-m$) or vice versa ($M-m-M$). The number of beads is set to $\ncg=10$, so that the number of atoms is also fixed, $\nfg=3\,\ncg=30$.
-The bond stiffness between the two different species of atoms is described by means of an inter-atomic potential, which is a simple 12-6 Lennard-Jones potential. In the following, all parameters, such as temperature and time step, are expressed in terms of dimensionless units, \textit{i.e.} the so-called Lennard-Jones reduced units, see Tuckerman pp.125-127 \cite{tuckerman2010}. \lr{Aggiungi un paragrafo sulle LJ units}
-
-Following the work of Di Pasquale \emph{et al.}, we assume periodic boundary conditions and nearest neighbour interactions. 
+The bond stiffness between the two different species of atoms is described by means of an inter-atomic potential, which is a simple 12-6 Lennard-Jones potential. In the following, all parameters, such as temperature and time step, are expressed in terms of dimensionless units, \textit{i.e.} the so-called Lennard-Jones reduced units.These dimensionless units are obtained by using $\epsilon$, $\sigma$, $\sigma(m/\epsilon)^{1/2}$ and $\epsilon/K_B$ as fundamental units of energy, length, time and temperature, respectively (\textit{e.g.}~see Tuckerman pp.125-127 \cite{tuckerman2010}).
+Following the work of Di Pasquale \textit{et al.}, we assume periodic boundary conditions and nearest neighbour interactions. 
 The inter-atomic potential for a generic system $X$ is given by 
 \begin{equation}
  \begin{split}
@@ -664,7 +597,7 @@ Below, we will show the results and analysis of the simulations of different dyn
  \]
 \item[(MMZD)] the \emph{Markovian Mori-Zwanzig Dynamics} when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, with the memory and fluctuating terms replaced by a position-dependent Langevin dynamics, \textit{i.e.}, memory and fluctuating terms that depend on the inter-particle distance.
 \end{labeling}
-As we said, in order to numerically integrate the FGD and OD we have used respectively the BAOAB and geodesic-BAOAB integrators (see Chapter \ref{Sec:NumMet}). By contrast, to numerically integrate the MMZD we have used a version of the BAOAB integrator adapted to the case of non-constant diffusion, developed by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. 
+As we said, in order to numerically integrate the FGD and OD we have used respectively the BAOAB and geodesic-BAOAB integrators (see Chapter \ref{Sec:NumMet}). By contrast, to numerically integrate the MMZD we have used a version of the BAOAB integrator adapted to the case of non-constant diffusion, developed by Di Pasquale \textit{et al.}~\cite{DiPasquale2019}. 
 
 
 \section{Sampling Algorithm}
@@ -672,11 +605,13 @@ The developed code allows a relatively simple recalibration of the test system t
 
 Here, we give an idea of the sampling implemented in the code to compute an approximation of the effective potential, given in eq.~(\ref{Eq:EntrInt}), and the friction matrix, as given in eq.~(\ref{Eq:FRICmatrixRF}). The idea is to sample using the OD.
 
-First, the initial conditions for the simulation are fixed, so that the momenta are distributed according to the Maxwell-Boltzmann distribution and the positions lie in equilibrium positions \lr{qui con "equilibrium" intendi il minimo del potenziale?}. Then the trajectory of the FGD is computed and samples of the positions and momenta are stored. These samples are used to determine the CG positions and momenta, and are used as initial condition for computing the trajectories of the OD. Along these trajectories, time averages of the first and second moment of the effective force between beads are stored. The first moment gives the value of the mean force acting between adjacent beads given the position of the center of mass, while the second moment is used to compute the friction matrix. Since the sampling steps of the OD can run at the same time without having to communicate between the processes, these procedures can be run in parallel. Finally, by integrating the mean force with respect to the distance $R$ between the beads, the effective potential $\Veff$ is obtained.
+First, the initial conditions for the simulation are fixed, so that the momenta are distributed according to the Maxwell-Boltzmann distribution and the positions lie in a neighbourhood of the equilibrium positions, determined by the equilibrium distance of the inter-atomic potential.
+Then the trajectory of the FGD is computed and samples of the positions and momenta are stored. These samples are used to determine the CG positions and momenta, and are used as initial condition for computing the trajectories of the OD. Along these trajectories, time averages of the first and second moment of the effective force between beads are stored. The first moment gives the value of the mean force acting between adjacent beads given the position of the center of mass, while the second moment is used to compute the friction matrix. Since the sampling steps of the OD can run at the same time without having to communicate between the processes, these procedures can be run in parallel. 
+Finally, by integrating the mean force with respect to the distance $R$ between the beads, the effective potential $\Veff$ is obtained.
 
 This method is very similar to the force-matching method \cite{Ercolessi1994,Izvekov2004}, the difference being that here we derive directly the effective potential from the sampling performed during the OD simulations.
 
-Below, for further clarification of what we said, we report the algorithm published in the work of Di Pasquale \emph{et al.}~and implemented in the code:
+Below, for further clarification of what we said, we report the algorithm published in the work of Di Pasquale \textit{et al.}~and implemented in the code:
 \begin{algorithm} [H]
 \caption{Sampling Algorithm \cite{DiPasquale2019}}
 \begin{algorithmic}[1]
@@ -699,25 +634,25 @@ Below, for further clarification of what we said, we report the algorithm publis
 To improve the computation time required to sample the mean force and thus determine the effective potential, we utilize the translational symmetry of this simple system, the fact that the beads are identical and the assumption that the effective potential can be approximated as a sum of two-body interactions based on the distance to the nearest-neighbour beads only.
 We thus compute the interactions between any combination of beads and assume that the interactions computed are valid for any equivalent pair in the system. In this way we reduce the dimensionality of the space to be sampled from the total number of coarse-grained variables to simply one, \textit{i.e.}, the inter-bead distance, which simplifies the exploration of the entire constrained phase space, as well as the representation and interpolation of the effective potential in the parameter space.
 
-The validity of these assumptions in this simple system considered was verified by Di Pasquale \emph{et al.}~\cite{DiPasquale2019}. Naturally, in a more realistic system these assumptions could cause a significant deterioration in the accuracy and effectiveness of a systematic MZ projection approach.
+The validity of these assumptions in this simple system considered was verified by Di Pasquale \textit{et al.}~\cite{DiPasquale2019}. Naturally, in a more realistic system these assumptions could cause a significant deterioration in the accuracy and effectiveness of a systematic MZ projection approach.
 
 In fig.~\ref{Fig:meanForce},
 %
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_MF}
- \caption{Plot of the mean force for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{perché la curva di D non tende a 0 per $R \to \infty$?}}
+ \caption{Plot of the mean force for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{perché la curva di D non tende a 0 per $R \to \infty$?}}
  \label{Fig:meanForce}
 \end{figure}
 %
-we show the results of the computation of the mean force for the four different systems described in the table \ref{Tab:Cases}. In each case, the trend is rather similar and we observe that the equilibrium bond length lies close to $R=3.1$. As expected, these results are consistent with the ones obtained by Di Pasquale \emph{et al.} in the microcanonical ensemble.
+we show the results of the computation of the mean force for the four different systems described in the table \ref{Tab:Cases}. In each case, the trend is rather similar and we observe that the equilibrium bond length lies close to $R=3.1$. As expected, these results are consistent with the ones obtained by Di Pasquale \textit{et al.}~in the microcanonical ensemble.
 
 In fig.~\ref{Fig:FF},
 %
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_FF}
- \caption{Plot of the fluctuating part of the force for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{Perché le fluttuazioni di B e D non tendono a 0 per $R \to \infty$?}}
+ \caption{Plot of the fluctuating part of the force for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{Perché le fluttuazioni di B e D non tendono a 0 per $R \to \infty$?}}
  \label{Fig:FF}
 \end{figure}
 %
@@ -728,7 +663,7 @@ Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integ
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_EP}
- \caption{Plot of the effective potential for the four systems considered (see table \ref{Tab:Cases}) \emph{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{anche qui bisogna sistemare i dati a grandi $R$}}
+ \caption{Plot of the effective potential for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{anche qui bisogna sistemare i dati a grandi $R$}}
  \label{Fig:EP}
 \end{figure}
 
@@ -822,7 +757,7 @@ where $\Sigma(\widetilde{\bfR})^{1/2}$ is the positive definite square root of t
 
 The system of equations obtained allows to describe and implement the MMZD, as it is analogous to the eq.~(\ref{Eq:Lang1Dp}), which describes the Langevin dynamics. In fact, if we take $\gamma=\frac{\beta}{2}\, \Sigma(\widetilde{\bfR})$ in the eq.~(\ref{Eq:Lang1Dp}), we find the system of equations (\ref{Eq:MMZD}). As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
 
-The mean force, the fluctuating force and therefore the memory terms can be determined through a Kriging-type interpolation algorithm \cite{Jones2001} from the values shown in the Section \ref{Sec:EP}. This interpolation algorithm, which we have implemented in the code, yields a polynomial approximation of the given function with Gaussian weights. It allows to determine the new values of the function, filtering the noise resulting from the sampling error (see the supplementary material of the work of Di Pasquale \emph{et al.} \cite{DiPasquale2019}).
+The mean force, the fluctuating force and therefore the memory terms can be determined through a Kriging-type interpolation algorithm \cite{Jones2001} from the values shown in the Section \ref{Sec:EP}. This interpolation algorithm, which we have implemented in the code, yields a polynomial approximation of the given function with Gaussian weights. It allows to determine the new values of the function, filtering the noise resulting from the sampling error (see the supplementary material of the work of Di Pasquale \textit{et al.}~\cite{DiPasquale2019}).
 
 
 \subsection{Timescale separation and the validity of the memory kernel approximation}
@@ -890,7 +825,7 @@ $$\mathbb{N}\coloneqq\{1,2,3,\dots\} \subseteq \{0,1,2,3,\dots\}\eqqcolon\mathbb
 \end{compactenum}   
 \end{defin}
 \noindent
-Intuitively, the $\sigma$-algebra $\mathscr{F}$ contains all the useful information that is available about the random experiment that we are performing. One of its elements is called a $\mathscr{F}$-measurable subset of $\Omega$ or \emph{event}.
+Intuitively, the $\sigma$-algebra $\mathscr{F}$ contains all the useful information that is available about the random experiment that we are performing. One of its elements is called a $\mathscr{F}$-measurable subset of $\Omega$ or \textit{event}.
 
 \begin{defin}[\textbf{Measurable Space}]
 A pair $(\Omega,\mathscr{F})$, where $\Omega$ is a set and $\mathscr{F}$ is a $\sigma$-algebra on $\Omega$, is called measurable space.
@@ -1069,6 +1004,82 @@ So we have, applying Fubini's theorem see \cite[p.~77-79]{Williams1991},
 
 
 \chapter{Elements of Stochastic Processes}
+
+\section{It\^o Stochastic Differential Equation and the corresponding Fokker-Planck Equation}
+\label{Sec:SDE}
+An It\^o stochastic differential equation (SDE) can be written as
+\[
+  \diff \mathbf{x}(t) = \mathbf{a} \sqp{\mathbf{x}(t),t} \diff t+\mathbf{b}\left[\mathbf{x}(t),t\right] \diff \mathbf{W}(t)\,,
+\]
+where $\mathbf{x}$ are the $n$ stochastic process, $\mathbf{a}(\mathbf{x},t)$ and $\mathbf{b}(\mathbf{x},t)$ are certain know functions, 
+$ \diff \mathbf{W}\equiv \boldsymbol{\xi}(t)\,\diff t $ is an $n$ variable Wiener process and $\boldsymbol{\xi}(t)$ is a white noise. This SDE corresponds to a Fokker-Planck equation if the stochastic process described by a conditional probability density $p(\mathbf{x},t\,|\,\mathbf{x_0},t_0)\equiv p$ satisfy 
+\[
+  \pard{p}{t} = \mathscr{L}(\mathbf{x},t)\,p
+     =-\sum_i\,\frac{\partial}{\partial x_i}\left[ A_i(\mathbf{x},t)\,p\, \right]
+      +\frac{1}{2}\sum_{ij}\,\frac{\partial^2}{\partial x_i \partial x_j} \left[ B_{ij}(\mathbf{x},t)\,p\, \right] 
+\]
+where $\mathscr{L}(\mathbf{x},t)$ is a second-order differential operator and the coefficients of RHS are such that $\mathbf{A}(\mathbf{x},t)=\mathbf{a}(\mathbf{x},t)$ and $\underline{\mathbf{B}}(\mathbf{x},t)=\mathbf{b}(\mathbf{x},t)\textbf{b}^T(\mathbf{x},t)$. The Fokker-Planck equation describes diffusion processes, the vector $\mathbf{A}(\mathbf{x},t)$ is known as the drift vector and the matrix $\underline{\mathbf{B}}(\mathbf{x},t)$ is known as the diffusion matrix. From its definition this matrix is positive semidefinite and symmetric \cite{Gardiner2009}.
+
+\subsection{Orstein-Uhlenbeck SDE}
+Let us consider an Orstein-Uhlenbeck (OU) SDE, that is, an It\^o equation where the coefficients are
+\[
+ \mathbf{a}(\mathbf{x})=-k\,\mathbf{x}\quad\text{and}\quad b=\sqrt{D}
+\]
+here $k$ and $D$ are positive parameters. The solution of one dimensional OU-SDE can be computed by the It\^o's formula applied to $y=xe^{k\,t}$\cite{Gardiner2009}. We get 
+\[
+ x(t)=x_0(t_0)\,e^{-k(t-t_0)}+\sqrt{D}\int_{t_0}^t\,\diff W(t')e^{-k(t-t')}\,,
+\]
+and the average and variance are respectively:
+\begin{align*}
+ \mathbb{E}[x(t)] &= \mathbb{E}[x_0(t_0)]\,e^{-k(t-t_0)}\,, \\
+ \mathbb{E}\left[ \left( x(t)-\mathbb{E}[x(t)] \right)^2 \right] &= \left[ Var(x_0)-\frac{D}{2k} \right]e^{-2k(t-t_0)}+\frac{D}{2k}\,.
+\end{align*}
+We can easily show in the stationary limit ($t\gg t_0$) and applying the equipartition theorem that the diffusive parameter $D$ is equal to $(2k)/\beta$.
+
+
+\subsection{Langevin Dynamics}
+Langevin dynamics combines a conservative dynamic with the OU stochastic vector field as a forcing for the momentum, so we are assuming that the stochastic force is not affected by the potential:
+\begin{equation}
+\label{Eq:Lang1Dx}
+ M \totd{^2x}{t^2} = -\boldsymbol{\nabla} U(\mathbf{x})-\gamma\,\totd{\mathbf{x}}{t}+\sqrt{(2\gamma)/\beta}\,\boldsymbol{\xi}(t)
+\end{equation}
+where we introduced physical quantities: $M$ is the mass of the particle, $\mathbf{x}$ is the coordinate of position, $\gamma$ is the friction parameter and $\beta=\left( K_BT \right)^{-1}$ is the temperature parameter. We can rewrite the equation as
+\[
+\begin{cases}
+ \diff\mathbf{x}=\mathbf{v}\,\diff t \\
+ Md\mathbf{v}=\left[ -\boldsymbol{\nabla} U(\mathbf{x})-\gamma\,\mathbf{v} \right]\,\diff t+\sqrt{(2\gamma)/\beta}\,\diff \mathbf{W}
+\end{cases}
+\]
+and for the canonical coordinates $ \{\mathbf{q}(t),\mathbf{p}(t)\} $ we get 
+\begin{equation}
+\label{Eq:Lang1Dp}
+\begin{cases}
+ \diff \mathbf{q} = M^{-1}\,\mathbf{p}\,\diff t \\
+ \diff \mathbf{p} = \left[ -\boldsymbol{\nabla} U(\mathbf{q})-\widetilde{\gamma}\,\mathbf{p} \right]\,\diff t
+  +\sqrt{(2\widetilde{\gamma})/\beta}\,M^{1/2}\diff \mathbf{W}
+\end{cases}
+\end{equation}
+where $\widetilde{\gamma}=\gamma/M$. From the system of two first-order equations can we compute the drift and diffusion coefficients
+\begin{align*}
+ \left(A_{\mathbf{q}}\right)_i &= M^{-1}\,p_i\,;  &  \left(B_{\mathbf{q}\mathbf{q}}\right)_{ij} &= \left(B_{\mathbf{p}\mathbf{q}}\right)_{ij}=0\,; \\
+ \left(A_{\mathbf{p}}\right)_i &= \left(-\boldsymbol{\nabla} U(\mathbf{q})-\widetilde{\gamma}\,\mathbf{p}\right)_i\,;  &  
+      \left(B_{\mathbf{p}\mathbf{p}}\right)_{ij} &= \frac{2\widetilde{\gamma}}{\beta}\,M\,\delta_{ij}\,;
+\end{align*}
+and thus determine the Fokker-Planck operator for the Langevin dynamics
+\begin{multline*}
+ \mathscr{L}_{LD}\,\varphi=-M^{-1}\,\sum_i\,p_i\,\partial_{q_i}\,\varphi\,+ 
+                          \,\boldsymbol{\nabla}U(\mathbf{q})\,\sum_i\,\partial_{p_i}\,\varphi\,+{}\\                          
+                          +\,\widetilde{\gamma}\,\sum_i\,\partial_{p_i}\,p_i\,\varphi\,+
+                          \,\widetilde{\gamma}\,\sum_i\,\,p_i\,\partial_{p_i}\,\varphi\,+
+                          \,\widetilde{\gamma}\,K_BT\,\sum_i\,M\,\partial_i^2\,\varphi={}\\
+                          =-M^{-1}\mathbf{p}\cdot\boldsymbol{\nabla}_{q}\,\varphi\,+
+                          \,\boldsymbol{\nabla}U(\mathbf{q})\cdot\boldsymbol{\nabla}_{p}\,\varphi\,+
+                          \,\widetilde{\gamma}\, \left[ \,\boldsymbol{\nabla}_{p}(\mathbf{p}\,\varphi)+
+                          \,K_BT\boldsymbol{\Delta}_{p}\,\varphi \,\right]\,,
+\end{multline*}
+where $\boldsymbol{\Delta}_{p}$ is the mass-weighted Laplacian in the momenta and $\varphi$ is a test function \cite{Risk:TheFPeq}.
+
+
 
 
 \chapter{Liouville Space}
