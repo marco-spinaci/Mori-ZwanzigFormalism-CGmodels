@@ -281,7 +281,7 @@ function DetCGCanEnsTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
 		Pstore[i,:] = P;
 		Qstore[i,:] = Q;
 		Fstore[i,:] = F;
-	else if i % 5e3 == 0
+	elseif i % 5e3 == 0
 		@printf "    ITERATION %0.3e OF %0.3e\n" i S.FullSteps
 	end
   end
