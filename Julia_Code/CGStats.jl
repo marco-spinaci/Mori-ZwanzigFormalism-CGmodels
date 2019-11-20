@@ -278,15 +278,17 @@ function DetCGCanEnsTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
   # Do simulation.
   j = 2;
   for i = 2:S.FullSteps
-    (P,Q,F) = DetCGDynNVTStep(P,Q,F,MeanForce,C,S.dt);
-	if i % 100 == 0
-		Pstore[j,:] = P;
-		Qstore[j,:] = Q;
-		Fstore[j,:] = F;
-		j += 1;
-	elseif i % 5e4 == 0
-		@printf "    ITERATION %0.3e OF %0.3e\n" i S.FullSteps
-	end
+	  if i % 5e4 == 0
+		  @printf "    ITERATION %0.3e OF %0.3e\n" i S.FullSteps
+	  end
+
+	  (P,Q,F) = DetCGDynNVTStep(P,Q,F,MeanForce,C,S.dt);
+	  if i % 100 == 0
+		  Pstore[j,:] = P;
+		  Qstore[j,:] = Q;
+		  Fstore[j,:] = F;
+		  j += 1;
+	  end
   end
 
   return Pstore,Qstore,Fstore
