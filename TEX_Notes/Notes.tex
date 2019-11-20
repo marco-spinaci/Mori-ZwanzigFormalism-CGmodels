@@ -797,6 +797,7 @@ where $I,J \in \bp{1,2,\dots,\ncg}$, and we can write the time independent frict
 \end{equation}
 So, we can rewrite the eq.~(\ref{Eq:MarkovApproxCompact}) as
 \begin{equation}
+\label{Eq:MApCompactTrMat}
 \begin{cases}
  \partial_t\,\Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,, & \\
  \partial_t\,\Bphase{\bfP} = -\partial_{\widetilde{\bfR}}\Veff(\widetilde{\bfR}) 
@@ -807,23 +808,21 @@ So, we can rewrite the eq.~(\ref{Eq:MarkovApproxCompact}) as
 \noindent
 The terms of the memory and fluctuating force may be generated together in a similar way to the thermal bath of Langevin equation (\ref{Eq:Lang1Dp}), where the diffusive parameter depends on the friction parameter in the stationary limit (see Sec.~\ref{Sec:SDE}). In fact, by placing
 \[
- \fprojbf(t) = \sqrt{2\,\Sigma(\widetilde{\bfR})}\, \boldsymbol{\xi}(t)\,,
+ \fprojbf(t) \equiv \sqrt{2\,\Sigma(\widetilde{\bfR})}\, \boldsymbol{\xi}(t)\,,
 \] 
-where $\boldsymbol{\xi}(t)$ is a white noise.
-
-
-\lr{che intendi con "may be generated" e "implement"?}
+where $\boldsymbol{\xi}(t)$ is a white noise, we get from the eq.~(\ref{Eq:MApCompactTrMat})
 \begin{equation}
 \label{Eq:MMZD}
 \begin{cases}
  \diff \Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,\diff t \,, & \\
- \diff \Bphase{\bfP} = \sqp{ - \partial_{\widetilde{\bfR}}\Veff - \frac{1}{2}\, \Sigma(\widetilde{\bfR}) \,M^{-1} \Bphase{\bfP} }\diff t 
- + \Sigma (\widetilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
+ \diff \Bphase{\bfP} = \sqp{ - \partial_{\widetilde{\bfR}}\Veff(\widetilde{\bfR}) 
+                     - \frac{\beta}{2}\, \Sigma(\widetilde{\bfR}) \cdot \cip{M^{-1}\Bphase{\bfP}} }\diff t 
+                     + \Sigma (\widetilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
 \end{cases}
 \end{equation}
-where $\Sigma(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W}$ are independent increment of the Wiener process in $\real^{\ncg}$.
+where $\Sigma(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W} \equiv \boldsymbol{\xi}(t) \,\diff t$ are independent increment of the Wiener process in $\real^{\ncg}$.
 
-The system of equations obtained allows to describe and implement the MMZD, as it is analogous to the eq.~(\ref{Eq:Lang1Dp}), which describes the Langevin dynamics. As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
+The system of equations obtained allows to describe and implement the MMZD, as it is analogous to the eq.~(\ref{Eq:Lang1Dp}), which describes the Langevin dynamics. In fact, if we take $\gamma=\frac{\beta}{2}\, \Sigma(\widetilde{\bfR})$ in the eq.~(\ref{Eq:Lang1Dp}), we find the system of equations (\ref{Eq:MMZD}). As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
 
 The mean force, the fluctuating force and therefore the memory terms can be determined through a Kriging-type interpolation algorithm \cite{Jones2001} from the values shown in the Section \ref{Sec:EP}. This interpolation algorithm, which we have implemented in the code, yields a polynomial approximation of the given function with Gaussian weights. It allows to determine the new values of the function, filtering the noise resulting from the sampling error (see the supplementary material of the work of Di Pasquale \emph{et al.} \cite{DiPasquale2019}).
 
