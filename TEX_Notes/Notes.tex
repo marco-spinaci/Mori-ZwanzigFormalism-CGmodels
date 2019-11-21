@@ -642,7 +642,7 @@ In fig.~\ref{Fig:meanForce},
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_MF}
  \caption{Plot of the mean force for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). 
-% \lr{perché la curva di D non tende a 0 per $R \to \infty$?}
+ \lr{perché la curva di D non tende a 0 per $R \to \infty$?}
 }
  \label{Fig:meanForce}
 \end{figure}
@@ -655,21 +655,21 @@ In fig.~\ref{Fig:FF},
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_FF}
  \caption{Plot of the fluctuating part of the force for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). 
-%\lr{Perché le fluttuazioni di B e D non tendono a 0 per $R \to \infty$?}
+\lr{Perché le fluttuazioni di B e D non tendono a 0 per $R \to \infty$?}
 }
  \label{Fig:FF}
 \end{figure}
 %
 we report the results for the fluctuating part of the force. Unlike the mean force, the two systems with the same stiffness (see table \ref{Tab:Cases}) follow a similar trend. In particular the two systems with the smallest stiffness, systems B and D, have noisier and larger fluctuations than the other two.  
 Furthermore, the figure shows how these simple systems have a dependence of fluctuations on the inter-bead distance $R$, and consequently shows how a simple Langevin dynamics, with dissipation and white noise fluctuations having a magnitude independent of the state of the system, is not an adequate approximation.
-%\lr{questo è uno spunto interessante... puoi espandere secondo te? Mettere delle referenze?}
+\lr{questo è uno spunto interessante... puoi espandere secondo te? Mettere delle referenze?}
 
 Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integration of the mean force (fig.~\ref{Fig:meanForce}) with respect to the inter-bead distance $R$. We observe that the effective potential has similar trends for the four systems, despite the big difference in the fluctuations of the force shown in fig.~\ref{Fig:FF}. Our results thus show that, even when the effective potential is easily and stably computed, there may be dissipative effects that are not visible in a deterministic effective potential.
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_EP}
  \caption{Plot of the effective potential for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). 
-% \lr{anche qui bisogna sistemare i dati a grandi $R$}
+ \lr{anche qui bisogna sistemare i dati a grandi $R$}
 }
  \label{Fig:EP}
 \end{figure}
@@ -768,6 +768,8 @@ The mean force, the fluctuating force and therefore the memory terms can be dete
 
 
 \subsection{Timescale separation and the validity of the memory kernel approximation}
+As we said in Chap.~\ref{Sec:MarkovApprox}, the validity of Markovian approximation has been repeatedly questioned, especially for a system with the one under consideration where the sounds plays a very important role, since it determines the time scale of the CG variables, \textit{i.e.} the time scale of the velocity ACF. In fact in 2005, D.~Cubero and S.~N.~Yaliraki showed that the Markovian approximation is unreliable in systems in which sound plays an important role \cite{Cubero2005}. A year later, Hij\'on \textit{et al.}~\cite{Hijon2006} verified and confirmed the results of Cubero and Yaliraki for an harmonic (linear) potential, and they showed that Markovian approximation is appropriate for a non-linear and more realistic system with L-J potential.    
+
 
 \begin{figure}[!htb]
  \centering
