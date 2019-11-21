@@ -641,7 +641,9 @@ In fig.~\ref{Fig:meanForce},
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_MF}
- \caption{Plot of the mean force for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{perché la curva di D non tende a 0 per $R \to \infty$?}}
+ \caption{Plot of the mean force for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). 
+% \lr{perché la curva di D non tende a 0 per $R \to \infty$?}
+}
  \label{Fig:meanForce}
 \end{figure}
 %
@@ -652,18 +654,23 @@ In fig.~\ref{Fig:FF},
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_FF}
- \caption{Plot of the fluctuating part of the force for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{Perché le fluttuazioni di B e D non tendono a 0 per $R \to \infty$?}}
+ \caption{Plot of the fluctuating part of the force for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). 
+%\lr{Perché le fluttuazioni di B e D non tendono a 0 per $R \to \infty$?}
+}
  \label{Fig:FF}
 \end{figure}
 %
 we report the results for the fluctuating part of the force. Unlike the mean force, the two systems with the same stiffness (see table \ref{Tab:Cases}) follow a similar trend. In particular the two systems with the smallest stiffness, systems B and D, have noisier and larger fluctuations than the other two.  
-Furthermore, the figure shows how these simple systems have a dependence of fluctuations on the inter-bead distance $R$, and consequently shows how a simple Langevin dynamics, with dissipation and white noise fluctuations having a magnitude independent of the state of the system, is not an adequate approximation.\lr{questo è uno spunto interessante... puoi espandere secondo te? Mettere delle referenze?}
+Furthermore, the figure shows how these simple systems have a dependence of fluctuations on the inter-bead distance $R$, and consequently shows how a simple Langevin dynamics, with dissipation and white noise fluctuations having a magnitude independent of the state of the system, is not an adequate approximation.
+%\lr{questo è uno spunto interessante... puoi espandere secondo te? Mettere delle referenze?}
 
 Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integration of the mean force (fig.~\ref{Fig:meanForce}) with respect to the inter-bead distance $R$. We observe that the effective potential has similar trends for the four systems, despite the big difference in the fluctuations of the force shown in fig.~\ref{Fig:FF}. Our results thus show that, even when the effective potential is easily and stably computed, there may be dissipative effects that are not visible in a deterministic effective potential.
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_EP}
- \caption{Plot of the effective potential for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). \lr{anche qui bisogna sistemare i dati a grandi $R$}}
+ \caption{Plot of the effective potential for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). 
+% \lr{anche qui bisogna sistemare i dati a grandi $R$}
+}
  \label{Fig:EP}
 \end{figure}
 
@@ -765,7 +772,7 @@ The mean force, the fluctuating force and therefore the memory terms can be dete
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{ACF_comparison}
- \caption{ACF comparison}
+ \caption{Comparison of the Time Autocorrelation Functions (ACF) between the force (green solid line), the fluctuating force (blue dot-dashed line), \textit{i.e.} the ``orthogonal'' component of the force, and the momenta (red dashed line), in the FGD. All calculations refer to the system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
  \label{Fig:ACFcomparison}
 \end{figure}
 
@@ -780,7 +787,7 @@ The mean force, the fluctuating force and therefore the memory terms can be dete
   \centering
   \includegraphics[width=\textwidth]{ACF_P}
  \end{subfigure}\\
- \caption{ACF}
+ \caption{Time autocorrelation functions (ACF) of forces and momenta. In the upper panel the ACF of the forces in the FGD (green solid line) is compared with that of the forces in the OD (blue dashed line) and the MMZD (red dot-dashed line). In the bottom panel, the ACF of the momenta in the FGD (green solid line) is compared with the ACF of the momenta in the OD (blue dashed line) and the ACF of the momenta in the MMZD (red dot-dashed line). All calculations refer to the system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
 \end{figure}
 
 
@@ -799,7 +806,7 @@ The mean force, the fluctuating force and therefore the memory terms can be dete
   \centering
   \includegraphics[width=\textwidth]{HistPDF_Q}
  \end{subfigure}\\
- \caption{pdf}
+ \caption{Comparison of the Probability Distribution Functions (PDFs) of bead momenta (upper panel) and inter-bead distances (bottom panel), between the FGD (green solid line), the DCGD (blue dashed line), and the MMZD (red dot-dashed line). All calculations refer to system C (see table \ref{Tab:Cases}).}
 \end{figure}
 
 
