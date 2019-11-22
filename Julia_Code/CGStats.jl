@@ -244,12 +244,12 @@ function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
 end
 
 """
-    (Pstore,Qstore,Fstore) = DetCGCanEnsTraj(P0,Q0,dQData,FmeanData,C::Chain,S::Simulator)
+    (Pstore,Qstore,Fstore) = DetCGCanEnsTraj(P0,Q0,FmeanData,C::Chain,S::Simulator)
 
     Outputs full trajectory data for Deterministi CG dynamics in the canonical ensemble, using
-    approximate potential generated from data encoded in 2 vectors (dQData,FmeanData).
+    approximate potential generated from data encoded in FmeanData.
 """
-function DetCGCanEnsTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64,1},C::Chain,S::Simulator)
+function DetCGCanEnsTraj(P0,Q0,FmeanData::Array{Float64,2},C::Chain,S::Simulator)
  # Report to user.
  println(Dates.now());
  println("Running full simulation of DCGD in NVT ensemble and storing trajectory.");
@@ -263,7 +263,7 @@ function DetCGCanEnsTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
   P = P0; Q = Q0;
 
   # Generate mean force function
-  MeanForce = X -> ApproxMeanForce(X,dQData,FmeanData,C)[1];
+  MeanForce = X -> ApproxMeanForce(X,FmeanData,C)[1];
   F = MeanForce(Q0);
 
   # Set up storage
@@ -1441,7 +1441,7 @@ end
 
 	Generates approximate mean stresses based on precomputed data dQvals, Fvals and Chain parameters.
 """
-function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain,σ::Float64=0.1,N::Int=2)
+function ApproxMeanStresses_OLD(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain,σ::Float64=0.1,N::Int=2)
 
   Sigma = zeros(size(Q));
 
@@ -1499,15 +1499,46 @@ function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::
   return Sigma, dQ
 end
 
+function ApproxMeanStresses(Q::Array{Float64,1},Fdata::Array{Float64,2},C::Chain,σ::Float64=0.1,N::Int=2)
+
+  Sigma = zeros(size(Q));
+
+  ### First compute inter-bead distances.
+  dQ = circshift(Q, -1) - Q;
+  dQ[C.NBeads] += C.Period;
+  
+  Rmin = Fdata[1, 1];
+  Rmax = Fdata[end, 1];
+  dx = Fdata[2, 1] - Fdata[1, 1];
+  inv_sqr_delta = 1. / (dx * dx);
+
+  ### Next, for each inter-bead distance, compute the stress
+  for i=1:length(dQ)
+    if dQ[i] < Rmin
+        m = 537.59;
+        q = -1567.1;
+        Sigma[i] = m * dQ[i] + q;
+    elseif dQ[i] > Rmax
+        Sigma[i] = 0.;
+    else
+        index = trunc(Int, (dQ[i] - Rmin) / dx) + 1;
+        distance = dQ[i] - (Rmin + (index - 1) * dx);
+        Sigma[i] = Fdata[index, 2] + distance * (Fdata[index, 3] + distance * (Fdata[index, 5] + distance * Fdata[index, 4]) * inv_sqr_delta);
+    end
+  end
+
+  return Sigma, dQ
+end
+
 """
     F, Sigma, dQ = ApproxMeanForce(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain)
 
 	Generates approximate mean forces F based on precomputed data dQvals, Fvals and Chain parameters.
 """
-function ApproxMeanForce(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain,σ::Float64=0.1,N::Int=2)
+function ApproxMeanForce(Q::Array{Float64,1},Fvals::Array{Float64,2},C::Chain,σ::Float64=0.1,N::Int=2)
 
   F = zeros(size(Q));
-  (Sigma, dQ) = ApproxMeanStresses(Q, dQvals, Fvals, C, σ, N);
+  (Sigma, dQ) = ApproxMeanStresses(Q, Fvals, C, σ, N);
   F = Sigma - circshift(Sigma, 1);
 
   return F, Sigma, dQ

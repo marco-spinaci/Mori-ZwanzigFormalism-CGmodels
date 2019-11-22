@@ -22,7 +22,7 @@ S = Simulator(dt=1e-3, Stochdt=1e-4, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
 # Generate effective potential data
 
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-CG = readdlm("ABCD_Systems/Outcomes/sC_2000.csv", Float64);
+CG = readdlm("../ABCD_Systems/Outcomes/sC_2000.csv", Float64);
 RR = CG[:, 1];
 Fmean = CG[:, 4];
 Fstd = CG[:, 5];
@@ -37,13 +37,13 @@ Fstd = CG[:, 5];
 # Write data to file
 
 ## FGD
-open("Store_Trajectory/Outcomes/P_FGD.csv", "w+") do x
+open("P_FGD.csv", "w+") do x
     writedlm(x, (C.Phi*PFull)');
 end
-open("Store_Trajectory/Outcomes/Q_FGD.csv", "w+") do x
+open("Q_FGD.csv", "w+") do x
     writedlm(x, (C.Psi*QFull)');
 end
-open("Store_Trajectory/Outcomes/F_FGD.csv", "w+") do x
+open("F_FGD.csv", "w+") do x
     writedlm(x, (C.PhiF*FFull)');
 end
 
