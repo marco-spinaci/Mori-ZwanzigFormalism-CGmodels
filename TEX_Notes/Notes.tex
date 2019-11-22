@@ -51,6 +51,36 @@
 \tableofcontents
 
 \part{Introduction}
+Molecular Dynamic (MD) is a computational approach that allows to solve the equations of motion and to compute the macroscopic observables from the generated trajectories. Moreover, they allow the detailed visualization of the movements of the individual atoms in the system under examination, thus allowing to have a ``window'' into the microscopic world. Of course, for a real system, these animation of MD trajectories should never be taken too seriously, they can be useful as a guide toward understanding the mechanisms underlying a given chemical process. MD simulations are widely used and have become a standard tool in many research area, for example in soft matter \cite{Corezzi2008,Peter2009} or in the study of biological molecules \cite{KLEPEIS2009,Shaw2010}, and are often used in combination with a wide variety of experimental structural techniques \cite{HOLLINGSWORTH2018,Spagnolli2019}.
+
+Despite recent advances in simulation methods, atomically detailed models and computational resources, MD simulations are heavily limited in terms of system size and simulation time and often contain unnecessarily detailed information. For example, in the case of a protein molecule in water, where a large part of the overall computation time is used to compute the evolution of water molecules.
+
+Another problem often encountered in an \textit{in silico} investigation of long chain-like molecules is that, as the size of the system increases, the relaxation time required to approach equilibrium becomes comparable with the currently accessible simulation time scales. 
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.7\textwidth]{RangesMD}
+    \caption{Sketch of the application ranges for molecular modelling at different resolutions: quantum, all-atoms, coarse-grained and mesoscale. The plot 
+shows approximate ranges of time scales and system sizes (lengths). Figure taken from the Ref.~\cite{Kmiecik2016}. }
+    \label{Fig:sketchResolution}
+\end{figure}
+
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{CGmm}
+    \caption{Sketch of coarse-grained system}
+    \label{Fig:CGpictureMM}
+\end{figure}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{CGStrategies}
+    \caption{Sketch with strategies for CG distinguishing between top-down, bottom-up, and knowledge-based approaches. Figure taken from the Ref.~\cite{Noid2013}.}
+    \label{Fig:CGStrategies}
+\end{figure}
+
+The thesis is organized as follows.
+
 
 \part{Theoretical Background}
 
