@@ -21,16 +21,50 @@ S = Simulator(dt=1e-3, Stochdt=1e-4, FullSteps=Int(1e4), ApproxSteps=Int(1e5));
 #####################################################################################################################
 # Generate effective potential data
 
-# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-CG = readdlm("ABCD_Systems/Outcomes/sC_2000.csv", Float64);
-RR = CG[:, 1];
-Fmean = CG[:, 4];
-Fstd = CG[:, 5];
+## Mean Force
+force_data = readdlm("force_to_interpolate.dat", Float64);
+
+# i punti della griglia *devono* essere equispaziati
+RR = force_data[:, 1];
+dx = RR[2] - RR[1];
+
+Fmean = force_data[:, 2];
+Fmean_d = force_data[:, 3];
+
+Fmean_coeff1 = (2. * (Fmean - circshift(Fmean, -1)) + (Fmean_d + circshift(Fmean_d, -1)) * dx) / dx;
+Fmean_coeff2 = circshift(Fmean, -1) - Fmean + (-Fmean_d - Fmean_coeff1) * dx;
+
+FdataMF = zeros(length(Fmean) - 1, 5);
+FdataMF[:, 1] = RR[1:end - 1];
+FdataMF[:, 2] = Fmean[1:end - 1];
+FdataMF[:, 3] = Fmean_d[1:end - 1];
+FdataMF[:, 4] = Fmean_coeff1[1:end - 1];
+FdataMF[:, 5] = Fmean_coeff2[1:end - 1];
+
+## Fluctuating Force
+ff_data = readdlm("flucts_to_interpolate.dat", Float64);
+
+# i punti della griglia *devono* essere equispaziati
+RR = force_data[:, 1];
+dx = RR[2] - RR[1];
+
+FF = force_data[:, 2];
+Fmean_d = force_data[:, 3];
+
+Fmean_coeff1 = (2. * (Fmean - circshift(Fmean, -1)) + (Fmean_d + circshift(Fmean_d, -1)) * dx) / dx;
+Fmean_coeff2 = circshift(Fmean, -1) - Fmean + (-Fmean_d - Fmean_coeff1) * dx;
+
+FdataMF = zeros(length(Fmean) - 1, 5);
+FdataMF[:, 1] = RR[1:end - 1];
+FdataMF[:, 2] = Fmean[1:end - 1];
+FdataMF[:, 3] = Fmean_d[1:end - 1];
+FdataMF[:, 4] = Fmean_coeff1[1:end - 1];
+FdataMF[:, 5] = Fmean_coeff2[1:end - 1];
 
 #########################################################################################
 # Generate a random trajectory, using data-generated potentials
 
-(PApprox, QApprox, FApprox) = ApproximateTraj(P0CG, Q0CG, RR, Fmean, Fstd, C, S);
+(PApprox, QApprox, FApprox) = ApproximateTraj(P0CG, Q0CG, FdataMF, Fstd, C, S);
 
 #########################################################################################
 # Write data to file

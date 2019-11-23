@@ -1,7 +1,9 @@
-\documentclass[10pt,a4paper]{report}
+\documentclass[10pt,a4paper]{book}
 \usepackage[english]{babel}
 \usepackage[T1]{fontenc}
 \usepackage[utf8x]{inputenc}
+%\usepackage{fancyhdr}
+%\pagestyle{fancy}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -43,14 +45,23 @@
 \newcommand{\lr}[1]{\textcolor[rgb]{0.8,0,0}{LR: \textbf{\textit{#1}}}}
 
 \begin{document}
+\frontmatter
+% \includepdf{Front.pdf}
+% \newpage 
+ 
+ \begin{center}
+ \section*{Abstract}
+ \end{center}
 
-%  \begin{center}
-%   \section*{{\LARGE Notes}}
-%  \end{center}
 
 \tableofcontents
 
-\part{Introduction}
+\mainmatter
+
+\chapter*{Introduction}
+\phantomsection
+\addcontentsline{toc}{chapter}{Introduction}
+
 Molecular Dynamic (MD) is a computational approach that allows to solve the equations of motion and to compute the macroscopic observables from the generated trajectories. Moreover, they allow the detailed visualization of the movements of the individual atoms in the system under examination, thus allowing to have a ``window'' into the microscopic world. Of course, for a real system, these animation of MD trajectories should never be taken too seriously, they can be useful as a guide toward understanding the mechanisms underlying a given chemical process. MD simulations are widely used and have become a standard tool in many research area, for example in soft matter \cite{Corezzi2008,Peter2009} or in the study of biological molecules \cite{KLEPEIS2009,Shaw2010}, and are often used in combination with a wide variety of experimental structural techniques \cite{HOLLINGSWORTH2018,Spagnolli2019}.
 
 Despite recent advances in simulation methods, atomically detailed models and computational resources, MD simulations are heavily limited in terms of system size and simulation time and often contain unnecessarily detailed information. For example, in the case of a protein molecule in water, where a large part of the overall computation time is used to compute the evolution of water molecules.
@@ -541,7 +552,6 @@ In Chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equatio
 Di Pasquale \textit{et al.}~developed an open-source parallel code, written in Julia v0.6.2 \cite{thomas_hudson_2018_1226590}, to solve the full, constrained and coarse-grained dynamics in the microcanonical ensemble for a simple one-dimensional system. To extend the code to the canonical ensemble we introduced the integrators described in the Chapter \ref{Sec:NumMet}, after updating the code to the latest version of Julia, v1.2.0.
 
 The studied system is a linear periodic chain made of $\nfg$ atoms of two different species, which differ in mass and bond stiffness. The atoms are arranged in a repeating pattern, and the coarse-grained model is obtained by combining the single repeated units into beads, see fig.~\ref{Fig:sketchRepPatt}. Therefore, we will not consider a hybrid system, and the number of beads, $\ncg$, will be equal to the number of times the pattern is repeated in the chain. The CG variables are given by the center of mass of each bead and by the corresponding momenta (see section \ref{Sec:Mapping}).
-
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=0.95\textwidth]{chain}
@@ -549,7 +559,7 @@ The studied system is a linear periodic chain made of $\nfg$ atoms of two differ
  \label{Fig:sketchRepPatt}
 \end{figure}
 
-This system is the same studied by Di Pasquale \textit{et al.}~\cite{DiPasquale2019}. We made this choice to directly compare the results obtained here with those of their work, and to compare the results obtained in the two ensemble.
+This system is the same studied by Di Pasquale \textit{et al.}, who have studied such a simple system to understand and quantify the accuracy of various modelling assumptions. We made this choice to directly compare the results obtained here with those of Ref.~\cite{DiPasquale2019}, and to compare the results obtained in the two ensemble.
 
 \section{Test cases considered}
 \label{Sec:TestCasesConsid}
@@ -632,7 +642,6 @@ As we said, in order to numerically integrate the FGD and OD we have used respec
 
 \section{Sampling Algorithm}
 The developed code allows a relatively simple recalibration of the test system through Julia ``types'', which are initialized by the user to fix all the parameters of the simulation, including the repeating pattern of the beads, the number of beads, the mass and stiffness of the inter-atomic potentials.
-
 Here, we give an idea of the sampling implemented in the code to compute an approximation of the effective potential, given in eq.~(\ref{Eq:EntrInt}), and the friction matrix, as given in eq.~(\ref{Eq:FRICmatrixRF}). The idea is to sample using the OD.
 
 First, the initial conditions for the simulation are fixed, so that the momenta are distributed according to the Maxwell-Boltzmann distribution and the positions lie in a neighbourhood of the equilibrium positions, determined by the equilibrium distance of the inter-atomic potential.
@@ -640,7 +649,6 @@ Then the trajectory of the FGD is computed and samples of the positions and mome
 Finally, by integrating the mean force with respect to the distance $R$ between the beads, the effective potential $\Veff$ is obtained.
 
 This method is very similar to the force-matching method \cite{Ercolessi1994,Izvekov2004}, the difference being that here we derive directly the effective potential from the sampling performed during the OD simulations.
-
 Below, for further clarification of what we said, we report the algorithm published in the work of Di Pasquale \textit{et al.}~and implemented in the code:
 \begin{algorithm} [H]
 \caption{Sampling Algorithm \cite{DiPasquale2019}}
@@ -845,6 +853,16 @@ A few years later, Cubero contested the analysis of the simulation data
  \caption{Comparison of the Probability Distribution Functions (PDFs) of bead momenta (upper panel) and inter-bead distances (bottom panel), between the FGD (green solid line), the DCGD (blue dashed line), and the MMZD (red dot-dashed line). All calculations refer to system C (see table \ref{Tab:Cases}).}
 \end{figure}
 
+\chapter*{Conclusions}
+\phantomsection
+\addcontentsline{toc}{chapter}{Conclusions}
+
+We performed the simulation for four different systems with different parameter and for different dynamics: the FG dynamics, the orthogonal dynamics (or constrained dynamics), the deterministic coarse-grained dynamics and the Markovian Mori-Zwanzig dynamics. We stress that the sampling of the orthogonal dynamics, as we said above, allows to compute the effective potential and the friction matrix, as well as the fluctuating terms.
+
+In all cases simulated no significant scale separation between the dynamics of the beads and individual atoms was observed. Nevertheless, a comparison was made between the true and approximate dynamics, and as expected, systems with `more rigid' beads, having greater internal stiffness, showed much weaker memory effects. 
+
+Furthermore we observed that the Langevin dynamics does not appear to be appropriate for generic CG systems, and that the preservation of more complex dynamical properties, such as the mean-square displacement of the inter bead distance in time, requires instead the strict validity of the time-scale separation assumption or a correct parametrisation and implementation of the memory term.
+
 
 
 
@@ -970,7 +988,7 @@ $$
 Moreover, if $\widetilde{Y}$ is another random variable that has the same properties as $Y$, then $\widetilde{Y}=Y\,a.s.$ (almost surely), i.e. $\mathbb{P}(\widetilde{Y}=Y)=1$.
 
 \noindent
-Therefore, $Y$ with these properties is called \textbf{a version of the conditional expectation} $\cexpval{X}{\,\mathscr{G}}$ of $X$ given $\mathscr{G}$, and we write $Y=\cexpval{X}{\,\mathscr{G}}\,a.s.$
+Therefore, $Y$ with these properties is called a \emph{version of the conditional expectation} $\cexpval{X}{\,\mathscr{G}}$ of $X$ given $\mathscr{G}$, and we write $Y=\cexpval{X}{\,\mathscr{G}}\,a.s.$
 \end{theorem}
 \begin{proof}
  See Williams \cite[pp.~85-86]{Williams1991}.
@@ -1011,7 +1029,7 @@ Let $h$ be a Borel function on $\real$ such that $\cexp{\abs{h(X)}}<\infty$. Set
 $$
 g(z) \coloneqq \int_{\real} h(x)f_{X\lvert Z}\cip{x\lvert z}\diff x\,,
 $$
-then $Y\coloneqq g(Z)$ is a version of the conditional expectation of $h(X)$ given $\sigma(Z)$, $\cexpval{h(X)}{\,\sigma(Z)}\equiv\cexpval{h(X)}{\,Z}$.
+then $Y\coloneqq g(Z)$ is a \emph{version of the conditional expectation} of $h(X)$ given $\sigma(Z)$, $\cexpval{h(X)}{\,\sigma(Z)}\equiv\cexpval{h(X)}{\,Z}$.
 \end{prop}
 
 \begin{proof}
@@ -1036,7 +1054,7 @@ for the theorem (\ref{Th:CondExp}) we must show that
 $$
 \cexp{g(Z)I_{A}}=\cexp{h(X)I_{A}}\quad\forall\,A\in\sigma(Z)\,.
 $$
-So we have, applying Fubini's theorem see \cite[p.~77-79]{Williams1991},
+So we have, applying Fubini's theorem see Ref.~\cite[p.~77-79]{Williams1991},
 \begin{multline*}
 \cexp{g(Z)I_{A}}=\cexp{g(Z)I_B(Z)} = \int_B g(z)f_Z(z)\,\diff z ={}\\ 
  = \int_{\real} g(z)I_B(z)f_Z(z)\,\diff z =\int_{\real}\cip{\int_\real h(x) f_{X\lvert Z}\cip{x\lvert z}\,\diff x}I_B(z)f_Z(z) \,\diff z ={}\\
@@ -1260,9 +1278,11 @@ The equations obtained (\ref{Eq:DysId}) and (\ref{Eq:IIDysId}) are the Dyson ope
 
 \end{appendices}
 
+\backmatter
+
 \cleardoublepage
 \phantomsection
-\addcontentsline{toc}{chapter}{\bibname}
+\addcontentsline{toc}{chapter}{\refname}
 \bibliographystyle{plain}
 \bibliography{biblioTESI}
 
