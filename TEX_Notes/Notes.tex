@@ -68,6 +68,8 @@ However Klaus Schulten, whose research group developed molecular dynamics softwa
 ``The point I wanted to make,'' said Klaus Schulten about the National Lecture, ``is that basically molecular modelling came of age, and it's now a full member of the scientific community in the sense that we can play the most glorious and important part of science, namely to make discoveries.'' 
 
 But despite recent advances in simulation methods, atomically detailed models and computational resources, MD simulations are heavily limited in terms of system size and simulation time. For example, most biomolecular events of interest, such as protein folding or major conformational changes essential for protein function, occur on longer time scales (from microseconds to milliseconds) than MD time scales \cite{Aminpour2019,Freddolino2008}.
+In fact, remarkable recent simulations of all MD atoms are the folding studies of small proteins of Schulten \textit{et al.}~\cite{Freddolino2008} and Shaw \textit{et al.}~\cite{Shaw2010}. The Schulten group achieved a continuous trajectory of $10\, \mu s$ while the Shaw group performed a $1\, ms$ long simulation. Despite these successes, atomistic simulations are still several magnitudes far from being able to effectively cover the time and length scales of most cellular processes.
+%
 For an idea of time scales and length scales, as well as the time-line of progress in the system size accessible to all-atom MD simulations up to 2014, see fig.~\ref{Fig:sketchResolution} and fig.~\ref{Fig:evolutionSize}, respectively.
 %
 \begin{figure}[htb!]
@@ -84,15 +86,19 @@ shows approximate ranges of time scales and length scales  for the different res
  \caption{Sketch of the time-line of progress in the system size accessible to all-atom MD simulations up to 2014. Figure taken from the Ref.~\cite{Pollack}.}
  \label{Fig:evolutionSize}
 \end{figure}
+
 These bottlenecks are given by the fact that in order to compute the equations of motion we have to provide in input the complete set interatomic forces. The accuracy of these forces is of vital importance to have a reliable model of a complex system and unfortunately, as a general rule, the more accurate the forces are, the longer is the time needed to calculate them and perform the simulation.
 %
 Another problem often encountered in an \textit{in silico} investigation of long chain-like molecules is that, as the size of the system increases, the relaxation time required to approach equilibrium becomes comparable with the currently accessible simulation time scales \cite{Maginn2009}. 
 
-However, MD simulations are now widely used and have become a standard tool in many areas of research, for example in the soft matter \cite{Corezzi2008,Klein2008,Peter2009} as well as in the study of biological systems \cite{KLEPEIS2009,Shaw2010}, and are often used in combination with a wide variety of experimental structural techniques \cite{HOLLINGSWORTH2018,Spagnolli2019}. 
+However, MD simulations are now widely used and have become a standard tool in many areas of research, for example in the soft matter \cite{Corezzi2008,Klein2008,Peter2009} as well as in the study of biological systems \cite{KLEPEIS2009}, and are often used in combination with a wide variety of experimental structural techniques \cite{HOLLINGSWORTH2018,Spagnolli2019}. 
 
-Various methods have been introduced to overcome these bottlenecks. The \emph{coarse-grained method} (CG) simplifies and accelerates MD simulations, the idea is to group atoms and treat these groups as individual sites of interaction, this idea was introduced by Levitt and Warshel in the 1970s \cite{Levitt1975,Levitt1976}. While unlike the previous method, the \emph{enhanced sampling methods} only address the problem of the time scale, these methods include Umbrella sampling \cite{Kumar1992,TORRIE1977}, Steered molecular dynamics \cite{ISRALEWITZ2001,SMDbook1999} and Metadynamics \cite{Laio2002}. 
+Various methods have been introduced to overcome these bottlenecks, including the \emph{coarse-grained method} (CG) and the so-called \emph{enhanced sampling methods}. The former simplifies and accelerates MD simulations \cite{Brini2013}, the idea is to group atoms and treat these groups as individual sites of interaction, this idea was introduced by Levitt and Warshel in the 1970s \cite{Levitt1975,Levitt1976}. 
+While the latter only address the problem of the time scale, these methods include Umbrella sampling \cite{Kumar1992,TORRIE1977}, Steered molecular dynamics \cite{ISRALEWITZ2001,SMDbook1999} and Metadynamics \cite{Laio2002}. 
 
-In this work we present a full derivation of a generic CG model through the Mori-Zwanzig formalism.
+In this work we will not deal with the enhanced sampling methods but we will present a full derivation of a generic CG model through the Mori-Zwanzig formalism \cite{DiPasquale2019,Hijon2010}.
+
+
 
 \begin{figure}[htb]
     \centering
