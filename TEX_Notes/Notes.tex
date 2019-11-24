@@ -100,13 +100,24 @@ In this work we will not deal with the enhanced sampling methods but we will pre
 
 As we mentioned above, in the CG models the fundamental particles are interaction sites (sometimes called beads) that represent group of atoms, are typically on the order of 2-10 ``heavy'' atoms (\textit{e.g.}, C, N, O, P) and their hydrogen atoms \cite{Noid2013Book}.
 The procedure for transforming an atomically detailed structure into a coarse-grained representation of the same structure is called \emph{CG mapping}.  Of course, we can customize the mapping to accurately capture the key characteristics of a specific system or phenomenon of interest, while eliminating atomic details that are considered ``unimportant''. 
-The construction of the mapping is the first step in defining a CG model, and is intimately related to its accuracy, efficiency and transferability\footnote{``Transferability'' means a change in temperature, density, concentration, system composition, phase, \textit{etc.}~of the system under consideration, as well as a change in the chemical environment, \textit{e.g.}, a change in the length or sequence of an amino acid chain \cite{Potestio2014}.}. In particular, the accuracy and transferability of a CG model does not necessarily increase as the resolution of the system mapping increases \cite{Mullimax2009,Potestio2014}. In fig.~\ref{Fig:CGpictureMM} we show a sketch of the CG mapping of a peptdide, \textit{i.e.}, a short chains of amino acids linked by peptide (amide) bonds.
+The construction of the mapping is the first step in defining a CG model, and is intimately related to its accuracy, efficiency and transferability\footnote{``Transferability'' means a change in temperature, density, concentration, system composition, phase, \textit{etc.}~of the system under consideration, as well as a change in the chemical environment, \textit{e.g.}, a change in the length or sequence of an amino acid chain \cite{Potestio2014}.}. In particular, the accuracy and transferability of a CG model do not necessarily increase as the resolution of the system mapping increases \cite{Mullimax2009,Potestio2014}. In fig.~\ref{Fig:CGpictureMM} we show a sketch of the CG mapping of a peptdide, \textit{i.e.}, a short chains of amino acids linked by peptide (amide) bonds.
 \begin{figure}[htb]
     \centering
     \includegraphics[width=0.9\textwidth]{CGmm.png}
     \caption{Sketch of the coarse-grained mapping of a peptdide (textit{i.e.}, a short chains of amino acids linked by peptide (amide) bonds), made with UCSF Chimera (a software for the interactive visualization and analysis of molecular structures and related data).}
     \label{Fig:CGpictureMM}
 \end{figure}
+
+Once the representation of the CG model has been determined, the new challenge is to determine an appropriate interaction between the CG sites (i.e. between beads). These interactions are described by \emph{effective potentials} that should also take into account the effects of atomic details that have been eliminated from the CG model. For examples in the implicit solvent CG models, all solvent molecules are formally integrated out and their effects are incorporated into the interactions between the remaining sites \cite{Silbermann2006}.
+Therefore, the interactions in the CG model should reflect the ``correct physics'' so that the model, in addition to being highly efficient, ideally provides both fundamental insights and quantitatively accurate predictions.
+
+In general, CG simulations can be three or four orders of magnitude more efficient than all-atom simulations for several reasons:
+\begin{enumerate}[(i)]
+\item CG models require fewer interacting sites to model the same system, so fewer interactions must be calculated at each time step;
+\item interactions in CG models are typically short-range compared to interactions in atomistic models, for example, long-range Coulombic interactions may be examined more effectively on the length scales relevant for CG interactions and can be modelled into short-range effective potentials \cite{Noid2013Book,Silbermann2006};
+\item effective potential can implicitly include entropic effects and greatly reduce the need to explicitly sample a large number of degenerate atomically detailed configurations \cite{Levitt1975};
+\item interactions between CG sites may be ``softer'', (\textit{i.e.}, of lower frequency) which allows a larger integration time step for propagating dynamics \cite{Marrink2004};
+\end{enumerate}
 
 \begin{figure}[htb]
     \centering
