@@ -93,17 +93,18 @@ Another problem often encountered in an \textit{in silico} investigation of long
 
 However, MD simulations are now widely used and have become a standard tool in many areas of research, for example in the soft matter \cite{Corezzi2008,Klein2008,Peter2009} as well as in the study of biological systems \cite{KLEPEIS2009}, and are often used in combination with a wide variety of experimental structural techniques \cite{HOLLINGSWORTH2018,Spagnolli2019}. 
 
-Various methods have been introduced to overcome these bottlenecks, including the \emph{coarse-grained method} (CG) and the so-called \emph{enhanced sampling methods}. The former simplifies and accelerates MD simulations \cite{Brini2013}, the idea is to group atoms and treat these groups as individual sites of interaction, this idea was introduced by Levitt and Warshel in the 1970s \cite{Levitt1975,Levitt1976}. 
+Various methods have been introduced to overcome these bottlenecks, including the \emph{coarse-grained method} (CG) and the so-called \emph{enhanced sampling methods}. The former simplifies and accelerates MD simulations \cite{Brini2013}, the idea is to group atoms of the atomistic model under examination and treat these groups as individual sites of interaction, this idea was introduced by Levitt and Warshel in the 1970s \cite{Levitt1975,Levitt1976}. 
 While the latter only address the problem of the time scale, these methods include Umbrella sampling \cite{Kumar1992,TORRIE1977}, Steered molecular dynamics \cite{ISRALEWITZ2001,SMDbook1999} and Metadynamics \cite{Laio2002}. 
 
 In this work we will not deal with the enhanced sampling methods but we will present a full derivation of a generic CG model through the Mori-Zwanzig formalism \cite{DiPasquale2019,Hijon2010}.
 
-
-
+As we mentioned above, in the CG models the fundamental particles are interaction sites (sometimes called beads) that represent group of atoms, are typically on the order of 2-10 ``heavy'' atoms (\textit{e.g.}, C, N, O, P) and their hydrogen atoms \cite{Noid2013Book}.
+The procedure for transforming an atomically detailed structure into a coarse-grained representation of the same structure is called \emph{CG mapping}.  Of course, we can customize the mapping to accurately capture the key characteristics of a specific system or phenomenon of interest, while eliminating atomic details that are considered ``unimportant''. 
+The construction of the mapping is the first step in defining a CG model, and is intimately related to its accuracy, efficiency and transferability\footnote{``Transferability'' means a change in temperature, density, concentration, system composition, phase, \textit{etc.}~of the system under consideration, as well as a change in the chemical environment, \textit{e.g.}, a change in the length or sequence of an amino acid chain \cite{Potestio2014}.}. In particular, the accuracy and transferability of a CG model does not necessarily increase as the resolution of the system mapping increases \cite{Mullimax2009,Potestio2014}. In fig.~\ref{Fig:CGpictureMM} we show a sketch of the CG mapping of a peptdide, \textit{i.e.}, a short chains of amino acids linked by peptide (amide) bonds.
 \begin{figure}[htb]
     \centering
     \includegraphics[width=0.9\textwidth]{CGmm.png}
-    \caption{Sketch of coarse-grained system}
+    \caption{Sketch of the coarse-grained mapping of a peptdide (textit{i.e.}, a short chains of amino acids linked by peptide (amide) bonds), made with UCSF Chimera (a software for the interactive visualization and analysis of molecular structures and related data).}
     \label{Fig:CGpictureMM}
 \end{figure}
 
