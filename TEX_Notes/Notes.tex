@@ -49,9 +49,26 @@
 % \includepdf{Front.pdf}
 % \newpage 
  
- \begin{center}
- \section*{Abstract}
- \end{center}
+\begin{center}
+\section*{Abstract}
+\end{center}
+My Master thesis project deals with the Mori-Zwanzig (MZ) formalism as a tool to systematically derive hybrid coarse-grained (CG) models. The MZ formalism allows to study the evolution of a dynamical system through the projection on a subset of its degrees of freedom. This operation can be done through various projection operator techniques \cite{Grabert:Projection}. 
+%
+%In particular, we consider two resolution levels for a given molecular system. The first one, at high resolution, is the fine-grained (FG), while the second one, at low resolution, is the CG system.
+%
+The project builds on the work of N. Di Pasquale \emph{et al.}~\cite{DiPasquale2019}, in which the authors derived a coarse-grained model for hybrid systems through the MZ projection, with a theoretical discussion supported by numerical simulations limited to the microcanonical (NVE) ensemble.
+%
+
+
+The first part of the thesis focusses on the derivation of the equations governing the coarse-grained dynamics, obtained through the MZ formalism.
+The equations of motion obtained are described by a Generalized Langevin Equation (GLE), which is an equation that allows to describe a particle, in a system in or close to equilibrium, subject to a potential and coupled to a general thermal bath in which memory effects are, in general, present.
+
+The second part of the thesis is focused on the study of numerical methods for Langevin dynamics and for the constrained Langevin dynamics. These methods are used to numerically implement the full and the constrained dynamics in the canonical (NVT) ensemble. The integrators we choose to integrate the equations of motions have been developed by Leimkuhler \emph{et al.} \cite{LeimMatt:LAnDynInt,Leimkuhler2016}. These methods are splitting integrators that decompose the stochastic vector field which drives the Langevin Dynamics into simpler vector fields which can be solved exactly. In particular, we used the BAOAB method to sample the full dynamics\cite{LeimMatt:LAnDynInt}, and the geodesic-BAOAB method to to sample the constrained dynamics \cite{Leimkuhler2016}.
+
+The third and final part of the thesis is on the numerical experiments in the canonical (NVT) ensemble by extending and improving the open-source parallel code, written in Julia 0.6, developed by Di Pasquale \emph{et al.} \cite{DiPasquale2019}, introducing the integrators studied in the previous part. This code allows to solve the full, constrained and coarse-grained dynamics, as well as all the components needed for the coarse-grained (CG) system.
+%
+The full-resolution (fine-grained, FG) system that we consider is a periodic chain of $\nfg$ ``atoms'' of two different species, which are assumed to have different masses and bond stiffness, in a repeating pattern. We assumed that the chemical structure of the molecular system is fixed, \textit{i.e.} no reactions occur. Each ``atom'' is mapped to a fixed (unique) particle in the CG system, called bead. 
+We performed the simulation for four different systems with different parameter and for different dynamics: the FG dynamics, the orthogonal dynamics (or constrained dynamics), the deterministic coarse-grained dynamics and the Markovian Mori-Zwanzig dynamics.
 
 
 \tableofcontents
@@ -96,7 +113,7 @@ However, MD simulations are now widely used and have become a standard tool in m
 
 Various methods have been introduced to overcome these bottlenecks, including the \emph{coarse-grained method} (CG) and the so-called \emph{enhanced sampling methods}. The former simplifies and accelerates MD simulations \cite{Brini2013}, the idea is to group atoms of the atomistic model under examination and treat these groups as individual sites of interaction, this idea was introduced by Levitt and Warshel in the 1970s \cite{Levitt1975,Levitt1976}. 
 While the latter only address the problem of the time scale, these methods include Umbrella sampling \cite{Kumar1992,TORRIE1977}, Steered molecular dynamics \cite{ISRALEWITZ2001,SMDbook1999} and Metadynamics \cite{Laio2002}. 
-In this work we will not deal with the enhanced sampling methods but we will present a full derivation of a generic CG model through the Mori-Zwanzig formalism \cite{DiPasquale2019,Hijon2010}.
+In this work we will not deal with the enhanced sampling methods but we will present a full derivation of a generic CG model through the Mori-Zwanzig (MZ) formalism \cite{DiPasquale2019,Hijon2010}.
 
 As we mentioned above, in the CG models the fundamental particles are interaction sites (sometimes called beads) that represent group of atoms, are typically on the order of 2-10 ``heavy'' atoms (\textit{e.g.}, C, N, O, P) and their hydrogen atoms \cite{Noid2013Book}.
 The procedure for transforming an atomically detailed structure into a coarse-grained representation of the same structure is called \emph{CG mapping}.  Of course, we can customize the mapping to accurately capture the key characteristics of a specific system or phenomenon of interest, while eliminating atomic details that are considered ``unimportant''. 
@@ -133,8 +150,13 @@ Typically, CG simulations can be three or four orders of magnitude more efficien
 \item CG models require fewer interacting sites to model the same system, so fewer interactions must be calculated at each time step;
 \item interactions in CG models are typically short-range compared to interactions in atomistic models, for example, long-range Coulombic interactions may be examined more effectively on the length scales relevant for CG interactions and can be modelled into short-range effective potentials \cite{Noid2013Book,Silbermann2006};
 \item effective potential can implicitly include entropic effects and greatly reduce the need to explicitly sample a large number of degenerate atomically detailed configurations \cite{Levitt1975};
-\item interactions between CG sites may be ``softer'', (\textit{i.e.}, of lower frequency) which allows a larger integration time step for propagating dynamics \cite{Marrink2004}. In other words, we are saying that the fluctuations of the force that experiences the CG sites are generally smaller, consequently we have a smoother free energy profile \cite{Rudzinski2019}, and as a result we have a faster diffusive process allowing the system to reach greater time scales with fewer computations. This last aspect implies that one typically has to determine a rescaling factor between the simulation timescale (usually given in Lennard Jones units) and the corresponding timescale in all-atom system \cite{Fritz2011,Potestio2014}.
+\item interactions between CG sites may be ``softer'', (\textit{i.e.}, of lower frequency) which allows a larger integration time step for propagating dynamics \cite{Marrink2004}. In other words, we are saying that the fluctuations of the force that experiences the CG sites are generally smaller, consequently we have a smoother free energy profile \cite{Rudzinski2019}, and as a result we have a faster diffusive process allowing the system to reach greater time scales with fewer computations. This last aspect implies that one typically has to determine a rescaling factor between the simulation timescale (usually given in Lennard Jones units) and the corresponding timescale in all-atom system (or the corresponding real world time \cite{Fritz2011,Potestio2014}.
 \end{enumerate}
+If we are interested in the dynamic properties of the system under consideration, what has been said in the last point is one of the main limits of most CG models. This difference in time scales between two resolution levels of the same system does not allow to preserve the dynamic properties. This artificial acceleration of the dynamics could be corrected by adding appropriate friction terms in order to obtain a better estimate of the dynamic observables \cite{Izvekov2006}. A second limitation of coarse-grained models is the loss of information about the model caused by CG mapping. In fact, some phenomena such as hydrogen bonds are only observable at an atomistic level. These phenomena need special treatment to be considered in a CG model \cite{Karimi-Varzaneh2008}. These limitations have led to the development of \emph{hybrid} atomistic/CG models that ideally should combine both a lower computational cost than all-atom simulations and greater accuracy than CG simulations \cite{DiPasquale2012,Rzepiela2011}.
+However, even these models when considering dynamics are not without problems, it has been shown that considering complex systems such as polymers new effects arise \cite{DiPasquale2017}. Therefore a rigorous treatment of these models becomes necessary.
+
+As mentioned above, the CG approach studied here is the Mori-Zwanzig projection formalism \cite{Mori1965,Zwanzig1973}. One of the first applications of this formalism to obtain CG models was made by Givon et al. \cite{Givon2004}. This formalism, given an arbitrary and generic CG mapping, allows a rigorous derivation of the equations for the exact evolution of CG variables, including terms that may be identified as a term of friction with a memory kernel and a fluctuating force, consistent with the fluctuation-dissipation theorem. Moreover, under the assumptions made to derive the equations, it provides an explicit and rigorous means by which to compute the CG interactions and a framework in which to improve and quantify the accuracy \cite{DiPasquale2019}.
+Despite the explicit form of the terms appearing in the CG equations of motion derived through MZ formalism, these terms are not easy to compute. In recent years, there has been a significant effort to render simulations more practicable using this theoretical tool \cite{DiPasquale2019,Espanol2009,Hijon2010,Izvekov2017,Jung2017,Li2015,Wang2019,Yuanran2018}.
 
 The thesis is organized as follows.
 
