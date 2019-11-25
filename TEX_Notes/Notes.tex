@@ -529,6 +529,7 @@ where $\omega_{N^AK}$ is equal to zero whenever the difference between the first
 
 
 \section{Orthogonal Dynamics}
+\label{Sec:OD}
 
 \begin{align}
 	\totd{\bfr_k}{t} &= \frac{\bfp_k}{m_{k}} \\
@@ -541,8 +542,8 @@ where $\omega_{N^AK}$ is equal to zero whenever the difference between the first
 We said that the terms involving the friction matrix turn out to be the most difficult to compute in a real calculation because of the memory effect. 
 The problems to be faced in order to simplify the formulation of the eq.~(\ref{Eq:ZwanGLE}) are given by:
 \begin{itemize}
-\item the calculation of the friction matrix $\bffricmat(t)$ eq.~(\ref{Eq:FRICmatrixRF}), which depends from the orthogonal dynamics, i.e., from all the fast degrees of freedom coarse-grained away (see eq.~(\ref{Eq:RAndomForce}));   
-\item the integrals that include the friction matrix, which must be computed at each time step (see the RHS of the eq.~(\ref{Eq:ZwanGLE})).
+\item[-] the calculation of the friction matrix $\bffricmat(t)$ eq.~(\ref{Eq:FRICmatrixRF}), which depends from the orthogonal dynamics, i.e., from all the fast degrees of freedom coarse-grained away (see eq.~(\ref{Eq:RAndomForce}));   
+\item[-] the integrals that include the friction matrix, which must be computed at each time step (see the RHS of the eq.~(\ref{Eq:ZwanGLE})).
 \end{itemize}
 In the literature there are different ways to consider the friction matrix \cite{Chorin2000,Kauzlaric2011} and how to include memory effects in CG simulations \cite{Izvekov2017,Jung2017,Li2015,Yuanran2018}.
 
@@ -873,24 +874,31 @@ The system of equations obtained allows to describe and implement the MMZD, as i
 The mean force, the fluctuating force and therefore the memory terms can be determined through a Kriging-type interpolation algorithm \cite{Jones2001} from the values shown in the Section \ref{Sec:EP}. This interpolation algorithm, which we have implemented in the code, yields a polynomial approximation of the given function with Gaussian weights. It allows to determine the new values of the function, filtering the noise resulting from the sampling error (see the supplementary material of the work of Di Pasquale \textit{et al.}~\cite{DiPasquale2019}).
 
 
-\subsection{Timescale separation and the validity of the memory kernel approximation}
+\subsection{Validity of the memory kernel approximation and timescale separation}
 As we said in Chap.~\ref{Sec:MarkovApprox}, the validity of Markovian approximation has been repeatedly questioned, especially for a system with the one under consideration where the sounds plays a very important role, since it determines the time scale of the CG variables, \textit{i.e.} the time scale of the velocity ACF \cite{CommentCubero}. 
 
 In fact in 2005, Cubero and Yaliraki showed that the Markovian approximation is unreliable in systems in which sound plays an important role. They first study the general case and the conditions for the failure of the Markovian approximation due to sound propagation. Then, as an example to show the failure of Markovian application, they studied the coarse-grained dynamics of cubic harmonic lattices, where the elastic wave propagation is the only dissipation mechanism \cite{Cubero2005}.
 A year later, Hij\'on \textit{et al.} verified and confirmed the results of Cubero and Yaliraki for a system with an harmonic potential, and also showed the validity of the Markovian approximation for a system with non-linear potential such as L-J potential \cite{Hijon2006}. The non-linear system studied was a one-dimensional chain of $N$ atoms of equal mass, enclose between two fixed walls, that interact interacts with a L-J potentials. This system is very similar to that studied in this work.
-A few years later, Cubero contested the analysis of the simulation data  
 
+\noindent
+A few years later, Cubero contested the analysis of the simulation data, and showed that it cannot be claimed that the coarse-grained dynamics of the non-linear system studied by Hij\'on \textit{et al.} is Markovian \cite{CommentCubero}. Hij\'on \textit{et al.} reply, demonstrating, that despite in principle, the arguments of Cubero are correct for a CG system of a one-dimensional atomic system, the behaviour of the CG variables is rather well described under the Markovian assumption. They also state that the only way to assess whether Markovian approximation is a good one is to examine its implications, since the memory kernel is not accessible from simulations if the description is not Markovian \cite{ResponseCommentHijon}.
 
+Therefore, to verify the validity of the Markovian approximation, we must verify that the time scale of decay of the memory kernel eq.~(\ref{Eq:FRICmatrixRF}) is much shorter than the typical time scale of the CG variables. This two quantity can be compute by using the fluctuating force auto-correlation function (FFACF) and the velocity auto-correlation function (VACF) computed via a FGD simulation.
+
+\noindent
+These ACF are shown in fig.~\ref{Fig:ACFcomparison} for system C (see table \ref{Tab:Cases}). We can see how there is a separation of the time scales, but it is not as marked and clear  as in the work of Hij\'on \textit{et al.}~\cite{Hijon2006}.
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{ACF_comparison}
  \caption{Comparison of the Time Autocorrelation Functions (ACF) between the force (green solid line), the fluctuating force (blue dot-dashed line), \textit{i.e.} the ``orthogonal'' component of the force, and the momenta (red dashed line), in the FGD. All calculations refer to the system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
  \label{Fig:ACFcomparison}
 \end{figure}
+This result does not seem to fully justify the Markovian approximation.
 
+As mentioned above, we have studied a system very similar to one studied by Hij\'on \textit{et al.}~\cite{Hijon2006}. A possible explanation for the lack of separation of scales is that the system analysed here is much smaller than the system studied by them, and that the size of the beads (\textit{i.e.}, the number of atoms in the beads) is much smaller than what they have considered.
 
+For the sake of completeness, we also report in fig.~\ref{Fig:ACF} the ACF for the moments and the forces for the different dynamics, relative to the system C.
 \begin{figure}[!htb]
-\label{Fig:ACF}
  \begin{subfigure}[b]{\textwidth}
   \centering
    \includegraphics[width=\textwidth]{ACF_F}
@@ -900,13 +908,13 @@ A few years later, Cubero contested the analysis of the simulation data
   \includegraphics[width=\textwidth]{ACF_P}
  \end{subfigure}\\
  \caption{Time autocorrelation functions (ACF) of forces and momenta. In the upper panel the ACF of the forces in the FGD (green solid line) is compared with that of the forces in the OD (blue dashed line) and the MMZD (red dot-dashed line). In the bottom panel, the ACF of the momenta in the FGD (green solid line) is compared with the ACF of the momenta in the OD (blue dashed line) and the ACF of the momenta in the MMZD (red dot-dashed line). All calculations refer to the system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
+\label{Fig:ACF}
 \end{figure}
+We can notice how the separation of the time scales is more evident in the case of the orthogonal dynamics, that is the constrained Hamiltonian dynamics (see Section \ref{Sec:OD}).
 
-
-
-
-\newpage
 \subsection{The effect of the memory approximation on observed system properties}
+
+
 
 \begin{figure}[!htb]
 \label{Fig:PDF}
