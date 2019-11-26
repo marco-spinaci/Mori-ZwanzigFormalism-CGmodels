@@ -16,7 +16,7 @@ export VEffConstrained, VEffConstrainedLangDyn, ConstrainedAutocorr, Constrained
 # Orthogonal dynamics sampling
 export ConstrainedSample, ConstrSampleLangDyn
 # Functions to extract approximate dynamics
-export ApproxMeanForce, ApproxMeanStresses, ApproxFlucStep, ComputeVEff
+export ApproxMeanForce, ApproxMeanForce_NEW, ApproxMeanStresses, ApproxMeanStresses_NEW, ApproxFlucStep, ComputeVEff
 
 #######################################
 # Simulator type, encoding parameters #
@@ -246,8 +246,11 @@ end
 """
     (Pstore,Qstore,Fstore) = DetCGCanEnsTraj(P0,Q0,FmeanData,C::Chain,S::Simulator)
 
-    Outputs full trajectory data for Deterministi CG dynamics in the canonical ensemble, using
-    approximate potential generated from data encoded in FmeanData.
+    Outputs full trajectory data for Deterministi CG dynamics in the canonical ensemble, using approximate potential generated
+    by the data encoded in FmeanData. Where Fmeandata are the coefficients for the cubic spline interpolation. These coefficients
+	are generated from kriging interpolation data, generated separately to eliminate noise from the original Mean Force data.
+	(Kriging interpolation is done in the folder Julia_Code/Code_Tests/Interpolation by the script TestMeanForce_weights.jl)
+	We do all this to speed up the DCGD, because the cubic spline interpolation is much faster than the Kriging interpolation.
 """
 function DetCGCanEnsTraj(P0,Q0,FmeanData::Array{Float64,2},C::Chain,S::Simulator)
  # Report to user.
@@ -263,7 +266,7 @@ function DetCGCanEnsTraj(P0,Q0,FmeanData::Array{Float64,2},C::Chain,S::Simulator
   P = P0; Q = Q0;
 
   # Generate mean force function
-  MeanForce = X -> ApproxMeanForce(X,FmeanData,C)[1];
+  MeanForce = X -> ApproxMeanForce_NEW(X,FmeanData,C)[1];
   F = MeanForce(Q0);
 
   # Set up storage
@@ -1441,7 +1444,7 @@ end
 
 	Generates approximate mean stresses based on precomputed data dQvals, Fvals and Chain parameters.
 """
-function ApproxMeanStresses_OLD(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain,σ::Float64=0.1,N::Int=2)
+function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain,σ::Float64=0.1,N::Int=2)
 
   Sigma = zeros(size(Q));
 
@@ -1499,14 +1502,14 @@ function ApproxMeanStresses_OLD(Q::Array{Float64,1},dQvals::Array{Float64,1},Fva
   return Sigma, dQ
 end
 
-function ApproxMeanStresses(Q::Array{Float64,1},Fdata::Array{Float64,2},C::Chain,σ::Float64=0.1,N::Int=2)
+function ApproxMeanStresses_NEW(Q::Array{Float64,1},Fdata::Array{Float64,2},C::Chain,σ::Float64=0.1,N::Int=2)
 
   Sigma = zeros(size(Q));
 
   ### First compute inter-bead distances.
   dQ = circshift(Q, -1) - Q;
   dQ[C.NBeads] += C.Period;
-  
+
   Rmin = Fdata[1, 1];
   Rmax = Fdata[end, 1];
   dx = Fdata[2, 1] - Fdata[1, 1];
@@ -1535,15 +1538,23 @@ end
 
 	Generates approximate mean forces F based on precomputed data dQvals, Fvals and Chain parameters.
 """
-function ApproxMeanForce(Q::Array{Float64,1},Fvals::Array{Float64,2},C::Chain,σ::Float64=0.1,N::Int=2)
+function ApproxMeanForce(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain,σ::Float64=0.1,N::Int=2)
 
   F = zeros(size(Q));
-  (Sigma, dQ) = ApproxMeanStresses(Q, Fvals, C, σ, N);
+  (Sigma, dQ) = ApproxMeanStresses(Q, dQvals, Fvals, C, σ, N);
   F = Sigma - circshift(Sigma, 1);
 
   return F, Sigma, dQ
 end
 
+function ApproxMeanForce_NEW(Q::Array{Float64,1},Fvals::Array{Float64,2},C::Chain,σ::Float64=0.1,N::Int=2)
+
+  F = zeros(size(Q));
+  (Sigma, dQ) = ApproxMeanStresses_NEW(Q, Fvals, C, σ, N);
+  F = Sigma - circshift(Sigma, 1);
+
+  return F, Sigma, dQ
+end
 
 function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Float64,1},
 	StressSqvals::Array{Float64,1},C::Chain,dt::Float64,σ::Float64=0.1,N::Int=2)

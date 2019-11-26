@@ -11,7 +11,7 @@ using Main.LJChain,Main.CGStats,DelimitedFiles
 C = Chain(); # system C ≣ [Patt=[0,1,0],NBeads=10,ConstrainedBeads=2,SEps=1,LEps=100,SM=10,LM=1,Dist=1,Beta=1,Gamma=1]
 
 # S = Simulator(); # [dt=1e-4,Stochdt=1e-4,FullSteps=Int(1e5),OrthoSteps=1,ApproxSteps=Int(1e5),OrthoSamples=Int(1e5),MacroSamples=50,LagStep=400,NumLags=30]
-S = Simulator(dt=1e-3, Stochdt=1e-4, FullSteps=Int(1e7), ApproxSteps=Int(1e8));
+S = Simulator(dt=1e-3, Stochdt=1e-4, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
 
 ######################################################################################################################
 # Generate initial data
@@ -21,10 +21,11 @@ S = Simulator(dt=1e-3, Stochdt=1e-4, FullSteps=Int(1e7), ApproxSteps=Int(1e8));
 #########################################################################################
 # Generate effective potential data
 
-# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+# data extracted from the Kriging interpolation of the original Mean Force data
 force_data = readdlm("force_to_interpolate.dat", Float64);
 
-# i punti della griglia *devono* essere equispaziati
+# we generate the coefficients for the cubic spline interpolation
+# NB: the grid points *must* be equally spaced
 RR = force_data[:, 1];
 dx = RR[2] - RR[1];
 

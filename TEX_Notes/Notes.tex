@@ -554,7 +554,7 @@ The problems to be faced in order to simplify the formulation of the eq.~(\ref{E
 \end{itemize}
 In the literature there are different ways to consider the friction matrix \cite{Chorin2000,Kauzlaric2011} and how to include memory effects in CG simulations \cite{Izvekov2017,Jung2017,Li2015,Yuanran2018}.
 
-In many cases, it has been shown that $\bffricmat(\Bphase{},t)$ exhibits an exponential decay in $t$ at a sufficiently large rate uniformly on the phase-space, so that the integrals involving the memory kernel may be approximated using Laplace's method (see Ref.~\cite{DiPasquale2019}). If the exponential characteristic time is much shorter than the characteristic time scale of the CG model, then the latter can be regarded as memoryless. This is the most common approximation used, which corresponds to assuming that the CG models satisfy the property that allows to predict the future with only the present information. This approximation is the so-called ``Markovian approximation''.
+In many cases, it has been shown that $\bffricmat(\Bphase{},t)$ exhibits an exponential decay in $t$ at a sufficiently large rate uniformly on the phase-space, so that the integrals involving the memory kernel may be approximated using Laplace's method (see Ref.~\cite{DiPasquale2019,Hijon2006}). If the exponential characteristic time is much shorter than the characteristic time scale of the CG model, then the latter can be regarded as memoryless. This is the most common approximation used, which corresponds to assuming that the CG models satisfy the property that allows to predict the future with only the present information. This approximation is the so-called ``Markovian approximation''.
 The validity of this assumption requires a clear separation of the time scales of the system under examination \cite{DiPasquale2019,Hijon2010,Hijon2006}.
 In particular, in the studied system the assumption is valid only if the time scale of variation of the CG variables is much larger than the time scale of decay of the memory matrix $\bffricmat(t)$ (i.e., the friction matrix), which is linked to the time scale of the autocorrelation of the fluctuating forces $\fprojbf_{\Bphase{}}(t,\cdot)$, defined in eq.~(\ref{Eq:RAndomForce}).
 
@@ -569,8 +569,6 @@ where $\widetilde{\bffricmat}$ is the time-independent friction matrix defined a
   = \beta\,\aver{\fprojbf_{\Bphase{}}(0,\cdot)\otimes
     \fprojbf_{\Bphase{}}(0,\cdot)}_{\Bphase{}}.
 \end{equation}
-
-
 Under these conditions, the second equation of the system (\ref{Eq:DevB}) becomes
 \begin{multline}	
  \label{Eq:MarkovApprox}
@@ -588,7 +586,7 @@ where the derivatives of $\widetilde{\bffricmat}$ with respect to $\bfP_{J}$ van
   \cip{ \pard{\Veff}{\bfR_{J}} - \sum_{j\in S_J} \pard{U}{\bfr_{j}} }}_{\Bphase{}}\,.
 \end{multline}
 
-The validity of the Markovian approximation has been repeatedly questioned in the literature~\cite{XXX}. We will return to this point later when we discuss the numerical results. We want to stress here that we use the Markovian approximation only as a means of simplifying the calculation. As we said at the beginning of this section there are more refined methods to consider the friction matrix and to include memory effects in CG simulations which will be considered in future work.
+The validity of the Markovian approximation has been repeatedly questioned in the literature~\cite{CommentCubero,Cubero2005,Hijon2006,ResponseCommentHijon}. We will return to this point later when we discuss the numerical results. We want to stress here that we use the Markovian approximation only as a means of simplifying the calculation. As we said at the beginning of this section there are more refined methods to consider the friction matrix and to include memory effects in CG simulations which will be considered in future work.
 
 
 \chapter{Numerical Methods}
@@ -633,7 +631,7 @@ The algorithm thus represents a geodesic version of their BAOAB integrator prese
 \chapter{The system under study}
 In Chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equations of motion for generic CG (hybrid) system. Here, we numerically investigate the effects of some of the choices and assumptions made when the FG system is coarse-grained in the canonical ensemble. To do this, we have extended the numerical implementation and the analysis made by Di Pasquale \textit{et al.}~\cite{DiPasquale2019}. 
 
-Di Pasquale \textit{et al.}~developed an open-source parallel code, written in Julia v0.6.2 \cite{thomas_hudson_2018_1226590}, to solve the full, constrained and coarse-grained dynamics in the microcanonical ensemble for a simple one-dimensional system. To extend the code to the canonical ensemble we introduced the integrators described in the Chapter \ref{Sec:NumMet}, after updating the code to the latest version of Julia, v1.2.0.
+Di Pasquale \textit{et al.}~developed an open-source parallel code, written in Julia v0.6.2 \cite{thomas_hudson_2018_1226590}, to solve the full, constrained and coarse-grained dynamics in the microcanonical (NVE) ensemble for a simple one-dimensional system. To extend the code to the canonical (NVT) ensemble we introduced the integrators described in the Chapter \ref{Sec:NumMet}, after updating the code to the latest version of Julia, v1.2.0.
 
 The studied system is a linear periodic chain made of $\nfg$ atoms of two different species, which differ in mass and bond stiffness. The atoms are arranged in a repeating pattern, and the coarse-grained model is obtained by combining the single repeated units into beads, see fig.~\ref{Fig:sketchRepPatt}. Therefore, we will not consider a hybrid system, and the number of beads, $\ncg$, will be equal to the number of times the pattern is repeated in the chain. The CG variables are given by the center of mass of each bead and by the corresponding momenta (see section \ref{Sec:Mapping}).
 \begin{figure}[htb]
@@ -650,7 +648,8 @@ This system is the same studied by Di Pasquale \textit{et al.}, who have studied
 
 The studied test cases are composed of atoms with two different masses, set to $m=1$ and $M=10$.
 The repeating pattern  consists of three atoms in two different configurations: two atoms of mass $m$ and a single atom of mass $M$ ($m-M-m$) or vice versa ($M-m-M$). The number of beads is set to $\ncg=10$, so that the number of atoms is also fixed, $\nfg=3\,\ncg=30$.
-The bond stiffness between the two different species of atoms is described by means of an inter-atomic potential, which is a simple 12-6 Lennard-Jones potential. In the following, all parameters, such as temperature and time step, are expressed in terms of dimensionless units, \textit{i.e.} the so-called Lennard-Jones reduced units.These dimensionless units are obtained by using $\epsilon$, $\sigma$, $\sigma(m/\epsilon)^{1/2}$ and $\epsilon/K_B$ as fundamental units of energy, length, time and temperature, respectively (\textit{e.g.}~see Tuckerman pp.125-127 \cite{tuckerman2010}).
+The bond stiffness between the two different species of atoms is described by means of an inter-atomic potential, which is a simple 12-6 Lennard-Jones potential. In the following, all parameters, such as temperature and time step, are expressed in terms of dimensionless units, \textit{i.e.} the so-called Lennard-Jones reduced units.These dimensionless units are obtained by using $\epsilon$, $\sigma$, $\sigma(m/\epsilon)^{1/2}$ and $\epsilon/K_B$ as fundamental units of energy, length, time and temperature, respectively (\textit{e.g.}~see Tuckerman pp.125-127 \cite{tuckerman2010}). 
+The canonical (NVT) ensemble was implemented by introducing a thermal bath with a friction parameter $\gamma=1$, and setting the temperature so that $\beta=(K_B\,T)^{-1}=1$.
 Following the work of Di Pasquale \textit{et al.}, we assume periodic boundary conditions and nearest neighbour interactions. 
 The inter-atomic potential for a generic system $X$ is given by 
 \begin{equation}
@@ -784,7 +783,7 @@ In fig.~\ref{Fig:FF},
 %
 we report the results for the fluctuating part of the force. Unlike the mean force, the two systems with the same stiffness (see table \ref{Tab:Cases}) follow a similar trend. In particular the two systems with the smallest stiffness, systems B and D, have noisier and larger fluctuations than the other two.  
 Furthermore, the figure shows how these simple systems have a dependence of fluctuations on the inter-bead distance $R$, and consequently shows how a simple Langevin dynamics, with dissipation and white noise fluctuations having a magnitude independent of the state of the system, is not an adequate approximation.
-\lr{questo è uno spunto interessante... puoi espandere secondo te? Mettere delle referenze?}
+%\lr{questo è uno spunto interessante... puoi espandere secondo te? Mettere delle referenze?}
 
 The plots of the mean force and the fluctuating force (fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively) show that the majority of the points lies within the $[2.8,3.2]$ region, whereas distances outside of this range are rarely accessed. We will clearly show later, when we will discuss the distribution of the inter-bead distances for the various dynamics (FGD, DCGD and MMZD, Sec.~\ref{Sec:Observables}) that this is indeed due to a lower probability of sampling.
 
