@@ -10,7 +10,7 @@ S = Simulator();
 
 # P = readdlm("/home/pmams3/Desktop/PFull.csv", Float64);
 #P_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/P_FGD.csv", Float64);
-P_DCGD = readdlm("Outcomes/PApprox_DCGD_test.csv", Float64);
+P_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/PApprox_DCGD_test.csv", Float64);
 # P_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/PApprox_MMZD.csv", Float64);
 
 #h1 = fit(Histogram, P_FGD[:, 1]);
@@ -31,7 +31,7 @@ x02 = Vector(h2.edges[1]);
 H2 = zeros(length(h2.weights), 2);
 H2[:, 1] = (x02[2:end] + x02[1:end-1]) / 2;
 H2[:, 2] = h2.weights ./ length(P_DCGD[:, 1]);
-open("../Data_Analysis/PDF/Outcomes/HistP_DCGD_test.csv", "w+") do x
+open("Data_Analysis/PDF/Outcomes/HistP_DCGD_test.csv", "w+") do x
     writedlm(x, H2);
 end
 
@@ -89,7 +89,7 @@ x05 = Vector(h5.edges[1]);
 H5 = zeros(length(h5.weights), 2);
 H5[:, 1] = (x05[2:end] +  x05[1:end-1]) / 2;
 H5[:, 2] = h5.weights ./ length(dQ5[:, 1]);
-open("../Data_Analysis/PDF/Outcomes/HistQ_DCGD_test.csv", "w+") do x
+open("Data_Analysis/PDF/Outcomes/HistQ_DCGD_test.csv", "w+") do x
     writedlm(x, H5);
 end
 
