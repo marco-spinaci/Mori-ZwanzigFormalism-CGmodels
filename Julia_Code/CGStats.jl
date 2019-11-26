@@ -1252,7 +1252,8 @@ function FullAutocorrPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanDat
   return StressAutocorr, MomAutocorr
 end
 
-function FullAutocorrLangDynPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanData::Array{Float64,1})
+# function FullAutocorrLangDynPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanData::Array{Float64,1})
+function FullAutocorrLangDynPar(C::Chain,S::Simulator,FmeanData::Array{Float64,2})
   if S.dt > 0.1*sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt));
     warn("Timestep = ",S.dt,
       " not ≪ shortest timescale = ",sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt)));
@@ -1262,7 +1263,8 @@ function FullAutocorrLangDynPar(C::Chain,S::Simulator,dQData::Array{Float64,1},F
   (P,Q,F,H,PCG,QCG) = InitConds(C);
 
   # Generate mean force function
-  MeanForce = X -> ApproxMeanStresses(X,dQData,FmeanData,C)[1];
+  # MeanForce = X -> ApproxMeanStresses(X,dQData,FmeanData,C)[1];
+  MeanForce = X -> ApproxMeanStresses_NEW(X,FmeanData,C)[1];
 
   println("Equilibration ");
   # Run in to equilibrate
