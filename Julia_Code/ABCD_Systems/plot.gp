@@ -95,21 +95,21 @@ minD = GPVAL_DATA_Y_MIN
 # title "System A,B,C,D\n\n\ Constrained beds 2, Beta=1, Gamma=1, dt=10^{-3}, FullSteps=10^6, OrthoSamples=10^6, MacroSamples=2000" font ",14" \
 # margins 0.12, 1, 0.09, 0.88 spacing 0.1
 
-# set output "| epstopdf -f -o=../TEX_Notes/Figure/sABCD_2000_MF.pdf"
-#  set key right bottom
-#  set ylabel "{{/Roman Mean Force}}" #font ",30"
-#  p "./ABCD_Systems/Outcomes/sA_2000.csv" u 1:4 w l lw 5 lc 0 t "A" ,\
-#    "./ABCD_Systems/Outcomes/sB_2000.csv" u 1:4 w l lw 5 lc 6 dashtype 3 t "B" ,\
-#    "./ABCD_Systems/Outcomes/sC_2000.csv" u 1:4 w l lw 5 lc 7 dashtype 4 t "C" ,\
-#    "./ABCD_Systems/Outcomes/sD_2000.csv" u 1:4 w l lw 5 lc 10 dashtype 6 t "D"
-
-set output "| epstopdf -f -o=../TEX_Notes/Figure/sABCD_2000_FF.pdf"
+set output "| epstopdf -f -o=../TEX_Notes/Figure/sABCD_2000_MF.pdf"
  set key right top
- set ylabel "{{/Roman Fluctuating Force}}" #font ",30"
- p "./ABCD_Systems/Outcomes/sA_2000.csv" u 1:5 w l lw 5 lc 0 t "A" ,\
-   "./ABCD_Systems/Outcomes/sB_2000.csv" u 1:5 w l lw 5 lc 6 dashtype 3 t "B" ,\
-   "./ABCD_Systems/Outcomes/sC_2000.csv" u 1:5 w l lw 5 lc 7 dashtype 4 t "C" ,\
-   "./ABCD_Systems/Outcomes/sD_2000.csv" u 1:5 w l lw 5 lc 10 dashtype 6 t "D"
+ set ylabel "{{/Roman Mean Force}}" #font ",30"
+ p "./ABCD_Systems/Outcomes/sA_2000.csv" u 1:(-1*$4) w l lw 5 lc 0 t "A" ,\
+   "./ABCD_Systems/Outcomes/sB_2000.csv" u 1:(-1*$4) w l lw 5 lc 6 dashtype 3 t "B" ,\
+   "./ABCD_Systems/Outcomes/sC_2000.csv" u 1:(-1*$4) w l lw 5 lc 7 dashtype 4 t "C" ,\
+   "./ABCD_Systems/Outcomes/sD_2000.csv" u 1:(-1*$4) w l lw 5 lc 10 dashtype 6 t "D"
+
+# set output "| epstopdf -f -o=../TEX_Notes/Figure/sABCD_2000_FF.pdf"
+#  set key right top
+#  set ylabel "{{/Roman Fluctuating Force}}" #font ",30"
+#  p "./ABCD_Systems/Outcomes/sA_2000.csv" u 1:5 w l lw 5 lc 0 t "A" ,\
+#    "./ABCD_Systems/Outcomes/sB_2000.csv" u 1:5 w l lw 5 lc 6 dashtype 3 t "B" ,\
+#    "./ABCD_Systems/Outcomes/sC_2000.csv" u 1:5 w l lw 5 lc 7 dashtype 4 t "C" ,\
+#    "./ABCD_Systems/Outcomes/sD_2000.csv" u 1:5 w l lw 5 lc 10 dashtype 6 t "D"
 
 # set output "| epstopdf -f -o=../TEX_Notes/Figure/sABCD_2000_EP.pdf"
 #  set key right top

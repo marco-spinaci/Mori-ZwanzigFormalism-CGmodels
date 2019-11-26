@@ -52,9 +52,8 @@
 \begin{center}
 \section*{Abstract}
 \end{center}
+
 My Master thesis project deals with the Mori-Zwanzig (MZ) formalism as a tool to systematically derive hybrid coarse-grained (CG) models. The MZ formalism allows to study the evolution of a dynamical system through the projection on a subset of its degrees of freedom. This operation can be done through various projection operator techniques \cite{Grabert:Projection}. 
-%
-%In particular, we consider two resolution levels for a given molecular system. The first one, at high resolution, is the fine-grained (FG), while the second one, at low resolution, is the CG system.
 %
 The project builds on the work of N. Di Pasquale \emph{et al.}~\cite{DiPasquale2019}, in which the authors derived a coarse-grained model for hybrid systems through the MZ projection, with a theoretical discussion supported by numerical simulations limited to the microcanonical (NVE) ensemble.
 %
@@ -80,13 +79,13 @@ We performed the simulation for four different systems with different parameter 
 \addcontentsline{toc}{chapter}{Introduction}
 \markboth{\MakeUppercase{Introduction}}{\MakeUppercase{Introduction}}
 
-Molecular Dynamics (MD) is a computational approach that allows to solve the equations of motion and to compute the macroscopic observables from the generated trajectories. Moreover, they allow the detailed visualization of the movements of the individual atoms in the system under examination, thus allowing to have a ``window'' into the microscopic world. Of course, for a real system, these animation of MD trajectories should never be taken too seriously, they can be useful as a guide toward understanding the mechanisms underlying a given chemical process \cite{tuckerman2010}.
+Molecular Dynamics (MD) is a computational approach that allows to solve the equations of motion and to compute the macroscopic observables from the generated trajectories, while at the same time allowing the detailed visualization of the movements of the individual atoms in the system under examination, providing a ``window'' into the microscopic world \cite{tuckerman2010}. The questions that arises is whether we should take these MD trajectory seriously, that is, consider them realistic, or interpret them as useful tools to guide us toward an understanding of the mechanism underlying a given chemical process.
 %
-However Klaus Schulten, whose research group developed molecular dynamics software packages such as NAMD and visualization software such as VMD, was not of this opinion. In fact, in his 2015 National Lecture \cite{Pollack}, he introduced the term ``computational microscope'' to describe the role of computational simulations in the study of biological systems. He believed that computational biophysics has progressed to the point that it provides a realistic view of the biological cellular components at the molecular level, often at a resolution not achievable through laboratory instruments, reaching atomic or even electronic dimensions.  
+Klaus Schulten, whose research group developed highly popular molecular dynamics software packages such as NAMD and visualization software such as VMD, had a strong opinion on the matter. In fact, in his 2015 National Lecture \cite{Pollack}, he introduced the term ``computational microscope'' to describe the role of computational simulations in the study of biological systems. He believed that computational biophysics has progressed to the point that it provides a realistic view of the biological cellular components at the molecular level, often at a resolution not achievable through laboratory instruments, reaching atomic or even electronic dimensions.  
 ``The point I wanted to make,'' said Klaus Schulten about the National Lecture, ``is that basically molecular modelling came of age, and it's now a full member of the scientific community in the sense that we can play the most glorious and important part of science, namely to make discoveries.'' 
 
-But despite recent advances in simulation methods, atomically detailed models and computational resources, MD simulations are heavily limited in terms of system size and simulation time. For example, most biomolecular events of interest, such as protein folding or major conformational changes essential for protein function, occur on longer time scales (from microseconds to milliseconds) than MD time scales \cite{Aminpour2019,Freddolino2008}.
-In fact, remarkable recent simulations of all MD atoms are the folding studies of small proteins of Schulten \textit{et al.}~\cite{Freddolino2008} and Shaw \textit{et al.}~\cite{Shaw2010}. The Schulten group achieved a continuous trajectory of $10\, \mu s$ while the Shaw group performed a $1\, ms$ long simulation. Despite these successes, atomistic simulations are still several magnitudes far from being able to effectively cover the time and length scales of most cellular processes.
+Despite recent advances in simulation methods, atomically detailed models and computational resources, MD simulations are heavily limited in terms of system size and simulation time. For example, most biomolecular events of interest, such as protein folding or major conformational changes essential for protein function, occur on time scales longer (from microseconds to milliseconds) than MD time scales \cite{Aminpour2019,Freddolino2008}.
+In fact, remarkable recent simulations of all MD atoms are the folding studies of small proteins of Schulten \textit{et al.}~\cite{Freddolino2008} and Shaw \textit{et al.}~\cite{Shaw2010}. The Schulten group achieved a continuous trajectory of $10\, \mu s$ while the Shaw group performed a $1\, ms$ long simulation. Despite these successes, atomistic simulations are still several order of away magnitude far from being able to effectively cover the time and length scales of most cellular processes.
 %
 For an idea of time scales and length scales, as well as the time-line of progress in the system size accessible to all-atom MD simulations up to 2014, see fig.~\ref{Fig:sketchResolution} and fig.~\ref{Fig:evolutionSize}, respectively.
 %
@@ -94,30 +93,30 @@ For an idea of time scales and length scales, as well as the time-line of progre
  \centering
  \includegraphics[width=0.8\textwidth]{RangesMD}
  \caption{Sketch of the application ranges for molecular modelling at different resolutions: quantum, all-atoms, coarse-grained and mesoscale. The plot 
-shows approximate ranges of time scales and length scales  for the different resolutions of a generic system, as well as the approximate time and length scales of some biomolecular events of interest. Figure taken from the Ref.~\cite{Kmiecik2016}. }
+shows approximate ranges of time scales and length scales  for the different resolutions of a generic system, as well as the approximate time and length scales of some biomolecular events of interest. Figure taken from Ref.~\cite{Kmiecik2016}. }
  \label{Fig:sketchResolution}
 \end{figure}
 %
 \begin{figure}[htb!]
  \centering
  \includegraphics[width=0.8\textwidth]{EvolutionSize}
- \caption{Sketch of the time-line of progress in the system size accessible to all-atom MD simulations up to 2014. Figure taken from the Ref.~\cite{Pollack}.}
+ \caption{Sketch of the time-line of progress in the system size accessible to all-atom MD simulations up to 2014. Figure taken from Ref.~\cite{Pollack}.}
  \label{Fig:evolutionSize}
 \end{figure}
 
-These bottlenecks are given by the fact that in order to compute the equations of motion we have to provide in input the complete set interatomic forces. The accuracy of these forces is of vital importance to have a reliable model of a complex system and unfortunately, as a general rule, the more accurate the forces are, the longer is the time needed to calculate them and perform the simulation.
+These bottlenecks are given by the fact that in order to compute the equations of motion we have to provide in input the complete set of interatomic forces. The accuracy of these forces is of vital importance in order to have a reliable model of a complex system and unfortunately, as a general rule, the more accurate the forces are, the longer is the time needed to calculate them and perform the simulation.
 %
 Another problem often encountered in an \textit{in silico} investigation of long chain-like molecules is that, as the size of the system increases, the relaxation time required to approach equilibrium becomes comparable with the currently accessible simulation time scales \cite{Maginn2009}. 
 
 However, MD simulations are now widely used and have become a standard tool in many areas of research, for example in soft matter \cite{Corezzi2008,Klein2008,Peter2009} as well as in the study of biological systems \cite{KLEPEIS2009}, and are often used in combination with a wide variety of experimental structural techniques \cite{HOLLINGSWORTH2018,Spagnolli2019}. 
 
-Various methods have been introduced to overcome these bottlenecks, including the \emph{coarse-grained method} (CG) and the so-called \emph{enhanced sampling methods}. The former simplifies and accelerates MD simulations \cite{Brini2013}, the idea is to group atoms of the atomistic model under examination and treat these groups as individual sites of interaction, this idea was introduced by Levitt and Warshel in the 1970s \cite{Levitt1975,Levitt1976}. 
+Various methods have been introduced to overcome these bottlenecks, including the \emph{coarse-grained method} (CG) and the so-called \emph{enhanced sampling methods}. The former simplifies and accelerates MD simulations \cite{Brini2013}, by grouping atoms of the atomistic model under examination and treating these groups as individual sites of interaction. This idea was introduced by Levitt and Warshel in the 1970s \cite{Levitt1975,Levitt1976}. 
 While the latter only address the problem of the time scale, these methods include Umbrella sampling \cite{Kumar1992,TORRIE1977}, Steered molecular dynamics \cite{ISRALEWITZ2001,SMDbook1999} and Metadynamics \cite{Laio2002}. 
 In this work we will not deal with the enhanced sampling methods but we will present a full derivation of a generic CG model through the Mori-Zwanzig (MZ) formalism \cite{DiPasquale2019,Hijon2010}.
 
-As we mentioned above, in the CG models the fundamental particles are interaction sites (sometimes called beads) that represent group of atoms, are typically on the order of 2-10 ``heavy'' atoms (\textit{e.g.}, C, N, O, P) and their hydrogen atoms \cite{Noid2013Book}.
-The procedure for transforming an atomically detailed structure into a coarse-grained representation of the same structure is called \emph{CG mapping}.  Of course, we can customize the mapping to accurately capture the key characteristics of a specific system or phenomenon of interest, while eliminating atomic details that are considered ``unimportant''. 
-The construction of the mapping is the first step in defining a CG model, and is intimately related to its accuracy, efficiency and transferability\footnote{``Transferability'' means a change in temperature, density, concentration, system composition, phase, \textit{etc.}~of the system under consideration, as well as a change in the chemical environment, \textit{e.g.}, a change in the length or sequence of an amino acid chain \cite{Potestio2014}.}. In particular, the accuracy and transferability of a CG model do not necessarily increase as the resolution of the system mapping increases \cite{Mullimax2009,Potestio2014}. In fig.~\ref{Fig:CGpictureMM} we show a sketch of the CG mapping of a peptdide, \textit{i.e.}, a short chains of amino acids linked by peptide bonds.
+As we mentioned above, in the CG models the fundamental particles are interaction sites (sometimes called beads) that represent group of atoms, and comprise typically on the order of 2-10 ``heavy'' atoms (\textit{e.g.}, C, N, O, P) and their associated hydrogen atoms \cite{Noid2013Book}.
+The procedure for transforming an atomically detailed structure into a coarse-grained representation of the same structure is called \emph{CG mapping}.  Of course, the mapping can be customized to accurately capture the key characteristics of a specific system or phenomenon of interest, while eliminating atomic details that are considered ``unimportant''. 
+The construction of the mapping is the first step in defining a CG model, and it is intimately related to its accuracy, efficiency and transferability\footnote{``Transferability'' means the property of a CG mapping to hold under a change of conditions, such as temperature, density, concentration, system composition, phase, \textit{etc.}~of the system under consideration, as well as a change in the chemical environment, \textit{e.g.}, a change in the length or sequence of an amino acid chain \cite{Potestio2014}.}. In particular, the accuracy and transferability of a CG model do not necessarily increase as the resolution of the system mapping increases \cite{Mullimax2009,Potestio2014}. In fig.~\ref{Fig:CGpictureMM} we show a sketch of the CG mapping of a peptdide, \textit{i.e.}, a short chains of amino acids linked by peptide bonds.
 \begin{figure}[htb]
     \centering
     \includegraphics[width=0.9\textwidth]{CGmm.png}
@@ -125,18 +124,18 @@ The construction of the mapping is the first step in defining a CG model, and is
     \label{Fig:CGpictureMM}
 \end{figure}
 
-Once the representation of the CG model has been determined, the new challenge is to determine an appropriate interaction between the CG sites (i.e. between beads). These interactions are described by \emph{effective potentials} that should also take into account the effects of atomic details that have been eliminated from the CG model. For examples in the implicit solvent CG models, all solvent molecules are formally integrated out and their effects are incorporated into the interactions between the remaining sites \cite{Silbermann2006}.
+Once the representation of the CG model has been determined, the new challenge is to determine an appropriate interaction between the CG sites (\textit{i.e.}, between the beads). These interactions are described by \emph{effective potentials} that should take into account the effects of the atomic details that have been eliminated from the CG model. For example, in the implicit solvent CG models, all solvent molecules are formally integrated out and their effects are incorporated into the interactions between the remaining sites \cite{Silbermann2006}.
 Therefore, the interactions in the CG model should reflect the ``correct physics'' so that the model, in addition to being highly efficient, ideally provides both fundamental insights and quantitatively accurate predictions. 
 %
 Generally, two types of approach are used to determine the interaction between beads, the \emph{bottom-up} approach (structure-based coarse-graining) and the \emph{top-down} approach (thermodynamic-based coarse-graining).
 
 \noindent
-A \emph{bottom-up} CG model is a model of a particular system that is constructed on the basis of a more detailed model of the same system, and the CG force fields, consequently the effective potentials, are parameterized on the basis of comparisons with atomistic reference simulations. Various methods can be used to do this, the most commonly used are inverse Monte Carlo (IMC) \cite{Lyubartsev1995}, iterative Boltzmann inversion (IBI) \cite{Reith2003}, force matching (FM) \cite{Izvekov2004,Izvekov2005,Noid2008} and minimization of relative entropy \cite{Chaimovich2011}.
+A \emph{bottom-up} CG model is a model of a particular system that is constructed on the basis of a more detailed model of the same system, and the CG force fields, and consequently the effective potentials, are parameterized on the basis of comparisons with atomistic reference simulations. Various methods can be used to do this, the most commonly used being the inverse Monte Carlo (IMC) \cite{Lyubartsev1995}, the iterative Boltzmann inversion (IBI) \cite{Reith2003}, force matching (FM) \cite{Izvekov2004,Izvekov2005,Noid2008} and minimization of relative entropy \cite{Chaimovich2011}.
 %
-On the other hand, \emph{top-down} models are not based on or refer directly to more detailed models of the particular system studied. The CG force fields may be parameterized on the basis of experimental data, in particular thermodynamic data such as solvation free energies and partitioning data, liquid densities, surface tension, \textit{etc.}~\cite{CLEMENTI2008,Honeycutt1990,Nielsen2003}.
+On the other hand, \emph{top-down} models are not based on or refer directly to more detailed models of the particular system studied, but may be parameterized on the basis of experimental data, in particular thermodynamic data such as solvation free energies and partitioning data, liquid densities, surface tension, \textit{etc.}~\cite{CLEMENTI2008,Honeycutt1990,Nielsen2003}.
 
 \noindent
-There is a second common distinction for CG models of biomolecular systems, which distinguishes CG models between \emph{physics-based} and \emph{knowledge-based} approaches. The former use physical theories to deduce interactions in CG models, are nothing more than the approaches above described, \textit{i.e.} the \emph{bottom-up} approach and the \emph{top-down} approach. While the latter are constructed on the basis of information extracted from experimentally determined three-dimensional structures.
+There is a second common distinction for CG models of biomolecular systems, which distinguishes CG models between \emph{physics-based} and \emph{knowledge-based} approaches. The former use physical theories to deduce interactions in CG models, and comprise the approaches described above, \textit{i.e.} the \emph{bottom-up} approach and the \emph{top-down} approach. By contrast, the latter are constructed on the basis of information extracted from experimentally determined three-dimensional structures.
 In fig.~\ref{Fig:CGStrategies} the distinctions between the various approaches are shown in a schematic way. 
 \begin{figure}[htb]
     \centering
@@ -148,17 +147,20 @@ In fig.~\ref{Fig:CGStrategies} the distinctions between the various approaches a
 Typically, CG simulations can be three or four orders of magnitude more efficient than all-atom simulations for several reasons:
 \begin{enumerate}[(i)]
 \item CG models require fewer interacting sites to model the same system, so fewer interactions must be calculated at each time step;
-\item interactions in CG models are typically short-range compared to interactions in atomistic models, for example, long-range Coulombic interactions may be examined more effectively on the length scales relevant for CG interactions and can be modelled into short-range effective potentials \cite{Noid2013Book,Silbermann2006};
-\item effective potential can implicitly include entropic effects and greatly reduce the need to explicitly sample a large number of degenerate atomically detailed configurations \cite{Levitt1975};
-\item interactions between CG sites may be ``softer'', (\textit{i.e.}, of lower frequency) which allows a larger integration time step for propagating dynamics \cite{Marrink2004}. In other words, we are saying that the fluctuations of the force that experiences the CG sites are generally smaller, consequently we have a smoother free energy profile \cite{Rudzinski2019}, and as a result we have a faster diffusive process allowing the system to reach greater time scales with fewer computations. This last aspect implies that one typically has to determine a rescaling factor between the simulation timescale (usually given in Lennard Jones units) and the corresponding timescale in all-atom system (or the corresponding real world time \cite{Fritz2011,Potestio2014}.
+\item interactions in CG models are typically short-range compared to interactions in atomistic models. For example, long-range Coulombic interactions may be examined more effectively on the length scales relevant for CG interactions and can be modelled as short-range effective potentials \cite{Noid2013Book,Silbermann2006};
+\item effective potentials can implicitly include entropic effects and greatly reduce the need to explicitly sample a large number of degenerate atomically detailed configurations \cite{Levitt1975};
+\item interactions between CG sites may be ``softer'', (\textit{i.e.}, of lower frequency) which allows a larger integration time step for propagating dynamics \cite{Marrink2004}. In other words, we are saying that the fluctuations of the force that CG sites experience are generally smaller, leading to a smoother free energy profile \cite{Rudzinski2019}. As a result, we have a faster diffusive process allowing the system to reach greater time scales with fewer computations. This last aspect implies that one typically has to determine a rescaling factor between the simulation timescale (usually given in Lennard Jones units) and the corresponding timescale in all-atom system (or the corresponding real world time \cite{Fritz2011,Potestio2014}.
 \end{enumerate}
-If we are interested in the dynamic properties of the system under consideration, what has been said in the last point is one of the main limits of most CG models. This difference in time scales between two resolution levels of the same system does not allow to preserve the dynamic properties. This artificial acceleration of the dynamics could be corrected by adding appropriate friction terms in order to obtain a better estimate of the dynamic observables \cite{Izvekov2006}. A second limitation of coarse-grained models is the loss of information about the model caused by CG mapping. In fact, some phenomena such as hydrogen bonds are only observable at an atomistic level. These phenomena need special treatment to be considered in a CG model \cite{Karimi-Varzaneh2008}. These limitations have led to the development of \emph{hybrid} atomistic/CG models that ideally should combine both a lower computational cost than all-atom simulations and greater accuracy than CG simulations \cite{DiPasquale2012,Rzepiela2011}.
-However, even these models when considering dynamics are not without problems, it has been shown that considering complex systems such as polymers new effects arise \cite{DiPasquale2017}. Therefore a rigorous treatment of these models becomes necessary.
+
+If we are interested in the dynamic properties of the system under consideration, what has been said in the last point is one of the main limits of most CG models. This difference in time scales between two resolution levels of the same system does not allow to preserve the dynamic properties. This artificial acceleration of the dynamics could be corrected by adding appropriate friction terms in order to obtain a better estimate of the dynamic observables \cite{Izvekov2006}. 
+
+A second limitation of coarse-grained models is the loss of information about the model caused by CG mapping. In fact, some phenomena such as hydrogen bonds are only observable at the atomistic level. These phenomena need special treatment to be considered in a CG model \cite{Karimi-Varzaneh2008}. These limitations have led to the development of \emph{hybrid} atomistic/CG models that ideally should combine both a lower computational cost than all-atom simulations and greater accuracy than CG simulations \cite{DiPasquale2012,Rzepiela2011}.
+However, even these models, when considering the dynamics, are not without problems. For instance, it has been shown that considering complex systems such as polymers new effects arise \cite{DiPasquale2017}. Therefore a rigorous treatment of these models becomes necessary.
 
 As mentioned above, the CG approach studied here is the Mori-Zwanzig projection formalism \cite{Mori1965,Zwanzig1973}. One of the first applications of this formalism to obtain CG models was made by Givon et al. \cite{Givon2004}. This formalism, given an arbitrary and generic CG mapping, allows a rigorous derivation of the equations for the exact evolution of CG variables, including terms that may be identified as a term of friction with a memory kernel and a fluctuating force, consistent with the fluctuation-dissipation theorem. Moreover, under the assumptions made to derive the equations, it provides an explicit and rigorous means by which to compute the CG interactions and a framework in which to improve and quantify the accuracy \cite{DiPasquale2019}.
 Despite the explicit form of the terms appearing in the CG equations of motion derived through MZ formalism, these terms are not easy to compute. In recent years, there has been a significant effort to render simulations more practicable using this theoretical tool \cite{DiPasquale2019,Espanol2009,Hijon2010,Izvekov2017,Jung2017,Li2015,Wang2019,Yuanran2018}.
 
-The thesis is organized as follows.
+The thesis is organized as follows: $\dots$ to be continued $\dots$
 
 
 \part{Theoretical Background}
@@ -609,7 +611,14 @@ The authors stress that their approach focuses on the truncation error of the in
 
 
 \section{Constrained Langevin Dynamics Integrator: the geodesic BAOAB method}
+We now present an integrator for constrained stochastic dynamics such as Langevin dynamics for holonomic constraints, developed by by B. Leimkuhler and C. Matthews \cite{Leimkuhler2016}. 
 
+Their approach, to Langevin dynamics in the presence of this constraints, is based on the decomposition of the system into components representing geodesic flow, constrained impulse and constrained diffusion. In fact, their idea is to divide the problem of the constrained MD into a collection of separate constrained problems and to solve or approximate each constrained flow. 
+
+They split Hamiltonian dynamics into potential and kinetic terms, and introduce Lagrange multipliers to maintain constraints. The solution of part defined by potential energy can be obtained without problems, while the solution of the kinetic part is a geodesic curve (an unforced motion on the constraint surface) and requires the solution of a non-linear system of ordinary differential equations (ODE). In practice, the geodesic is approximated using a series of SHAKE/RATTLE steps \cite{ANDERSEN1983,RYCKAERT1977} that preserve the constraint manifold and respect the cotangency conditions, \textit{i.e.}, the constraints on the momenta. 
+
+In this way they obtain a ``geodesic integrator'' by solving the two parts separately and then composing the flows.
+Therefore, what they get is nothing more than a geodesic version of their BAOAB integrator, presented in the previous section.
 
 
 \part{Numerical Experiments}
@@ -621,7 +630,7 @@ In Chapter \ref{Sec:CanMapp&CG}, we derived the general structure of the equatio
 Di Pasquale \textit{et al.}~developed an open-source parallel code, written in Julia v0.6.2 \cite{thomas_hudson_2018_1226590}, to solve the full, constrained and coarse-grained dynamics in the microcanonical ensemble for a simple one-dimensional system. To extend the code to the canonical ensemble we introduced the integrators described in the Chapter \ref{Sec:NumMet}, after updating the code to the latest version of Julia, v1.2.0.
 
 The studied system is a linear periodic chain made of $\nfg$ atoms of two different species, which differ in mass and bond stiffness. The atoms are arranged in a repeating pattern, and the coarse-grained model is obtained by combining the single repeated units into beads, see fig.~\ref{Fig:sketchRepPatt}. Therefore, we will not consider a hybrid system, and the number of beads, $\ncg$, will be equal to the number of times the pattern is repeated in the chain. The CG variables are given by the center of mass of each bead and by the corresponding momenta (see section \ref{Sec:Mapping}).
-\begin{figure}[!htb]
+\begin{figure}[htb]
  \centering
  \includegraphics[width=0.95\textwidth]{chain}
  \caption{Sketch of the one-dimensional chain composed by $\nfg$ atoms of two different species. The two species are indicated as red and blue particles, differing in mass and bond stiffness. Small red spheres represent atoms of mass $m$ and big blue spheres represent atoms of mass $M$. Beads are indicated as yellow spheres that surround three atoms each.}
@@ -708,8 +717,8 @@ Below, we will show the results and analysis of the simulations of different dyn
 \end{labeling}
 As we said, in order to numerically integrate the FGD and OD we have used respectively the BAOAB and geodesic-BAOAB integrators (see Chapter \ref{Sec:NumMet}). By contrast, to numerically integrate the MMZD we have used a version of the BAOAB integrator adapted to the case of non-constant diffusion, developed by Di Pasquale \textit{et al.}~\cite{DiPasquale2019}. 
 
-
 \section{Sampling Algorithm}
+
 The developed code allows a relatively simple recalibration of the test system through Julia ``types'', which are initialized by the user to fix all the parameters of the simulation, including the repeating pattern of the beads, the number of beads, the mass and stiffness of the inter-atomic potentials.
 Here, we give an idea of the sampling implemented in the code to compute an approximation of the effective potential, given in eq.~(\ref{Eq:EntrInt}), and the friction matrix, as given in eq.~(\ref{Eq:FRICmatrixRF}). The idea is to sample using the OD.
 
@@ -749,12 +758,12 @@ In fig.~\ref{Fig:meanForce},
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_MF}
  \caption{Plot of the mean force for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). 
- \lr{perché la curva di D non tende a 0 per $R \to \infty$?}
+ %\lr{perché la curva di D non tende a 0 per $R \to \infty$?}
 }
  \label{Fig:meanForce}
 \end{figure}
 %
-we show the results of the computation of the mean force for the four different systems described in the table \ref{Tab:Cases}. In each case, the trend is rather similar and we observe that the equilibrium bond length lies close to $R=3.1$. As expected, these results are consistent with the ones obtained by Di Pasquale \textit{et al.}~in the microcanonical ensemble.
+we show the results of the computation of the mean force for the four different systems described in the table \ref{Tab:Cases}. In each case, the trend is rather similar and we observe that the equilibrium bond length lies close to $R=3.0$. As expected, these results are consistent with the ones obtained by Di Pasquale \textit{et al.}~in the microcanonical ensemble.
 
 In fig.~\ref{Fig:FF},
 %
@@ -762,7 +771,7 @@ In fig.~\ref{Fig:FF},
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_FF}
  \caption{Plot of the fluctuating part of the force for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). 
-\lr{Perché le fluttuazioni di B e D non tendono a 0 per $R \to \infty$?}
+%\lr{Perché le fluttuazioni di B e D non tendono a 0 per $R \to \infty$?}
 }
  \label{Fig:FF}
 \end{figure}
@@ -771,15 +780,18 @@ we report the results for the fluctuating part of the force. Unlike the mean for
 Furthermore, the figure shows how these simple systems have a dependence of fluctuations on the inter-bead distance $R$, and consequently shows how a simple Langevin dynamics, with dissipation and white noise fluctuations having a magnitude independent of the state of the system, is not an adequate approximation.
 \lr{questo è uno spunto interessante... puoi espandere secondo te? Mettere delle referenze?}
 
-Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integration of the mean force (fig.~\ref{Fig:meanForce}) with respect to the inter-bead distance $R$. We observe that the effective potential has similar trends for the four systems, despite the big difference in the fluctuations of the force shown in fig.~\ref{Fig:FF}. Our results thus show that, even when the effective potential is easily and stably computed, there may be dissipative effects that are not visible in a deterministic effective potential.
+From the sampling of the mean force and the fluctuating force (fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively) we can see how outside the region $[2.8,3.2]$ there is a reduction of the sample. We will see later in Sec.~\ref{Sec:Observables}, how this is due to a lower probability of sampling, we will determine the distribution of the inter-bead distances for the various dynamics: FGD, DCGD and MMZD.
+
+Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integration of the mean force (fig.~\ref{Fig:meanForce}) with respect to the inter-bead distance $R$.
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_EP}
  \caption{Plot of the effective potential for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). 
- \lr{anche qui bisogna sistemare i dati a grandi $R$}
+ %\lr{anche qui bisogna sistemare i dati a grandi $R$}
 }
  \label{Fig:EP}
 \end{figure}
+We observe that the effective potential has similar trends for the four systems, despite the big difference in the fluctuations of the force shown in fig.~\ref{Fig:FF}. Our results thus show that, even when the effective potential is easily and stably computed, there may be dissipative effects that are not visible in a deterministic effective potential. We can also see that for values higher than $R=3.2$ the effective potential does not tend well to a plateau. This, as mentioned above, is due to reduced sampling in that region.
 
 
 \section{Memory kernel approximation and numerical implementation}
@@ -874,16 +886,18 @@ The system of equations obtained allows to describe and implement the MMZD, as i
 The mean force, the fluctuating force and therefore the memory terms can be determined through a Kriging-type interpolation algorithm \cite{Jones2001} from the values shown in the Section \ref{Sec:EP}. This interpolation algorithm, which we have implemented in the code, yields a polynomial approximation of the given function with Gaussian weights. It allows to determine the new values of the function, filtering the noise resulting from the sampling error (see the supplementary material of the work of Di Pasquale \textit{et al.}~\cite{DiPasquale2019}).
 
 
-\subsection{Validity of the memory kernel approximation and timescale separation}
-As we said in Chap.~\ref{Sec:MarkovApprox}, the validity of Markovian approximation has been repeatedly questioned, especially for a system with the one under consideration where the sounds plays a very important role, since it determines the time scale of the CG variables, \textit{i.e.} the time scale of the velocity ACF \cite{CommentCubero}. 
 
-In fact in 2005, Cubero and Yaliraki showed that the Markovian approximation is unreliable in systems in which sound plays an important role. They first study the general case and the conditions for the failure of the Markovian approximation due to sound propagation. Then, as an example to show the failure of Markovian application, they studied the coarse-grained dynamics of cubic harmonic lattices, where the elastic wave propagation is the only dissipation mechanism \cite{Cubero2005}.
-A year later, Hij\'on \textit{et al.} verified and confirmed the results of Cubero and Yaliraki for a system with an harmonic potential, and also showed the validity of the Markovian approximation for a system with non-linear potential such as L-J potential \cite{Hijon2006}. The non-linear system studied was a one-dimensional chain of $N$ atoms of equal mass, enclose between two fixed walls, that interact interacts with a L-J potentials. This system is very similar to that studied in this work.
+\subsection{Validity of the memory kernel approximation and timescale separation}
+
+As we said in Chap.~\ref{Sec:MarkovApprox}, the validity of the Markovian approximation has been repeatedly questioned, especially for a system with like the one under consideration where sound propagation plays a very important role, since it determines the time scale of the CG variables, \textit{i.e.} the time scale of the velocity ACF \cite{CommentCubero}. 
+
+In fact in 2005, Cubero and Yaliraki showed that the Markovian approximation is unreliable in systems in which sound plays is important. They first studied the general case and the conditions for the failure of the Markovian approximation due to sound propagation. Then, as an example to show the failure of Markovian application, they studied the coarse-grained dynamics of cubic harmonic lattices, where the elastic wave propagation is the only dissipation mechanism \cite{Cubero2005}.
+A year later, Hij\'on \textit{et al.} verified and confirmed the results of Cubero and Yaliraki for a system with an harmonic potential, and also showed the validity of the Markovian approximation for a system interacting with non-linear potentials such as L-J potential \cite{Hijon2006}. The non-linear system studied was a one-dimensional chain of $N$ atoms of equal mass, enclosed between two fixed walls, that interact with a L-J potentials. This system is very similar to the one studied in this work.
 
 \noindent
-A few years later, Cubero contested the analysis of the simulation data, and showed that it cannot be claimed that the coarse-grained dynamics of the non-linear system studied by Hij\'on \textit{et al.} is Markovian \cite{CommentCubero}. Hij\'on \textit{et al.} reply, demonstrating, that despite in principle, the arguments of Cubero are correct for a CG system of a one-dimensional atomic system, the behaviour of the CG variables is rather well described under the Markovian assumption. They also state that the only way to assess whether Markovian approximation is a good one is to examine its implications, since the memory kernel is not accessible from simulations if the description is not Markovian \cite{ResponseCommentHijon}.
+A few years later, Cubero contested the analysis of the simulation data, and showed that it cannot be claimed that the coarse-grained dynamics of the non-linear system studied by Hij\'on \textit{et al.} is Markovian \cite{CommentCubero}. Hij\'on \textit{et al.} replied, demonstrating that, despite, in principle, the arguments of Cubero are correct for a CG system of a one-dimensional atomic system, the behaviour of the CG variables is rather well described under the Markovian assumption. They also state that the only way to assess whether the Markovian approximation is a good one is to examine its implications, since the memory kernel is not accessible from simulations if the description is not Markovian \cite{ResponseCommentHijon}.
 
-Therefore, to verify the validity of the Markovian approximation, we must verify that the time scale of decay of the memory kernel eq.~(\ref{Eq:FRICmatrixRF}) is much shorter than the typical time scale of the CG variables. This two quantity can be compute by using the fluctuating force auto-correlation function (FFACF) and the velocity auto-correlation function (VACF) computed via a FGD simulation.
+Therefore, to verify the validity of the Markovian approximation, we must verify that the time scale of decay of the memory kernel eq.~(\ref{Eq:FRICmatrixRF}) is much shorter than the typical time scale of the CG variables. This two quantities can be computed by using the fluctuating force auto-correlation function (FFACF) and the velocity auto-correlation function (VACF) computed via a FGD simulation.
 
 \noindent
 These ACF are shown in fig.~\ref{Fig:ACFcomparison} for system C (see table \ref{Tab:Cases}). We can see how there is a separation of the time scales, but it is not as marked and clear  as in the work of Hij\'on \textit{et al.}~\cite{Hijon2006}.
@@ -893,9 +907,9 @@ These ACF are shown in fig.~\ref{Fig:ACFcomparison} for system C (see table \ref
  \caption{Comparison of the Time Autocorrelation Functions (ACF) between the force (green solid line), the fluctuating force (blue dot-dashed line), \textit{i.e.} the ``orthogonal'' component of the force, and the momenta (red dashed line), in the FGD. All calculations refer to the system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
  \label{Fig:ACFcomparison}
 \end{figure}
-This result does not seem to fully justify the Markovian approximation.
+Remarkably, this result does not seem to fully justify the Markovian approximation.
 
-As mentioned above, we have studied a system very similar to one studied by Hij\'on \textit{et al.}~\cite{Hijon2006}. A possible explanation for the lack of separation of scales is that the system analysed here is much smaller than the system studied by them, and that the size of the beads (\textit{i.e.}, the number of atoms in the beads) is much smaller than what they have considered.
+As mentioned above, we have studied a system very similar to the one studied by Hij\'on \textit{et al.}~\cite{Hijon2006}. A possible explanation for the lack of separation of scales is that the system analysed here is much smaller than the system studied by them, and that the size of the beads (\textit{i.e.}, the number of atoms in the beads) is much smaller than what they have considered.
 
 For the sake of completeness, we also report in fig.~\ref{Fig:ACF} the ACF for the moments and the forces for the different dynamics, relative to the system C.
 \begin{figure}[!htb]
@@ -910,14 +924,21 @@ For the sake of completeness, we also report in fig.~\ref{Fig:ACF} the ACF for t
  \caption{Time autocorrelation functions (ACF) of forces and momenta. In the upper panel the ACF of the forces in the FGD (green solid line) is compared with that of the forces in the OD (blue dashed line) and the MMZD (red dot-dashed line). In the bottom panel, the ACF of the momenta in the FGD (green solid line) is compared with the ACF of the momenta in the OD (blue dashed line) and the ACF of the momenta in the MMZD (red dot-dashed line). All calculations refer to the system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
 \label{Fig:ACF}
 \end{figure}
-We can notice how the separation of the time scales is more evident in the case of the orthogonal dynamics, that is the constrained Hamiltonian dynamics (see Section \ref{Sec:OD}).
+We can notice how the separation of the time scales is more evident in the case of the orthogonal dynamics, that is, the constrained Hamiltonian dynamics (see Section \ref{Sec:OD}).
 
-\subsection{The effect of the memory approximation on observed system properties}
+\subsection{The effect of the memory approximation on the observables of the studied system}
+\label{Sec:Observables}
 
+We compare the observables of the considered system, determined by means of the trajectories of the MMZD and of the DCGD, using as target the observables determined by the trajectories of the FGD. 
+The observables chosen for comparison are
+\begin{itemize}
+\item[-] linear spatial statistics: the momenta distribution of a single bead and the distribution of inter-bead distance;
+\item[-] a dynamics property of the system: the evolution of the mean-square displacement (MSD) of the inter-bead distance over time.
+\end{itemize}
+We would expect that the results of the first observables to be consistent with the reference results determined by the FGD. While from the results of the MSD for the various dynamics one would expect non-trivial differences, being the MSD a dynamical property of the studied system.
 
-
+In fig.~\ref{Fig:PDF} we show the distribution of the momenta and inter-bead distance obtained through simulation of FGD, DCGD and MMZD, for the system C (see table \ref{Tab:Cases}).
 \begin{figure}[!htb]
-\label{Fig:PDF}
  \begin{subfigure}[b]{\textwidth}
   \centering
    \includegraphics[width=\textwidth]{HistPDF_P}
@@ -927,18 +948,33 @@ We can notice how the separation of the time scales is more evident in the case 
   \includegraphics[width=\textwidth]{HistPDF_Q}
  \end{subfigure}\\
  \caption{Comparison of the Probability Distribution Functions (PDFs) of bead momenta (upper panel) and inter-bead distances (bottom panel), between the FGD (green solid line), the DCGD (blue dashed line), and the MMZD (red dot-dashed line). All calculations refer to system C (see table \ref{Tab:Cases}).}
+\label{Fig:PDF}
 \end{figure}
+In all cases, the mean distance between the particles obtained is 2.98. The trends are reproduced quite well, we can see fluctuations in the tails of both distributions. This could be due to reduced sampling in that region. In fact, we can see from the sampling of mean force and fluctuating force (see fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively), that most of the values obtained are in the region around the equilibrium position ($R\in\sqp{2.83,3.43}$), and from the distribution of the inter-bead distance fig.~\ref{Fig:PDF} we can see that outside that region the values of distance are unlikely.
 
 \chapter*{Conclusions}
 \phantomsection
 \addcontentsline{toc}{chapter}{Conclusions}
+\markboth{\MakeUppercase{Conclusions}}{\MakeUppercase{Conclusions}}
 
-We performed the simulation for four different systems with different parameter and for different dynamics: the FG dynamics, the orthogonal dynamics (or constrained dynamics), the deterministic coarse-grained dynamics and the Markovian Mori-Zwanzig dynamics. We stress that the sampling of the orthogonal dynamics, as we said above, allows to compute the effective potential and the friction matrix, as well as the fluctuating terms.
+In this thesis, we presented Mori-Zwanzig (MZ) formalism and we gave a rigorous and detailed derivation of generalized Langevin equation (GLE) for a system in or close to equilibrium, which describe a particle subject to a potential and coupled to a general thermal bath in which memory effects are, in general, present. 
+%
+Then, through this formalism we derived a class of CG models, the so-called hybrid models.
+
+Subsequently, we studied the integrators needed to implement the numerical simulations in the canonical (NVT) ensemble. 
+
+Finally, we have numerically studied a toy model, which allowed us to illustrate some of the features of the MZ derivation. 
+
+\noindent
+To do this we modified extending and improving a parallel open-source code written in Julia. 
+%
+Moreover, we performed simulations for four different systems with different parameter and for different dynamics: the fine-grained dynamics (FGD), the orthogonal dynamics (or constrained dynamics, OD), the deterministic coarse-grained dynamics (DCGD) and the Markovian Mori-Zwanzig dynamics (MMZD). Importantly, the sampling of the orthogonal dynamics, as we said above, allows to compute the effective potential and the friction matrix, as well as the fluctuating terms.
 
 In all cases simulated no significant scale separation between the dynamics of the beads and individual atoms was observed. Nevertheless, a comparison was made between the true and approximate dynamics, and as expected, systems with `more rigid' beads, having greater internal stiffness, showed much weaker memory effects. 
 
 Furthermore we observed that the Langevin dynamics does not appear to be appropriate for generic CG systems, and that the preservation of more complex dynamical properties, such as the mean-square displacement of the inter bead distance in time, requires instead the strict validity of the time-scale separation assumption or a correct parametrisation and implementation of the memory term.
 
+Possible future developments of this work are the extension of the code to study systems with more degrees of freedom, study the transferability of the derived CG model and study a better approximation of the memory kernel. 
 
 
 
