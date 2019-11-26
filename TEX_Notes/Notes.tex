@@ -42,12 +42,16 @@
 \usepackage[chapter]{algorithm}
 \usepackage{algpseudocode}
 
+\usepackage{pdfpages}
+
 \newcommand{\lr}[1]{\textcolor[rgb]{0.8,0,0}{LR: \textbf{\textit{#1}}}}
 
 \begin{document}
+
+\includepdf{Front.pdf}
+
 \frontmatter
-% \includepdf{Front.pdf}
-% \newpage 
+
  
 \begin{center}
 \section*{Abstract}
@@ -726,7 +730,7 @@ First, the initial conditions for the simulation are fixed, so that the momenta 
 Then the trajectory of the FGD is computed and samples of the positions and momenta are stored. These samples are used to determine the CG positions and momenta, and are used as initial condition for computing the trajectories of the OD. Along these trajectories, time averages of the first and second moment of the effective force between beads are stored. The first moment gives the value of the mean force acting between adjacent beads given the position of the center of mass, while the second moment is used to compute the friction matrix. Since the sampling steps of the OD can run at the same time without having to communicate between the processes, these procedures can be run in parallel. 
 Finally, by integrating the mean force with respect to the distance $R$ between the beads, the effective potential $\Veff$ is obtained.
 
-This method is very similar to the force-matching method \cite{Ercolessi1994,Izvekov2004}, the difference being that here we derive directly the effective potential from the sampling performed during the OD simulations.
+This method is very similar to the force-matching method \cite{Ercolessi1994,Izvekov2004}, the difference being that here we derive directly the effective potential from the sampling performed during the OD simulations.-
 Below, for further clarification of what we said, we report the algorithm published in the work of Di Pasquale \textit{et al.}~and implemented in the code:
 \begin{algorithm} [H]
 \caption{Sampling Algorithm \cite{DiPasquale2019}}
