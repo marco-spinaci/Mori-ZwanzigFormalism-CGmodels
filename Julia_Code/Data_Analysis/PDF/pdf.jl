@@ -55,7 +55,7 @@ end
 #     dQ4[i, C.NBeads] += C.Period;
 # end
 
-Q_DCGD = readdlm("Outcomes/QApprox_DCGD_test.csv", Float64);
+Q_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_DCGD_test.csv", Float64);
 ld = size(Q_DCGD,1);
 dQ5 = zeros(ld, C.NBeads);
 for i in 1:ld
