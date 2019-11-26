@@ -22,7 +22,7 @@ S = Simulator(dt=1e-3, Stochdt=1e-4, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
 # Generate effective potential data
 
 # data extracted from the Kriging interpolation of the original Mean Force data
-force_data = readdlm("force_to_interpolate.dat", Float64);
+force_data = readdlm("Store_Trajectory/force_to_interpolate.dat", Float64);
 
 # we generate the coefficients for the cubic spline interpolation
 # NB: the grid points *must* be equally spaced
@@ -50,13 +50,13 @@ Fdata[:, 5] = Fmean_coeff2[1:end - 1];
 #########################################################################################
 # Write data to file
 
-open("Outcomes/PApprox_DCGD_test.csv", "w+") do x
+open("Store_Trajectory/Outcomes/PApprox_DCGD_test.csv", "w+") do x
     writedlm(x, PApprox2);
 end
-open("Outcomes/QApprox_DCGD_test.csv", "w+") do x
+open("Store_Trajectory/Outcomes/QApprox_DCGD_test.csv", "w+") do x
     writedlm(x, QApprox2);
 end
-open("Outcomes/FApprox_DCGD_test.csv", "w+") do x
+open("Store_Trajectory/Outcomes/FApprox_DCGD_test.csv", "w+") do x
     writedlm(x, FApprox2);
 end
 
