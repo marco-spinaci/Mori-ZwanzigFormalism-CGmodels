@@ -164,7 +164,7 @@ However, even these models, when considering the dynamics, are not without probl
 As mentioned above, the CG approach studied here is the Mori-Zwanzig projection formalism \cite{Mori1965,Zwanzig1973}. One of the first applications of this formalism to obtain CG models was made by Givon et al. \cite{Givon2004}. This formalism, given an arbitrary and generic CG mapping, allows a rigorous derivation of the equations for the exact evolution of CG variables, including terms that may be identified as a term of friction with a memory kernel and a fluctuating force, consistent with the fluctuation-dissipation theorem. Moreover, under the assumptions made to derive the equations, it provides an explicit and rigorous means by which to compute the CG interactions and a framework in which to improve and quantify the accuracy \cite{DiPasquale2019}.
 Despite the explicit form of the terms appearing in the CG equations of motion derived through MZ formalism, these terms are not easy to compute. In recent years, there has been a significant effort to render simulations more practicable using this theoretical tool \cite{DiPasquale2019,Espanol2009,Hijon2010,Izvekov2017,Jung2017,Li2015,Wang2019,Yuanran2018}.
 
-The thesis is organized as follows: $\dots$ to be continued $\dots$
+%The thesis is organized as follows: $\dots$ to be continued $\dots$
 
 
 \part{Theoretical Background}
@@ -545,31 +545,33 @@ where $\omega_{N^AK}$ is equal to zero whenever the difference between the first
 
 \section{Markovian approximation of the Memory Kernel}
 \label{Sec:MarkovApprox}
-We said that the terms involving the friction matrix turn out to be the most difficult to compute in a real calculation because of the memory effect. 
+
+The terms involving the friction matrix turn out to be the most difficult to compute in a real calculation because of the memory effect. 
 The problems to be faced in order to simplify the formulation of the eq.~(\ref{Eq:ZwanGLE}) are given by:
 \begin{itemize}
-\item[-] the calculation of the friction matrix $\bffricmat(t)$ eq.~(\ref{Eq:FRICmatrixRF}), which depends from the orthogonal dynamics, i.e., from all the fast degrees of freedom coarse-grained away (see eq.~(\ref{Eq:RAndomForce}));   
+\item[-] the calculation of the friction matrix $\bffricmat(t)$ eq.~(\ref{Eq:FRICmatrixRF}), which depends on the orthogonal dynamics, i.e., on all the fast degrees of freedom that one wants to coarse-grain away (see eq.~(\ref{Eq:RAndomForce}));   
 \item[-] the integrals that include the friction matrix, which must be computed at each time step (see the RHS of the eq.~(\ref{Eq:ZwanGLE})).
 \end{itemize}
 In the literature there are different ways to consider the friction matrix \cite{Chorin2000,Kauzlaric2011} and how to include memory effects in CG simulations \cite{Izvekov2017,Jung2017,Li2015,Yuanran2018}.
 
-The approximation used very often is to consider the CG models as memoryless, i.e. to assume that the CG models satisfy the Markovian property that allows to predict the future with only the present information. This approximation is the so-called ``Markovian approximation''.
-The validity of this assumption is given by the clear separation of the time scales of the system under examination \cite{DiPasquale2019,Hijon2010,Hijon2006}.
-In particular, in the studied system the assumption is valid if the time scale of variation of the CG variables is much larger than the time scale of decay of the memory matrix $\bffricmat(t)$ (i.e., the friction matrix), that is of the time scale in which the fluctuating forces $\fprojbf_{\Bphase{}}(t,\cdot)$ defined in eq.~(\ref{Eq:RAndomForce}) vary.
+In many cases, it has been shown that $\bffricmat(\Bphase{},t)$ exhibits an exponential decay in $t$ at a sufficiently large rate uniformly on the phase-space, so that the integrals involving the memory kernel may be approximated using Laplace's method (see Ref.~\cite{DiPasquale2019}). If the exponential characteristic time is much shorter than the characteristic time scale of the CG model, then the latter can be regarded as memoryless. This is the most common approximation used, which corresponds to assuming that the CG models satisfy the property that allows to predict the future with only the present information. This approximation is the so-called ``Markovian approximation''.
+The validity of this assumption requires a clear separation of the time scales of the system under examination \cite{DiPasquale2019,Hijon2010,Hijon2006}.
+In particular, in the studied system the assumption is valid only if the time scale of variation of the CG variables is much larger than the time scale of decay of the memory matrix $\bffricmat(t)$ (i.e., the friction matrix), which is linked to the time scale of the autocorrelation of the fluctuating forces $\fprojbf_{\Bphase{}}(t,\cdot)$, defined in eq.~(\ref{Eq:RAndomForce}).
 
-Therefore to simplify and numerically implement the eq.~(\ref{Eq:ZwanGLE}), we assume that the model under examination satisfies the Markovian property and that the friction matrix can be approximated as
+Therefore, to simplify and numerically implement the eq.~(\ref{Eq:ZwanGLE}), we assume that the model under examination satisfies the Markovian property and that the friction matrix can be approximated as
 \begin{equation}
  \label{Eq:MarFric1}
  \bffricmat(\Bphase{},t) \approx \widetilde{\bffricmat}(\Bphase{})\delta(t)\,,
 \end{equation}
-where $\widetilde{\bffricmat}$ is the time independent friction matrix defined as
+where $\widetilde{\bffricmat}$ is the time-independent friction matrix defined as
 \begin{equation}\label{Eq:MarDeltaFric}
   \widetilde{\bffricmat}(\Bphase{}) \coloneqq \bffricmat(\Bphase{},0)
   = \beta\,\aver{\fprojbf_{\Bphase{}}(0,\cdot)\otimes
     \fprojbf_{\Bphase{}}(0,\cdot)}_{\Bphase{}}.
 \end{equation}
-Furthermore, if $\bffricmat(\Bphase{},t)$ exhibits exponential decay in $t$ at a sufficiently large rate uniformly on the phase-space, then the integrals involving the memory kernel may be approximated using Laplace's method (see Ref.~\cite{DiPasquale2019}).
-So, the second equation of the system (\ref{Eq:DevB}) becomes
+
+
+Under these conditions, the second equation of the system (\ref{Eq:DevB}) becomes
 \begin{multline}	
  \label{Eq:MarkovApprox}
   \pard{\bfP_{K}}{t} = -\omega_{\NA{}K} \, \pard{\pot^{AA}}{\bfr_{K}} 
@@ -578,7 +580,7 @@ So, the second equation of the system (\ref{Eq:DevB}) becomes
                        + \beta^{-1} \sum_{J=1}^{\ncg}\, \pard{\widetilde{\fricmat}_{KJ}}{\bfR_{J}} 
                        + \fprojbf_{K}(t)\,,
 \end{multline}
-where the derivatives of $\widetilde{\bffricmat}$ with respect to $\bfP_{J}$ vanish because the time independent friction matrix is a function of $\Bphase{\bfR}$ alone, and it is a symmetric matrix, \textit{i.e.} $\widetilde{\fricmat}_{KJ}=\widetilde{\fricmat}_{JK}$. This is easy to verify, as by making the terms explicit in the definition (\ref{Eq:MarDeltaFric}) we get
+where the derivatives of $\widetilde{\bffricmat}$ with respect to $\bfP_{J}$ vanish because the time independent friction matrix is a function of $\Bphase{\bfR}$ alone, and it is a symmetric matrix, \textit{i.e.} $\widetilde{\fricmat}_{KJ}=\widetilde{\fricmat}_{JK}$. This is easy to verify, since by making the terms explicit in the definition (\ref{Eq:MarDeltaFric}) we obtain
 \begin{multline}
 \label{Eq:convFlucF}
   \aver{\fprojbf_K(0,\cdot) \otimes \fprojbf_J(0,\cdot)}_{\Bphase{}} = \aver{\Lio_\qproj\bfP_K \otimes \Lio_\qproj\bfP_J}_{\Bphase{}} ={}\\
@@ -586,7 +588,7 @@ where the derivatives of $\widetilde{\bffricmat}$ with respect to $\bfP_{J}$ van
   \cip{ \pard{\Veff}{\bfR_{J}} - \sum_{j\in S_J} \pard{U}{\bfr_{j}} }}_{\Bphase{}}\,.
 \end{multline}
 
-The validity of the Markovian approximation has been repeatedly questioned in literature, we do not give details in this section but we will return to this point later when we discuss the numerical results. We want to stress here that we use the Markovian approximation only as a means of simplifying the calculation. As we said at the beginning of this section there are more refined methods to consider the friction matrix and to include memory effects in CG simulations, we will consider them in future work.
+The validity of the Markovian approximation has been repeatedly questioned in the literature~\cite{XXX}. We will return to this point later when we discuss the numerical results. We want to stress here that we use the Markovian approximation only as a means of simplifying the calculation. As we said at the beginning of this section there are more refined methods to consider the friction matrix and to include memory effects in CG simulations which will be considered in future work.
 
 
 \chapter{Numerical Methods}
@@ -617,12 +619,12 @@ The authors stress that their approach focuses on the truncation error of the in
 \section{Constrained Langevin Dynamics Integrator: the geodesic BAOAB method}
 We now present an integrator for constrained stochastic dynamics such as Langevin dynamics for holonomic constraints, developed by by B. Leimkuhler and C. Matthews \cite{Leimkuhler2016}. 
 
-Their approach, to Langevin dynamics in the presence of this constraints, is based on the decomposition of the system into components representing geodesic flow, constrained impulse and constrained diffusion. In fact, their idea is to divide the problem of the constrained MD into a collection of separate constrained problems and to solve or approximate each constrained flow. 
+Their approach to Langevin dynamics in the presence of constraints is based on the decomposition of the system into three components representing a geodesic flow, a constrained impulse and a constrained diffusion. In fact, their idea is to divide the problem of the constrained MD into a collection of separate constrained problems and to solve or approximate each constrained flow. 
 
-They split Hamiltonian dynamics into potential and kinetic terms, and introduce Lagrange multipliers to maintain constraints. The solution of part defined by potential energy can be obtained without problems, while the solution of the kinetic part is a geodesic curve (an unforced motion on the constraint surface) and requires the solution of a non-linear system of ordinary differential equations (ODE). In practice, the geodesic is approximated using a series of SHAKE/RATTLE steps \cite{ANDERSEN1983,RYCKAERT1977} that preserve the constraint manifold and respect the cotangency conditions, \textit{i.e.}, the constraints on the momenta. 
+The Hamiltonian dynamics is split into potential and kinetic terms, and Lagrange multipliers are introduced to maintain the constraints. The solution of the part defined by the potential energy can be obtained easily, while the solution of the kinetic part is a geodesic curve (an unforced motion on the constraint surface) and requires solving a non-linear system of ordinary differential equations (ODE). In practice, the geodesic is approximated using a series of SHAKE/RATTLE steps \cite{ANDERSEN1983,RYCKAERT1977} that preserve the constraint manifold and respect the cotangency conditions, \textit{i.e.}, the constraints on the momenta. 
 
-In this way they obtain a ``geodesic integrator'' by solving the two parts separately and then composing the flows.
-Therefore, what they get is nothing more than a geodesic version of their BAOAB integrator, presented in the previous section.
+The resulting procedure is a ``geodesic integrator'' that solves the two parts separately and then recomposes the flows.
+The algorithm thus represents a geodesic version of their BAOAB integrator presented in the previous section.
 
 
 \part{Numerical Experiments}
@@ -784,7 +786,7 @@ we report the results for the fluctuating part of the force. Unlike the mean for
 Furthermore, the figure shows how these simple systems have a dependence of fluctuations on the inter-bead distance $R$, and consequently shows how a simple Langevin dynamics, with dissipation and white noise fluctuations having a magnitude independent of the state of the system, is not an adequate approximation.
 \lr{questo è uno spunto interessante... puoi espandere secondo te? Mettere delle referenze?}
 
-From the sampling of the mean force and the fluctuating force (fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively) we can see how outside the region $[2.8,3.2]$ there is a reduction of the sample. We will see later in Sec.~\ref{Sec:Observables}, how this is due to a lower probability of sampling, we will determine the distribution of the inter-bead distances for the various dynamics: FGD, DCGD and MMZD.
+The plots of the mean force and the fluctuating force (fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively) show that the majority of the points lies within the $[2.8,3.2]$ region, whereas distances outside of this range are rarely accessed. We will clearly show later, when we will discuss the distribution of the inter-bead distances for the various dynamics (FGD, DCGD and MMZD, Sec.~\ref{Sec:Observables}) that this is indeed due to a lower probability of sampling.
 
 Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integration of the mean force (fig.~\ref{Fig:meanForce}) with respect to the inter-bead distance $R$.
 \begin{figure}[!htb]
@@ -961,25 +963,18 @@ In all cases, the mean distance between the particles obtained is 2.98. The tren
 \addcontentsline{toc}{chapter}{Conclusions}
 \markboth{\MakeUppercase{Conclusions}}{\MakeUppercase{Conclusions}}
 
-In this thesis, we presented Mori-Zwanzig (MZ) formalism and we gave a rigorous and detailed derivation of generalized Langevin equation (GLE) for a system in or close to equilibrium, which describe a particle subject to a potential and coupled to a general thermal bath in which memory effects are, in general, present. 
+In this thesis, we presented the Mori-Zwanzig (MZ) formalism and we gave a rigorous and detailed derivation of the generalized Langevin equation (GLE) for a system in or close to equilibrium, which describes a particle subject to a potential and coupled to a general thermal bath in which memory effects are, in general, present. 
 %
-Then, through this formalism we derived a class of CG models, the so-called hybrid models.
-
-Subsequently, we studied the integrators needed to implement the numerical simulations in the canonical (NVT) ensemble. 
-
-Finally, we have numerically studied a toy model, which allowed us to illustrate some of the features of the MZ derivation. 
+Then, through this formalism we derived a class of coarse-grained (CG) models, the so-called hybrid models, that can be used to decrease the computational effort required to simulate generic systems. Subsequently, we studied the integrators needed to implement the numerical simulations in the canonical (NVT) ensemble. Finally, we have numerically studied a toy model, which allowed us to illustrate some of the features of the MZ derivation. 
 
 \noindent
-To do this we modified extending and improving a parallel open-source code written in Julia. 
-%
-Moreover, we performed simulations for four different systems with different parameter and for different dynamics: the fine-grained dynamics (FGD), the orthogonal dynamics (or constrained dynamics, OD), the deterministic coarse-grained dynamics (DCGD) and the Markovian Mori-Zwanzig dynamics (MMZD). Importantly, the sampling of the orthogonal dynamics, as we said above, allows to compute the effective potential and the friction matrix, as well as the fluctuating terms.
+In order to do this we extended and improved a parallel open-source code written in Julia, which we have used to perform simulations of four different systems with different parameters and using different dynamics: the fine-grained dynamics (FGD), the orthogonal dynamics (or constrained dynamics, OD), the deterministic coarse-grained dynamics (DCGD) and the Markovian Mori-Zwanzig dynamics (MMZD). Importantly, the sampling of the orthogonal dynamics makes it possible to compute the effective potential and the friction matrix, as well as the fluctuating terms, that enter into the equations of motion derived with the MZ formalism.
 
-In all cases simulated no significant scale separation between the dynamics of the beads and individual atoms was observed. Nevertheless, a comparison was made between the true and approximate dynamics, and as expected, systems with `more rigid' beads, having greater internal stiffness, showed much weaker memory effects. 
+In all cases simulated no significant scale separation between the dynamics of the beads and individual atoms was observed. Nevertheless, a comparison was made between the true and approximate dynamics, and, as expected, systems with `more rigid' beads, that is, with greater internal stiffness, showed much weaker memory effects. 
 
 Furthermore we observed that the Langevin dynamics does not appear to be appropriate for generic CG systems, and that the preservation of more complex dynamical properties, such as the mean-square displacement of the inter bead distance in time, requires instead the strict validity of the time-scale separation assumption or a correct parametrisation and implementation of the memory term.
 
-Possible future developments of this work are the extension of the code to study systems with more degrees of freedom, study the transferability of the derived CG model and study a better approximation of the memory kernel. 
-
+Possible future developments of this work are the extension of the code to study systems in two and three spatial dimensions, the evaluation of the transferability of the derived CG model and the development of a better approximation for the memory kernel. 
 
 
 \begin{appendices}
