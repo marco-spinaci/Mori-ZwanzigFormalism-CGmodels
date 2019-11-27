@@ -34,6 +34,7 @@ export ApproxMeanForce, ApproxMeanForce_NEW, ApproxMeanStresses, ApproxMeanStres
   MacroSamples::Int	  = 50
   OrthoSamples::Int	  = Int(1e5)
   Moments::Int		  = 2
+  check::Int          = Int(5e3) # to print the number of iteration in a loop
 end
 
 #############################################
@@ -92,22 +93,28 @@ function LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
   # Set up.
   P = P0; Q = Q0; F = Forces(Q,C);
   K = KineticEnergy(P,C); H = Potential(Q,C) + K;
-  Pstore = zeros(Float64,C.NPart,S.FullSteps);
-  Qstore = zeros(Float64,C.NPart,S.FullSteps);
-  Fstore = zeros(Float64,C.NPart,S.FullSteps);
+
+  r = Int(S.FullSteps/100) + 1;
+  Pstore = zeros(Float64,C.NPart,r);
+  Qstore = zeros(Float64,C.NPart,r);
+  Fstore = zeros(Float64,C.NPart,r);
   Pstore[:,1] = P0;
   Qstore[:,1] = Q0;
   Fstore[:,1] = F;
 
   # Do simulation.
+  j = 2;
   for i = 2:S.FullSteps
-	  if i % 5e5 == 0
-		  @printf "    ITERATION %0.3e OF %0.3e\n" i S.ApproxSteps
+	  if i % check == 0
+		  @printf "    ITERATION %0.3e OF %0.3e\n" i S.FullSteps
 	  end
 	  (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
-      Pstore[:,i] = P;
-      Qstore[:,i] = Q;
-      Fstore[:,i] = F;
+	  if i % 100 == 0
+		  Pstore[:,j] = P;
+	      Qstore[:,j] = Q;
+	      Fstore[:,j] = F;
+		  j += 1;
+	  end
 	  K += KineticEnergy(P,C);
 	  H += Potential(Q,C) + K;
   end
@@ -170,19 +177,28 @@ function LangConstrainedTraj(P0,Q0,C::Chain,S::Simulator)
 
   # Set up.
   P = C.MomProj*P0; Q = Q0; F = Forces(Q,C);
-  Pstore = zeros(Float64,C.NPart,S.FullSteps);
-  Qstore = zeros(Float64,C.NPart,S.FullSteps);
-  Fstore = zeros(Float64,C.NPart,S.FullSteps);
+
+  r = Int(S.FullSteps/100) + 1;
+  Pstore = zeros(Float64,C.NPart,r);
+  Qstore = zeros(Float64,C.NPart,r);
+  Fstore = zeros(Float64,C.NPart,r);
   Pstore[:,1] = P;
   Qstore[:,1] = Q;
   Fstore[:,1] = F;
 
   # Do simulation.
+  j = 2;
   for i = 2:S.FullSteps
-    (P,Q,F) = LangDynConstrainedStep(P,Q,F,C,S.dt);
-    Pstore[:,i] = P;
-    Qstore[:,i] = Q;
-    Fstore[:,i] = F;
+	  if i % check == 0
+		  @printf "    ITERATION %0.3e OF %0.3e\n" i S.FullSteps
+	  end
+	  (P,Q,F) = LangDynConstrainedStep(P,Q,F,C,S.dt);
+	  if i % 100 == 0
+		  Pstore[:,j] = P;
+		  Qstore[:,j] = Q;
+		  Fstore[:,j] = F;
+		  j += 1;
+	  end
   end
 
   return Pstore,Qstore,Fstore
@@ -221,23 +237,27 @@ function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
   FlucStep = (X,Y) -> ApproxFlucStep(X,Y,dQData,FstdData,C,S.Stochdt)[1];
 
   # Set up storage
-  Pstore = zeros(S.ApproxSteps,length(P0));
-  Qstore = zeros(S.ApproxSteps,length(P0));
-  Fstore = zeros(S.ApproxSteps,length(P0));
+  r = Int(S.ApproxSteps/100) + 1;
+  Pstore = zeros(r,length(P0));
+  Qstore = zeros(r,length(P0));
+  Fstore = zeros(r,length(P0));
   Pstore[1,:] = P;
   Qstore[1,:] = Q;
   Fstore[1,:] = F;
 
   # Do simulation.
+  j =2;
   for i = 2:S.ApproxSteps
-	if i % 5e5 == 0
+	if i % check == 0
 		@printf "    ITERATION %0.3e OF %0.3e\n" i S.ApproxSteps
 	end
-	# println(" Start...");
     (P,Q,F) = ApproxDynStep(P,Q,F,MeanForce,FlucStep,C,S.Stochdt);
-    Pstore[i,:] = P;
-    Qstore[i,:] = Q;
-    Fstore[i,:] = F;
+	if i % 100 == 0
+		Pstore[j,:] = P;
+	    Qstore[j,:] = Q;
+	    Fstore[j,:] = F;
+		j += 1;
+	end
   end
 
   return Pstore,Qstore,Fstore
@@ -281,10 +301,9 @@ function DetCGCanEnsTraj(P0,Q0,FmeanData::Array{Float64,2},C::Chain,S::Simulator
   # Do simulation.
   j = 2;
   for i = 2:S.FullSteps
-	  if i % 5e4 == 0
+	  if i % check == 0
 		  @printf "    ITERATION %0.2e OF %0.2e\n" i S.FullSteps
 	  end
-
 	  (P,Q,F) = DetCGDynNVTStep(P,Q,F,MeanForce,C,S.dt);
 	  if i % 100 == 0
 		  Pstore[j,:] = P;
@@ -968,7 +987,10 @@ function VEffConstrainedLangDyn(C::Chain,S::Simulator)
           end
           println("    Starting macrosample ", ss+1);
           for i = 1:S.FullSteps
-            (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
+			  if i % check5e5 == 0
+				  @printf "      ITERATION %0.3e OF %0.3e\n" i S.FullSteps
+			  end
+			  (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
           end
 
           ss+=1;
