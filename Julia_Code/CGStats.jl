@@ -987,7 +987,7 @@ function VEffConstrainedLangDyn(C::Chain,S::Simulator)
           end
           println("    Starting macrosample ", ss+1);
           for i = 1:S.FullSteps
-			  if i % check5e5 == 0
+			  if i % check == 0
 				  @printf "      ITERATION %0.3e OF %0.3e\n" i S.FullSteps
 			  end
 			  (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
