@@ -1724,7 +1724,7 @@ function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Fl
   end
 end
 
-function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Float64,1},
+function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},
 	StressSqvals::Array{Float64,1},C::Chain,dt::Float64,σ::Float64=0.1,N::Int=2)
 
   if sum(StressSqvals) == 0
@@ -1742,9 +1742,11 @@ function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Arra
       ### Compute inter-bead distances
       dQ = circshift(Q, -1) - Q;
       dQ[C.NBeads] += C.Period;
-      # println("");
-      # println("       INTER-BEAD DISTANCES COMPUTED IN ApproxFlucStep");
-      # println("       dQ = ",dQ);
+
+	  Rmin = Fdata[1, 1];
+	  Rmax = Fdata[end, 1];
+	  dx = Fdata[2, 1] - Fdata[1, 1];
+	  inv_sqr_delta = 1. / (dx * dx);
 
       ### For each inter-bead distance, compute diffusivity
       for i=1:length(dQ)
@@ -1755,20 +1757,9 @@ function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Arra
 	      elseif dQ[i] > 3.78
 		      Gvec[i] = 0; #coeffs[1];
 	      else
-		      ### Define (diagonal) weight matrix
-	          W = spdiagm(0 => exp.(-(dQvals .- dQ[i]).^2/σ^2));
-
-			  ### Form Jacobian matrix
-        	  J = ones(N+1, length(dQvals));
-    		  for j = 1:N
-				  J[j+1,:] = (dQ[i] .- dQvals).^j;
-			  end
-
-			  ### Least squares approximation of interpolant coefficients
-			  K = J * W;
-			  # println("       Product between Jacobian matrix and diagonal weight matrix");
-			  # println("       K = ",K);
-			  coeffs = (K * J') \ (K * StressSqvals);
+			  index = trunc(Int, (dQ[i] - Rmin) / dx) + 1;
+			  distance = dQ[i] - (Rmin + (index - 1) * dx);
+			  Sigma[i] = Fmean[index] + distance * (Fmean_d[index] + distance * (Fmean_coeff2[index] + distance * Fmean_coeff1[index]) * inv_sqr_delta);
 
 			  ### Extract value of interpolant
 			  Gvec[i] = coeffs[1];
