@@ -105,7 +105,7 @@ function LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
   # Do simulation.
   j = 2;
   for i = 2:S.FullSteps
-	  if i % check == 0
+	  if i % S.check == 0
 		  @printf "    ITERATION %0.3e OF %0.3e\n" i S.FullSteps
 	  end
 	  (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
@@ -189,7 +189,7 @@ function LangConstrainedTraj(P0,Q0,C::Chain,S::Simulator)
   # Do simulation.
   j = 2;
   for i = 2:S.FullSteps
-	  if i % check == 0
+	  if i % S.check == 0
 		  @printf "    ITERATION %0.3e OF %0.3e\n" i S.FullSteps
 	  end
 	  (P,Q,F) = LangDynConstrainedStep(P,Q,F,C,S.dt);
@@ -248,7 +248,7 @@ function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
   # Do simulation.
   j =2;
   for i = 2:S.ApproxSteps
-	if i % check == 0
+	if i % S.check == 0
 		@printf "    ITERATION %0.3e OF %0.3e\n" i S.ApproxSteps
 	end
     (P,Q,F) = ApproxDynStep(P,Q,F,MeanForce,FlucStep,C,S.Stochdt);
@@ -301,7 +301,7 @@ function DetCGCanEnsTraj(P0,Q0,FmeanData::Array{Float64,2},C::Chain,S::Simulator
   # Do simulation.
   j = 2;
   for i = 2:S.FullSteps
-	  if i % check == 0
+	  if i % S.check == 0
 		  @printf "    ITERATION %0.2e OF %0.2e\n" i S.FullSteps
 	  end
 	  (P,Q,F) = DetCGDynNVTStep(P,Q,F,MeanForce,C,S.dt);
@@ -987,7 +987,7 @@ function VEffConstrainedLangDyn(C::Chain,S::Simulator)
           end
           println("    Starting macrosample ", ss+1);
           for i = 1:S.FullSteps
-			  if i % check == 0
+			  if i % S.check == 0
 				  @printf "      ITERATION %0.3e OF %0.3e\n" i S.FullSteps
 			  end
 			  (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
