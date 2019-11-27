@@ -24,7 +24,7 @@ S = Simulator(dt=1e-3, Stochdt=1e-4, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
 # data extracted from the Kriging interpolation of the original Mean Force data
 force_data = readdlm("Store_Trajectory/force_to_interpolate.dat", Float64);
 
-# we generate the coefficients for the cubic spline interpolation
+# to generate the coefficients for the cubic spline interpolation
 # NB: the grid points *must* be equally spaced
 RR = force_data[:, 1];
 dx = RR[2] - RR[1];

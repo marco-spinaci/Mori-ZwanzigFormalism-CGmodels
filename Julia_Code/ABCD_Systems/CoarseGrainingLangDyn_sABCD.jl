@@ -24,7 +24,7 @@ using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra
 
 #####################################################################################################
 
-S = Simulator(dt=1e-3, FullSteps=Int(1e4), OrthoSamples=Int(1e6), check=Int(1e3), MacroSamples=50);
+S = Simulator(dt=1e-3, FullSteps=Int(1e6), OrthoSamples=Int(1e6), check=Int(5e4), MacroSamples=100);
 
 ######################################################################################################
 ## system A
@@ -78,7 +78,7 @@ S = Simulator(dt=1e-3, FullSteps=Int(1e4), OrthoSamples=Int(1e6), check=Int(1e3)
 ## system C
 ## ( [0,1,0], SM (mass of particles 0) = 10, LM (mass of particles 1) = 1, SEps=1.0, LEps=100.0, γ=1, β=1 )
 
-C = Chain(Patt = [0,1,0,0,1,0,0,1,0,0,1,0], NBeads = 50);
+C = Chain(NBeads = 100);
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
 # Write data to file

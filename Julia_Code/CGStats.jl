@@ -9,14 +9,14 @@ using Main.LJChain, Distributed, SharedArrays, Parameters, Statistics, Dates, Sp
 # Parameter object
 export Simulator
 # Functions to output raw trajectory data
-export FullTraj, LangevinFullTraj, ConstrainedTraj, LangConstrainedTraj, ApproximateTraj, DetCGCanEnsTraj
+export FullTraj, LangevinFullTraj, ConstrainedTraj, LangConstrainedTraj, ApproximateTraj, ApproximateTraj_NEW, DetCGCanEnsTraj
 # High-level function to extract data
 export VEffConstrained, VEffConstrainedLangDyn, ConstrainedAutocorr, ConstrainedAutocorrLangDyn, FullAutocorr, FullAutocorrLangDyn, ApproximateAutocorr,
   ConstrainedAutocorrPar, ConstrainedAutocorrLangDynPar, FullAutocorrPar, FullAutocorrLangDynPar, ApproximateAutocorrPar
 # Orthogonal dynamics sampling
 export ConstrainedSample, ConstrSampleLangDyn
 # Functions to extract approximate dynamics
-export ApproxMeanForce, ApproxMeanForce_NEW, ApproxMeanStresses, ApproxMeanStresses_NEW, ApproxFlucStep, ComputeVEff
+export ApproxMeanForce, ApproxMeanForce_NEW, ApproxMeanStresses, ApproxMeanStresses_NEW, ApproxFlucStep, ApproxFlucStep_NEW, ComputeVEff
 
 #######################################
 # Simulator type, encoding parameters #
@@ -262,6 +262,54 @@ function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64
 
   return Pstore,Qstore,Fstore
 end
+
+function ApproximateTraj_NEW(P0,Q0,FmeanData::Array{Float64,2},FstdData::Array{Float64,2},C::Chain,S::Simulator)
+ # Report to user.
+ println(Dates.now());
+ println("Running full simulation of MMZD and storing trajectory.");
+ println("  NPart, number of particles simulated = ",C.NPart);
+ println("  Beta, temperature parameter = ",C.Beta);
+ println("  Gamma, friction coefficient = ",C.Gamma);
+ println("  dt, time step size = ",S.Stochdt);
+ println("  Total simulation time = ",S.ApproxTime);
+
+  # Set up initial conditions
+  P = P0; Q = Q0;
+
+  # Generate mean force function
+  MeanForce = X -> ApproxMeanForce_NEW(X,FmeanData,C)[1];
+  F = MeanForce(Q0);
+
+  # Set up approximate fluctuation generator
+  FlucStep = (X,Y) -> ApproxFlucStep_NEW(X,Y,dQData,FstdData,C,S.Stochdt)[1];
+
+  # Set up storage
+  r = Int(S.ApproxSteps/100) + 1;
+  Pstore = zeros(r,length(P0));
+  Qstore = zeros(r,length(P0));
+  Fstore = zeros(r,length(P0));
+  Pstore[1,:] = P;
+  Qstore[1,:] = Q;
+  Fstore[1,:] = F;
+
+  # Do simulation.
+  j =2;
+  for i = 2:S.ApproxSteps
+	if i % S.check == 0
+		@printf "    ITERATION %0.3e OF %0.3e\n" i S.ApproxSteps
+	end
+    (P,Q,F) = ApproxDynStep(P,Q,F,MeanForce,FlucStep,C,S.Stochdt);
+	if i % 100 == 0
+		Pstore[j,:] = P;
+	    Qstore[j,:] = Q;
+	    Fstore[j,:] = F;
+		j += 1;
+	end
+  end
+
+  return Pstore,Qstore,Fstore
+end
+
 
 """
     (Pstore,Qstore,Fstore) = DetCGCanEnsTraj(P0,Q0,FmeanData,C::Chain,S::Simulator)
@@ -1581,6 +1629,99 @@ function ApproxMeanForce_NEW(Q::Array{Float64,1},Fvals::Array{Float64,2},C::Chai
 end
 
 function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Float64,1},
+	StressSqvals::Array{Float64,1},C::Chain,dt::Float64,σ::Float64=0.1,N::Int=2)
+
+  if sum(StressSqvals) == 0
+	  ### Set up storage for diffusivity
+	  Gvec = zeros(size(Q,1));
+	  ### Compute inter-bead distances
+	  dQ = circshift(Q, -1) - Q;
+	  dQ[C.NBeads] += C.Period;
+
+	  return zeros(size(P,1)), Gvec, dQ
+  else
+	  ### Set up storage for diffusivity
+      Gvec = zeros(size(Q,1));
+
+      ### Compute inter-bead distances
+      dQ = circshift(Q, -1) - Q;
+      dQ[C.NBeads] += C.Period;
+      # println("");
+      # println("       INTER-BEAD DISTANCES COMPUTED IN ApproxFlucStep");
+      # println("       dQ = ",dQ);
+
+      ### For each inter-bead distance, compute diffusivity
+      for i=1:length(dQ)
+	      if dQ[i] < 0.9
+		      m = (6464.26 - 8859.34) / (1.2-0.90);
+		      q = 8859.34 - m * 0.90;
+		      Gvec[i] = m * dQ[i] + q;
+	      elseif dQ[i] > 3.78
+		      ### Define (diagonal) weight matrix
+		      # W = spdiagm(0 => exp.(-(dQvals .- 3.78) .^2 ./ σ^2));
+
+		      ### Form Jacobian matrix
+		      # J = ones(N+1, length(dQvals));
+		      # for j = 1:N
+			  #    J[j+1, :] = (3.78 .- dQvals).^j;
+		      # end
+
+		      ### Least squares approximation of interpolant coefficients
+		      # K = J * W;
+		      # coeffs = (K * J') \ (K * StressSqvals);
+
+		      ### Extract value of interpolant
+		      Gvec[i] = 0; #coeffs[1];
+	      else
+		      ### Define (diagonal) weight matrix
+	          W = spdiagm(0 => exp.(-(dQvals .- dQ[i]).^2/σ^2));
+
+			  ### Form Jacobian matrix
+        	  J = ones(N+1, length(dQvals));
+    		  for j = 1:N
+				  J[j+1,:] = (dQ[i] .- dQvals).^j;
+			  end
+
+			  ### Least squares approximation of interpolant coefficients
+			  K = J * W;
+			  # println("       Product between Jacobian matrix and diagonal weight matrix");
+			  # println("       K = ",K);
+			  coeffs = (K * J') \ (K * StressSqvals);
+
+			  ### Extract value of interpolant
+			  Gvec[i] = coeffs[1];
+		  end
+	  end
+
+  	  ### Set diffusivity to zero if negative.
+      Gvec = max.(Gvec, 0); #This function return the maximum of the arguments.
+
+  	  ### Form memory matrix (that is a tridiagonal matrix)
+      Gamma = diagm(0 => Gvec) - circshift(diagm(0 => Gvec), -1);
+  	  Gamma = (Gamma - circshift(Gamma,1));
+	  # println("GAMMA = ", Gamma)
+
+      ### Perform eigenvalue decomposition
+  	  F = eigen(Gamma); # Computes the eigenvalue decomposition, returning an Eigen factorization object F
+	                    # which contains the eigenvalues in F.values and the eigenvectors in the columns of the matrix F.vectors.
+	  # println("EIGENVALUES = ", F.values)
+	  # println("EIGENVECTOR = ", F.vectors)
+      F.values[1] = 0;
+
+  	  ### Calculate exact Ornstein-Uhlenbeck step using decomposition
+      c1 = exp.(-F.values / (2 * C.BeadMass) * dt);
+	  # c1 = F.vectors * exp.(-F.values / (2 * C.BeadMass) * dt) .* F.vectors';
+	  # c3 = sqrt(C.BeadMass) * sqrt.(abs.(1.0 .- c1^2)) * randn(C.NBeads);
+	  c3 = sqrt(C.BeadMass) * sqrt.(1.0 .- c1.^2) .* randn(C.NBeads);
+
+      ### Generate new momenta and return
+	  # println("PNext = ", c1 * P + c3 )
+	  # return c1 * P + c3, Gvec, dQ
+      return F.vectors * (c1 .* (F.vectors' * P) + c3), Gvec, dQ
+  end
+end
+
+function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Float64,1},
 	StressSqvals::Array{Float64,1},C::Chain,dt::Float64,σ::Float64=0.1,N::Int=2)
 
   if sum(StressSqvals) == 0
