@@ -281,7 +281,7 @@ function ApproximateTraj_NEW(P0,Q0,FmeanData::Array{Float64,2},FstdData::Array{F
   F = MeanForce(Q0);
 
   # Set up approximate fluctuation generator
-  FlucStep = (X,Y) -> ApproxFlucStep_NEW(X,Y,dQData,FstdData,C,S.Stochdt)[1];
+  FlucStep = (X,Y) -> ApproxFlucStep_NEW(X,Y,FstdData,C,S.Stochdt)[1];
 
   # Set up storage
   r = Int(S.ApproxSteps/100) + 1;
@@ -1575,34 +1575,37 @@ function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::
 end
 
 function ApproxMeanStresses_NEW(Q::Array{Float64,1},Fdata::Array{Float64,2},C::Chain,σ::Float64=0.1,N::Int=2)
+	if sum(Fdata) == 0
+		return zeros(size(Q)), dQ
+	else
+		Sigma = zeros(size(Q));
 
-  Sigma = zeros(size(Q));
+  		### First compute inter-bead distances.
+  		dQ = circshift(Q, -1) - Q;
+  		dQ[C.NBeads] += C.Period;
 
-  ### First compute inter-bead distances.
-  dQ = circshift(Q, -1) - Q;
-  dQ[C.NBeads] += C.Period;
+  		Rmin = Fdata[1, 1];
+  		Rmax = Fdata[end, 1];
+  		dx = Fdata[2, 1] - Fdata[1, 1];
+  		inv_sqr_delta = 1. / (dx * dx);
 
-  Rmin = Fdata[1, 1];
-  Rmax = Fdata[end, 1];
-  dx = Fdata[2, 1] - Fdata[1, 1];
-  inv_sqr_delta = 1. / (dx * dx);
+  		### Next, for each inter-bead distance, compute the stress
+  		for i=1:length(dQ)
+    		if dQ[i] < Rmin
+        		m = 537.59;
+        		q = -1567.1;
+        		Sigma[i] = m * dQ[i] + q;
+    		elseif dQ[i] > Rmax
+        		Sigma[i] = 0.;
+    		else
+        		index = trunc(Int, (dQ[i] - Rmin) / dx) + 1;
+        		distance = dQ[i] - (Rmin + (index - 1) * dx);
+        		Sigma[i] = Fdata[index, 2] + distance * (Fdata[index, 3] + distance * (Fdata[index, 5] + distance * Fdata[index, 4]) * inv_sqr_delta);
+    		end
+  		end
 
-  ### Next, for each inter-bead distance, compute the stress
-  for i=1:length(dQ)
-    if dQ[i] < Rmin
-        m = 537.59;
-        q = -1567.1;
-        Sigma[i] = m * dQ[i] + q;
-    elseif dQ[i] > Rmax
-        Sigma[i] = 0.;
-    else
-        index = trunc(Int, (dQ[i] - Rmin) / dx) + 1;
-        distance = dQ[i] - (Rmin + (index - 1) * dx);
-        Sigma[i] = Fdata[index, 2] + distance * (Fdata[index, 3] + distance * (Fdata[index, 5] + distance * Fdata[index, 4]) * inv_sqr_delta);
-    end
-  end
-
-  return Sigma, dQ
+  		return Sigma, dQ
+	end
 end
 
 """
@@ -1750,20 +1753,6 @@ function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Arra
 		      q = 8859.34 - m * 0.90;
 		      Gvec[i] = m * dQ[i] + q;
 	      elseif dQ[i] > 3.78
-		      ### Define (diagonal) weight matrix
-		      # W = spdiagm(0 => exp.(-(dQvals .- 3.78) .^2 ./ σ^2));
-
-		      ### Form Jacobian matrix
-		      # J = ones(N+1, length(dQvals));
-		      # for j = 1:N
-			  #    J[j+1, :] = (3.78 .- dQvals).^j;
-		      # end
-
-		      ### Least squares approximation of interpolant coefficients
-		      # K = J * W;
-		      # coeffs = (K * J') \ (K * StressSqvals);
-
-		      ### Extract value of interpolant
 		      Gvec[i] = 0; #coeffs[1];
 	      else
 		      ### Define (diagonal) weight matrix
