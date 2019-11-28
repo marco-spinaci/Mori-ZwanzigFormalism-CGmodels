@@ -1726,7 +1726,7 @@ end
 
 function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},
 	StressSqvals::Array{Float64,2},C::Chain,dt::Float64,σ::Float64=0.1,N::Int=2)
-	
+
     Gvec = zeros(size(Q));
 
     ### First compute inter-bead distances.
@@ -1751,15 +1751,16 @@ function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},
         else
             index = trunc(Int, (dQ[i] - Rmin) / dx) + 1;
             distance = dQ[i] - (Rmin + (index - 1) * dx);
-            Gvec[i] = StressSqvals[index, 2] + distance * (StressSqvals[index, 3] + distance * (StressSqvals[index, 5] + distance * StressSqvals[index, 4]) * inv_sqr_delta);
+            Gvec[i] = StressSqvals[index, 2] + distance * (StressSqvals[index, 3] +
+			          distance * (StressSqvals[index, 5] + distance * StressSqvals[index, 4]) * inv_sqr_delta);
         end
     end
-    
+
     #println("dQ", dQ);
 
     ### Set diffusivity to zero if negative.
     Gvec = max.(Gvec, 0);
-    
+
     ### Form memory matrix
     diagonal = Gvec + circshift(Gvec, 1);
     off_diagonal = -Gvec;
@@ -1770,9 +1771,9 @@ function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},
     F.values[1] = 0.;
 
     ### Calculate exact Ornstein-Uhlenbeck step using decomposition
-    exp_part = exp.(-F.values * C.Beta * dt / (2.0 * C.BeadMass))
+    exp_part = exp.(-F.values * C.Beta * dt / (2.0 * C.BeadMass));
     c1 = diagm(0 => exp_part);
-    
+
     # we want to avoid numerical issues and thus enforce the positiveness of the sqrt argument
     sqrt_part = max.(1.0 .- exp_part.^2, 0);
     c3 = diagm(0 => sqrt(C.BeadMass / C.Beta) * sqrt.(sqrt_part));
