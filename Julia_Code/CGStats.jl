@@ -1725,73 +1725,59 @@ function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Fl
 end
 
 function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},
-	StressSqvals::Array{Float64,1},C::Chain,dt::Float64,σ::Float64=0.1,N::Int=2)
+	StressSqvals::Array{Float64,2},C::Chain,dt::Float64,σ::Float64=0.1,N::Int=2)
+	
+    Gvec = zeros(size(Q));
 
-  if sum(StressSqvals) == 0
-	  ### Set up storage for diffusivity
-	  Gvec = zeros(size(Q,1));
-	  ### Compute inter-bead distances
-	  dQ = circshift(Q, -1) - Q;
-	  dQ[C.NBeads] += C.Period;
+    ### First compute inter-bead distances.
+    dQ = circshift(Q, -1) - Q;
+    dQ[C.NBeads] += C.Period;
 
-	  return zeros(size(P,1)), Gvec, dQ
-  else
-	  ### Set up storage for diffusivity
-      Gvec = zeros(size(Q,1));
+    Rmin = StressSqvals[1, 1];
+    Rmax = StressSqvals[end, 1];
+    dx = StressSqvals[2, 1] - StressSqvals[1, 1];
+    inv_sqr_delta = 1. / (dx * dx);
 
-      ### Compute inter-bead distances
-      dQ = circshift(Q, -1) - Q;
-      dQ[C.NBeads] += C.Period;
+    ### Next, for each inter-bead distance, compute the stress
+    for i=1:length(dQ)
+        if dQ[i] < Rmin
+            m = -135.21;
+            q = 403.79;
+            Gvec[i] = m * dQ[i] + q;
+        elseif dQ[i] > Rmax
+            A = 3.3199e6;
+            B = 4.8887;
+            Gvec[i] = A * exp(-B * dQ[i]);
+        else
+            index = trunc(Int, (dQ[i] - Rmin) / dx) + 1;
+            distance = dQ[i] - (Rmin + (index - 1) * dx);
+            Gvec[i] = StressSqvals[index, 2] + distance * (StressSqvals[index, 3] + distance * (StressSqvals[index, 5] + distance * StressSqvals[index, 4]) * inv_sqr_delta);
+        end
+    end
+    
+    #println("dQ", dQ);
 
-	  Rmin = Fdata[1, 1];
-	  Rmax = Fdata[end, 1];
-	  dx = Fdata[2, 1] - Fdata[1, 1];
-	  inv_sqr_delta = 1. / (dx * dx);
+    ### Set diffusivity to zero if negative.
+    Gvec = max.(Gvec, 0);
+    
+    ### Form memory matrix
+    diagonal = Gvec + circshift(Gvec, 1);
+    off_diagonal = -Gvec;
+    Gamma = diagm(diagonal) + circshift(diagm(off_diagonal), -1) + circshift(diagm(off_diagonal), 1);
 
-      ### For each inter-bead distance, compute diffusivity
-      for i=1:length(dQ)
-	      if dQ[i] < 0.9
-		      m = (6464.26 - 8859.34) / (1.2-0.90);
-		      q = 8859.34 - m * 0.90;
-		      Gvec[i] = m * dQ[i] + q;
-	      elseif dQ[i] > 3.78
-		      Gvec[i] = 0; #coeffs[1];
-	      else
-			  index = trunc(Int, (dQ[i] - Rmin) / dx) + 1;
-			  distance = dQ[i] - (Rmin + (index - 1) * dx);
-			  Sigma[i] = Fmean[index] + distance * (Fmean_d[index] + distance * (Fmean_coeff2[index] + distance * Fmean_coeff1[index]) * inv_sqr_delta);
+    ### Perform eigenvalue decomposition
+    F = eigen(Gamma); # Computes the eigenvalue decomposition, returning an Eigen factorization object which contains the eigenvalues in F.values and the eigenvectors in the columns of the matrix F.vectors.
+    F.values[1] = 0.;
 
-			  ### Extract value of interpolant
-			  Gvec[i] = coeffs[1];
-		  end
-	  end
+    ### Calculate exact Ornstein-Uhlenbeck step using decomposition
+    exp_part = exp.(-F.values * C.Beta * dt / (2.0 * C.BeadMass))
+    c1 = diagm(0 => exp_part);
+    
+    # we want to avoid numerical issues and thus enforce the positiveness of the sqrt argument
+    sqrt_part = max.(1.0 .- exp_part.^2, 0);
+    c3 = diagm(0 => sqrt(C.BeadMass / C.Beta) * sqrt.(sqrt_part));
 
-  	  ### Set diffusivity to zero if negative.
-      Gvec = max.(Gvec, 0); #This function return the maximum of the arguments.
-
-  	  ### Form memory matrix (that is a tridiagonal matrix)
-      Gamma = diagm(0 => Gvec) - circshift(diagm(0 => Gvec), -1);
-  	  Gamma = (Gamma - circshift(Gamma,1));
-	  # println("GAMMA = ", Gamma)
-
-      ### Perform eigenvalue decomposition
-  	  F = eigen(Gamma); # Computes the eigenvalue decomposition, returning an Eigen factorization object F
-	                    # which contains the eigenvalues in F.values and the eigenvectors in the columns of the matrix F.vectors.
-	  # println("EIGENVALUES = ", F.values)
-	  # println("EIGENVECTOR = ", F.vectors)
-      F.values[1] = 0;
-
-  	  ### Calculate exact Ornstein-Uhlenbeck step using decomposition
-      c1 = exp.(-F.values / (2 * C.BeadMass) * dt);
-	  # c1 = F.vectors * exp.(-F.values / (2 * C.BeadMass) * dt) .* F.vectors';
-	  # c3 = sqrt(C.BeadMass) * sqrt.(abs.(1.0 .- c1^2)) * randn(C.NBeads);
-	  c3 = sqrt(C.BeadMass) * sqrt.(1.0 .- c1.^2) .* randn(C.NBeads);
-
-      ### Generate new momenta and return
-	  # println("PNext = ", c1 * P + c3 )
-	  # return c1 * P + c3, Gvec, dQ
-      return F.vectors * (c1 .* (F.vectors' * P) + c3), Gvec, dQ
-  end
+    return F.vectors * (c1 * (inv(F.vectors) * P) + c3 * (inv(F.vectors) * randn(C.NBeads))), Gvec, dQ
 end
 
 end # module CGStats
