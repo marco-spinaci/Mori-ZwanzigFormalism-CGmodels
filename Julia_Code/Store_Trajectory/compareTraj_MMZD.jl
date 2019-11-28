@@ -33,7 +33,7 @@ S = Simulator(dt=1e-3, Stochdt=1e-4, FullSteps=Int(1e4), ApproxSteps=Int(1e5));
 
 ## Mean Force
 
-force_data = readdlm("force_to_interpolate.dat", Float64);
+force_data = readdlm("Store_Trajectory/force_to_interpolate.dat", Float64);
 
 # i punti della griglia *devono* essere equispaziati
 RR = force_data[:, 1];
@@ -54,7 +54,7 @@ FdataMF[:, 5] = Fmean_coeff2[1:end - 1];
 
 ## Fluctuating Force
 
-flucts_data = readdlm("flucts_to_interpolate.dat", Float64);
+flucts_data = readdlm("Store_Trajectory/flucts_to_interpolate.dat", Float64);
 
 # i punti della griglia *devono* essere equispaziati
 RR = flucts_data[:, 1];
