@@ -1775,7 +1775,8 @@ function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},
     c1 = diagm(0 => exp_part);
 
     # we want to avoid numerical issues and thus enforce the positiveness of the sqrt argument
-    sqrt_part = max.(1.0 .- exp_part.^2, 0);
+    # sqrt_part = max.(1.0 .- exp_part.^2, 0);
+	sqrt_part = abs.(1.0 .- exp_part.^2, 0);
     c3 = diagm(0 => sqrt(C.BeadMass / C.Beta) * sqrt.(sqrt_part));
 
     return F.vectors * (c1 * (inv(F.vectors) * P) + c3 * (inv(F.vectors) * randn(C.NBeads))), Gvec, dQ

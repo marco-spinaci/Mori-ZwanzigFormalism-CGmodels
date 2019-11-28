@@ -57,11 +57,11 @@ set key font ",18"
 
 
 set ylabel "{{/Roman ACF}}"
-# set output "| epstopdf -f -o=../TEX_Notes/Figure/ACF_comparison.pdf"
-set output "| epstopdf -f -o=Data_Analysis/ACF/Plots/ACF_comparison_sB.pdf"
-p "./Data_Analysis/ACF/Outcomes/sB_FullcorrF.csv" u 1:2 w l lw 5 lc 7 dt 2 t "ACF of the Force - FGD", \
-  "./Data_Analysis/ACF/Outcomes/sB_FullcorrF_OC.csv" u 1:2 w l lw 5 lc 6 dt 4 t " ACF of the Flucutating Force - FGD", \
-  "./Data_Analysis/ACF/Outcomes/sB_FullcorrP.csv" u 1:2 w l lw 5 lc 2 dt 1 t "ACF of the Momenta - FGD"
+set output "| epstopdf -f -o=../TEX_Notes/Figure/ACF_comparison.pdf"
+# set output "| epstopdf -f -o=Data_Analysis/ACF/Plots/ACF_comparison_sB.pdf"
+p "./Data_Analysis/ACF/Outcomes/sC_FullcorrF_OC.csv" u 1:2 w l lw 5 lc 8 dt 4 t " ACF of the Flucutating Force - FGD", \
+  "./Data_Analysis/ACF/Outcomes/sC_FullcorrF.csv" u 1:2 w l lw 5 lc 4 dt 2 t "ACF of the Force - FGD", \
+  "./Data_Analysis/ACF/Outcomes/sC_FullcorrP.csv" u 1:2 w l lw 5 lc 9 dt 1 t "ACF of the Momenta - FGD"
 set output
 
 
