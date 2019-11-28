@@ -75,64 +75,57 @@ for i in 1:length(dQ)
     end
 end
 
-#Sigma1 = reshape(Sigma, l);
-#Sigma1 = Sigma1[i];
-# println("Sigma = ", Sigma1);
-
-#open("./Code_Tests/Interpolation/Outcomes/RFmean_algInt_test.csv", "w+") do x
 open("force.dat", "w+") do x
     writedlm(x, [dQ Sigma])
 end
 
 ### Fluctuating Force
 
-Fstd_data = readdlm("flucts_to_interpolate.dat", Float64);
-Fstd = Fstd_data[:, 2];
+flucts_data = readdlm("flucts_to_interpolate.dat", Float64);
+RR = flucts_data[:, 1];
+# i punti della griglia *devono* essere equispaziati
+dx = RR[2] - RR[1];
+inv_sqr_delta = 1. / (dx * dx);
 
-Gvec = zeros(size(dQ,1));
-for i=1:length(dQ)
-    if dQ[i] < 0.9
-        m = (6464.26 - 8859.34) / (1.2-0.90);
-        q = 8859.34 - m * 0.90;
+FF = flucts_data[:, 2];
+FF_d = flucts_data[:, 3];
+
+FF_coeff1 = (2. * (FF - circshift(FF, -1)) + (FF_d + circshift(FF_d, -1)) * dx) / dx;
+FF_coeff2 = circshift(FF, -1) - FF + (-FF_d - FF_coeff1) * dx;
+
+RR = RR[1:end - 1];
+FF = FF[1:end - 1];
+FF_d = FF_d[1:end - 1];
+FF_coeff1 = FF_coeff1[1:end - 1];
+FF_coeff2 = FF_coeff2[1:end - 1];
+
+N = 500;
+Rmin = RR[1];
+Rmax = RR[end];
+range = Rmax - Rmin;
+delta = range / N
+
+dQ = [Rmin-1:delta:Rmax+1;]
+
+Gvec = zeros(size(dQ));
+for i in 1:length(dQ)
+    if dQ[i] < Rmin
+        m = -135.21;
+        q = 403.79;
         Gvec[i] = m * dQ[i] + q;
-    elseif dQ[i] > 3.78
-        W = spdiagm(0 => exp.(-(RR .- 3.78) .^2 ./ σ^2));
-        J = ones(3, length(RR));
-        for j = 1:2
-            J[j+1, :] = (3.78 .- RR).^j;
-        end
-        K = J * W;
-        coeffs = (K * J') \ (K * Fstd);
-        Gvec[i] = coeffs[1];
+    elseif dQ[i] > Rmax
+        A = 3.3199e6;
+        B = 4.8887;
+        Gvec[i] = A * exp(-B * dQ[i]);
     else
-        W = spdiagm(0 => exp.(-(RR .- dQ[i]) .^2 ./ σ^2));
-        
-        J = ones(3, length(RR));
-        for j=1:2
-            J[j+1,:] = (dQ[i] .- RR).^j;
-        end
-        K = J * W;
-        coeffs = (K * J') \ (K * Fstd);
-        Gvec[i] = coeffs[1];
+        index = trunc(Int, (dQ[i] - Rmin) / dx) + 1;
+        distance = dQ[i] - (Rmin + (index - 1) * dx);
+        Gvec[i] = FF[index] + distance * (FF_d[index] + distance * (FF_coeff2[index] + distance * FF_coeff1[index]) * inv_sqr_delta);
     end
 end
 
-###
-
-l = length(dQ[:, 1]);
-RB = reshape(dQ[:, 1], l);
-i = sortperm(RB);
-RB = RB[i];
-# println("R =", RB);
-
-
-
-Gvec1 = reshape(Gvec, l);
-Gvec1 = Gvec1[i];
-# println("FF = ", Gvec1);
-
 open("flucts.dat", "w+") do x
-    writedlm(x, [RB Gvec1])
+    writedlm(x, [dQ Gvec])
 end
 
 ######################################################################
