@@ -1,7 +1,7 @@
 include("../../LJChain.jl")
 include("../../CGStats.jl")
 
-using Main.LJChain,Main.CGStats,StatsBase,DelimitedFiles
+using Main.LJChain,Main.CGStats,StatsBase,DelimitedFiles,Statistics
 
 C = Chain();
 S = Simulator();
@@ -11,11 +11,17 @@ S = Simulator();
 # P = readdlm("/home/pmams3/Desktop/PFull.csv", Float64);
 #P_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/P_FGD.csv", Float64);
 # P_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/PApprox_DCGD_test.csv", Float64);
-P_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/PApprox_MMZD.csv", Float64);
+P_MMZD = readdlm("Store_Trajectory/Outcomes/PApprox_MMZD.csv", Float64);
 
+for i in 1:size(P_MMZD, 1)
+    println(mean(P_MMZD[i, :]));
+    P_MMZD[i, :] .-= mean(P_MMZD[i, :]);
+end
+
+P_MMZD = P_MMZD[:];
 #h1 = fit(Histogram, P_FGD[:, 1]);
 # h2 = fit(Histogram, P_DCGD[:, 1]);
-h3 = fit(Histogram, P_MMZD[:, 1]);
+h3 = fit(Histogram, P_MMZD);
 
 #x01 = Vector(h1.edges[1]);
 # x02 = Vector(h2.edges[1]);
@@ -37,7 +43,8 @@ x03 = Vector(h3.edges[1]);
 
 H3 = zeros(length(h3.weights), 2);
 H3[:, 1] = (x03[2:end] + x03[1:end-1]) / 2;
-H3[:, 2] = h3.weights ./ length(P_MMZD[:, 1]);
+bin_size = x03[2] - x03[1];
+H3[:, 2] = h3.weights ./ (length(P_MMZD[:, 1]) * bin_size);
 open("Data_Analysis/PDF/Outcomes/HistP_MMZD.csv", "w+") do x
     writedlm(x, H3);
 end
@@ -63,7 +70,7 @@ end
     # dQ5[i, C.NBeads] += C.Period;
 # end
 
-Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD.csv", Float64);
+Q_MMZD = readdlm("Store_Trajectory/Outcomes/QApprox_MMZD.csv", Float64);
 lm = size(Q_MMZD,1);
 dQ6 = zeros(lm, C.NBeads);
 for i in 1:lm
@@ -73,7 +80,8 @@ end
 
 #h4 = fit(Histogram, dQ4[:, 1]);
 # h5 = fit(Histogram, dQ5[:, 1]);
-h6 = fit(Histogram, dQ6[:, 1]);
+dQ6 = dQ6[:];
+h6 = fit(Histogram, dQ6);
 
 #x04 = Vector(h4.edges[1]);
 # x05 = Vector(h5.edges[1]);
@@ -94,8 +102,9 @@ x06 = Vector(h6.edges[1]);
 # end
 
 H6 = zeros(length(h6.weights), 2);
+bin_size = x06[2] - x06[1];
 H6[:, 1] = (x06[2:end] +  x06[1:end-1]) / 2;
-H6[:, 2] = h6.weights ./ length(dQ6[:, 1]);
+H6[:, 2] = h6.weights ./ (length(dQ6[:, 1]) * bin_size);
 open("Data_Analysis/PDF/Outcomes/HistQ_MMZD.csv", "w+") do x
     writedlm(x, H6);
 end
