@@ -3,9 +3,9 @@
 
 include("../LJChain.jl")
 include("../CGStats.jl")
-using Main.LJChain,Main.CGStats,DelimitedFiles, Random
+using Main.LJChain, Main.CGStats, DelimitedFiles, Random
 
-Random.seed!(1234)
+# Random.seed!(1234)
 
 ####################################################################################################################
 # Set up simulation parameters.
