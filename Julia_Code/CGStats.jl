@@ -1726,6 +1726,8 @@ end
 
 function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},
 	StressSqvals::Array{Float64,2},C::Chain,dt::Float64,σ::Float64=0.1,N::Int=2)
+	
+	P = P .- mean(P);
 
     Gvec = zeros(size(Q));
 
@@ -1768,18 +1770,20 @@ function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},
 
     ### Perform eigenvalue decomposition
     F = eigen(Gamma); # Computes the eigenvalue decomposition, returning an Eigen factorization object which contains the eigenvalues in F.values and the eigenvectors in the columns of the matrix F.vectors.
-    F.values[1] = 0.;
+    
+    values = max.(real.(F.values), 0.);
+    vectors = real.(F.vectors);
 
     ### Calculate exact Ornstein-Uhlenbeck step using decomposition
-    exp_part = exp.(-F.values * C.Beta * dt / (2.0 * C.BeadMass));
+    exp_part = exp.(-values * C.Beta * dt / (2.0 * C.BeadMass));
     c1 = diagm(0 => exp_part);
 
     # we want to avoid numerical issues and thus enforce the positiveness of the sqrt argument
     #sqrt_part = max.(1.0 .- exp_part.^2, 0);
-    sqrt_part = abs.(1.0 .- exp_part.^2);
-    c3 = diagm(0 => sqrt.(sqrt_part ./ C.Beta));
+    sqrt_part = max.(1.0 .- exp_part.^2, 0.) .* (C.BeadMass / C.Beta);
+    c3 = diagm(0 => sqrt.(sqrt_part));
 
-    return F.vectors * c1 * inv(F.vectors) * P + F.vectors * c3 * inv(F.vectors) * sqrt(C.BeadMass) * randn(C.NBeads), Gvec, dQ
+    return vectors * c1 * inv(vectors) * P + vectors * c3 * inv(vectors) * randn(C.NBeads), Gvec, dQ
 end
 
 end # module CGStats
