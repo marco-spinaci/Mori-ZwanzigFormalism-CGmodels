@@ -16,7 +16,7 @@ deps/deps.jl
 
 # exclude directory
 Transferability/
-Julia_Code/Store_Trajectory/Outcomes/
+# Julia_Code/Store_Trajectory/Outcomes/
 
 # exclude file
-# Julia_Code/Store_Trajectory/Outcomes/*.csv
+Julia_Code/Store_Trajectory/Outcomes/*.csv
