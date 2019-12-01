@@ -17,7 +17,7 @@ P_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Ou
 # P_MMZD = readdlm("Store_Trajectory/Outcomes/PApprox_MMZD_1.csv", Float64);
 
 for i in 1:size(P_MMZD, 1)
-    println(mean(P_MMZD[i, :]));
+    # println(mean(P_MMZD[i, :]));
     P_MMZD[i, :] .-= mean(P_MMZD[i, :]);
 end
 
