@@ -3,7 +3,7 @@ include("../../CGStats.jl")
 # include("LJChain.jl")
 # include("CGStats.jl")
 
-using Main.LJChain,Main.CGStats,Statistics,DelimitedFiles,PyPlot
+using Main.LJChain,Main.CGStats,Statistics,DelimitedFiles
 
 C = Chain();
 S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
