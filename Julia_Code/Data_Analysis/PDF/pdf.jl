@@ -1,5 +1,7 @@
 include("../../LJChain.jl")
 include("../../CGStats.jl")
+include("LJChain.jl")
+include("CGStats.jl")
 
 using Main.LJChain,Main.CGStats,StatsBase,DelimitedFiles,Statistics
 
@@ -14,7 +16,7 @@ S = Simulator();
 P_MMZD = readdlm("Store_Trajectory/Outcomes/PApprox_MMZD.csv", Float64);
 
 for i in 1:size(P_MMZD, 1)
-    println(mean(P_MMZD[i, :]));
+    # println(mean(P_MMZD[i, :]));
     P_MMZD[i, :] .-= mean(P_MMZD[i, :]);
 end
 

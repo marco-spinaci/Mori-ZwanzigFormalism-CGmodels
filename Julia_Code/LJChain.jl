@@ -77,6 +77,9 @@ pattern Patt.
   PhiFConstr::Array{Float64,2} 	= kron(Diagonal(ones(NBeads))[1:ConstrainedBeads-1,:],[zeros(Float64,length(Patt)-1);1.0]')  # Forces between constrained beads
   PsiF			        		= (circshift(Phi,(0,length(Patt)))-Phi)/2.;  # Relative momenta
   PsiFConstr					= (circshift(PhiConstr[1:ConstrainedBeads-1,:],(0,length(Patt)))-PhiConstr[1:ConstrainedBeads-1,:])/2.;  # Relative momenta
+
+  # to compute the CdM of the chain
+  vectorCdM = BeadMass * ones(NBeads) / (NBeads * BeadMass)
 end
 
 
