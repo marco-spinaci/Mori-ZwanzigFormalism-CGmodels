@@ -313,15 +313,15 @@ function ApproximateTraj_NEW(P0,Q0,FmeanData::Array{Float64,2},FstdData::Array{F
 		Pstore[j,:] = P;
 	    Qstore[j,:] = Q;
 	    Fstore[j,:] = F;
-		if j % 10 == 0
-			open("Store_Trajectory/Outcomes/Q_MMZD_1.csv", "w+") do x
-				# @printf(x, "%s\n", map(y -> @sprintf(%f, y), Q) )
-				writedlm(x, Qstore);
-			end
-			open("Store_Trajectory/Outcomes/P_MMZD_1.csv", "w+") do x
-				writedlm(x, Pstore);
-			end
-		end
+		# if j % 10 == 0
+		# 	open("Store_Trajectory/Outcomes/Q_MMZD_1.csv", "w+") do x
+		# 		# @printf(x, "%s\n", map(y -> @sprintf(%f, y), Q) )
+		# 		writedlm(x, Qstore);
+		# 	end
+		# 	open("Store_Trajectory/Outcomes/P_MMZD_1.csv", "w+") do x
+		# 		writedlm(x, Pstore);
+		# 	end
+		# end
 		j += 1;
 	end
   end
