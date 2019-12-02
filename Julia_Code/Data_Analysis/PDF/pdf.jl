@@ -13,7 +13,7 @@ S = Simulator();
 # P = readdlm("/home/pmams3/Desktop/PFull.csv", Float64);
 # P_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/P_FGD_1e7.csv", Float64);
 # P_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/PApprox_DCGD_1e7.csv", Float64);
-P_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/PApprox_MMZD_1e7_1e-4.csv", Float64);
+P_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/PApprox_MMZD_1e8_1e-4.csv", Float64);
 # P_MMZD = readdlm("Store_Trajectory/Outcomes/PApprox_MMZD_1.csv", Float64);
 
 for i in 1:size(P_MMZD, 1)
@@ -53,7 +53,7 @@ H3 = zeros(length(h3.weights), 2);
 H3[:, 1] = (x03[2:end] + x03[1:end-1]) / 2;
 bin_size = x03[2] - x03[1];
 H3[:, 2] = h3.weights ./ (length(P_MMZD[:, 1]) * bin_size);
-open("Data_Analysis/PDF/Outcomes/HistP_MMZD_1e-4.csv", "w+") do x
+open("Data_Analysis/PDF/Outcomes/HistP_MMZD_1e8_1e-4.csv", "w+") do x
     writedlm(x, H3);
 end
 
@@ -77,7 +77,7 @@ end
 # end
 
 # Q_MMZD = readdlm("Store_Trajectory/Outcomes/QApprox_MMZD_1.csv", Float64);
-Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD_1e7_1e-4.csv", Float64);
+Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD_1e8_1e-4.csv", Float64);
 lm = size(Q_MMZD,1);
 dQ6 = zeros(lm, C.NBeads);
 for i in 1:lm
@@ -117,6 +117,6 @@ H6 = zeros(length(h6.weights), 2);
 bin_size = x06[2] - x06[1];
 H6[:, 1] = (x06[2:end] +  x06[1:end-1]) / 2;
 H6[:, 2] = h6.weights ./ (length(dQ6[:, 1]) * bin_size);
-open("Data_Analysis/PDF/Outcomes/HistQ_MMZD_1e-4.csv", "w+") do x
+open("Data_Analysis/PDF/Outcomes/HistQ_MMZD_1e8_1e-4.csv", "w+") do x
     writedlm(x, H6);
 end
