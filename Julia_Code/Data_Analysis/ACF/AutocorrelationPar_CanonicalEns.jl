@@ -6,7 +6,8 @@ using Distributed
 @time begin
 
 ## Set up parallel computing
-addprocs(Sys.CPU_THREADS);
+# addprocs(Sys.CPU_THREADS);
+addprocs(18);
 
 @everywhere include("LJChain.jl")
 @everywhere include("CGStats.jl")
@@ -14,10 +15,10 @@ using Main.LJChain, Main.CGStats, SharedArrays, Parameters, Statistics, LinearAl
 
 
 ## Set up simulation parameters.
-# C = Chain();     ## system C ≣ [Patt=[0,1,0], NBeads=10, ConstrainedBeads=2, SEps=1, LEps=100, SM=10, LM=1, Dist=1, γ=1, β=1]
-C = Chain(SM=1,LM=10,SEps=10,LEps=.1); ## system B ≝ [Patt=[0,1,0], SM(mass of particles 0), LM(mass of particles 1), γ=1, β=1]
+C = Chain();     ## system C ≣ [Patt=[0,1,0], NBeads=10, ConstrainedBeads=2, SEps=1, LEps=100, SM=10, LM=1, Dist=1, γ=1, β=1]
+# C = Chain(SM=1,LM=10,SEps=10,LEps=.1); ## system B ≝ [Patt=[0,1,0], SM(mass of particles 0), LM(mass of particles 1), γ=1, β=1]
 
-S = Simulator(dt=1e-3, Stochdt=1e-4, FullSteps=Int(1e6), OrthoSamples=Int(1e5), MacroSamples=1000, LagStep=10, NumLags=Int(1e4));
+S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e6), ApproxSteps=Int(1e6), OrthoSamples=Int(1e5), MacroSamples=500, LagStep=10, NumLags=Int(1e4));
 ## [dt=1e-4,Stochdt=1e-4,FullSteps=Int(1e5),OrthoSteps=1,ApproxSteps=Int(1e5),OrthoSamples=Int(1e5),MacroSamples=50,LagStep=400,NumLags=30]
 
 ## LagStep = spacing of lag times for autocorrelation
@@ -34,7 +35,9 @@ S = Simulator(dt=1e-3, Stochdt=1e-4, FullSteps=Int(1e6), OrthoSamples=Int(1e5), 
 # Fmean = CG[:,4];
 # Fstd = CG[:,5];
 
-# data extracted from the Kriging interpolation of the original Mean Force data
+## data extracted from the Kriging interpolation of the original Mean Force data
+## Mean Force
+
 force_data = readdlm("Data_Analysis/ACF/force_to_interpolate.dat", Float64);
 
 # we generate the coefficients for the cubic spline interpolation
@@ -55,32 +58,53 @@ Fdata[:, 3] = Fmean_d[1:end - 1];
 Fdata[:, 4] = Fmean_coeff1[1:end - 1];
 Fdata[:, 5] = Fmean_coeff2[1:end - 1];
 
+## Fluctuating Force
+
+flucts_data = readdlm("Data_Analysis/ACF/flucts_to_interpolate.dat", Float64);
+
+# i punti della griglia *devono* essere equispaziati
+RR = flucts_data[:, 1];
+dx = RR[2] - RR[1];
+
+FF = flucts_data[:, 2];
+FF_d = flucts_data[:, 3];
+
+FF_coeff1 = (2. * (FF - circshift(FF, -1)) + (FF_d + circshift(FF_d, -1)) * dx) / dx;
+FF_coeff2 = circshift(FF, -1) - FF + (-FF_d - FF_coeff1) * dx;
+
+FdataFF = zeros(length(FF) - 1, 5);
+FdataFF[:, 1] = RR[1:end - 1];
+FdataFF[:, 2] = FF[1:end - 1];
+FdataFF[:, 3] = FF_d[1:end - 1];
+FdataFF[:, 4] = FF_coeff1[1:end - 1];
+FdataFF[:, 5] = FF_coeff2[1:end - 1];
+
 #####################################################################################
 ## Compute autocorrelation stats for FULL DYNAMICS
 # (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,RR,Fmean*0);
-(StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,Fdata*0);
-
-open("./Data_Analysis/ACF/Outcomes/sB_FullcorrP.csv","w+") do x
-    writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
-end
-
-open("./Data_Analysis/ACF/Outcomes/sB_FullcorrF.csv","w+") do x
-    writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
-end
-
-
-
-## Compute autocorrelation stats for FULL DYNAMICS (ORTHOGONAL COMPONENT)
-# (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,RR,Fmean);
-(StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,Fdata);
-
-open("./Data_Analysis/ACF/Outcomes/sB_FullcorrP_OC.csv","w+") do x
-    writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
-end
-
-open("./Data_Analysis/ACF/Outcomes/sB_FullcorrF_OC.csv","w+") do x
-    writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
-end
+# (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,Fdata*0);
+#
+# open("./Data_Analysis/ACF/Outcomes/sB_FullcorrP.csv","w+") do x
+#     writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
+# end
+#
+# open("./Data_Analysis/ACF/Outcomes/sB_FullcorrF.csv","w+") do x
+#     writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
+# end
+#
+#
+#
+# ## Compute autocorrelation stats for FULL DYNAMICS (ORTHOGONAL COMPONENT)
+# # (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,RR,Fmean);
+# (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,Fdata);
+#
+# open("./Data_Analysis/ACF/Outcomes/sB_FullcorrP_OC.csv","w+") do x
+#     writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
+# end
+#
+# open("./Data_Analysis/ACF/Outcomes/sB_FullcorrF_OC.csv","w+") do x
+#     writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
+# end
 
 ## Use PyPlot to plot autocorrelation
 # plot(S.dt*S.LagStep*[0:S.NumLags-1;],MomAutocorr);
@@ -109,17 +133,17 @@ end
 
 
 ## Compute autocorrelation stats for APPROXIMATE DYNAMICS
-# (StressAutocorr,MomAutocorr) = ApproximateAutocorrPar(C,S,RR,Fmean,Fstd);
-#
-# open("./Data_Analysis/ACF/Outcomes/ApproximatecorrP.csv","w+") do x
-#     writedlm(x,[ S.Stochdt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
-# end
-#
-# open("./Data_Analysis/ACF/Outcomes/ApproximatecorrF.csv","w+") do x
-#     writedlm(x,[ S.Stochdt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
-# end
+(StressAutocorr,MomAutocorr) = ApproximateAutocorrPar(C,S,Fdata,FdataFF);
 
-## Use PyPlot to plot autocorrelation
+open("./Data_Analysis/ACF/Outcomes/sC_ApproximatecorrP.csv","w+") do x
+    writedlm(x,[ S.Stochdt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
+end
+
+open("./Data_Analysis/ACF/Outcomes/sC_ApproximatecorrF.csv","w+") do x
+    writedlm(x,[ S.Stochdt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
+end
+
+# Use PyPlot to plot autocorrelation
 # plot(S.Stochdt*S.LagStep*[0:S.NumLags-1;],MomAutocorr);
 # savefig("./Data_Analysis/AC_FullAndConstrainedTraj/Plots/ApproximatecorrP.svg");
 # plot(S.Stochdt*S.LagStep*[0:S.NumLags-1;],StressAutocorr);

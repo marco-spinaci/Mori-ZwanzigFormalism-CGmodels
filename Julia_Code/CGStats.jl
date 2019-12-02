@@ -843,14 +843,16 @@ function FullAutocorrLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S:
     return StressStats,StressMean,StressSqMean,MomStats,MomMean,MomSqMean
 end
 
+# function ApproximateAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
+							# C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanData::Array{Float64,1},FstdData::Array{Float64,1})
 function ApproximateAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
-							C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanData::Array{Float64,1},FstdData::Array{Float64,1})
+	                           C::Chain,S::Simulator,FmeanData::Array{Float64,2},FstdData::Array{Float64,2})
   # Generate mean force function
-  MeanForce = X -> ApproxMeanForce(X,dQData,FmeanData,C)[1];
+  MeanForce = X -> ApproxMeanForce_NEW(X,FmeanData,C)[1];
   F = MeanForce(Q);
 
   # Set up approximate fluctuation generator
-  FlucStep = (X,Y) -> ApproxFlucStep(X,Y,dQData,FstdData,C,S.Stochdt)[1];
+  FlucStep = (X,Y) -> ApproxFlucStep_NEW(X,Y,FstdData,C,S.Stochdt)[1];
 
   # Mean Forces
   StressStats 	= zeros(S.NumLags,C.NBeads);
@@ -1433,7 +1435,8 @@ function FullAutocorrLangDynPar(C::Chain,S::Simulator,FmeanData::Array{Float64,2
   return StressAutocorr, MomAutocorr
 end
 
-function ApproximateAutocorrPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanData::Array{Float64,1},FstdData::Array{Float64,1})
+# function ApproximateAutocorrPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanData::Array{Float64,1},FstdData::Array{Float64,1})
+function ApproximateAutocorrPar(C::Chain,S::Simulator,FmeanData::Array{Float64,2},FstdData::Array{Float64,2})
   if S.dt > 0.1*sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt));
     warn("Timestep = ",S.dt,
       " not ≪  shortest timescale = ",sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt)));
@@ -1472,7 +1475,8 @@ function ApproximateAutocorrPar(C::Chain,S::Simulator,dQData::Array{Float64,1},F
             QQ = Q;
             # Get distances between CG particles
             println("      Sample ",ii,"  over fine-grained variables...");
-            (StressStats[ii,:,:],StressMean[ii,:],StressSqMean[ii,:],MomStats[ii,:,:],MomMean[ii,:],MomSqMean[ii,:]) = remotecall_fetch(ApproximateAutocorr,p,PP,QQ,C,S,dQData,FmeanData,FstdData);
+            # (StressStats[ii,:,:],StressMean[ii,:],StressSqMean[ii,:],MomStats[ii,:,:],MomMean[ii,:],MomSqMean[ii,:]) = remotecall_fetch(ApproximateAutocorr,p,PP,QQ,C,S,dQData,FmeanData,FstdData);
+			(StressStats[ii,:,:],StressMean[ii,:],StressSqMean[ii,:],MomStats[ii,:,:],MomMean[ii,:],MomSqMean[ii,:]) = remotecall_fetch(ApproximateAutocorr,p,PP,QQ,C,S,FmeanData,FstdData);
             println("      Sample ",ii," complete!");
           end
         end
