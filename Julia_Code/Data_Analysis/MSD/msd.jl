@@ -22,7 +22,7 @@ i = 1;
 sumtot = 0;
 while i < N
     for j in 1:(N-i)
-        global sumtot += sum((Q_FGD[j+1,:] - Q_FGD[j,:]) .^ 2);
+        global sumtot += sum((Q_FGD[j+i,:] - Q_FGD[j,:]) .^ 2);
     end
     msd1[i] = sumtot / ((N-i) * C.NBeads);
     global i += 1;
@@ -48,7 +48,7 @@ i = 1;
 sumtot = 0;
 while i < N
     for j in 1:(N-i)
-        global sumtot += sum((Q_DCGD[j+1,:] - Q_DCGD[j,:]) .^ 2);
+        global sumtot += sum((Q_DCGD[j+i,:] - Q_DCGD[j,:]) .^ 2);
     end
     msd2[i] = sumtot / ((N-i) * C.NBeads);
     global i += 1;
@@ -75,7 +75,7 @@ i = 1;
 sumtot = 0;
 while i < N
     for j in 1:(N-i)
-        global sumtot += sum((Q_MMZD[j+1,:] - Q_MMZD[j,:]) .^ 2);
+        global sumtot += sum((Q_MMZD[j+i,:] - Q_MMZD[j,:]) .^ 2);
     end
     msd3[i] = sumtot / ((N-i) * C.NBeads);
     global i += 1;
