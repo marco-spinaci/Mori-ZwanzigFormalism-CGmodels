@@ -60,7 +60,7 @@ end
 
 ############################################# pdf(R) ###############################################################
 
-Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Q_FGD_1e7.csv", Float64);
+Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Q_FGD_1e7_1e-4.csv", Float64);
 lf = size(Q_FGD,1);
 dQ4 = zeros(lf, C.NBeads);
 for i in 1:lf
