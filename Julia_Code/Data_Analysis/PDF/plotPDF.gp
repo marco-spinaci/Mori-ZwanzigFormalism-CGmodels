@@ -8,10 +8,10 @@ set format y "10^{%L}"
 
 
 set xlabel "{{/RomanOblique P}}"
-# set xrange [-10:10]
+set xrange [-10:10]
 # set xtics 5
 set ylabel "{{/RomanOblique pdf (P)}}"
-# set yrange[1e-2:1e-1]
+set yrange[1e-2:1e-1]
 
 
 f(x) = a*exp(-b*x**2)
