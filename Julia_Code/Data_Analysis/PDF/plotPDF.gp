@@ -8,14 +8,14 @@ set format y "10^{%L}"
 
 
 set xlabel "{{/RomanOblique P}}"
-# set xrange [-10:10]
+set xrange [-10:10]
 # set xtics 5
 set ylabel "{{/RomanOblique pdf (P)}}"
-# set yrange[1e-2:1e-1]
+set yrange[1e-2:1e-1]
 
 
 f(x) = a*exp(-b*x**2)
-a = sqrt(21 / (2*pi))/20
+a = sqrt(1 / (2*pi*21))
 b = 0.0238095
 set output "| epstopdf -f -o=Data_Analysis/PDF/Plots/HistPDF_P_test.pdf"
 # fit f(x) "./Data_Analysis/PDF/Outcomes/HistP_MMZD_1e-4.csv" via a,b
