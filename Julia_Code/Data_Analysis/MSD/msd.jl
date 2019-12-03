@@ -14,8 +14,8 @@ Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Out
 # Q_FGD = readdlm("Store_Trajectory/Outcomes/Q_FGD.csv", Float64);
 
 N = size(Q_FGD, 1);
-
-msd1 = zeros(N-1);
+l = N - 1;
+msd1 = zeros(l);
 
 n = 1;
 sumtot = 0;
@@ -29,7 +29,7 @@ while n < N
 end
 
 open("Data_Analysis/MSD/Outcomes/msd_FGD.csv", "w+") do x
-    writedlm(x, [ S.dt*100*[0:n-1;] msd1 ]);
+    writedlm(x, [ S.dt*100*[0:l-1;] msd1 ]);
 end
 
 
@@ -37,7 +37,7 @@ end
 ################################################################################
 
 Q_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_DCGD_1e7.csv", Float64);
-Q_DCGD = readdlm("Store_Trajectory/Outcomes/QApprox_DCGD_test.csv", Float64);
+# Q_DCGD = readdlm("Store_Trajectory/Outcomes/QApprox_DCGD_test.csv", Float64);
 
 N = size(Q_DCGD, 1);
 n = N - 1;
@@ -61,7 +61,7 @@ end
 
 ################################################################################
 
-Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD_1e7.csv", Float64);
+Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD_1e7(B1.096).csv", Float64);
 # Q_MMZD = readdlm("Store_Trajectory/Outcomes/QApprox_MMZD_1.csv", Float64);
 
 # CdM = Q_MMZD * C.vectorCdM;
