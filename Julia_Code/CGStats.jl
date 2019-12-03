@@ -1599,6 +1599,9 @@ end
 
 function ApproxMeanStresses_NEW(Q::Array{Float64,1},Fdata::Array{Float64,2},C::Chain,σ::Float64=0.1,N::Int=2)
 	if sum(Fdata) == 0
+		dQ = circshift(Q, -1) - Q;
+		dQ[C.NBeads] += C.Period;
+		
 		return zeros(size(Q)), dQ
 	else
 		Sigma = zeros(size(Q));
