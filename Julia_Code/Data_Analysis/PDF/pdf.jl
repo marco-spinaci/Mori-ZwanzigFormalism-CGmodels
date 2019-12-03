@@ -20,7 +20,7 @@ H1 = zeros(length(h1.weights), 2);
 H1[:, 1] = (x01[2:end] + x01[1:end-1]) / 2;
 bin_size = x01[2] - x01[1];
 H1[:, 2] = h1.weights ./ (length(P_FGD[:, 1]) * bin_size)
-open("Data_Analysis/PDF/Outcomes/HistP_FGD_1e8_1e-4.csv", "w+") do x
+open("Data_Analysis/PDF/Outcomes/HistP_FGD_1e7_test.csv", "w+") do x
    writedlm(x, H1);
 end
 
@@ -82,7 +82,7 @@ H4 = zeros(length(h4.weights), 2);
 bin_size = x04[2] - x04[1];
 H4[:, 1] = (x04[2:end] +  x04[1:end-1]) / 2;
 H4[:, 2] = h4.weights ./ (length(dQ4[:, 1]) * bin_size);
-open("Data_Analysis/PDF/Outcomes/HistQ_FGD_1e8_1e-4.csv", "w+") do x
+open("Data_Analysis/PDF/Outcomes/HistQ_FGD_1e7_test.csv", "w+") do x
     writedlm(x, H4);
 end
 
