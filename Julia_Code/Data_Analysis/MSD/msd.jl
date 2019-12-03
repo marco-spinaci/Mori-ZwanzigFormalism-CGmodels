@@ -14,18 +14,18 @@ Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Out
 # Q_FGD = readdlm("Store_Trajectory/Outcomes/Q_FGD.csv", Float64);
 
 N = size(Q_FGD, 1);
-n = N - 1;
 
-msd1 = zeros(n);
+msd1 = zeros(N-1);
 
-i = 1;
+n = 1;
 sumtot = 0;
-while i < N
-    for j in 1:(N-i)
-        global sumtot += sum((Q_FGD[j+i,:] - Q_FGD[j,:]) .^ 2);
+while n < N
+    for i in 1:(N-n)
+        global sumtot += sum((Q_FGD[i+n,:] - Q_FGD[i,:]) .^ 2) / C.NBeads;
     end
-    msd1[i] = sumtot / ((N-i) * C.NBeads);
-    global i += 1;
+    msd1[n] = sumtot / (N-n);
+    global sumtot = 0;
+    global n += 1;
 end
 
 open("Data_Analysis/MSD/Outcomes/msd_FGD.csv", "w+") do x
@@ -37,7 +37,7 @@ end
 ################################################################################
 
 Q_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_DCGD_1e7.csv", Float64);
-# Q_DCGD = readdlm("Store_Trajectory/Outcomes/QApprox_DCGD_test.csv", Float64);
+Q_DCGD = readdlm("Store_Trajectory/Outcomes/QApprox_DCGD_test.csv", Float64);
 
 N = size(Q_DCGD, 1);
 n = N - 1;
@@ -51,6 +51,7 @@ while i < N
         global sumtot += sum((Q_DCGD[j+i,:] - Q_DCGD[j,:]) .^ 2);
     end
     msd2[i] = sumtot / ((N-i) * C.NBeads);
+    global sumtot = 0;
     global i += 1;
 end
 
@@ -78,6 +79,7 @@ while i < N
         global sumtot += sum((Q_MMZD[j+i,:] - Q_MMZD[j,:]) .^ 2);
     end
     msd3[i] = sumtot / ((N-i) * C.NBeads);
+    global sumtot = 0;
     global i += 1;
 end
 

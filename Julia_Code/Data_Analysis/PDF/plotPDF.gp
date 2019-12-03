@@ -21,7 +21,7 @@ set output "| epstopdf -f -o=Data_Analysis/PDF/Plots/HistPDF_P_test.pdf"
 # fit f(x) "./Data_Analysis/PDF/Outcomes/HistP_MMZD_1e-4.csv" via a,b
 p f(x) lw 5 t "f(x)", \
   "./Data_Analysis/PDF/Outcomes/HistP_FGD.csv" u 1:2 w p lw 5 lc 2 dt 1 t "FGD" , \
-  "./Data_Analysis/PDF/Outcomes/HistP_FGD_1e-4.csv" u 1:2 w p lw 5 lc 3 dt 1 t "FGD 10^{-4}" , \
+  "./Data_Analysis/PDF/Outcomes/HistP_FGD_1e8_1e-4.csv" u 1:2 w p lw 5 lc 3 dt 1 t "FGD(10^8) 10^{-4}" , \
   "./Data_Analysis/PDF/Outcomes/HistP_MMZD.csv" u 1:2 w p lw 5 lc 7 dt 4 t "MMZD" , \
   "./Data_Analysis/PDF/Outcomes/HistP_MMZD_1e8_1e-4.csv" u 1:2 w p lw 1 lc 8 dt 4 t "MMZD(10^8) 10^{-4}"
 set output
@@ -30,6 +30,7 @@ set output
 # set output "| epstopdf -f -o=Data_Analysis/PDF/Plots/HistPDF_P.pdf"
 set output "| epstopdf -f -o=../TEX_Notes/Figure/HistPDF_P.pdf"
 p "./Data_Analysis/PDF/Outcomes/HistP_FGD.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+  "./Data_Analysis/PDF/Outcomes/HistP_FGD_1e8_1e-4.csv" u 1:2 w p lw 5 lc 3 dt 1 t "FGD(10^8) 10^{-4}" , \
   "./Data_Analysis/PDF/Outcomes/HistP_DCGD.csv" u 1:2 w l lw 5 lc 6 dt 2 t "DCGD" , \
   "./Data_Analysis/PDF/Outcomes/HistP_MMZD.csv" u 1:2 w l lw 5 lc 7 dt 4 t "MMZD" , \
   "./Data_Analysis/PDF/Outcomes/HistP_MMZD_1e8_1e-4.csv" u 1:2 w l lw 5 lc 8 dt 4 t "MMZD(10^8) 10^{-4}"
@@ -43,6 +44,7 @@ set ylabel "{{/RomanOblique pdf (R)}}"
 # set output "| epstopdf -f -o=Data_Analysis/PDF/Plots/HistPDF_Q.pdf"
 set output "| epstopdf -f -o=../TEX_Notes/Figure/HistPDF_Q.pdf"
 p "./Data_Analysis/PDF/Outcomes/HistQ_FGD.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+  "./Data_Analysis/PDF/Outcomes/HistQ_FGD_1e8_1e-4.csv" u 1:2 w p lw 5 lc 3 dt 1 t "FGD(10^8) 10^{-4}" , \
   "./Data_Analysis/PDF/Outcomes/HistQ_DCGD.csv" u 1:2 w l lw 5 lc 6 dt 2 t "DCGD" , \
   "./Data_Analysis/PDF/Outcomes/HistQ_MMZD.csv" u 1:2 w l lw 5 lc 7 dt 4 t "MMZD" , \
   "./Data_Analysis/PDF/Outcomes/HistQ_MMZD_1e8_1e-4.csv" u 1:2 w l lw 5 lc 8 dt 4 t "MMZD(10^8) 10^{-4}"
