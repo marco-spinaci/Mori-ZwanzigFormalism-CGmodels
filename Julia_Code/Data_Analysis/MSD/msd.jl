@@ -6,11 +6,11 @@ include("../../CGStats.jl")
 using Main.LJChain,Main.CGStats,Statistics,DelimitedFiles
 
 C = Chain();
-S = Simulator(dt=1e-4, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
+S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
 
 ################################################################################
 
-Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Q_FGD_1e8_1e-4.csv", Float64);
+Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Q_FGD_1e7.csv", Float64);
 # Q_FGD = readdlm("Store_Trajectory/Outcomes/Q_FGD_1e5.csv", Float64);
 
 CdM = Q_FGD * C.vectorCdM;
@@ -46,7 +46,7 @@ end
 v = findall(msd1 .!= 0);
 msd1 = msd1[v];
 
-open("Data_Analysis/MSD/Outcomes/msd_FGD_1e8_1e-4.csv", "w+") do x
+open("Data_Analysis/MSD/Outcomes/msd_FGD_1e7.csv", "w+") do x
     writedlm(x, [ S.dt*100*(v.-1) msd1 ]);
 end
 
