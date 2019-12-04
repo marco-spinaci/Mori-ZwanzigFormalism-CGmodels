@@ -83,13 +83,13 @@ We performed the simulation for four different systems with different parameter 
 \addcontentsline{toc}{chapter}{Introduction}
 \markboth{\MakeUppercase{Introduction}}{\MakeUppercase{Introduction}}
 
-Molecular Dynamics (MD) is a computational approach that allows to solve the equations of motion and to compute the macroscopic observables from the generated trajectories, while at the same time allowing the detailed visualization of the movements of the individual atoms in the system under examination, providing a ``window'' into the microscopic world \cite{tuckerman2010}. The questions that arises is whether we should take these MD trajectory seriously, that is, consider them realistic, or interpret them as useful tools to guide us toward an understanding of the mechanism underlying a given chemical process.
+Molecular Dynamics (MD) is a computational approach that allows to solve the equations of motion of a system of atoms, and to compute the macroscopic observables from the generated trajectories, while at the same time allowing the detailed visualization of the movements of the individual atoms in the system under examination, providing a ``window'' into the microscopic world \cite{tuckerman2010}. The question that arises is relative to the interpretation of MD simulations, that is, consider them realistic, or interpret them as useful tools to guide us toward an understanding of the mechanism underlying a given chemical process.
 %
 Klaus Schulten, whose research group developed highly popular molecular dynamics software packages such as NAMD and visualization software such as VMD, had a strong opinion on the matter. In fact, in his 2015 National Lecture \cite{Pollack}, he introduced the term ``computational microscope'' to describe the role of computational simulations in the study of biological systems. He believed that computational biophysics has progressed to the point that it provides a realistic view of the biological cellular components at the molecular level, often at a resolution not achievable through laboratory instruments, reaching atomic or even electronic dimensions.  
 ``The point I wanted to make,'' said Klaus Schulten about the National Lecture, ``is that basically molecular modelling came of age, and it's now a full member of the scientific community in the sense that we can play the most glorious and important part of science, namely to make discoveries.'' 
 
-Despite recent advances in simulation methods, atomically detailed models and computational resources, MD simulations are heavily limited in terms of system size and simulation time. For example, most biomolecular events of interest, such as protein folding or major conformational changes essential for protein function, occur on time scales longer (from microseconds to milliseconds) than MD time scales \cite{Aminpour2019,Freddolino2008}.
-In fact, remarkable recent simulations of all MD atoms are the folding studies of small proteins of Schulten \textit{et al.}~\cite{Freddolino2008} and Shaw \textit{et al.}~\cite{Shaw2010}. The Schulten group achieved a continuous trajectory of $10\, \mu s$ while the Shaw group performed a $1\, ms$ long simulation. Despite these successes, atomistic simulations are still several order of away magnitude far from being able to effectively cover the time and length scales of most cellular processes.
+Despite recent advances in simulation methods, atomistically detailed models and computational resources, MD simulations are heavily limited in terms of system size and simulation time. For example, most biomolecular events of interest, such as protein folding or major conformational changes essential for protein function, occur on time scales longer (from microseconds to milliseconds) than time scales accessible to MD simulations  \cite{Aminpour2019,Freddolino2008}.
+In fact, remarkable recent atomistic simulations are represented by the folding studies of small proteins of Schulten \textit{et al.}~\cite{Freddolino2008} and Shaw \textit{et al.}~\cite{Shaw2010}. The Schulten group achieved a continuous trajectory of $10\, \mu s$ while the Shaw group performed a $1\, ms$ long simulation. Despite these successes, atomistic simulations are still several order of away magnitude far from being able to effectively cover the time and length scales of most cellular processes.
 %
 For an idea of time scales and length scales, as well as the time-line of progress in the system size accessible to all-atom MD simulations up to 2014, see fig.~\ref{Fig:sketchResolution} and fig.~\ref{Fig:evolutionSize}, respectively.
 %
@@ -108,14 +108,14 @@ shows approximate ranges of time scales and length scales  for the different res
  \label{Fig:evolutionSize}
 \end{figure}
 
-These bottlenecks are given by the fact that in order to compute the equations of motion we have to provide in input the complete set of interatomic forces. The accuracy of these forces is of vital importance in order to have a reliable model of a complex system and unfortunately, as a general rule, the more accurate the forces are, the longer is the time needed to calculate them and perform the simulation.
+These limitations are given by the fact that in order to compute the equations of motion we have to provide as input the complete set of interatomic forces. The accuracy of these forces is of vital importance in order to have a reliable model of a complex system and unfortunately, as a general rule, the more accurate the forces are, the longer is the time needed to calculate them during the simulations.
 %
-Another problem often encountered in an \textit{in silico} investigation of long chain-like molecules is that, as the size of the system increases, the relaxation time required to approach equilibrium becomes comparable with the currently accessible simulation time scales \cite{Maginn2009}. 
+Another problem often encountered in \textit{in silico} investigations of long chain-like molecules is that the relaxation time required to approach equilibrium becomes comparable with the currently accessible simulation time scales, as the size of the system increases \cite{Maginn2009}. 
 
-However, MD simulations are now widely used and have become a standard tool in many areas of research, for example in soft matter \cite{Corezzi2008,Klein2008,Peter2009} as well as in the study of biological systems \cite{KLEPEIS2009}, and are often used in combination with a wide variety of experimental structural techniques \cite{HOLLINGSWORTH2018,Spagnolli2019}. 
+However, MD simulations have become a standard tool in many areas of research, for example in soft matter \cite{Corezzi2008,Klein2008,Peter2009} as well as in the study of biological systems \cite{KLEPEIS2009}, and are often used in combination with a wide variety of experimental techniques \cite{HOLLINGSWORTH2018,Spagnolli2019}. 
 
-Various methods have been introduced to overcome these bottlenecks, including the \emph{coarse-grained method} (CG) and the so-called \emph{enhanced sampling methods}. The former simplifies and accelerates MD simulations \cite{Brini2013}, by grouping atoms of the atomistic model under examination and treating these groups as individual sites of interaction. This idea was introduced by Levitt and Warshel in the 1970s \cite{Levitt1975,Levitt1976}. 
-While the latter only address the problem of the time scale, these methods include Umbrella sampling \cite{Kumar1992,TORRIE1977}, Steered molecular dynamics \cite{ISRALEWITZ2001,SMDbook1999} and Metadynamics \cite{Laio2002}. 
+Various methods have been introduced to overcome these limitations, including the \emph{coarse-grained method} (CG) and the so-called \emph{enhanced sampling methods}. The former simplifies and accelerates MD simulations \cite{Brini2013}, by grouping atoms of the atomistic model under examination and treating these groups as individual sites of interaction. This idea was introduced by Levitt and Warshel in the 1970s \cite{Levitt1975,Levitt1976}. 
+The latters only address the problem of the time scale and include methods like Umbrella sampling \cite{Kumar1992,TORRIE1977}, Steered molecular dynamics \cite{ISRALEWITZ2001,SMDbook1999} and Metadynamics \cite{Laio2002}. 
 In this work we will not deal with the enhanced sampling methods but we will present a full derivation of a generic CG model through the Mori-Zwanzig (MZ) formalism \cite{DiPasquale2019,Hijon2010}.
 
 As we mentioned above, in the CG models the fundamental particles are interaction sites (sometimes called beads) that represent group of atoms, and comprise typically on the order of 2-10 ``heavy'' atoms (\textit{e.g.}, C, N, O, P) and their associated hydrogen atoms \cite{Noid2013Book}.
@@ -134,9 +134,9 @@ Therefore, the interactions in the CG model should reflect the ``correct physics
 Generally, two types of approach are used to determine the interaction between beads, the \emph{bottom-up} approach (structure-based coarse-graining) and the \emph{top-down} approach (thermodynamic-based coarse-graining).
 
 \noindent
-A \emph{bottom-up} CG model is a model of a particular system that is constructed on the basis of a more detailed model of the same system, and the CG force fields, and consequently the effective potentials, are parameterized on the basis of comparisons with atomistic reference simulations. Various methods can be used to do this, the most commonly used being the inverse Monte Carlo (IMC) \cite{Lyubartsev1995}, the iterative Boltzmann inversion (IBI) \cite{Reith2003}, force matching (FM) \cite{Izvekov2004,Izvekov2005,Noid2008} and minimization of relative entropy \cite{Chaimovich2011}.
+A \emph{bottom-up} CG model is a model of a particular system that is constructed on the basis of a more detailed model of the same system, and consequently the effective potential is parameterized on the basis of comparisons with atomistic reference simulations. Various methods can be used to do this, the most commonly used being the inverse Monte Carlo (IMC) \cite{Lyubartsev1995}, the iterative Boltzmann inversion (IBI) \cite{Reith2003}, force matching (FM) \cite{Izvekov2004,Izvekov2005,Noid2008} and minimization of relative entropy \cite{Chaimovich2011}.
 %
-On the other hand, \emph{top-down} models are not based on or refer directly to more detailed models of the particular system studied, but may be parameterized on the basis of experimental data, in particular thermodynamic data such as solvation free energies and partitioning data, liquid densities, surface tension, \textit{etc.}~\cite{CLEMENTI2008,Honeycutt1990,Nielsen2003}.
+\emph{Top-down} models, instead, are not based on or refer directly to more detailed descriptions of the particular system studied, but may be parameterized on the basis of experimental data, in particular thermodynamic data, such as solvation free energies and partitioning data, liquid densities, surface tension, \textit{etc.}~\cite{CLEMENTI2008,Honeycutt1990,Nielsen2003}.
 
 \noindent
 There is a second common distinction for CG models of biomolecular systems, which distinguishes CG models between \emph{physics-based} and \emph{knowledge-based} approaches. The former use physical theories to deduce interactions in CG models, and comprise the approaches described above, \textit{i.e.} the \emph{bottom-up} approach and the \emph{top-down} approach. By contrast, the latter are constructed on the basis of information extracted from experimentally determined three-dimensional structures.
@@ -153,16 +153,16 @@ Typically, CG simulations can be three or four orders of magnitude more efficien
 \item CG models require fewer interacting sites to model the same system, so fewer interactions must be calculated at each time step;
 \item interactions in CG models are typically short-range compared to interactions in atomistic models. For example, long-range Coulombic interactions may be examined more effectively on the length scales relevant for CG interactions and can be modelled as short-range effective potentials \cite{Noid2013Book,Silbermann2006};
 \item effective potentials can implicitly include entropic effects and greatly reduce the need to explicitly sample a large number of degenerate atomically detailed configurations \cite{Levitt1975};
-\item interactions between CG sites may be ``softer'', (\textit{i.e.}, of lower frequency) which allows a larger integration time step for propagating dynamics \cite{Marrink2004}. In other words, we are saying that the fluctuations of the force that CG sites experience are generally smaller, leading to a smoother free energy profile \cite{Rudzinski2019}. As a result, we have a faster diffusive process allowing the system to reach greater time scales with fewer computations. This last aspect implies that one typically has to determine a rescaling factor between the simulation timescale (usually given in Lennard Jones units) and the corresponding timescale in all-atom system (or the corresponding real world time \cite{Fritz2011,Potestio2014}.
+\item interactions between CG sites are usually ``softer'', (\textit{i.e.}, of lower frequency) which allows a larger integration time step for propagating dynamics \cite{Marrink2004}. In other words, we are saying that the fluctuations of the force that CG sites experience are generally smaller, leading to a smoother free energy profile \cite{Rudzinski2019}. As a result, we have a faster diffusive process allowing the system to reach greater time scales with fewer computations. This last aspect implies that one typically has to determine a rescaling factor between the simulation timescale (usually given in Lennard Jones units) and the corresponding timescale in all-atom system (or the corresponding real world time \cite{Fritz2011,Potestio2014}.
 \end{enumerate}
 
 If we are interested in the dynamic properties of the system under consideration, what has been said in the last point is one of the main limits of most CG models. This difference in time scales between two resolution levels of the same system does not allow to preserve the dynamic properties. This artificial acceleration of the dynamics could be corrected by adding appropriate friction terms in order to obtain a better estimate of the dynamic observables \cite{Izvekov2006}. 
 
 A second limitation of coarse-grained models is the loss of information about the model caused by CG mapping. In fact, some phenomena such as hydrogen bonds are only observable at the atomistic level. These phenomena need special treatment to be considered in a CG model \cite{Karimi-Varzaneh2008}. These limitations have led to the development of \emph{hybrid} atomistic/CG models that ideally should combine both a lower computational cost than all-atom simulations and greater accuracy than CG simulations \cite{DiPasquale2012,Rzepiela2011}.
-However, even these models, when considering the dynamics, are not without problems. For instance, it has been shown that considering complex systems such as polymers new effects arise \cite{DiPasquale2017}. Therefore a rigorous treatment of these models becomes necessary.
+However, even these models, when considering the dynamics, have some problems. For instance, it has been shown that considering complex systems such as polymers new effects arise \cite{DiPasquale2017}. Therefore, a rigorous treatment of these models becomes necessary.
 
 As mentioned above, the CG approach studied here is the Mori-Zwanzig projection formalism \cite{Mori1965,Zwanzig1973}. One of the first applications of this formalism to obtain CG models was made by Givon et al. \cite{Givon2004}. This formalism, given an arbitrary and generic CG mapping, allows a rigorous derivation of the equations for the exact evolution of CG variables, including terms that may be identified as a term of friction with a memory kernel and a fluctuating force, consistent with the fluctuation-dissipation theorem. Moreover, under the assumptions made to derive the equations, it provides an explicit and rigorous means by which to compute the CG interactions and a framework in which to improve and quantify the accuracy \cite{DiPasquale2019}.
-Despite the explicit form of the terms appearing in the CG equations of motion derived through MZ formalism, these terms are not easy to compute. In recent years, there has been a significant effort to render simulations more practicable using this theoretical tool \cite{DiPasquale2019,Espanol2009,Hijon2010,Izvekov2017,Jung2017,Li2015,Wang2019,Yuanran2018}.
+Despite the explicit form of the terms appearing in the CG equations of motion derived through MZ formalism, these terms are not easy to compute. In recent years, significant efforts have been made to solve these problems and make CG simulations more practicable using this theoretical tool \cite{DiPasquale2019,Espanol2009,Hijon2010,Izvekov2017,Jung2017,Li2015,Wang2019,Yuanran2018}.
 
 %The thesis is organized as follows: $\dots$ to be continued $\dots$
 
@@ -172,18 +172,18 @@ Despite the explicit form of the terms appearing in the CG equations of motion d
 \chapter{Mori-Zwanzig Formalism}
 The Mori-Zwanzig formalism allows to study the evolution of a dynamical system through the projection on a subset of its degrees of freedom. This operation is done through \emph{projection operator techniques}.
 
-The \emph{projection operator technique} is a collection of powerful tools for the study of irreversible processes in many-body systems \cite{Grabert:Projection}. These tools were introduced into statistical physics by S. Nakajima in 1958 \cite{Nakajima1958} and R. Zwanzig in 1960 \cite{Zwanzig1960}. The former used them to study the quantum statistical mechanics of steady diffusion, while the latter to give a new formulation of methods introduced in the statistical-mechanical theory of irreversibility. In particular, R. Zwanzig developed the technique into a powerful tool for deriving formally accurate equations of motion for classical or quantum probability densities \cite{Zwanzig1961,Zwanzig1964}. Later in 1965, H. Mori proposed a different tool, which leads to the following linear \emph{generalized Langevin equation} (GLE)
+The \emph{projection operator technique} is a collection of powerful tools for the study of irreversible processes in many-body systems \cite{Grabert:Projection}. These tools were introduced into statistical physics by S. Nakajima in 1958 \cite{Nakajima1958} and R. Zwanzig in 1960 \cite{Zwanzig1960}. The former used them to study the quantum statistical mechanics of steady diffusion, while the latter to give a new formulation of methods introduced in the statistical-mechanical theory of irreversibility. In particular, R. Zwanzig developed the technique into a tool for deriving formally accurate equations of motion for classical or quantum probability densities \cite{Zwanzig1961,Zwanzig1964}. Later in 1965, H. Mori proposed a different framework, which leads to the following linear \emph{generalized Langevin equation} (GLE)
 \begin{equation}\label{generalGLE}
  \frac{\diff A}{\diff t}=i\Omega A(t)-\int_0^t\,\diff\tau K(\tau)A(t-\tau)+F(t)\,,
 \end{equation}
-where $\Omega$, $K(t)$ and $F(t)$ are well-defined quantities called frequency, memory function, and random force, respectively.
+where $\Omega$, $K(t)$ and $F(t)$ are called frequency, memory function and random force, respectively.
 This equation describes the non-equilibrium evolution of any set of functions $A(t)$ defined on the phase-space of the arbitrary microscopic system, close to thermal equilibrium \cite{Mori1965}. These variables $A(t)$ are called collective variables, relevant variables, coarse-grained (CG) variables or collective modes, depending on the context.
 
 \noindent
 Some years later in 1973 R. Zwanzig derived a class of generalized Langevin equations describing the motion of a system interacting with a heat bath. This GLE is exact but differs from that obtained by Mori's scheme for two reasons: for the presence of an arbitrary nonlinear force and for the fact that its validity is not restricted to small deviations from the thermal equilibrium \cite{Zwanzig1973}.
 
 \noindent
-In recent years D. Kauzlari\'c \textit{et al.}~\cite{Kauzlaric2011} showed in their work on the calculation of the friction matrix in the coarse-grained description of an atomistic system that Mori's GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables (the functions $A(t)$ in the equation (\ref{generalGLE})) have a characteristic time scale much larger than the memory time scale.
+In recent years D. Kauzlari\'c \textit{et al.}~\cite{Kauzlaric2011} showed in their work on the calculation of the friction matrix in the coarse-grained description of an atomistic system that Mori's GLE can be obtained from the Zwanzig's one if the system is close to the equilibrium and under the Markovian assumption, i.e. that the relevant variables (the functions $A(t)$ in the eq.~(\ref{generalGLE})) have a characteristic time scale much larger than the memory time scale.
 
 These techniques are known in various context as well as in transport theory. For example, in the dynamic light scattering or in the liquids theory, the GLE is used to compute time-correlation functions under circumstances where the usual phenomenological equations do not apply. Indeed, the Mori-Zwanzig formalism can be used to obtain an equation for the time correlation function $C(t)$:  
 \begin{equation}
@@ -193,18 +193,19 @@ This equation can be derived from the equation (\ref{generalGLE}), is called the
 
 If the dynamical system considered is Hamiltonian, in the Mori-Zwanzig formalism we can use two equivalent approaches:
 \begin{enumerate}[(i)]
-  \item applying the projection operator in a Hilbert space of probability densities function (pdf) to the Liouville equation, obtained the generalized Fokker-Planck and master equations \cite{Kinjo2007,Zwanzig1960,Zwanzig1961,Zwanzig1964};
-  \item applying the projection operator in the Liouville space (see appendix \ref{App:C}) to the equation of motion of time-dependent phase-space function, the GLE and the transport equation are obtained \cite{DiPasquale2019,Hijon2010,Mori1965,Nordholm1975,Zwanzig1973}.
+  \item applying the projection operator in a Hilbert space of probability densities function (pdf) to the Liouville equation, obtaining the generalized Fokker-Planck and master equations \cite{Kinjo2007,Zwanzig1960,Zwanzig1961,Zwanzig1964};
+  \item applying the projection operator in the Liouville space (see appendix \ref{App:C}) to the equation of motion of time-dependent phase-space function, obtaining the GLE and the transport equation \cite{DiPasquale2019,Hijon2010,Mori1965,Nordholm1975,Zwanzig1973}.
 \end{enumerate}
 The mathematical equivalence of these two approaches is given by the duality between Liouville space and the space of densities of states, in complete analogy with the Schr\"odinger and Heisenberg pictures in Quantum Mechanics. 
 
 \noindent
-In what follows, we choose to follow the second approach since this results in a more physically-intuitive derivation. Here, we will derive the GLE for the CG variables with the \emph{Zwanzig projection} and the \emph{Mori projection}, respectively.
+In what follows, we choose to follow the second approach since this results in a more physically-intuitive derivation.
+Here, we will derive the GLE for the CG variables through the \emph{Zwanzig projection}. Moreover, we will introduce the \emph{Mori projection} without giving a derivation of the eq.~(\ref{generalGLE}), since its derivation is analogous to the one we will show through the \emph{Zwanzig projection}.
 
 We assume that, at the microscopic level, the system is well described by classical mechanics and is composed by $\nfg$ particles. We will refer to it as the \emph{fine-grained} (FG) system. The microscopic state is characterised by the function $\Aphase{}(t)$ in a $6\nfg$-dimensional phase-space. 
 
 \noindent
-To derive a reduced description of this system, we consider a smaller set of phase function $\Bphase{}(\Aphase{})$, which we call observables\footnote{
+To derive a reduced description of this system, we consider a smaller set of phase function $\Bphase{}(\Aphase{})$, which we call \emph{observables}\footnote{
 Throughout the present section, these observables could be quite general, but we will later apply the derivation made here to a particular choice.
 }.
 The time evolution of a function of phase variables is given by
@@ -225,7 +226,7 @@ We also assume that the state of the system is described by the canonical equili
 % \qquad X=\real^{6\nfg}\,;
 \end{equation}
 
-The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables $\Bphase{}(\Aphase{})$ by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves, leading to a closed equation for the CG variables. 
+The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables $\Bphase{}(\Aphase{})$ by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves, but as we will see the complexity of the computation of eq.~(\ref{Eq:MotionEqGamma}) will be shifted to the computation of the so-called \emph{orthogonal dynamics}.
 
 %For example, with the \emph{Zwanzig projection} this is done by projecting the equation for the observables $\Bphase{}(\Aphase{})$ onto the space of functions of the CG variables, which may be regarded as a subspace of the FG observable space\footnote{This is true as long as some very broad measurability assumptions on the CG variables chosen are met; in practice, choosing CG variables which are continuous and differentiable in the FG variables is already sufficient, and this particular choice is implicitly assumed in the derivation presented here. In theory however, much more general choices can be made.}.
 
@@ -236,18 +237,18 @@ The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}
 \subsection{The Zwanzig Projection}
 We denote the \emph{Zwanzig projection} as $\mathcal{P}_{\Bphase{}}$:
 \begin{equation}\label{Eq:proj}
-	\mathcal{P}_{\Bphase{}}F(\Aphase{}) = \frac{1}{\Omega(\Bphase{}(\Aphase{}))} \int_X F(\Aphase{}')\,\dirac{\Bphase{}(\Aphase{}')-\Bphase{}(\Aphase{})}\rho^{eq}(\Aphase{}')\diff\Aphase{}'
+	\mathcal{P}_{\Bphase{}}F(\Aphase{}) = \frac{1}{\Omega(\Bphase{})} \int_X F(\Aphase{}')\,\dirac{\Bphase{}(\Aphase{}')-\Bphase{}}\rho^{eq}(\Aphase{}')\diff\Aphase{}'
 \end{equation}
-where $F(\Aphase{})$ is a generic function acting on the space-phase and the normalisation factor, also called the \textit{structure function}, represents the total volume of the surface $S(\Bphase{}(\Aphase{}))$ in phace-space, which is defined by $\Bphase{}(\Aphase{}')=\Bphase{}(\Aphase{})$:
+where $F(\Aphase{})$ is a generic function acting on the space-phase $X=\real^{6\nfg}$, $\Bphase{}$ is a smaller set of phase function (which we called observables) and the normalisation factor, also called the \textit{structure function}, represents the total volume of the surface $S(\Bphase{})$ in phace-space, which is defined by $\Bphase{}(\Aphase{}')=\Bphase{}$:
 %
 \begin{equation}\label{eq:structurefunc}
-	\Omega(\Bphase{}(\Aphase{})) = \int_X\dirac{\Bphase{}(\Aphase{}')-\Bphase{}(\Aphase{})}\mathbb{P}(\diff\Aphase{}')\,.
+	\Omega(\Bphase{}) = \int_X\dirac{\Bphase{}(\Aphase{}')-\Bphase{}}\mathbb{P}(\diff\Aphase{}')\,.
 \end{equation}
-In other words, the \textit{structure function} represents the number of micro-states compatible with the macro-state $\Bphase{}(\Aphase{}')=\Bphase{}(\Aphase{})$ \cite{Hijon2010}. While, the projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary function $F(\Aphase{})$ the part, $\mathcal{P}_{\Bphase{}}F(\Aphase{})$, which depends on $\Aphase{}$ only through $\Bphase{}(\Aphase{})$.
+In other words, the \textit{structure function} represents the number of micro-states compatible with the macro-state $\Bphase{}(\Aphase{}')=\Bphase{}$ \cite{Hijon2010}. While, the projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary function $F(\Aphase{})$ the part, $\mathcal{P}_{\Bphase{}}F(\Aphase{})$, which depends on $\Aphase{}$ only through $\Bphase{}$.
 
 \noindent
-If we introduce a set of fixed values $\bfa$ such that for a given $\Aphase{}$ we have $\Bphase{}(\Aphase{})=\bfa$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondent surface $S(\bfa)$, while the \textit{structure function} in the denominator $\Omega(\Bphase{}(\Aphase{}))=\Omega(\bfa)$ allows us to spread this amount on the surface $S(\bfa)$.
-Therefore, loosely speaking, $\mathcal{P}_{\Bphase{}}$ ``averages'' the function $F(\Aphase{})$ over the surface $S(\bfa)$ in case the observables $\Bphase{}(\Aphase{})$ are equal to $\bfa$ for a given $\Aphase{}$.
+If we introduce a set of fixed values $\bfa$ such that for a given $\Aphase{}$ we have $\Bphase{}=\bfa$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondent surface $S(\bfa)$, while the \textit{structure function} in the denominator $\Omega(\Bphase{})=\Omega(\bfa)$ allows us to spread this amount on the surface $S(\bfa)$.
+Therefore, loosely speaking, $\mathcal{P}_{\Bphase{}}$ ``averages'' the function $F(\Aphase{})$ over the surface $S(\bfa)$ in case the observables $\Bphase{}$ are equal to $\bfa$ for a given $\Aphase{}$.
 
 The fact that $\mathcal{P}_{\Bphase{}}$ is a projection operator can be easily verified by showing that it satisfies the necessary and
 sufficient condition for a projection operator, $\mathcal{P}_{\Bphase{}}^2=\mathcal{P}_{\Bphase{}}$ \cite{Zwanzig1961}.
@@ -649,7 +650,7 @@ This system is the same studied by Di Pasquale \textit{et al.}, who have studied
 The studied test cases are composed of atoms with two different masses, set to $m=1$ and $M=10$.
 The repeating pattern  consists of three atoms in two different configurations: two atoms of mass $m$ and a single atom of mass $M$ ($m-M-m$) or vice versa ($M-m-M$). The number of beads is set to $\ncg=10$, so that the number of atoms is also fixed, $\nfg=3\,\ncg=30$.
 The bond stiffness between the two different species of atoms is described by means of an inter-atomic potential, which is a simple 12-6 Lennard-Jones potential. In the following, all parameters, such as temperature and time step, are expressed in terms of dimensionless units, \textit{i.e.} the so-called Lennard-Jones reduced units.These dimensionless units are obtained by using $\epsilon$, $\sigma$, $\sigma(m/\epsilon)^{1/2}$ and $\epsilon/K_B$ as fundamental units of energy, length, time and temperature, respectively (\textit{e.g.}~see Tuckerman pp.125-127 \cite{tuckerman2010}). 
-The canonical (NVT) ensemble was implemented by introducing a thermal bath with a friction parameter $\gamma=1$, and setting the temperature so that $\beta=(K_B\,T)^{-1}=1$.
+The canonical (NVT) ensemble was implemented by introducing a thermal bath with a friction parameter $\gamma=1$, and setting the temperature so that $\beta=(K_B\,T)^{-1}=1.096$.
 Following the work of Di Pasquale \textit{et al.}, we assume periodic boundary conditions and nearest neighbour interactions. 
 The inter-atomic potential for a generic system $X$ is given by 
 \begin{equation}
