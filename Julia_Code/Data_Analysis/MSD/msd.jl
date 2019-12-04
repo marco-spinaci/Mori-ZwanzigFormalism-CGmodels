@@ -64,9 +64,9 @@ S = Simulator(dt=1e-3, Stochdt=1e-4, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
 # Q_DCGD = Q_DCGD .- CdM;
 #
 # N = size(Q_DCGD, 1);
-# n = N - 1;
+# l = N - 1;
 #
-# msd2 = zeros(n);
+# msd2 = zeros(l);
 #
 # n = 1;
 # sumtot = 0;
@@ -112,9 +112,9 @@ CdM = Q_MMZD * C.vectorCdM;
 Q_MMZD = Q_MMZD .- CdM;
 
 N = size(Q_MMZD, 1);
-n = N - 1;
+l = N - 1;
 
-msd3 = zeros(n);
+msd3 = zeros(l);
 
 n = 1;
 sumtot = 0;
