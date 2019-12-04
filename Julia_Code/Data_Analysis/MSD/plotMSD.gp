@@ -16,6 +16,7 @@ set output "| epstopdf -f -o=Data_Analysis/MSD/Plots/msd_1e7_less.pdf"
 # set output "| epstopdf -f -o=../TEX_Notes/Figure/MSD.pdf"
 p "./Data_Analysis/MSD/Outcomes/msd_FGD_1e7_less.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
   "./Data_Analysis/MSD/Outcomes/msd_FGD_1e7_1e-4_less.csv" u 1:2 w l lw 5 lc 5 dt 1 t "FGD 10^7 10^{-4}" #, \
+  "./Data_Analysis/MSD/Outcomes/msd_DCGD_1e7_1e-4_less.csv" u 1:2 w p lw 1 lc 6 dt 2 t "DCGD 10^7 10^{-4}" , \
   "./Data_Analysis/MSD/Outcomes/msd_MMZD_1e7_1e-4(B1.096)_less.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 3 t "MMZD 10^7 10^{-4}"
 set output
 # "./Data_Analysis/MSD/Outcomes/msd_DCGD_1e7_less.csv" u 1:2 w p lw 2 ps 1 lc 6 pt 2 t "DCGD" , \
