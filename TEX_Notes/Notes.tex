@@ -261,10 +261,12 @@ where $\idproj$ is the identity operator.
 
 \subsection{Zwanzig Projection as Conditional Expectation}
 We will now show that this projection is equivalent to taking the conditional expectation: 
-$$\mathcal{P}_{\Bphase{}}F \equiv \cexpval{F}{\,\Bphase{}} \equiv \aver{F}_{\Bphase{}}\,$$ 
-with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for specific values $\bfa$ of the CG variables $\Bphase{}(\Aphase{})$ \cite{Chorin2000,DiPasquale2019}. This property will be used in the following sections.
+\begin{equation}
+\mathcal{P}_{\Bphase{}}F \equiv \cexpval{F}{\,\Bphase{}} \equiv \aver{F}_{\Bphase{}}
+\end{equation}
+with respect to the equilibrium distribution, for a generic function $F=F(\Aphase{})$ acting on the phase space and for specific values $\bfa$ of the CG variables $\Bphase{}$ \cite{Chorin2000,DiPasquale2019}. This property will be used in the following sections.
 
-Let $A(\Aphase{})$ be a phase function in the Liouville space (see appendix \ref{App:C}).
+Below we show this property for a generic projection. Let $A(\Aphase{})$ be a phase function in the Liouville space (see appendix \ref{App:C}).
 We now focus our attention on the set of functions 
 $$
 \bfA(\Aphase{})=\bp{ A_I\in L^2\cip{X,\mathbb{P}}\,,\;\;\mathrm{where}\;\; I=1,\ldots,\ncg \;\;\mathrm{and}\;\; \ncg\le\nfg }\,,
@@ -289,7 +291,7 @@ We stress here that the conditional expectation \ref{ConExp}, which we rewrite a
 
 
 \subsection{Generalized Langevin Equation}
-We are now in the position to derive the GLE. We will make the derivation considering an ensemble of initial conditions $\Aphase{0}$ satisfying $\Bphase{}(\Aphase{0})=\bfa$ for some fixed $\bfa=\bfA(\Aphase{})$ and with $\Aphase{0}$ distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa$.  
+We are now in the position to derive the GLE. We will make the derivation considering an ensemble of initial conditions $\Aphase{0}$ satisfying $\Bphase{}(\Aphase{0})=\bfa$ for some fixed $\bfa=\bfA(\Aphase{})$, where $\bfA(\Aphase{})$ is a set of phase functions defined in the previous section, and with $\Aphase{0}$ distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa$.  
 
 Differentiating both sides of the relation (\ref{Eq:SolLiouville}) with respect to time, we can rewrite the equation (\ref{Eq:MotionEqGamma}) as
 \begin{equation}
@@ -302,11 +304,11 @@ where $\Bphase{0}=\Bphase{}(\Aphase{0})$. Applying the identity operator $\idpro
 \end{equation}
 where we omit the $\bfa$ subscript in the projection operators $\pproj$ and $\qproj$, to simplify the notation.
 
-Now if we make in the Dunhamel-Dyson operator identity for the exponential operator $\exp{-(U+V)\,t}$ (see appendix \ref{App:D}) the substitutions $U=\Lio\qproj$ and $V=\Lio\pproj$, we get
+Now, we can use the  Dunhamel-Dyson operator identity for the exponential operator $\exp{-(U+V)\,t}$ (see appendix \ref{App:D}) by replacing $U$ with $\Lio\qproj$ and $V$ with $\Lio\pproj$. We obtain
 $$
 \exp{-\Lio t} = \exp{-\Lio\qproj t}-\int_0^{t}\exp{-\Lio\qproj s}\,\Lio\pproj \,\exp{-\Lio(t-s)}\,\diff s\,,
 $$
-and if we take the adjoint of both side, we obtain that
+and, if we take the adjoint of both side
 \begin{equation}
  \exp{\Lio t} = \exp{\qproj\Lio t} + \int_0^t \exp{\Lio (t-s)}\,\pproj\Lio\,\exp{\qproj\Lio s}\,\diff s\,,
 \end{equation}
@@ -317,7 +319,7 @@ We can rewrite the second term on the RHS of equation (\ref{Eq:MoIdProj}) as
  \exp{\Lio t}\qproj\Lio\,\Bphase{0} = \exp{\qproj\Lio t}\qproj\Lio\,\Bphase{0} + 
  \int_0^t \exp{\Lio(t-s)}\,\pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0}\,\diff s\,, 
 \end{equation}
-and, considering the projection on the CG variables such that $A(\Aphase{})=\bfa$, the last part of the integral becomes:
+and by considering the explicit expression of the projection, $\pproj$, for $\bfA(\Aphase{})=\bfa$ (see eq.~(\ref{Eq:proj})), we can write the term present in the argument of the integral in RHS of the previous relation as 
 \begin{multline*}
  \pproj\Lio\,\exp{\qproj\Lio s}\,\qproj\Lio\,\Bphase{0} = 	
    \frac{1}{\Omega(\bfa)} \int\diff\Aphase{0}\rho^{eq}(\Aphase{0})\, \dirac{\Bphase{}(\Aphase{0})-\bfa}
@@ -358,14 +360,14 @@ We can rewrite the equation obtained as
 where $\beta=\cip{\kb T}^{-1}$ and we have introduced two new functions.
 
 \noindent
-The former 
+The former quantity in eq.~(\ref{Eq:PezzoInt})
 \begin{equation}\label{Eq:Entropy(FreeE)}
   \entropy\cip{\bfa}\coloneqq -\frac{1}{\beta}\ln \Omega\cip{\bfa}
 \end{equation}
-is interpreted, since it has units of energy, as the entropic contribution to the Helmholtz free energy of the system, in view of the definition of $\Omega(\bfa)$ in the equation (\ref{eq:structurefunc}). We note that in \cite{Hijon2010}, the alternative quantity $\mathcal{S}(\bfa) = \kb\ln{\Omega(\bfa)}$ is defined, which is an entropy. Both definitions are identical up to a multiplicative factor, and depend on the assumed temperature of the system.
+has units of energy, and can be interpreted as the entropic contribution to the Helmholtz free energy of the system, in view of the definition of $\Omega(\bfa)$ in the equation (\ref{eq:structurefunc}). We note that in \cite{Hijon2010}, the alternative quantity $\mathcal{S}(\bfa) = \kb\ln{\Omega(\bfa)}$ is defined, which is an entropy. Both definitions are identical up to a multiplicative factor, and depend on the assumed temperature of the system.
 
 \noindent
-Instead, the latter function is a positive definite memory matrix:
+The latter quantity in eq.~(\ref{Eq:PezzoInt}) is a positive definite memory matrix:
 \begin{equation}
 \begin{split}\label{Eq:fricmatrix}
 	\fricmat\cip{\bfa,s} &\coloneqq \beta\,\pproj\sqp{ \cip{ \Lio\,\Bphase{0}} \otimes 
@@ -467,15 +469,17 @@ In the next chapter we will derive more explicit forms of the terms appearing in
 \label{Sec:CanMapp&CG}
 
 \section{Definition and Notation}
-In the present work we have said that we consider two resolution levels for a given molecular system. The first one, at high resolution, is the fine-grained (FG) system composed by $\nfg$ particles, while the second one, at low resolution, is the CG system composed by $\ncg$ particles. The term \emph{particles} is used to indicate either an ``atom'', the fundamental particles that interacts in the FG system, or a larger group of ``atoms'' that interacts in the CG system, called \emph{bead}. 
+In the present work we consider two resolution levels for a given molecular system. 
+The fine-grained (FG) model represents the system at higher resolution, whereas the coarse-grained (CG) model describes the lower resolution system. The former is composed by $\nfg$ particles, the latter by $\ncg$ particles, with $\ncg \ll \nfg $.
+The term \emph{particles} is used to indicate either an ``atom'', the fundamental particles that interacts in the FG system, or a larger group of ``atoms'' that interacts in the CG system, called \emph{bead}.
 
 We will assume that the chemical structure of the molecular system is fixed, i.e. no reactions occur, the connectivity of the ``atoms'' is specified at the outset allowing us to fix a global index for the particles in the FG system, and that each ``atom'' is mapped to a fixed (unique) particle in the CG system.
-Following the work of Di Pasquale \textit{et al.}~\cite{DiPasquale2019} and Noid \textit{et al.}~\cite{Noid2008}, we can summarise the notation and the definition that we will use and that we have already used, in the following way:
+Following the work of Di Pasquale \textit{et al.}~\cite{DiPasquale2019} and Noid \textit{et al.}~\cite{Noid2008}, we can summarise the notation and the definition that we will use and that we have already used in the following way:
 \begin{itemize}
-\item[-] lower case letters (e.g. $i,j$) refer to particles in the FG system, while capital letters (e.g. $I,J$) label the particles (``atoms'' or beads) in the CG system;
+\item[-] lower case letters (e.g. $i,j$) refer to particles in the FG system, while capital case letters (e.g. $I,J$) label the particles (``atoms'' or beads) in the CG system;
 \item[-] the mass of the $j$-th atom in FG system will be indicated as $m_j$, while the mass of the $J$-th particle in CG system will be indicated as $M_J$;
-\item[-] the set of ``atoms'' included within the bead of index $J$ is define as
-$$ S_J \coloneqq \bp{j\in\bp{1,\ldots,\nfg}: \text{the $j$-th atom forms part of CG particle $J$}}\,.$$
+\item[-] the set of ``atoms'' included within the bead of index $J$ is defined as
+$$ S_J \coloneqq \bp{j\in\bp{1,\ldots,\nfg}: \text{the $j$-th atom within CG particle $J$}}\,.$$
 \item[-] the number of ``atoms'' corresponding to CG particle $J$ will be referred to as $ s_J = \# S_J $;
 \item[-] the index of the CG particle containing the $k$-th ``atom'' will be referred to as $J_k$; 
 \item[-] FG phase space variables are denoted with lower case letters: 
@@ -483,7 +487,7 @@ $$ S_J \coloneqq \bp{j\in\bp{1,\ldots,\nfg}: \text{the $j$-th atom forms part of
 \item[-] CG phase space variables are denoted using capital letters:
   $$\Bphase{}=\cip{\Bphase{\bfR},\Bphase{\bfP}} = \cip{\bfR_1,\ldots,\bfR_{\ncg},\bfP_1,\ldots,\bfP_{\ncg}}\,.$$
 \end{itemize}
-A general CG (hybrid) system may include particles corresponding to single ``atoms'', i.e. $J$ for which $s_J=1$, and into proper beads, i.e. $J$ for which $s_J>1$. The number of ``atoms'' in the CG system will be denoted as
+A general CG (hybrid) system may include particles corresponding to a single ``atom'', i.e. $J$ for which $s_J=1$, and proper beads, i.e. $J$ for which $s_J>1$. The number of ``atoms'' in the CG system will be denoted as
 $$N^A \coloneqq \#\bp{J\in\bp{1,\ldots,\ncg}: s_J=1}\,,$$  
 while the number of beads is denoted as $N^B \coloneqq \ncg-N^A$.
 For notational convenience, we will assume that the indices are ordered in such way that indices $J\in\bp{1,\ldots,N^A}$ correspond to atoms, and $J\in\bp{N^A+1,\ldots,\ncg}$ corresponds to beads. 
@@ -497,7 +501,7 @@ A sketch of a possible mapping between FG and general CG systems is shown in fig
 
 \section{A particular class of mapping operator}
 \label{Sec:Mapping}
-The mapping operators are a collection of functions defined in the FG system that specify the physical meaning of CG variables, i.e. they fix the CG variables will be observables of the FG system. Therefore they are functions
+The mapping operators are a collection of functions defined in the FG system that specify the physical meaning of CG variables, i.e. they fix the CG variables will be observables of the FG system. They can be defined as the functions
 $$\Psi,\Phi\colon  \real^{6\nfg}  \to  \real^{6\ncg}$$ such that 
 \begin{align*}
 \Aphase{}  &\mapsto \Psi(\Aphase{}) \eqqcolon \Bphase{\bfR}(\Aphase{})=\cip{\bfR_1,\ldots,\bfR_{\ncg}}\,,\\
@@ -587,7 +591,7 @@ where the derivatives of $\widetilde{\bffricmat}$ with respect to $\bfP_{J}$ van
   \cip{ \pard{\Veff}{\bfR_{J}} - \sum_{j\in S_J} \pard{U}{\bfr_{j}} }}_{\Bphase{}}\,.
 \end{multline}
 
-The validity of the Markovian approximation has been repeatedly questioned in the literature~\cite{CommentCubero,Cubero2005,Hijon2006,ResponseCommentHijon}. We will return to this point later when we discuss the numerical results. We want to stress here that we use the Markovian approximation only as a means of simplifying the calculation. As we said at the beginning of this section there are more refined methods to consider the friction matrix and to include memory effects in CG simulations which will be considered in future work.
+The validity of the Markovian approximation has been repeatedly questioned in the literature~\cite{CommentCubero,Cubero2005,Hijon2006,ResponseCommentHijon}. We will return to this point later when we discuss the numerical results. We want to stress here that we use the Markovian approximation only as a means of simplifying the calculation. As we said at the beginning of this section there are more refined methods to consider the friction matrix and to include memory effects in CG simulations, but in this work we will consider only the Markovian approximation, as our main goal is to show the differences in the results for the different terms composing the GLE and the comparison with the results reported in work of Di Pasquale \textit{et al.}~\cite{DiPasquale2019}.
 
 
 \chapter{Numerical Methods}
@@ -598,7 +602,7 @@ In this thesis the Langevin Dynamics is integrated by using the BAOAB method, wh
 
 The aim of their work is to compare Langevin dynamics integrators in term of their invariant distributions and demonstrate a superconvergence property of a certain method in the high friction limit (or in the null mass limit). They coded up the various methods considered and compared the accuracy of configurational sampling for different values of the friction parameter $\gamma$ and for a range of timesteps.
 
-Their results show that the best method to sample the configurational Gibbs-Boltzmann distribution\footnote{This means the calculation of averages of functions of phase space variables of a molecular N-body system modelled at constant temperature.} is the BAOAB method, which is an efficient and easy-to-implement scheme using a single force vector per timestep:
+Their results show that the best method to sample the configurational Gibbs-Boltzmann distribution\footnote{This means that the calculation of averages of functions of phase space variables of a molecular N-body system modelled at constant temperature.} is the BAOAB method, which is an efficient and easy-to-implement scheme using a single force vector per timestep:
 \begin{align*}
  p_{n+1/2} &= p_n-\frac{1}{2}\,\nabla U\left(x_n\right)\,dt\,; \\
  x_{n+1/2} &= x_n+\frac{1}{2}\,M^{-1}\,p_{n+1/2}\,dt\,; \\
@@ -753,7 +757,7 @@ Below, for further clarification of what we said, we report the algorithm publis
 \chapter{Simulation results}
 \section{Data-driven approximation of the effective potential}
 \label{Sec:EP}
-To improve the computation time required to sample the mean force and thus determine the effective potential, we utilize the translational symmetry of this simple system, the fact that the beads are identical and the assumption that the effective potential can be approximated as a sum of two-body interactions based on the distance to the nearest-neighbour beads only.
+In order to improve the time required to sample the mean force, and thus determine the effective potential, we use the translational symmetry of this simple system, the fact that the beads are identical and the assumption that the effective potential can be approximated as a sum of two-body interactions based on the distance to the nearest-neighbour beads only.
 We thus compute the interactions between any combination of beads and assume that the interactions computed are valid for any equivalent pair in the system. In this way we reduce the dimensionality of the space to be sampled from the total number of coarse-grained variables to simply one, \textit{i.e.}, the inter-bead distance, which simplifies the exploration of the entire constrained phase space, as well as the representation and interpolation of the effective potential in the parameter space.
 
 The validity of these assumptions in this simple system considered was verified by Di Pasquale \textit{et al.}~\cite{DiPasquale2019}. Naturally, in a more realistic system these assumptions could cause a significant deterioration in the accuracy and effectiveness of a systematic MZ projection approach.
