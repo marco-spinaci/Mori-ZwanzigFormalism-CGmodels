@@ -6,7 +6,7 @@ include("../../CGStats.jl")
 using Main.LJChain,Main.CGStats,Statistics,DelimitedFiles
 
 C = Chain();
-S = Simulator(dt=1e-3, Stochdt=1e-4, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
+S = Simulator(dt=1e-4, Stochdt=1e-4, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
 
 ################################################################################
 
