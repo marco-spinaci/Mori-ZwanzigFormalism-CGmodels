@@ -46,7 +46,7 @@ end
 v = findall(msd1 .!= 0);
 msd1 = msd1[v];
 
-open("Data_Analysis/MSD/Outcomes/msd_FGD_1e7.csv", "w+") do x
+open("Data_Analysis/MSD/Outcomes/msd_FGD_1e8_1e-4.csv", "w+") do x
     writedlm(x, [ S.dt*100*(v.-1) msd1 ]);
 end
 
