@@ -46,7 +46,7 @@ end
 v = findall(msd1 .!= 0);
 msd1 = msd1[v];
 
-open("Data_Analysis/MSD/Outcomes/msd_FGD_1e6.csv", "w+") do x
+open("Data_Analysis/MSD/Outcomes/msd_FGD_1e6_less.csv", "w+") do x
     writedlm(x, [ S.dt*100*(v.-1) msd1 ]);
 end
 
@@ -93,7 +93,7 @@ end
 v = findall(msd2 .!= 0);
 msd2 = msd2[v];
 
-open("Data_Analysis/MSD/Outcomes/msd_DCGD_1e6.csv", "w+") do x
+open("Data_Analysis/MSD/Outcomes/msd_DCGD_1e6_less.csv", "w+") do x
     writedlm(x, [ S.dt*100*(v.-1) msd2 ]);
 end
 
@@ -141,7 +141,7 @@ end
 v = findall(msd3 .!= 0);
 msd3 = msd3[v];
 
-open("Data_Analysis/MSD/Outcomes/msd_MMZD_1e6(B1.096).csv", "w+") do x
+open("Data_Analysis/MSD/Outcomes/msd_MMZD_1e6(B1.096)_less.csv", "w+") do x
     writedlm(x, [ S.dt*100*(v.-1) msd3 ]);
 end
 
