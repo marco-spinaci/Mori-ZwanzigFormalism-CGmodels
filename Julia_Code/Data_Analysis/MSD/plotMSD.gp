@@ -12,11 +12,11 @@ set xrange[0:1e2]
 set ylabel "{{/RomanOblique MSD}}"
 # set format y "10^{%L}"
 
-set output "| epstopdf -f -o=Data_Analysis/MSD/Plots/msd_1e7.pdf"
+set output "| epstopdf -f -o=Data_Analysis/MSD/Plots/msd_1e6_less.pdf"
 # set output "| epstopdf -f -o=../TEX_Notes/Figure/MSD.pdf"
-p "./Data_Analysis/MSD/Outcomes/msd_FGD_1e7.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
-  "./Data_Analysis/MSD/Outcomes/msd_DCGD_1e7.csv" u 1:2 w l lw 5 lc 6 dt 2 t "DCGD" , \
-  "./Data_Analysis/MSD/Outcomes/msd_MMZD_1e7(B1.096).csv" u 1:2 w l lw 5 lc 7 dt 4 t "MMZD"
+p "./Data_Analysis/MSD/Outcomes/msd_FGD_1e6_less.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+  "./Data_Analysis/MSD/Outcomes/msd_DCGD_1e6_less.csv" u 1:2 w l lw 5 lc 6 dt 2 t "DCGD" , \
+  "./Data_Analysis/MSD/Outcomes/msd_MMZD_1e6(B1.096)_less.csv" u 1:2 w l lw 5 lc 7 dt 4 t "MMZD"
 set output
 
 
