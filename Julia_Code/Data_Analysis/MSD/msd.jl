@@ -10,7 +10,7 @@ S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
 
 ################################################################################
 
-Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Q_FGD_1e6.csv", Float64);
+Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Q_FGD_1e7.csv", Float64);
 # Q_FGD = readdlm("Store_Trajectory/Outcomes/Q_FGD_1e5.csv", Float64);
 
 CdM = Q_FGD * C.vectorCdM;
@@ -46,7 +46,7 @@ end
 v = findall(msd1 .!= 0);
 msd1 = msd1[v];
 
-open("Data_Analysis/MSD/Outcomes/msd_FGD_1e6_test.csv", "w+") do x
+open("Data_Analysis/MSD/Outcomes/msd_FGD_1e7.csv", "w+") do x
     writedlm(x, [ S.dt*100*(v.-1) msd1 ]);
 end
 
@@ -57,7 +57,7 @@ end
 
 ################################################################################
 
-Q_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_DCGD_1e6.csv", Float64);
+Q_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_DCGD_1e7.csv", Float64);
 # Q_DCGD = readdlm("Store_Trajectory/Outcomes/QApprox_DCGD_1e5.csv", Float64);
 
 CdM = Q_DCGD * C.vectorCdM;
@@ -93,7 +93,7 @@ end
 v = findall(msd2 .!= 0);
 msd2 = msd2[v];
 
-open("Data_Analysis/MSD/Outcomes/msd_DCGD_1e6.csv", "w+") do x
+open("Data_Analysis/MSD/Outcomes/msd_DCGD_1e7.csv", "w+") do x
     writedlm(x, [ S.dt*100*(v.-1) msd2 ]);
 end
 
@@ -105,7 +105,7 @@ end
 
 ################################################################################
 
-Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD_1e6(B1.096).csv", Float64);
+Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD_1e7(B1.096).csv", Float64);
 # Q_MMZD = readdlm("Store_Trajectory/Outcomes/QApprox_MMZD_1e5(B1.096).csv", Float64);
 
 CdM = Q_MMZD * C.vectorCdM;
@@ -141,7 +141,7 @@ end
 v = findall(msd3 .!= 0);
 msd3 = msd3[v];
 
-open("Data_Analysis/MSD/Outcomes/msd_MMZD_1e6(B1.096).csv", "w+") do x
+open("Data_Analysis/MSD/Outcomes/msd_MMZD_1e7(B1.096).csv", "w+") do x
     writedlm(x, [ S.dt*100*(v.-1) msd3 ]);
 end
 
