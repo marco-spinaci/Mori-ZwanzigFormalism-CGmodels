@@ -28,13 +28,13 @@ S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
 # Write data to file
 
 ## FGD
-open("Store_Trajectory/Outcomes/P_FGD_1e7(1.096).csv", "w+") do x
+open("Store_Trajectory/Outcomes/P_FGD_1e7(B1.096)_CORRETTA.csv", "w+") do x
     writedlm(x, (C.Phi*PFull)');
 end
-open("Store_Trajectory/Outcomes/Q_FGD_1e7(1.096).csv", "w+") do x
+open("Store_Trajectory/Outcomes/Q_FGD_1e7(B1.096)_CORRETTA.csv", "w+") do x
     writedlm(x, (C.Psi*QFull)');
 end
-open("Store_Trajectory/Outcomes/F_FGD_1e7(1.096).csv", "w+") do x
+open("Store_Trajectory/Outcomes/F_FGD_1e7(B1.096)_CORRETTA.csv", "w+") do x
     writedlm(x, (C.PhiF*FFull)');
 end
 

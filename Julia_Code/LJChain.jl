@@ -206,8 +206,8 @@ Computes forward step of Langevin dynamics with timestep dt using Leimkuhler-Mat
 function LangDynIntegrators(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Float64,1},C::Chain,dt::Float64)
   PNext = P + 0.5.*F.*dt 	                      		    # B
   QNext = Q + 0.5.*dt.*C.MInv*PNext;                		# A
-  PNext = C.NetMomProj*OrnUhlenbeckPart(PNext,C,dt)[1];     # O
-  # PNext = OrnUhlenbeckPart(PNext,C,dt)[1];                  # O
+  # PNext = C.NetMomProj*OrnUhlenbeckPart(PNext,C,dt)[1];     # O
+  PNext = OrnUhlenbeckPart(PNext,C,dt)[1];                  # O
   QNext = QNext+0.5.*dt*C.MInv*PNext;            		    # A
   FNext = Forces(QNext,C);                       		    # Force evaluation
   PNext = PNext + 0.5.*FNext.*dt;                		    # B
@@ -273,7 +273,8 @@ Computes forward step of Deterministic CG Dynamics in the Canonical ensemble wit
 function DetCGDynNVTStep(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Float64,1},MeanForce,C::Chain,dt::Float64)
   PNext = P + 0.5.*F.*dt 	                      		    # B
   QNext = Q + 0.5.*dt./C.BeadMass.*PNext;                   # A
-  PNext = C.NetMomProjCG*OrnUhlenbeckPartDCG(PNext,C,dt);     # O
+  # PNext = C.NetMomProjCG*OrnUhlenbeckPartDCG(PNext,C,dt);     # O
+  PNext = OrnUhlenbeckPartDCG(PNext,C,dt);                  # O
   QNext = QNext+0.5.*dt/C.BeadMass.*PNext;            		# A
   FNext = MeanForce(QNext);                       		    # Force evaluation
   PNext = PNext + 0.5.*FNext.*dt;                		    # B
