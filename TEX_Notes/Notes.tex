@@ -71,7 +71,7 @@ The second part of the thesis is focused on the study of numerical methods for L
 The third and final part of the thesis is on the numerical experiments in the canonical (NVT) ensemble by extending and improving the open-source parallel code, written in Julia 0.6, developed by Di Pasquale \emph{et al.} \cite{DiPasquale2019}, introducing the integrators studied in the previous part. This code allows to solve the full, constrained and coarse-grained dynamics, as well as all the components needed for the coarse-grained (CG) system.
 %
 The full-resolution (fine-grained, FG) system that we consider is a periodic chain of $\nfg$ ``atoms'' of two different species, which are assumed to have different masses and bond stiffness, in a repeating pattern. We assumed that the chemical structure of the molecular system is fixed, \textit{i.e.} no reactions occur. Each ``atom'' is mapped to a fixed (unique) particle in the CG system, called bead. 
-We performed the simulation for four different systems with different parameter and for different dynamics: the FG dynamics, the orthogonal dynamics (or constrained dynamics), the deterministic coarse-grained dynamics and the Markovian Mori-Zwanzig dynamics.
+We performed the simulation for four different systems with different parameter and for different dynamics: the FG dynamics, the orthogonal dynamics (or constrained dynamics), the coarse-grained dynamics and the Markovian Mori-Zwanzig dynamics.
 
 
 \tableofcontents
@@ -718,7 +718,7 @@ Below, we will show the results and analysis of the simulations of different dyn
   \totd{\bfr_k}{t} = \frac{\bfp_k}{m_{k}}\,;\qquad
   \totd{\bfp_k}{t} = - \pard{\pot^X(\Aphase{\bfr})}{\bfr_k} + \frac{m_k}{M_I}\sum_{i\in S_I}\pard{\pot^X(\Aphase{\bfr})}{\bfr_i}\,; 
  \]
-\item[(DCGD)] the \emph{Deterministic Coarse-Grained Dynamics} when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, neglecting the dissipative and fluctuating terms:
+\item[(CGD)] the \emph{Coarse-Grained Dynamics} when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, neglecting the dissipative and fluctuating terms:
  \[
  \pard{\bfR_{K}}{t} = \frac{\bfP_{K}}{M_{K}}\,; \qquad
  \pard{\bfP_{K}}{t} = -\pard{\Veff}{\bfR_{K}}\,;  
@@ -790,7 +790,7 @@ we report the results for the fluctuating part of the force. Unlike the mean for
 Furthermore, the figure shows how these simple systems have a dependence of fluctuations on the inter-bead distance $R$, and consequently shows how a simple Langevin dynamics, with dissipation and white noise fluctuations having a magnitude independent of the state of the system, is not an adequate approximation.
 %\lr{questo è uno spunto interessante... puoi espandere secondo te? Mettere delle referenze?}
 
-The plots of the mean force and the fluctuating force (fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively) show that the majority of the points lies within the $[2.8,3.2]$ region, whereas distances outside of this range are rarely accessed. We will clearly show later, when we will discuss the distribution of the inter-bead distances for the various dynamics (FGD, DCGD and MMZD, Sec.~\ref{Sec:Observables}) that this is indeed due to a lower probability of sampling.
+The plots of the mean force and the fluctuating force (fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively) show that the majority of the points lies within the $[2.8,3.2]$ region, whereas distances outside of this range are rarely accessed. We will clearly show later, when we will discuss the distribution of the inter-bead distances for the various dynamics (FGD, CGD and MMZD, Sec.~\ref{Sec:Observables}) that this is indeed due to a lower probability of sampling.
 
 Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integration of the mean force (fig.~\ref{Fig:meanForce}) with respect to the inter-bead distance $R$.
 \begin{figure}[!htb]
@@ -941,7 +941,7 @@ We can notice how the separation of the time scales is more evident in the case 
 \subsection{The effect of the memory approximation on the observables of the studied system}
 \label{Sec:Observables}
 
-We compare the observables of the considered system, determined by means of the trajectories of the MMZD and of the DCGD, using as target the observables determined by the trajectories of the FGD or using the known theoretical trend, where possible. 
+We compare the observables of the considered system, determined by means of the trajectories of the MMZD and of the CGD, using as target the observables determined by the trajectories of the FGD or using the known theoretical trend, where possible. 
 The observables chosen for comparison are
 \begin{itemize}
 \item[-] linear spatial statistics: the momenta distribution of a single bead and the distribution of inter-bead distance;
@@ -949,29 +949,29 @@ The observables chosen for comparison are
 \end{itemize}
 We would expect that the results of the first observables to be consistent with the reference results determined by the FGD, and in the case of the momenta distribution are consistent with the theoretical trend determined by the Maxwell-Boltzmann distribution. While from the results of the MSD we would expect an initial trend with non-trivial differences for the various dynamics and subsequently for long times we would expect a plateau as over long times the various beads oscillate around the equilibrium positions.
 
-In fig.~\ref{Fig:PDF} we show the distribution of the momenta and inter-bead distance obtained through simulation of FGD, DCGD and MMZD, for the system C (see table \ref{Tab:Cases}).
+In fig.~\ref{Fig:PDF} we show the distribution of the momenta and inter-bead distance obtained through simulation of FGD, CGD and MMZD, for the system C (see table \ref{Tab:Cases}).
 \begin{figure}[!htb]
  \begin{subfigure}[b]{\textwidth}
   \centering
-   \includegraphics[width=\textwidth]{HistPDF_P}
+   \includegraphics[width=\textwidth]{HistPDF_P_CORRETTAmd}
  \end{subfigure}\\
  \begin{subfigure}[b]{\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{HistPDF_Q}
+  \includegraphics[width=\textwidth]{HistPDF_Q_CORRETTAmd}
  \end{subfigure}\\
- \caption{Comparison of the Probability Distribution Functions (PDFs) of bead momenta (upper panel) and inter-bead distances (bottom panel), between the \emph{Fine-Grained Dynamics} (FGD, green square points and green solid line, respectively), the \emph{Deterministic Coarse-Grained Dynamics} (DCGD, black rhombus points), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). In the upper panel the simulation results are compared with the expected theoretical trend (orange solid line), \textit{i.e.}, they are compared with the Maxwell-Boltzmann distribution. All calculations refer to system C (see table \ref{Tab:Cases}).}
+ \caption{Comparison of the Probability Distribution Functions (PDFs) of bead momenta (upper panel) and inter-bead distances (bottom panel), between the \emph{Fine-Grained Dynamics} (FGD, green square points and green solid line, respectively), the \emph{Coarse-Grained Dynamics} (CGD, black rhombus points), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). In the upper panel the simulation results are compared with the expected theoretical trend (orange solid line), \textit{i.e.}, they are compared with the Maxwell-Boltzmann distribution. All calculations refer to system C (see table \ref{Tab:Cases}).}
 \label{Fig:PDF}
 \end{figure}
 In all cases, the mean distance between the particles obtained is 2.98. The trends are well reproduced, we can only see small fluctuations in the tails of both distributions. This could be due to reduced sampling in that region. In fact, we can see from the sampling of mean force and fluctuating force (see fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively), that most of the values obtained are in the region around the equilibrium position ($R\in\sqp{2.83,3.43}$), and from the distribution of the inter-bead distance fig.~\ref{Fig:PDF} we can see that outside that region the values of distance are unlikely. 
 
 A remarkable result obtained is that, thanks to the formalism of MZ, we have obtained a CG model that reproduces the static distributions of the atomistic system without requiring any optimization of the CG potential, as for example happens with the Iterative Boltzmann Inversion (IBI) method \cite{Reith2003}, where the CG potentials are based on the radial distribution functions and are optimized through a series of iterations to recover the correct distribution.   
 
-In fig.~\ref{Fig:MSD} we show the mean-square displacement (MSD) of a single bead over time for the FGD, DCGD and MMZD. We can see a first diffusive trend for $t<0.7$, where the FGD and the DCGD have the same trend since both have the same thermal bath. While for the MMZD we see how the friction term of the thermal bath is not able to compensate the diffusive term and therefore we have an accelerated dynamic compared to the FGD for $t<0.7$.
+In fig.~\ref{Fig:MSD} we show the mean-square displacement (MSD) of a single bead over time for the FGD, CGD and MMZD. We can see a first diffusive trend for $t<0.7$, where the FGD and the CGD have the same trend since both have the same thermal bath. While for the MMZD we see how the friction term of the thermal bath is not able to compensate the diffusive term and therefore we have an accelerated dynamic compared to the FGD for $t<0.7$.
 
 \begin{figure}[!htb]
  \centering
- \includegraphics[width=\textwidth]{MSD}
- \caption{Comparison of the Mean Square Displacement (MSD) of a single bead between the \emph{Fine-Grained Dynamics} (FGD, green solid line), the \emph{Deterministic Coarse-Grained Dynamics} (DCGD, black dashed line), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). All calculations refer to system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
+ \includegraphics[width=\textwidth]{MSD_CORRETTAmd}
+ \caption{Comparison of the Mean Square Displacement (MSD) of a single bead between the \emph{Fine-Grained Dynamics} (FGD, green solid line), the \emph{Coarse-Grained Dynamics} (CGD, black dashed line), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). All calculations refer to system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
  \label{Fig:MSD}
 \end{figure}
 
@@ -987,7 +987,7 @@ In this thesis, we presented the Mori-Zwanzig (MZ) formalism and we gave a rigor
 Then, through this formalism we derived a class of coarse-grained (CG) models, the so-called hybrid models, that can be used to decrease the computational effort required to simulate generic systems. Subsequently, we studied the integrators needed to implement the numerical simulations in the canonical (NVT) ensemble. Finally, we have numerically studied a toy model, which allowed us to illustrate some of the features of the MZ derivation. 
 
 \noindent
-In order to do this we extended and improved a parallel open-source code written in Julia, which we have used to perform simulations of four different systems with different parameters and using different dynamics: the fine-grained dynamics (FGD), the orthogonal dynamics (or constrained dynamics, OD), the deterministic coarse-grained dynamics (DCGD) and the Markovian Mori-Zwanzig dynamics (MMZD). Importantly, the sampling of the orthogonal dynamics makes it possible to compute the effective potential and the friction matrix, as well as the fluctuating terms, that enter into the equations of motion derived with the MZ formalism.
+In order to do this we extended and improved a parallel open-source code written in Julia, which we have used to perform simulations of four different systems with different parameters and using different dynamics: the fine-grained dynamics (FGD), the orthogonal dynamics (or constrained dynamics, OD), the  coarse-grained dynamics (CGD) and the Markovian Mori-Zwanzig dynamics (MMZD). Importantly, the sampling of the orthogonal dynamics makes it possible to compute the effective potential and the friction matrix, as well as the fluctuating terms, that enter into the equations of motion derived with the MZ formalism.
 
 In all cases simulated no significant scale separation between the dynamics of the beads and individual atoms was observed. Nevertheless, a comparison was made between the true and approximate dynamics, and, as expected, systems with `more rigid' beads, that is, with greater internal stiffness, showed much weaker memory effects. 
 
