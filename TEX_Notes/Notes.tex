@@ -914,7 +914,7 @@ These ACF are shown in fig.~\ref{Fig:ACFcomparison} for system C (see table \ref
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{ACF_comparison}
- \caption{Comparison of the Time Autocorrelation Functions (ACF) between the fluctuating force (black dot-dashed line), \textit{i.e.} the ``orthogonal'' component of the force, the force (orange dashed line) and the momenta (violet solid line), in the FGD. All calculations refer to the system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
+ \caption{Comparison of the Time Autocorrelation Functions (ACF) between the fluctuating force (purple dot-dashed line), \textit{i.e.} the ``orthogonal'' component of the force, and the momenta (green solid line), in the \emph{Fine-Grained Dynamics} (FGD). All calculations refer to the system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
  \label{Fig:ACFcomparison}
 \end{figure}
 Remarkably, this result does not seem to fully justify the Markovian approximation.
@@ -926,12 +926,14 @@ For the sake of completeness, we also report in fig.~\ref{Fig:ACF} the ACF for t
  \begin{subfigure}[b]{\textwidth}
   \centering
    \includegraphics[width=\textwidth]{ACF_F}
+   \caption{The time autocorrelation functions (ACF) of the forces in \emph{Fine-Grained Dynamics} (FGD, green solid line) is compared with its ``orthogonal'' component (Fluctuating Force, purple dot-dashed line) and with the ACF of the forces in \emph{Orthogonal Dynamics} (OD, orange dashed line) and in \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red dot-dashed line).}
  \end{subfigure}\\
  \begin{subfigure}[b]{\textwidth}
   \centering
   \includegraphics[width=\textwidth]{ACF_P}
+  \caption{The ACF of the momenta in the FGD (green solid line) is compared with the ACF of the momenta in the OD (orange dashed line) and the ACF of the momenta in the MMZD (red dot-dashed line).}
  \end{subfigure}\\
- \caption{Time autocorrelation functions (ACF) of forces and momenta. In the upper panel the ACF of the forces in the FGD (green solid line) is compared with that of the forces in the OD (blue dashed line) and the MMZD (red dot-dashed line). In the bottom panel, the ACF of the momenta in the FGD (green solid line) is compared with the ACF of the momenta in the OD (blue dashed line) and the ACF of the momenta in the MMZD (red dot-dashed line). All calculations refer to the system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
+ \caption{Time autocorrelation functions (ACF) of forces and momenta. All calculations refer to the system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
 \label{Fig:ACF}
 \end{figure}
 We can notice how the separation of the time scales is more evident in the case of the orthogonal dynamics, that is, the constrained Hamiltonian dynamics (see Section \ref{Sec:OD}).
@@ -939,13 +941,13 @@ We can notice how the separation of the time scales is more evident in the case 
 \subsection{The effect of the memory approximation on the observables of the studied system}
 \label{Sec:Observables}
 
-We compare the observables of the considered system, determined by means of the trajectories of the MMZD and of the DCGD, using as target the observables determined by the trajectories of the FGD. 
+We compare the observables of the considered system, determined by means of the trajectories of the MMZD and of the DCGD, using as target the observables determined by the trajectories of the FGD or using the known theoretical trend, where possible. 
 The observables chosen for comparison are
 \begin{itemize}
 \item[-] linear spatial statistics: the momenta distribution of a single bead and the distribution of inter-bead distance;
-\item[-] a dynamics property of the system: the evolution of the mean-square displacement (MSD) of the inter-bead distance over time.
+\item[-] a dynamics property of the system: the evolution of the mean-square displacement (MSD) of a single bead over time.
 \end{itemize}
-We would expect that the results of the first observables to be consistent with the reference results determined by the FGD. While from the results of the MSD for the various dynamics one would expect non-trivial differences, being the MSD a dynamical property of the studied system.
+We would expect that the results of the first observables to be consistent with the reference results determined by the FGD, and in the case of the momenta distribution are consistent with the theoretical trend determined by the Maxwell-Boltzmann distribution. While from the results of the MSD we would expect an initial trend with non-trivial differences for the various dynamics and subsequently for long times we would expect a plateau as over long times the various beads oscillate around the equilibrium positions.
 
 In fig.~\ref{Fig:PDF} we show the distribution of the momenta and inter-bead distance obtained through simulation of FGD, DCGD and MMZD, for the system C (see table \ref{Tab:Cases}).
 \begin{figure}[!htb]
@@ -957,10 +959,23 @@ In fig.~\ref{Fig:PDF} we show the distribution of the momenta and inter-bead dis
   \centering
   \includegraphics[width=\textwidth]{HistPDF_Q}
  \end{subfigure}\\
- \caption{Comparison of the Probability Distribution Functions (PDFs) of bead momenta (upper panel) and inter-bead distances (bottom panel), between the FGD (green solid line), the DCGD (blue dashed line), and the MMZD (red dot-dashed line). All calculations refer to system C (see table \ref{Tab:Cases}).}
+ \caption{Comparison of the Probability Distribution Functions (PDFs) of bead momenta (upper panel) and inter-bead distances (bottom panel), between the \emph{Fine-Grained Dynamics} (FGD, green square points and green solid line, respectively), the \emph{Deterministic Coarse-Grained Dynamics} (DCGD, black rhombus points), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). In the upper panel the simulation results are compared with the expected theoretical trend (orange solid line), \textit{i.e.}, they are compared with the Maxwell-Boltzmann distribution. All calculations refer to system C (see table \ref{Tab:Cases}).}
 \label{Fig:PDF}
 \end{figure}
-In all cases, the mean distance between the particles obtained is 2.98. The trends are reproduced quite well, we can see fluctuations in the tails of both distributions. This could be due to reduced sampling in that region. In fact, we can see from the sampling of mean force and fluctuating force (see fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively), that most of the values obtained are in the region around the equilibrium position ($R\in\sqp{2.83,3.43}$), and from the distribution of the inter-bead distance fig.~\ref{Fig:PDF} we can see that outside that region the values of distance are unlikely.
+In all cases, the mean distance between the particles obtained is 2.98. The trends are well reproduced, we can only see small fluctuations in the tails of both distributions. This could be due to reduced sampling in that region. In fact, we can see from the sampling of mean force and fluctuating force (see fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively), that most of the values obtained are in the region around the equilibrium position ($R\in\sqp{2.83,3.43}$), and from the distribution of the inter-bead distance fig.~\ref{Fig:PDF} we can see that outside that region the values of distance are unlikely. 
+
+A remarkable result obtained is that, thanks to the formalism of MZ, we have obtained a CG model that reproduces the static distributions of the atomistic system without requiring any optimization of the CG potential, as for example happens with the Iterative Boltzmann Inversion (IBI) method \cite{Reith2003}, where the CG potentials are based on the radial distribution functions and are optimized through a series of iterations to recover the correct distribution.   
+
+In fig.~\ref{Fig:MSD} we show the mean-square displacement (MSD) of a single bead over time for the FGD, DCGD and MMZD. We can see a first diffusive trend for $t<0.7$, where the FGD and the DCGD have the same trend since both have the same thermal bath. While for the MMZD we see how the friction term of the thermal bath is not able to compensate the diffusive term and therefore we have an accelerated dynamic compared to the FGD for $t<0.7$.
+
+\begin{figure}[!htb]
+ \centering
+ \includegraphics[width=\textwidth]{MSD}
+ \caption{Comparison of the Mean Square Displacement (MSD) of a single bead between the \emph{Fine-Grained Dynamics} (FGD, green solid line), the \emph{Deterministic Coarse-Grained Dynamics} (DCGD, black dashed line), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). All calculations refer to system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
+ \label{Fig:MSD}
+\end{figure}
+
+
 
 \chapter*{Conclusions}
 \phantomsection

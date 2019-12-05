@@ -9,7 +9,7 @@ set format y "10^{%L}"
 
 set xlabel "{{/RomanOblique P}}"
 set xrange [-10:10]
-set ylabel "{{/RomanOblique pdf (P)}}"
+set ylabel "{{/Roman pdf (P)}}"
 set yrange[1e-2:1e-1]
 
 
@@ -31,7 +31,7 @@ set yrange[1e-7:1e0]
 
 # set output "| epstopdf -f -o=Data_Analysis/PDF/Plots/HistPDF_P.pdf"
 set output "| epstopdf -f -o=../TEX_Notes/Figure/HistPDF_P.pdf"
-p f(x) w l lc 4 lw 5 t "Theoretical distribution" , \
+p f(x) w l lc 4 lw 5 t "Theoretical pdf" , \
   "./Data_Analysis/PDF/Outcomes/HistP_FGD_1e8_1e-4.csv" u 1:2 w p lw 5 ps 2 lc 2 pt 5 t "FGD" , \
   "./Data_Analysis/PDF/Outcomes/HistP_DCGD.csv" u 1:2 w p lw 5 ps 2 lc 8 pt 13 t "DCGD" , \
   "./Data_Analysis/PDF/Outcomes/HistP_MMZD_1e7(B1.096).csv" u 1:2 w p lw 5 ps 2 lc 7 pt 4 t "MMZD"
@@ -42,7 +42,7 @@ set xtics 0.2
 unset yrange
 
 set xlabel "{{/RomanOblique R}}"
-set ylabel "{{/RomanOblique pdf (R)}}"
+set ylabel "{{/Roman pdf (R)}}"
 
 # set output "| epstopdf -f -o=Data_Analysis/PDF/Plots/HistPDF_Q.pdf"
 set output "| epstopdf -f -o=../TEX_Notes/Figure/HistPDF_Q.pdf"
