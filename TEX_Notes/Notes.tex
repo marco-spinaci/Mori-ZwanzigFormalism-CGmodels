@@ -976,6 +976,13 @@ A remarkable result obtained is that, thanks to the formalism of MZ, we have obt
 
 In fig.~\ref{Fig:MSD} we show the mean-square displacement (MSD) of a single bead over time for the FGD, CGD and MMZD, for the system C (see table \ref{Tab:Cases}).
 %
+\begin{figure}[!htb]
+ \centering
+ \includegraphics[width=\textwidth]{MSD_CORRETTAmd}
+ \caption{Comparison of the Mean Square Displacement (MSD) of a single bead between the \emph{Fine-Grained Dynamics} (FGD, green solid line), the \emph{Coarse-Grained Dynamics} (CGD, black dashed line), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). All calculations refer to system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
+ \label{Fig:MSD}
+\end{figure}
+%
 We can see a first diffusive trend for $t<0.7$, where the FGD and the CGD have the same trend since both have the same thermal bath. While for the MMZD we see how the friction term of the thermal bath is not able to compensate the diffusive term and therefore we have an accelerated dynamic compared to the FGD.
 %
 In the time interval $0.7 \leq t \leq 11$, we can see fluctuations of the MSD, due to the thermal bath. This fluctuations are in phase only for the MMZD, respect to the reference values given by the FGD. 
@@ -983,18 +990,18 @@ In the time interval $0.7 \leq t \leq 11$, we can see fluctuations of the MSD, d
 Finally for long time values, we can see that the MSD has reached the plateau. This value is a static property of the system, that is, for long tome values the beads should oscillate around the equilibrium positions, and from fig.~\ref{Fig:PDF} we can see how this quantity is the same for all dynamics. So from the calculation of the MSD we should expect the same values of the plateau. As we can see in fig.~\ref{Fig:MSD} only the MMZD reaches the value of the reference plateau given by the FGD. 
 
 \noindent
-The deviation of the MSD of the CGD from the reference value may be justified by the fact that the CGD has a different width of inter-bead distance distribution compared to the FGD distribution (see fig.~\ref{Fig:PDF}). In addition, the deviation of its inter-bead distribution respect to The FGD distribution is more marked than the deviation of MMZD distribution.
- 
-
-
-
-
+The deviation of the MSD of the CGD from the reference value may be justified by the fact that the CGD has a different width of inter-bead distance distribution compared to the FGD distribution (see fig.~\ref{Fig:PDF}). In addition, the deviation of its inter-bead distribution respect to the FGD distribution is more marked than the deviation of MMZD distribution. In order to support the above, we have also computed the MSD of the inter-bead distance, and we show in fig.~\ref{Fig:MSDint} only its plateaus for a time interval of one-orders-of-magnitude $10 \leq t \leq 100$.
+%
 \begin{figure}[!htb]
  \centering
- \includegraphics[width=\textwidth]{MSD_CORRETTAmd}
- \caption{Comparison of the Mean Square Displacement (MSD) of a single bead between the \emph{Fine-Grained Dynamics} (FGD, green solid line), the \emph{Coarse-Grained Dynamics} (CGD, black dashed line), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). All calculations refer to system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
- \label{Fig:MSD}
+ \includegraphics[width=\textwidth]{INT_MSD_CORRETTAmd}
+ \caption{Comparison of the plateau of the Mean Square Displacement (MSD) of the inter-bead distance between the \emph{Fine-Grained Dynamics} (FGD, green solid line), the \emph{Coarse-Grained Dynamics} (CGD, black dashed line), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). All calculations refer to system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
+ \label{Fig:MSDint}
 \end{figure}
+%
+We can see how a dynamic with a slightly greater width of inter-bead distance distribution has a slightly greater plateau value. This difference in plateau values needs to be further investigated, we think it is due to insufficient sampling.
+
+However, the results obtained for CGD and MMZD confirm those of Hij\'on \textit{et al.} obtained in Ref.~\cite{ResponseCommentHijon} for a larger system, that is, that the behaviour of the CG variables in a system with non linear potential, such as the L-J potential, is described rather well under the Markovian assumption. Moreover, by simulating in the canonical (NVT) ensemble the same system simulated by Di Pasquale \textit{et al.} we obtained better results for both CGD and MMZD.
 
 
 
