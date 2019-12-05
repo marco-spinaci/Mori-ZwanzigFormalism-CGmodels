@@ -63,46 +63,46 @@ end
 
 ############################################# pdf(R) ###############################################################
 
-# Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Q_FGD_1e7_test.csv", Float64);
-# lf = size(Q_FGD,1);
-# dQ4 = zeros(lf, C.NBeads);
-# for i in 1:lf
-#     dQ4[i, :] = circshift(Q_FGD[i, :], -1) - Q_FGD[i, :];
-#     dQ4[i, C.NBeads] += C.Period;
-# end
-#
-# dQ4 = dQ4[:];
-# h4 = fit(Histogram, dQ4);
-#
-# x04 = Vector(h4.edges[1]);
-# H4 = zeros(length(h4.weights), 2);
-# bin_size = x04[2] - x04[1];
-# H4[:, 1] = (x04[2:end] +  x04[1:end-1]) / 2;
-# H4[:, 2] = h4.weights ./ (length(dQ4[:, 1]) * bin_size);
-# open("Data_Analysis/PDF/Outcomes/HistQ_FGD_1e7_test.csv", "w+") do x
-#     writedlm(x, H4);
-# end
+Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Q_FGD_1e7(B1.096)_CORRETTA.csv", Float64);
+lf = size(Q_FGD,1);
+dQ4 = zeros(lf, C.NBeads);
+for i in 1:lf
+    dQ4[i, :] = circshift(Q_FGD[i, :], -1) - Q_FGD[i, :];
+    dQ4[i, C.NBeads] += C.Period;
+end
+
+dQ4 = dQ4[:];
+h4 = fit(Histogram, dQ4);
+
+x04 = Vector(h4.edges[1]);
+H4 = zeros(length(h4.weights), 2);
+bin_size = x04[2] - x04[1];
+H4[:, 1] = (x04[2:end] +  x04[1:end-1]) / 2;
+H4[:, 2] = h4.weights ./ (length(dQ4[:, 1]) * bin_size);
+open("Data_Analysis/PDF/Outcomes/HistQ_FGD_1e7_test.csv", "w+") do x
+    writedlm(x, H4);
+end
 
 
-# Q_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_DCGD_1e7.csv", Float64);
-# ld = size(Q_DCGD,1);
-# dQ5 = zeros(ld, C.NBeads);
-# for i in 1:ld
-#     dQ5[i, :] = circshift(Q_DCGD[i, :], -1) - Q_DCGD[i, :];
-#     dQ5[i, C.NBeads] += C.Period;
-# end
+Q_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_DCGD_1e7(B1.096)_CORRETTA.csv", Float64);
+ld = size(Q_DCGD,1);
+dQ5 = zeros(ld, C.NBeads);
+for i in 1:ld
+    dQ5[i, :] = circshift(Q_DCGD[i, :], -1) - Q_DCGD[i, :];
+    dQ5[i, C.NBeads] += C.Period;
+end
 
-# dQ5 = dQ5[:];
-# h5 = fit(Histogram, dQ5);
+dQ5 = dQ5[:];
+h5 = fit(Histogram, dQ5);
 
-# x05 = Vector(h5.edges[1]);
-# H5 = zeros(length(h5.weights), 2);
-# bin_size = x05[2] - x05[1];
-# H5[:, 1] = (x05[2:end] +  x05[1:end-1]) / 2;
-# H5[:, 2] = h5.weights ./ (length(dQ5[:, 1]) * bin_size);
-# open("Data_Analysis/PDF/Outcomes/HistQ_DCGD.csv", "w+") do x
-#     writedlm(x, H5);
-# end
+x05 = Vector(h5.edges[1]);
+H5 = zeros(length(h5.weights), 2);
+bin_size = x05[2] - x05[1];
+H5[:, 1] = (x05[2:end] +  x05[1:end-1]) / 2;
+H5[:, 2] = h5.weights ./ (length(dQ5[:, 1]) * bin_size);
+open("Data_Analysis/PDF/Outcomes/HistQ_DCGD.csv", "w+") do x
+    writedlm(x, H5);
+end
 
 
 # Q_MMZD = readdlm("Store_Trajectory/Outcomes/QApprox_MMZD_1.csv", Float64);
