@@ -12,33 +12,33 @@ S = Simulator();
 
 # P = readdlm("/home/pmams3/Desktop/PFull.csv", Float64);
 
-# P_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/P_FGD_1e7_test.csv", Float64);
-# P_FGD = P_FGD[:];
-# h1 = fit(Histogram, P_FGD);
-#
-# x01 = Vector(h1.edges[1]);
-# H1 = zeros(length(h1.weights), 2);
-# H1[:, 1] = (x01[2:end] + x01[1:end-1]) / 2;
-# bin_size = x01[2] - x01[1];
-# H1[:, 2] = h1.weights ./ (length(P_FGD[:, 1]) * bin_size)
-# open("Data_Analysis/PDF/Outcomes/HistP_FGD_1e7_test.csv", "w+") do x
-#    writedlm(x, H1);
-# end
+P_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/P_FGD_1e7(B1.096)_CORRETTA.csv", Float64);
+P_FGD = P_FGD[:];
+h1 = fit(Histogram, P_FGD);
+
+x01 = Vector(h1.edges[1]);
+H1 = zeros(length(h1.weights), 2);
+H1[:, 1] = (x01[2:end] + x01[1:end-1]) / 2;
+bin_size = x01[2] - x01[1];
+H1[:, 2] = h1.weights ./ (length(P_FGD[:, 1]) * bin_size)
+open("Data_Analysis/PDF/Outcomes/HistP_FGD_1e7(B1.096)_CORRETTA.csv", "w+") do x
+   writedlm(x, H1);
+end
 
 
 
-# P_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/PApprox_DCGD_1e7.csv", Float64);
-# P_DCGD = P_DCGD[:];
-# h2 = fit(Histogram, P_DCGD);
+P_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/PApprox_DCGD_1e7(B1.096)_CORRETTA.csv", Float64);
+P_DCGD = P_DCGD[:];
+h2 = fit(Histogram, P_DCGD);
 
-# x02 = Vector(h2.edges[1]);
-# H2 = zeros(length(h2.weights), 2);
-# H2[:, 1] = (x02[2:end] + x02[1:end-1]) / 2;
-# bin_size = x02[2] - x02[1];
-# H2[:, 2] = h2.weights ./ (length(P_DCGD[:, 1]) * bin_size);
-# open("Data_Analysis/PDF/Outcomes/HistP_DCGD.csv", "w+") do x
-#     writedlm(x, H2);
-# end
+x02 = Vector(h2.edges[1]);
+H2 = zeros(length(h2.weights), 2);
+H2[:, 1] = (x02[2:end] + x02[1:end-1]) / 2;
+bin_size = x02[2] - x02[1];
+H2[:, 2] = h2.weights ./ (length(P_DCGD[:, 1]) * bin_size);
+open("Data_Analysis/PDF/Outcomes/HistP_DCGD_1e7(B1.096)_CORRETTA.csv", "w+") do x
+    writedlm(x, H2);
+end
 
 
 # P_MMZD = readdlm("Store_Trajectory/Outcomes/PApprox_MMZD_1.csv", Float64);
@@ -79,7 +79,7 @@ H4 = zeros(length(h4.weights), 2);
 bin_size = x04[2] - x04[1];
 H4[:, 1] = (x04[2:end] +  x04[1:end-1]) / 2;
 H4[:, 2] = h4.weights ./ (length(dQ4[:, 1]) * bin_size);
-open("Data_Analysis/PDF/Outcomes/HistQ_FGD_1e7_test.csv", "w+") do x
+open("Data_Analysis/PDF/Outcomes/HistQ_FGD_1e7(B1.096)_CORRETTA.csv", "w+") do x
     writedlm(x, H4);
 end
 
@@ -100,7 +100,7 @@ H5 = zeros(length(h5.weights), 2);
 bin_size = x05[2] - x05[1];
 H5[:, 1] = (x05[2:end] +  x05[1:end-1]) / 2;
 H5[:, 2] = h5.weights ./ (length(dQ5[:, 1]) * bin_size);
-open("Data_Analysis/PDF/Outcomes/HistQ_DCGD.csv", "w+") do x
+open("Data_Analysis/PDF/Outcomes/HistQ_DCGD_1e7(B1.096)_CORRETTA.csv", "w+") do x
     writedlm(x, H5);
 end
 
