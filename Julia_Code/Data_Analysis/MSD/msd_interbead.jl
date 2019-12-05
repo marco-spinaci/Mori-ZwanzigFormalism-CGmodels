@@ -56,11 +56,11 @@ msd1 = msd1[v];
 # end
 
 open("Data_Analysis/MSD/Outcomes/INT_msd_FGD_1e7.csv", "w+") do x
-    writedlm(x, [ S.dt*100*(v.) msd1 ]);
+    writedlm(x, [ S.dt*100*v msd1 ]);
 end
 
 # open("Data_Analysis/MSD/Outcomes/INT_msd_FGD_1e5.csv", "w+") do x
-#     writedlm(x, [ S.dt*100*(v.) msd1 ]);
+#     writedlm(x, [ S.dt*100*v msd1 ]);
 # end
 
 
@@ -108,12 +108,12 @@ v = findall(msd2 .!= 0);
 msd2 = msd2[v];
 
 open("Data_Analysis/MSD/Outcomes/INT_msd_DCGD_1e7.csv", "w+") do x
-    writedlm(x, [ S.dt*100*(v.) msd2 ]);
+    writedlm(x, [ S.dt*100*v msd2 ]);
 end
 
 
 # open("Data_Analysis/MSD/Outcomes/INT_msd_DCGD_1e5.csv", "w+") do x
-#     writedlm(x, [ S.dt*100*(v.) msd2 ]);
+#     writedlm(x, [ S.dt*100*v msd2 ]);
 # end
 
 
@@ -161,9 +161,9 @@ v = findall(msd3 .!= 0);
 msd3 = msd3[v];
 
 open("Data_Analysis/MSD/Outcomes/INT_msd_MMZD_1e7(B1.096).csv", "w+") do x
-    writedlm(x, [ S.Stochdt*100*(v.) msd3 ]);
+    writedlm(x, [ S.Stochdt*100*v msd3 ]);
 end
 
 # open("Data_Analysis/MSD/Outcomes/INT_msd_MMZD_1e5(B1.096).csv", "w+") do x
-#     writedlm(x, [ S.Stochdt*100*(v.) msd3 ]);
+#     writedlm(x, [ S.Stochdt*100*v msd3 ]);
 # end
