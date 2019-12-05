@@ -950,6 +950,7 @@ The observables chosen for comparison are
 We would expect that the results of the first observables to be consistent with the reference results determined by the FGD, and in the case of the momenta distribution are consistent with the theoretical trend determined by the Maxwell-Boltzmann distribution. While from the results of the MSD we would expect an initial trend with non-trivial differences for the various dynamics and subsequently for long times we would expect a plateau as over long times the various beads oscillate around the equilibrium positions.
 
 In fig.~\ref{Fig:PDF} we show the distribution of the momenta and inter-bead distance obtained through simulation of FGD, CGD and MMZD, for the system C (see table \ref{Tab:Cases}).
+%
 \begin{figure}[!htb]
  \begin{subfigure}[b]{\textwidth}
   \centering
@@ -962,11 +963,31 @@ In fig.~\ref{Fig:PDF} we show the distribution of the momenta and inter-bead dis
  \caption{Comparison of the Probability Distribution Functions (PDFs) of bead momenta (upper panel) and inter-bead distances (bottom panel), between the \emph{Fine-Grained Dynamics} (FGD, green square points and green solid line, respectively), the \emph{Coarse-Grained Dynamics} (CGD, black rhombus points), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). In the upper panel the simulation results are compared with the expected theoretical trend (orange solid line), \textit{i.e.}, they are compared with the Maxwell-Boltzmann distribution. All calculations refer to system C (see table \ref{Tab:Cases}).}
 \label{Fig:PDF}
 \end{figure}
-In all cases, the mean distance between the particles obtained is 2.98. The trends are well reproduced, we can only see small fluctuations in the tails of both distributions. This could be due to reduced sampling in that region. In fact, we can see from the sampling of mean force and fluctuating force (see fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively), that most of the values obtained are in the region around the equilibrium position ($R\in\sqp{2.83,3.43}$), and from the distribution of the inter-bead distance fig.~\ref{Fig:PDF} we can see that outside that region the values of distance are unlikely. 
+%
+The trends for the momenta distribution are well reproduced for all dynamics, we can only see small fluctuations in the tails of distribution. 
+%
+While the trends for the distributions of the inter-bead distance is well reproduced only in the region around the equilibrium position $2.78\leq R \leq 3.43$, and in all cases the mean value of the inter-bead distance is equal to 2.98. 
+For values of $R > 3.43$, we can see how the distributions of CGD and MMZD begin to deviate from the reference distribution given by the FGD, and we can see small fluctuations in the tails of distributions in both dynamics (CGD and MMZD).
+
+\noindent
+This could be due to reduced sampling in that region. In fact, we can see from the sampling of mean force and fluctuating force (see fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively), that most of the values obtained are in the region around the equilibrium position ($R\in\sqp{2.78,3.43}$). This is confirmed by the fact that outside that region the values of the inter-bead distance are unlikely, as we can see from their distributions.
 
 A remarkable result obtained is that, thanks to the formalism of MZ, we have obtained a CG model that reproduces the static distributions of the atomistic system without requiring any optimization of the CG potential, as for example happens with the Iterative Boltzmann Inversion (IBI) method \cite{Reith2003}, where the CG potentials are based on the radial distribution functions and are optimized through a series of iterations to recover the correct distribution.   
 
-In fig.~\ref{Fig:MSD} we show the mean-square displacement (MSD) of a single bead over time for the FGD, CGD and MMZD. We can see a first diffusive trend for $t<0.7$, where the FGD and the CGD have the same trend since both have the same thermal bath. While for the MMZD we see how the friction term of the thermal bath is not able to compensate the diffusive term and therefore we have an accelerated dynamic compared to the FGD for $t<0.7$.
+In fig.~\ref{Fig:MSD} we show the mean-square displacement (MSD) of a single bead over time for the FGD, CGD and MMZD, for the system C (see table \ref{Tab:Cases}).
+%
+We can see a first diffusive trend for $t<0.7$, where the FGD and the CGD have the same trend since both have the same thermal bath. While for the MMZD we see how the friction term of the thermal bath is not able to compensate the diffusive term and therefore we have an accelerated dynamic compared to the FGD.
+%
+In the time interval $0.7 \leq t \leq 11$, we can see fluctuations of the MSD, due to the thermal bath. This fluctuations are in phase only for the MMZD, respect to the reference values given by the FGD. 
+%
+Finally for long time values, we can see that the MSD has reached the plateau. This value is a static property of the system, that is, for long tome values the beads should oscillate around the equilibrium positions, and from fig.~\ref{Fig:PDF} we can see how this quantity is the same for all dynamics. So from the calculation of the MSD we should expect the same values of the plateau. As we can see in fig.~\ref{Fig:MSD} only the MMZD reaches the value of the reference plateau given by the FGD. 
+
+\noindent
+The deviation of the MSD of the CGD from the reference value may be justified by the fact that the CGD has a different width of inter-bead distance distribution compared to the FGD distribution (see fig.~\ref{Fig:PDF}). In addition, the deviation of its inter-bead distribution respect to The FGD distribution is more marked than the deviation of MMZD distribution.
+ 
+
+
+
 
 \begin{figure}[!htb]
  \centering
