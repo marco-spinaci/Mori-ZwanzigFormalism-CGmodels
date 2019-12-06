@@ -559,31 +559,41 @@ The problems to be faced in order to simplify the formulation of the eq.~(\ref{E
 \end{itemize}
 In the literature there are different ways to consider the friction matrix \cite{Chorin2000,Kauzlaric2011} and how to include memory effects in CG simulations \cite{Izvekov2017,Jung2017,Li2015,Yuanran2018}.
 
-In many cases, it has been shown that $\bffricmat(\Bphase{},t)$ exhibits an exponential decay in $t$ at a sufficiently large rate uniformly on the phase-space, so that the integrals involving the memory kernel may be approximated using Laplace's method (see Ref.~\cite{DiPasquale2019,Hijon2006}). If the exponential characteristic time is much shorter than the characteristic time scale of the CG model, then the latter can be regarded as memoryless. This is the most common approximation used, which corresponds to assuming that the CG models satisfy the property that allows to predict the future with only the present information. This approximation is the so-called ``Markovian approximation''.
-The validity of this assumption requires a clear separation of the time scales of the system under examination \cite{DiPasquale2019,Hijon2010,Hijon2006}.
+In many cases, it has been shown that $\bffricmat(\Bphase{},t)$ exhibits a fast exponential decay in $t$ and uniformly on the phase-space, so that the integrals involving the memory kernel may be approximated using an asymptotic expansion of integrals (see Ref.~\cite{bernardini1993Metodi,bleisteinAsExpInt,DiPasquale2019}). If the exponential characteristic time is much shorter than the characteristic time scale of the CG model, then the latter can be regarded as memoryless. This is the most common approximation used, which corresponds to assuming that the CG models satisfy the property that allows to predict the future with only the present information. This property is the so-called ``Markov property''.
+The validity of the Markovian assumption requires a clear separation of the time scales of the system under examination \cite{DiPasquale2019,Hijon2010,Hijon2006}.
 In particular, in the studied system the assumption is valid only if the time scale of variation of the CG variables is much larger than the time scale of decay of the memory matrix $\bffricmat(t)$ (i.e., the friction matrix), which is linked to the time scale of the autocorrelation of the fluctuating forces $\fprojbf_{\Bphase{}}(t,\cdot)$, defined in eq.~(\ref{Eq:RAndomForce}).
 
-Therefore, to simplify and numerically implement the eq.~(\ref{Eq:ZwanGLE}), we assume that the model under examination satisfies the Markovian property and that the friction matrix can be approximated as
-\begin{equation}
- \label{Eq:MarFric1}
- \bffricmat(\Bphase{},t) \approx \widetilde{\bffricmat}(\Bphase{})\delta(t)\,,
-\end{equation}
-where $\widetilde{\bffricmat}$ is the time-independent friction matrix defined as
+Therefore, to simplify and numerically implement the eq.~(\ref{Eq:ZwanGLE}), we assume that the model under examination satisfies the Markov property and that the friction matrix can be approximated as
+\begin{equation*}
+  \bffricmat(\Bphase{},t) = \exp{-\lambda t}f(\Bphase{},t)
+\end{equation*}
+where $f$ is a slowly-varying continuous function in the interval of integration and the parameter $\lambda$ is the inverse of a mesoscopic time-scale that is larger than the microscopic characteristic time but much smaller than the macroscopic one~\cite{Hijon2010}. We can rewrite the first integral of the second equation of the system~(\ref{Eq:DevB}) as 
+\begin{multline}
+\label{Eq:TermIntMARapp}
+  \int_0^t\, \bffricmat(\Bphase{}(t-s),s) \cdot(M^{-1}\bfP) \,\diff s ={}\\
+   = \int_0^t\, \exp{-\lambda s}f(\Bphase{}(t-s),s) \cdot(M^{-1}\bfP) \,\diff s = \frac{1}{\lambda}\, f(\Bphase{}(t),0) \cdot (M^{-1}\bfP) 
+   + O(\lambda^{-2}) ={}\\ 
+   = \frac{1}{\lambda}\, \bffricmat(\Bphase{}(t),0) \cdot (M^{-1}\bfP) + O(\lambda^{-2}) 
+   =  \widetilde{\bffricmat}(\Bphase{}) \cdot (M^{-1}\bfP) + O(\lambda^{-2}),
+	\end{multline}
+which has been derived by integrating by parts and noting that the absolute difference between the original integral and the border term is asymptotically limited by the integral term obtained by integrating by parts, which is of the order of $\lambda^{-2}$ and hence, since $1 / \lambda$ is much smaller than the macroscopic timescale, can be neglected. This can be verified by applying the Watson lemma (see pp.199-203 Ref.~\cite{bernardini1993Metodi}). In Equation \ref{Eq:TermIntMARapp} $\widetilde{\bffricmat}$ is the time-independent friction matrix defined as
 \begin{equation}\label{Eq:MarDeltaFric}
-  \widetilde{\bffricmat}(\Bphase{}) \coloneqq \bffricmat(\Bphase{},0)
-  = \beta\,\aver{\fprojbf_{\Bphase{}}(0,\cdot)\otimes
-    \fprojbf_{\Bphase{}}(0,\cdot)}_{\Bphase{}}.
+  \widetilde{\bffricmat}(\Bphase{}) \coloneqq \frac{1}{\lambda}\,\bffricmat(\Bphase{}(t),0)
+  = \frac{1}{\lambda}\, \beta\aver{\fprojbf_{\Bphase{}}(0,\cdot)\otimes
+    \fprojbf_{\Bphase{}}(0,\cdot)}_{\Bphase{}}\,.
 \end{equation}
-Under these conditions, the second equation of the system (\ref{Eq:DevB}) becomes
-\begin{multline}	
+Since $\widetilde{\bffricmat}$ does not depend on the momenta, its derivative with respect to ${\bf P}$ is zero, and therefore the second integral of the second equation of the system~(\ref{Eq:DevB}) vanishes.
+
+\noindent
+Under these assumptions, the second equation of the system (\ref{Eq:DevB}) becomes
+\begin{equation}	
  \label{Eq:MarkovApprox}
   \pard{\bfP_{K}}{t} = -\omega_{\NA{}K} \, \pard{\pot^{AA}}{\bfr_{K}} 
-                       -\pard{\Veff}{\bfR_{K}} -{}\\
+                       -\pard{\Veff}{\bfR_{K}}
                        - \sum_{J=1}^{\ncg}\, \widetilde{\fricmat}_{KJ} \, \frac{\bfP_{J}}{M_{J}} 
-                       + \beta^{-1} \sum_{J=1}^{\ncg}\, \pard{\widetilde{\fricmat}_{KJ}}{\bfR_{J}} 
-                       + \fprojbf_{K}(t)\,,
-\end{multline}
-where the derivatives of $\widetilde{\bffricmat}$ with respect to $\bfP_{J}$ vanish because the time independent friction matrix is a function of $\Bphase{\bfR}$ alone, and it is a symmetric matrix, \textit{i.e.} $\widetilde{\fricmat}_{KJ}=\widetilde{\fricmat}_{JK}$. This is easy to verify, since by making the terms explicit in the definition (\ref{Eq:MarDeltaFric}) we obtain
+                       + \fprojbf_{K}(t)\,,         
+\end{equation}
+where the time-independent friction matrix is a symmetric matrix, \textit{i.e.} $\widetilde{\fricmat}_{KJ}=\widetilde{\fricmat}_{JK}$. This is easy to verify, since by making the terms explicit in the definition (\ref{Eq:MarDeltaFric}) we obtain
 \begin{multline}
 \label{Eq:convFlucF}
   \aver{\fprojbf_K(0,\cdot) \otimes \fprojbf_J(0,\cdot)}_{\Bphase{}} = \aver{\Lio_\qproj\bfP_K \otimes \Lio_\qproj\bfP_J}_{\Bphase{}} ={}\\
@@ -591,8 +601,7 @@ where the derivatives of $\widetilde{\bffricmat}$ with respect to $\bfP_{J}$ van
   \cip{ \pard{\Veff}{\bfR_{J}} - \sum_{j\in S_J} \pard{U}{\bfr_{j}} }}_{\Bphase{}}\,.
 \end{multline}
 
-The validity of the Markovian approximation has been repeatedly questioned in the literature~\cite{CommentCubero,Cubero2005,Hijon2006,ResponseCommentHijon}. We will return to this point later when we discuss the numerical results. We want to stress here that we use the Markovian approximation only as a means of simplifying the calculation. As we said at the beginning of this section there are more refined methods to consider the friction matrix and to include memory effects in CG simulations, but in this work we will consider only the Markovian approximation, as our main goal is to show the differences in the results for the different terms composing the GLE and the comparison with the results reported in work of Di Pasquale \textit{et al.}~\cite{DiPasquale2019}.
-
+In the past, the validity of the Markovian approximation has been questioned~\cite{CommentCubero,Cubero2005,Hijon2006,ResponseCommentHijon}. We will return to this point later when we discuss the numerical results. We want to stress here that we use the Markovian approximation only as a means of simplifying the calculation. As we said at the beginning of this section there are more refined methods to consider the friction matrix and to include memory effects in CG simulations, but in this work we will consider only the Markovian approximation, as our main goal is to show the differences in the results for the different terms composing the GLE and the comparison with the results reported in the work of Di Pasquale \textit{et al.}~\cite{DiPasquale2019}.
 
 \chapter{Numerical Methods}
 \label{Sec:NumMet}
@@ -653,7 +662,7 @@ This system is the same studied by Di Pasquale \textit{et al.}, who have studied
 
 The studied test cases are composed of atoms with two different masses, set to $m=1$ and $M=10$.
 The repeating pattern  consists of three atoms in two different configurations: two atoms of mass $m$ and a single atom of mass $M$ ($m-M-m$) or vice versa ($M-m-M$). The number of beads is set to $\ncg=10$, so that the number of atoms is also fixed, $\nfg=3\,\ncg=30$.
-The bond stiffness between the two different species of atoms is described by means of an inter-atomic potential, which is a simple 12-6 Lennard-Jones potential. In the following, all parameters, such as temperature and time step, are expressed in terms of dimensionless units, \textit{i.e.} the so-called Lennard-Jones reduced units.These dimensionless units are obtained by using $\epsilon$, $\sigma$, $\sigma(m/\epsilon)^{1/2}$ and $\epsilon/K_B$ as fundamental units of energy, length, time and temperature, respectively (\textit{e.g.}~see Tuckerman pp.125-127 \cite{tuckerman2010}). 
+The bond stiffness between the two different species of atoms is described by means of an inter-atomic potential, which is a simple 12-6 Lennard-Jones potential. In the following, all parameters, such as temperature and time step, are expressed in terms of dimensionless units, \textit{i.e.} the so-called Lennard-Jones reduced units.These dimensionless units are obtained by using $\epsilon$, $\sigma$, $\sigma(m/\epsilon)^{1/2}$ and $\epsilon/K_B$ as fundamental units of energy, length, time and temperature, respectively (\textit{e.g.}~see Tuckerman pp.125-127 Ref.~\cite{tuckerman2010}). 
 The canonical (NVT) ensemble was implemented by introducing a thermal bath with a friction parameter $\gamma=1$, and setting the temperature so that $\beta=(K_B\,T)^{-1}=1.096$.
 Following the work of Di Pasquale \textit{et al.}, we assume periodic boundary conditions and nearest neighbour interactions. 
 The inter-atomic potential for a generic system $X$ is given by 
@@ -736,7 +745,7 @@ First, the initial conditions for the simulation are fixed, so that the momenta 
 Then the trajectory of the FGD is computed and samples of the positions and momenta are stored. These samples are used to determine the CG positions and momenta, and are used as initial condition for computing the trajectories of the OD. Along these trajectories, time averages of the first and second moment of the effective force between beads are stored. The first moment gives the value of the mean force acting between adjacent beads given the position of the center of mass, while the second moment is used to compute the friction matrix. Since the sampling steps of the OD can run at the same time without having to communicate between the processes, these procedures can be run in parallel. 
 Finally, by integrating the mean force with respect to the distance $R$ between the beads, the effective potential $\Veff$ is obtained.
 
-This method is very similar to the force-matching method \cite{Ercolessi1994,Izvekov2004}, the difference being that here we derive directly the effective potential from the sampling performed during the OD simulations.-
+This method is very similar to the force-matching method \cite{Ercolessi1994,Izvekov2004}, the difference being that here we derive directly the effective potential from the sampling performed during the OD simulations.
 Below, for further clarification of what we said, we report the algorithm published in the work of Di Pasquale \textit{et al.}~and implemented in the code:
 \begin{algorithm} [H]
 \caption{Sampling Algorithm \cite{DiPasquale2019}}
@@ -773,7 +782,7 @@ In fig.~\ref{Fig:meanForce},
  \label{Fig:meanForce}
 \end{figure}
 %
-we show the results of the computation of the mean force for the four different systems described in the table \ref{Tab:Cases}. In each case, the trend is rather similar and we observe that the equilibrium bond length lies close to $R=3.0$. As expected, these results are consistent with the ones obtained by Di Pasquale \textit{et al.}~in the microcanonical ensemble.
+we show the results of the computation of the mean force for the four different systems described in the table \ref{Tab:Cases}. In each case, the trend is rather similar and we observe that the equilibrium bond length lies close to $R=3.0$. As expected, these results are consistent with the ones obtained by Di Pasquale \textit{et al.}~in the microcanonical (NVE) ensemble.
 
 In fig.~\ref{Fig:FF},
 %
@@ -781,14 +790,16 @@ In fig.~\ref{Fig:FF},
  \centering
  \includegraphics[width=\textwidth]{sABCD_2000_FF}
  \caption{Plot of the fluctuating part of the force for the four systems considered (see table \ref{Tab:Cases}) \textit{versus} the inter-bead distance $R$: system A (black solid line), system B (dotted blue line), system C (red dashed-dotted line) and system D (dashed green line). 
+%\lr{Perché le fluttuazioni di B e D non tendono a 0 per $R \to \infty$?}
 }
  \label{Fig:FF}
 \end{figure}
 %
 we report the results for the fluctuating part of the force. First of all we note that the coupling to the thermal bath considered here yields curves with a much smaller noised compared to the work of  Di Pasquale \textit{et al.}~\cite{DiPasquale2019}. Interestingly, unlike the mean force, the two systems with the same stiffness (see table \ref{Tab:Cases}) follow a similar trend. In particular the two systems with the smallest stiffness, systems B and D, have noisier and larger fluctuations than the other two.  
-Furthermore, the figure shows how these simple systems have a dependence of fluctuations on the inter-bead distance $R$, and consequently shows how a simple Langevin dynamics, with dissipation and white noise fluctuations having a magnitude independent of the state of the system, is not an adequate approximation. 
+Furthermore, the figure shows how these simple systems have a dependence of fluctuations on the inter-bead distance $R$, and consequently shows how a simple Langevin dynamics, with dissipation and white noise fluctuations having a magnitude independent of the state of the system,  might not be an adequate approximation.
+%\lr{questo è uno spunto interessante... puoi espandere secondo te? Mettere delle referenze?}
 
-The plots of the mean force and the fluctuating force (fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively) show that the majority of the points lies within the $[2.8,3.2]$ region, whereas distances outside of this range are rarely accessed. We will clearly show later, when we will discuss the distribution of the inter-bead distances for the various dynamics (FGD, CGD and MMZD, Sec.~\ref{Sec:Observables}) that this is indeed due to a lower probability of sampling.
+The plots of the mean force and the fluctuating force (fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively) show that the majority of the points lies within the $[2.8,3.2]$ region, whereas distances outside of this range are rarely accessed. We will clearly show later, when we will discuss the distribution of the inter-bead distances for the various dynamics (FGD, CGD and MMZD, Sec.~\ref{Sec:Observables}), that this is indeed due to a lower probability of sampling.
 
 Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integration of the mean force (fig.~\ref{Fig:meanForce}) with respect to the inter-bead distance $R$.
 \begin{figure}[!htb]
@@ -806,24 +817,23 @@ We note that the two pairs of systems $A$ and $C$ and $B$ and $D$ differ only in
 \section{Memory kernel approximation and numerical implementation}
 Until now, we have not yet shown how to implement eq.~(\ref{Eq:MarkovApprox}) to determine MMZD, but only sketched the basic idea in section~\ref{Sec:TestCasesConsid}. We said that the MMZD is determined by the Langevin-type eq.~(\ref{Eq:Lang1Dp}), where the potential is given by the effective potential and the memory and fluctuating terms depends on the inter-bead distance. 
 
-For the sake of clarity, eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system is given by
+For the sake of clarity, we report below the system of equations for a coarse-grained system in the Markovian approximation obtained in the Chap.~\ref{Sec:MarkovApprox}:
 \begin{equation}
 \label{Eq:MarkovApproxCompact}
 \begin{cases}
  \partial_t\,\Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,, & \\
  \partial_t\,\Bphase{\bfP} = -\partial_{\bfR}\Veff 
                              - \widetilde{\bffricmat}(\Bphase{})\cdot \cip{M^{-1}\Bphase{\bfP}}
-                             + \beta^{-1}\, \boldsymbol{\nabla}_{\Bphase{\bfR}}\cdot\widetilde{\bffricmat}(\Bphase{})
                              + \fprojbf(t) \,. &  
 \end{cases}
 \end{equation}
-The components of the time independent friction matrix, \textit{i.e.}, eq.~(\ref{Eq:MarDeltaFric}), 
+The components of the time-independent friction matrix, \textit{i.e.}, eq.~(\ref{Eq:MarDeltaFric}) 
 \[
-  \widetilde{\bffricmat}(\Bphase{}) \coloneqq \bffricmat(\Bphase{},0) =  
-  \beta\, \cexpval{ \fprojbf_{\Bphase{}}(0,\cdot) \otimes \fprojbf_{\Bphase{}}(0,\cdot) }{ \Bphase{} }\,,
+  \widetilde{\bffricmat}(\Bphase{}) \coloneqq \frac{1}{\lambda}\,\bffricmat(\Bphase{},0) =  
+  \frac{1}{\lambda}\, \beta\, \cexpval{ \fprojbf_{\Bphase{}}(0,\cdot) \otimes \fprojbf_{\Bphase{}}(0,\cdot) }{ \Bphase{} }\,,
 \]
 can be computed by means of the fluctuating force (fig.~\ref{Fig:FF}).
-If we consider bead $I$, which interacts with bead $I-1$ and bead $I+1$, we can assume that the forces that act on it can be decomposed as the independent ``stress'' contributions $\sigma_{I+1,I}$ and $-\sigma_{I,I-1}$. Under these conditions we write the $\fricmat_{I,I}$ component of the time independent friction matrix as
+If we consider bead $I$, which interacts with bead $I-1$ and bead $I+1$, we can assume that the forces that act on it can be decomposed as the independent ``stress'' contributions $\sigma_{I+1,I}$ and $-\sigma_{I,I-1}$. Under these conditions we write the $\fricmat_{I,I}$ component of the time-independent friction matrix as
 \begin{align*}
   \fricmat_{I,I}(\bfR) = \beta\,\cexpval{\fprojbf_I \otimes \fprojbf_I}{\bfR} &=
            \beta\,\cexpval{ (\sigma_{I+1,I}-\sigma_{I,I-1}) \otimes (\sigma_{I+1,I}-\sigma_{I,I-1}) }{\bfR} = \\
@@ -861,22 +871,22 @@ We define the matrix
 where $I,J \in \bp{1,2,\dots,\ncg}$, and we can write the time-independent friction matrix as 
 \begin{equation}
 \label{Eq:TridMat}
- \widetilde{\bffricmat}(\widetilde{\bfR})=\beta\,\Sigma(\widetilde{\bfR})\,.
+ \widetilde{\bffricmat}(\widetilde{\bfR}) = \frac{1}{\lambda}\,\beta\,\Sigma(\widetilde{\bfR})\,,
 \end{equation}
-So, we can rewrite eq.~(\ref{Eq:MarkovApproxCompact}) as
+where we choose $\lambda = 1$. We can now rewrite eq.~(\ref{Eq:MarkovApproxCompact}) as
 \begin{equation}
 \label{Eq:MApCompactTrMat}
 \begin{cases}
  \partial_t\,\Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,, & \\
  \partial_t\,\Bphase{\bfP} = -\partial_{\widetilde{\bfR}}\Veff(\widetilde{\bfR}) 
-                             - \beta\,\Sigma(\widetilde{\bfR}) \cdot \cip{M^{-1}\Bphase{\bfP}}
+                             - \frac{1}{\lambda}\, \beta\,\Sigma(\widetilde{\bfR}) \cdot \cip{M^{-1}\Bphase{\bfP}}
                              + \fprojbf(t) \,. &  
 \end{cases}
 \end{equation} 
 \noindent
 The terms of the memory and fluctuating force may be generated together in a similar way to the thermal bath of Langevin equation (\ref{Eq:Lang1Dp}), where the diffusive parameter depends on the friction parameter in the stationary limit (see Sec.~\ref{Sec:SDE}). In fact, by setting
 \[
- \fprojbf(t) \equiv \sqrt{2\,\Sigma(\widetilde{\bfR})}\, \boldsymbol{\xi}(t)\,,
+ \fprojbf(t) \equiv \sqrt{2\,\lambda^{-1}\Sigma(\widetilde{\bfR})}\, \boldsymbol{\xi}(t)\,,
 \] 
 where $\boldsymbol{\xi}(t)$ is a white noise, we get from the eq.~(\ref{Eq:MApCompactTrMat})
 \begin{equation}
@@ -884,21 +894,25 @@ where $\boldsymbol{\xi}(t)$ is a white noise, we get from the eq.~(\ref{Eq:MApCo
 \begin{cases}
  \diff \Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,\diff t \,, & \\
  \diff \Bphase{\bfP} = \sqp{ - \partial_{\widetilde{\bfR}}\Veff(\widetilde{\bfR}) 
-                     - \frac{\beta}{2}\, \Sigma(\widetilde{\bfR}) \cdot \cip{M^{-1}\Bphase{\bfP}} }\diff t 
-                     + \Sigma (\widetilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
+                     - \frac{\beta}{2}\, \widetilde{\Sigma}(\widetilde{\bfR}) \cdot \cip{M^{-1}\Bphase{\bfP}} }\diff t 
+                     + \widetilde{\Sigma} (\widetilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
 \end{cases}
 \end{equation}
-where $\Sigma(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W} \equiv \boldsymbol{\xi}(t) \,\diff t$ are independent increments of the Wiener process in $\real^{\ncg}$.
+where $\widetilde{\Sigma}(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\widetilde{\Sigma}=\lambda^{-1}\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W} \equiv \boldsymbol{\xi}(t) \,\diff t$ are independent increments of the Wiener process in $\real^{\ncg}$.
 
-The system of equations obtained allows to describe and implement the MMZD, as it is analogous to the eq.~(\ref{Eq:Lang1Dp}), which describes the Langevin dynamics. In fact, if we take $\gamma=\frac{\beta}{2}\, \Sigma(\widetilde{\bfR})$ in eq.~(\ref{Eq:Lang1Dp}), we find the system of equations (\ref{Eq:MMZD}). As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
+The system of equations obtained allows to describe and implement the MMZD, as it is analogous to the eq.~(\ref{Eq:Lang1Dp}), which describes the Langevin dynamics. In fact, if we take $\gamma=\frac{\beta}{2\lambda}\, \widetilde{\Sigma}(\widetilde{\bfR})$ in eq.~(\ref{Eq:Lang1Dp}), we find the system of equations (\ref{Eq:MMZD}). As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
+
+The mean force, the fluctuating force and therefore the memory terms can be determined through a cubic spline interpolation from the values shown in the Section \ref{Sec:EP}, after these values have been filtered by noise through Kriging-type interpolation algorithm \cite{Jones2001}. This interpolation algorithm yields a polynomial approximation of the given function with Gaussian weights. It allows to determine the new values of the function, filtering the noise resulting from the sampling error (see the supplementary material of the work of Di Pasquale \textit{et al.}~\cite{DiPasquale2019}). We wanted to introduce a cubic spline interpolation in the code to speed up the simulations, in this way we use only once the Kriging-type interpolation algorithm.
 
 The mean force, the fluctuating force and therefore the memory terms can be determined through a Kriging-type interpolation algorithm \cite{Jones2001} from the values shown in the Section \ref{Sec:EP}, yielding a polynomial approximation of the given function with Gaussian weights. This interpolation algorithm is used to generate a splined version of the simulation data that is then interpolated cubically in the code to speed-up performances. Indeed, this method makes it possible to efficiently determine the values of the function at any point, filtering the noise resulting from the sampling error~\cite{DiPasquale2019}.
 
+
 \subsection{Validity of the memory kernel approximation and timescale separation}
+\label{Sec:ValidAppMARK}
 
 As we said in Chap.~\ref{Sec:MarkovApprox}, the validity of the Markovian approximation has been repeatedly questioned, especially for a system like the one under consideration, where sound propagation plays a very important role, since it determines the time scale of the CG variables, \textit{i.e.} the time scale of the velocity ACF \cite{CommentCubero}. 
 
-In fact in 2005 Cubero and Yaliraki showed that the Markovian approximation is unreliable in systems in which sound-like vibrations are especially important. They first studied the general case and the conditions for the failure of the Markovian approximation due to sound propagation. Then, as an example to show the failure of Markovian application, they studied the coarse-grained dynamics of cubic harmonic lattices, where the elastic wave propagation is the only dissipation mechanism \cite{Cubero2005}.
+In fact in 2005 Cubero and Yaliraki showed that the Markovian approximation could be unreliable in systems in which sound-like vibrations are especially important, that is, in systems in which the time scale associated with sound propagation is comparable with the time scale of the relevant variables. They first studied the general case and the conditions for the failure of the Markovian approximation due to sound propagation. Then, as an example to show the failure of Markovian application, they studied the coarse-grained dynamics of cubic harmonic lattices, where the elastic wave propagation is the only dissipation mechanism \cite{Cubero2005}.
 A year later, Hij\'on \textit{et al.} verified and confirmed the results of Cubero and Yaliraki for a system with an harmonic potential, and also showed the validity of the Markovian approximation for a system interacting with non-linear potentials such as L-J potential \cite{Hijon2006}. The non-linear system studied was a one-dimensional chain of $N$ atoms of equal mass, enclosed between two fixed walls, that interact with a L-J potentials. This system is very similar to the one studied in this work.
 
 \noindent
@@ -919,21 +933,23 @@ Remarkably, this result does not seem to fully justify the Markovian approximati
 As mentioned above, we have studied a system very similar to the one studied by Hij\'on \textit{et al.}~\cite{Hijon2006}. A possible explanation for the lack of separation of scales is that the system analysed here is much smaller than the system studied by them, and that the size of the beads (\textit{i.e.}, the number of atoms in the beads) is much smaller than what they have considered.
 
 For the sake of completeness, we also report in fig.~\ref{Fig:ACF} the ACF for the moments and the forces for the different dynamics, relative to the system C.
-\begin{figure}[!htb]
- \begin{subfigure}[b]{\textwidth}
+\begin{figure}[!h]
+ \begin{subfigure}[b]{0.9\textwidth}
   \centering
-   \includegraphics[width=\textwidth]{ACF_F}
+   \includegraphics[width=0.9\textwidth]{ACF_F}
    \caption{The time autocorrelation functions (ACF) of the forces in \emph{Fine-Grained Dynamics} (FGD, green solid line) is compared with its ``orthogonal'' component (Fluctuating Force, purple dot-dashed line) and with the ACF of the forces in \emph{Orthogonal Dynamics} (OD, orange dashed line) and in \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red dot-dashed line).}
  \end{subfigure}\\
- \begin{subfigure}[b]{\textwidth}
+ \begin{subfigure}[b]{0.9\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{ACF_P}
+  \includegraphics[width=0.9\textwidth]{ACF_P}
   \caption{The ACF of the momenta in the FGD (green solid line) is compared with the ACF of the momenta in the OD (orange dashed line) and the ACF of the momenta in the MMZD (red dot-dashed line).}
  \end{subfigure}\\
  \caption{Time autocorrelation functions (ACF) of forces and momenta. All calculations refer to the system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
 \label{Fig:ACF}
 \end{figure}
 We can notice how the separation of the time scales is more evident in the case of the orthogonal dynamics, that is, the constrained Hamiltonian dynamics (see Section \ref{Sec:OD}).
+
+
 
 \subsection{The effect of the memory approximation on the observables of the studied system}
 \label{Sec:Observables}
@@ -944,18 +960,19 @@ The observables chosen for comparison are
 \item[-] linear spatial statistics: the momenta distribution of a single bead and the distribution of inter-bead distance;
 \item[-] a dynamics property of the system: the evolution of the mean-square displacement (MSD) of a single bead over time.
 \end{itemize}
-We would expect that the results of the first observables to be consistent with the reference results determined by the FGD, and in the case of the momenta distribution are consistent with the theoretical trend determined by the Maxwell-Boltzmann distribution. While from the results of the MSD we would expect an initial trend with non-trivial differences for the various dynamics and subsequently for long times we would expect a plateau since at long times the beads should oscillate around the equilibrium positions with the same amplitude, regardless of the dynamics employed.
+We would expect that the results of the first observables to be consistent with the reference results determined by the FGD, and in the case of the momenta distribution are consistent with the theoretical trend determined by the Maxwell-Boltzmann distribution. 
+While from the results of the MSD we would expect an initial trend with non-trivial differences for the various dynamics and subsequently for long times we would expect a plateau since at long times the beads should oscillate around the equilibrium positions with the same amplitude, regardless of the dynamics employed.
 
 In fig.~\ref{Fig:PDF} we show the distribution of the momenta and inter-bead distance obtained through simulation of FGD, CGD and MMZD, for the system C (see table \ref{Tab:Cases}).
 %
-\begin{figure}[!htb]
- \begin{subfigure}[b]{\textwidth}
+\begin{figure}[!h]
+ \begin{subfigure}[b]{0.9\textwidth}
   \centering
-   \includegraphics[width=\textwidth]{HistPDF_P_CORRETTAmd}
+   \includegraphics[width=0.9\textwidth]{HistPDF_P_CORRETTAmd}
  \end{subfigure}\\
- \begin{subfigure}[b]{\textwidth}
+ \begin{subfigure}[b]{0.9\textwidth}
   \centering
-  \includegraphics[width=\textwidth]{HistPDF_Q_CORRETTAmd}
+  \includegraphics[width=0.9\textwidth]{HistPDF_Q_CORRETTAmd}
  \end{subfigure}\\
  \caption{Comparison of the Probability Distribution Functions (PDFs) of bead momenta (upper panel) and inter-bead distances (bottom panel), between the \emph{Fine-Grained Dynamics} (FGD, green square points and green solid line, respectively), the \emph{Coarse-Grained Dynamics} (CGD, black rhombus points), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). In the upper panel the simulation results are compared with the expected theoretical trend (orange solid line), \textit{i.e.}, they are compared with the Maxwell-Boltzmann distribution. All calculations refer to system C (see table \ref{Tab:Cases}).}
 \label{Fig:PDF}
@@ -969,9 +986,9 @@ A remarkable result obtained is that, thanks to the formalism of MZ, we have obt
 
 In fig.~\ref{Fig:MSD} we show the mean-square displacement (MSD) of a single bead over time for the FGD, CGD and MMZD, for the system C (see table \ref{Tab:Cases}).
 %
-\begin{figure}[!htb]
+\begin{figure}[!h]
  \centering
- \includegraphics[width=\textwidth]{MSD_CORRETTAmd}
+ \includegraphics[width=0.9\textwidth]{MSD_CORRETTAmd}
  \caption{Comparison of the Mean Square Displacement (MSD) of a single bead between the \emph{Fine-Grained Dynamics} (FGD, green solid line), the \emph{Coarse-Grained Dynamics} (CGD, black dashed line), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). All calculations refer to system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
  \label{Fig:MSD}
 \end{figure}
@@ -980,23 +997,24 @@ We can see a first diffusive trend for $t<0.7$, where the FGD and the CGD have t
 %
 In the time interval $0.7 \leq t \leq 11$, we can see fluctuations of the MSD, which are damped by the coupling to the thermal bath if compared with the results obtained in the $NVE$ case~\cite{DiPasquale2019}. Quite remarkable, the MMZD dynamics is able to correctly capture all the fluctuations, whereas in the CGD system these are slightly out-of-phase.
 %
-Finally for long time values, we can see that the MSD reaches a plateau. This value is a static property of the system since at long tome values the beads should oscillate around the equilibrium positions with same amplitude. We have already seen in fig.~\ref{Fig:PDF} that the value of the equilibrium position is the same for all dynamics. As a consequence, from the calculation of the MSD we should expect the same values of the plateau. However, as we can see in fig.~\ref{Fig:MSD} only the MMZD reaches the value of the reference plateau given by the FGD. The difference value of the plateau of the CGD system is most likely due to the difference in the tails of the distributions of the inter-bead distance discussed above (fig.~\ref{Fig:PDF}).
+Finally for long time values, we can see that the MSD reaches a plateau. This value is a static property of the system, since at long time values the beads should oscillate around the equilibrium positions with same amplitude. We have already seen in fig.~\ref{Fig:PDF} that the value of the equilibrium position is the same for all dynamics. As a consequence, from the computation of the MSD we should expect the same values of the plateau. However, as we can see in fig.~\ref{Fig:MSD} only the MMZD reaches the value of the reference plateau given by the FGD. The difference value of the plateau of the CGD system is most likely due to the difference in the tails of the distributions of the inter-bead distance discussed above (fig.~\ref{Fig:PDF}). 
 
 \noindent
 The deviation of the MSD of the CGD from the reference value may be justified by the difference in the tails of the distributions of the inter-bead distance discussed above (fig.~\ref{Fig:PDF}). 
 
 We observe a qualitatively similar result for the MSD of the inter-bead distance, shown in fig.~\ref{Fig:MSDint}.
 %
-\begin{figure}[!htb]
+\begin{figure}[!h]
  \centering
- \includegraphics[width=\textwidth]{INT_MSD_CORRETTAmd}
+ \includegraphics[width=0.9\textwidth]{INT_MSD_CORRETTAmd}
  \caption{Comparison of the plateau of the Mean Square Displacement (MSD) of the inter-bead distance between the \emph{Fine-Grained Dynamics} (FGD, green solid line), the \emph{Coarse-Grained Dynamics} (CGD, black dashed line), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). All calculations refer to system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
  \label{Fig:MSDint}
 \end{figure}
 %
-The MMZD system has a behaviour that is closer to the FGD one with respect to the CGD, although the agreement here worsens. Indeed, the oscillations between the MMZD and the FGD are still in phase, but their amplitudes are slightly different, as are the values of the plateau. The CGD fares worse, as in the case MSD case. While the differences in the short-time part of the dynamical observables are due to the approximations considered here, the (small) difference in the long-time behaviour is more puzzling and will require additional work to be properly understood.
+The MMZD system has a behaviour that is closer to the FGD one with respect to the CGD, although the agreement here worsens. Indeed, the oscillations between the MMZD and the FGD are still in phase, but their amplitudes are slightly different, as are the values of the plateau. The CGD fares worse, as in the case MSD case. While the differences in the short-time part of the dynamical observables are due to the approximations considered here, the (small) difference in the long-time behaviour is more puzzling and will require additional work to be properly understood. 
 
 All in all, the results obtained for the CGD and MMZD systems confirm those obtained by Hij\'on \textit{et al.} in Ref.~\cite{ResponseCommentHijon} for a larger system: the behaviour of the CG variables in a system with a non linear potential, such as the L-J potential, is described rather well under the Markovian assumption.
+
 
 \chapter*{Conclusions}
 \phantomsection
@@ -1008,13 +1026,17 @@ In this thesis, we presented the Mori-Zwanzig (MZ) formalism and we gave a rigor
 Then, through this formalism we derived a class of coarse-grained (CG) models, the so-called hybrid models, that can be used to decrease the computational effort required to simulate generic systems. Subsequently, we studied the integrators needed to implement the numerical simulations in the canonical (NVT) ensemble. Finally, we have numerically studied a toy model, which allowed us to illustrate some of the features of the MZ derivation. 
 
 \noindent
-In order to do this we extended and improved a parallel open-source code written in Julia, which we have used to perform simulations of four different systems with different parameters and using different dynamics: the fine-grained dynamics (FGD), the orthogonal dynamics (or constrained dynamics, OD), the  coarse-grained dynamics (CGD) and the Markovian Mori-Zwanzig dynamics (MMZD). Importantly, the sampling of the orthogonal dynamics makes it possible to compute the effective potential and the friction matrix, as well as the fluctuating terms, that enter into the equations of motion derived with the MZ formalism.
+In order to do this we extended and improved a parallel open-source code written in Julia, which we have used to perform simulations of four different systems with different parameters and using different dynamics: the fine-grained dynamics (FGD), the orthogonal dynamics (or constrained dynamics, OD), the  coarse-grained dynamics (CGD) and the Markovian Mori-Zwanzig dynamics (MMZD). Importantly, the sampling of the orthogonal dynamics made it possible to compute the effective potential and the friction matrix, as well as the fluctuating terms, that enter into the equations of motion derived with the MZ formalism.
 
-In all cases simulated no significant scale separation between the dynamics of the beads and individual atoms was observed. Nevertheless, a comparison was made between the true and approximate dynamics, and, as expected, systems with `more rigid' beads, that is, with greater internal stiffness, showed much weaker memory effects. 
+In all cases simulated to sample the effective potential, we obtained consistent results with the ones obtained by Di Pasquale \textit{et al.}~in the microcanonical (NVE) ensemble and we note from the figures in Chap.~\ref{Sec:EP} that the coupling to the thermal bath considered here yields curves with a much smaller noise than those obtained in their work. In addition the figures shows how these simple systems have a dependence of fluctuations on the inter-bead distance.
 
-Furthermore we observed that the Langevin dynamics does not appear to be appropriate for generic CG systems, and that the preservation of more complex dynamical properties, such as the mean-square displacement of the inter bead distance in time, requires instead the strict validity of the time-scale separation assumption or a correct parametrisation and implementation of the memory term.
+We said in Chap.~\ref{Sec:MarkovApprox} that the validity of the Markovian approximation requires a clear separation of the time scales of the CG system under examination. From the time autocorrelation functions (ACFs) calculated in Section \ref{Sec:ValidAppMARK} we can see how there is a separation of the time scales between the relevant variables and the decay of the memory matrix, but this separation amounts to less than an order of magnitude. This result and the fact that the system shows a dependence of fluctuations on the inter-bead distance do not seem to fully justify the Markovian approximation.
 
-Possible future developments of this work are the extension of the code to study systems in two and three spatial dimensions, the evaluation of the transferability of the derived CG model and the development of a better approximation for the memory kernel. 
+Remarkably in Sec.~\ref{Sec:Observables}, the observables, both static and dynamic, of the FGD system are reproduced quite well both by the CGD with a simple thermal bath with constant parameters, and by the MMZD with a thermal bath dependent on the inter-bead position. The difference of the statistical observables can be ascribed to sampling issues. While the differences in the short-time part of the dynamical observables are due to the approximations considered here, instead  the (small) difference in the long-time behaviour is more puzzling and will require additional work to be properly understood.
+
+We wan to to stress here that, thanks to the formalism of MZ, we have obtained a CG model that reproduces the static distributions of the atomistic system without requiring any optimization of the CG potential (see the Iterative Boltzmann Inversion (IBI) method, Ref.~\cite{Reith2003}) and without scaling the dynamic quantities obtained by CG simulations by a suitable parameter that measure how faster the CG dynamics is with respect the underlying FG system \cite{Fritz2009}.
+
+The results presented here, which are based on the system studied in Ref.~\cite{DiPasquale2019}, will require additional simulations to evaluate the effect of the size of the system and of the beads considered. Possible future developments of this work are the extension of the code to study systems in two and three spatial dimensions, the evaluation of the transferability of the derived CG model and the development of a better approximation for the memory kernel.
 
 
 \begin{appendices}
@@ -1216,7 +1238,7 @@ So we have, applying Fubini's theorem see Ref.~\cite[p.~77-79]{Williams1991},
 
 
 \chapter{Elements of Stochastic Processes}
-
+\label{App:B}
 \section{It\^o Stochastic Differential Equation and the corresponding Fokker-Planck Equation}
 \label{Sec:SDE}
 An It\^o stochastic differential equation (SDE) can be written as
