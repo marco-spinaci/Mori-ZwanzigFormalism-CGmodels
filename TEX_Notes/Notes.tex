@@ -500,13 +500,13 @@ A sketch of a possible mapping between FG and general CG systems is shown in fig
 
 \section{A particular class of mapping operator}
 \label{Sec:Mapping}
-The mapping operators are a collection of functions defined in the FG system that specify the physical meaning of CG variables, i.e. they fix the CG variables will be observables of the FG system. They can be defined as the functions
+The mapping operators are a collection of functions defined in the FG system that specify the physical meaning of CG variables, i.e. CG variables will be observables of the FG system. They can be defined as the functions
 $$\Psi,\Phi\colon  \real^{6\nfg}  \to  \real^{6\ncg}$$ such that 
 \begin{align*}
 \Aphase{}  &\mapsto \Psi(\Aphase{}) \eqqcolon \Bphase{\bfR}(\Aphase{})=\cip{\bfR_1,\ldots,\bfR_{\ncg}}\,,\\
 \Aphase{}  &\mapsto \Phi(\Aphase{}) \eqqcolon \Bphase{\bfP}(\Aphase{})=\cip{\bfP_1,\ldots,\bfP_{\ncg}}\,.
 \end{align*}
-We choose the mapping operator in the \emph{class of linear canonical coarse-graining operators} (see Ref.~\cite{DiPasquale2019}), so that to select the centre of mass of a CG particle as a positional coordinate, and the relevant conjugate momentum, which is simply the sum of momenta of all ``atoms'' within the bead
+We choose the mapping operator in the \emph{class of linear canonical coarse-graining operators} (see Ref.~\cite{DiPasquale2019}) With this choice, the centre of mass of a CG bead is the average position of its constituent beads, whereas its conjugate momentum is simply the sum of momenta of all ``atoms'' within the bead:
 \begin{align}
 	\bfR_{I}=\Psi_{I} (\Aphase{}) & = \frac{1}{M_I}\sum_{k\in S_I} m_k\bfr_k \,, \label{Eq:constr1} \\
     \bfP_{I}=\Phi_{I} (\Aphase{}) & = \sum_{k\in S_I}{\bfp_k}\,. \label{Eq:constr2}
@@ -527,7 +527,7 @@ So we can write the potential part as
 	\pot(\Aphase{}) = \pot^{AA}(\Aphase{}) + \pot^{AB}(\Aphase{}) + \pot^{BB}(\Aphase{})\,.
 \end{equation}
 
-To write explicitly for a hybrid system the eq.~(\ref{Eq:ZwanGLE}), we begin to write explicitly the term relating to the entropic contribution to the Helmholtz free energy eq.~(\ref{Eq:Entropy(FreeE)}). Considering a separable Hamiltonian and a CG mapping of the form chosen eq.~(\ref{Eq:constr1}) and eq.~(\ref{Eq:constr2}), the integral given by the \emph{structure function} eq.~(\ref{eq:structurefunc}) can be factorised into contributions arising from the momenta of CG particles and their positions, which results in the decomposition
+To write explicitly for a hybrid system eq.~(\ref{Eq:ZwanGLE}) we begin to write explicitly the term relating to the entropic contribution to the Helmholtz free energy,  eq.~(\ref{Eq:Entropy(FreeE)}). Considering a separable Hamiltonian and a CG mapping of the form chosen in eq.~(\ref{Eq:constr1}) and eq.~(\ref{Eq:constr2}), the integral given by the \emph{structure function} eq.~(\ref{eq:structurefunc}) can be factorised into contributions arising from the momenta of CG particles and their positions, which results in the decomposition
 \begin{align*}
   \entropy(\Bphase{}) &= -\frac{1}{\beta}\log{}\biggl(
   \int{\frac{1}{\mathcal{Z}} \exp{{-\beta \Ham(\Aphase{})}}} 
@@ -542,7 +542,7 @@ These terms were determined by Di Pasquale \textit{et al.} in their work \cite{D
  \label{Eq:EntrInt}
  \entropy_{\bfR}(\Bphase{\bfR}) &= \pot^{AA}\Big(\{\bfR_I\}_{I=1}^{\NA{}}\Big) + \Veff(\Bphase{\bfR})\,;
 \end{align}
-where the first term is the Kinetic Energy of the CG particles, while the second is the Potential Energy of the CG particles and $\Veff$ is given by
+where the first term is the kinetic energy of the CG particles, while the second one is the potential energy of the CG particles, with $\Veff$ being given by
 \begin{equation*}
  \Veff = - \frac{1}{\beta} \log{}  \cip{\int{\diff\Aphase{\bfr}' \frac{1}{\mathcal{\mathcal{Z}_{\bfR}}}
     \exp{\big[{{-\beta \big(\pot^{AB}(\{\bfR_I\}_{I=1}^{\NA{}},\bfr') +\pot^{BB}(\bfr') \big)}\big]}}}
@@ -566,14 +566,14 @@ where $\Phi_J(\bfF)$ is the sum of the forces acting on the ``atoms'' within bea
 
 \section{Projected dynamics}
 \label{sec:projcoor}
-We now explicitly write the projected dynamics using the definition of $\Phi,\Psi$ given in Sec.\ref{Sec:Mapping}. We report below the results obtained by Di Pasquale et al. in their work \cite{DiPasquale2019}. The dynamics of $\Bphase{}(\Aphase{})$, that is, the dynamics for the position and momenta of a particle $\{\bfR_{J},\bfP_{J}\}$ in the CG system is given by
+We now explicitly write the projected dynamics using the definitions of $\Phi,\Psi$ given in Sec.~\ref{Sec:Mapping}. We report below the results obtained by Di Pasquale et al. in their work \cite{DiPasquale2019}. The dynamics of $\Bphase{}(\Aphase{})$, that is, the dynamics for the position and momenta of a particle $\{\bfR_{J},\bfP_{J}\}$ in the CG system is given by
 %
 \begin{align}
 	\Lio\bfR_{J} & = \sum_{k\in S_J}{\frac{\bfp_k}{m_k}\pard{\Psi_J(\Aphase{\bfr})}{\bfr_k}}  = \sum_{k\in S_J}{\frac{\bfp_k}{m_k}\frac{m_k}{M_J}}  = \frac{\bfP_J }{M_{J}}  \label{Eq:LPB}  \\
 	\Lio\bfP_{J} & = -\sum_{k\in S_J}{\pard{\pot(\Aphase{\bfr})}{\bfr_k}}\pard{\Phi_J(\Aphase{\bfp})}{\bfp_k}  = -\sum_{k\in S_J}{\pard{\pot(\Aphase{\bfr})}{\bfr_k}}
 \end{align}
 %
-So the dynamic projected for the CG positions is given by 
+The projected dynamics for the CG positions is given by 
 \begin{equation*}
     \Lio_\pproj\bfR_{J} = \frac{\bfP_J}{M_J} \quad\text{and}\quad \Lio_\pproj\bfR_{I} = 0\,. 
 \end{equation*}
@@ -597,7 +597,7 @@ and therefore the orthogonal projections are
 % 
 
 \section{Final system of equations}
-Finally, we can rewrite the eq.~(\ref{Eq:ZwanGLE}) as 
+Finally, we can rewrite eq.~(\ref{Eq:ZwanGLE}) as 
 \begin{align}
  \nonumber
  \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}} \\
