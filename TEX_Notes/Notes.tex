@@ -559,31 +559,40 @@ The problems to be faced in order to simplify the formulation of the eq.~(\ref{E
 \end{itemize}
 In the literature there are different ways to consider the friction matrix \cite{Chorin2000,Kauzlaric2011} and how to include memory effects in CG simulations \cite{Izvekov2017,Jung2017,Li2015,Yuanran2018}.
 
-In many cases, it has been shown that $\bffricmat(\Bphase{},t)$ exhibits an exponential decay in $t$ at a sufficiently large rate uniformly on the phase-space, so that the integrals involving the memory kernel may be approximated using Laplace's method (see Ref.~\cite{DiPasquale2019,Hijon2006}). If the exponential characteristic time is much shorter than the characteristic time scale of the CG model, then the latter can be regarded as memoryless. This is the most common approximation used, which corresponds to assuming that the CG models satisfy the property that allows to predict the future with only the present information. This approximation is the so-called ``Markovian approximation''.
-The validity of this assumption requires a clear separation of the time scales of the system under examination \cite{DiPasquale2019,Hijon2010,Hijon2006}.
+In many cases, it has been shown that $\bffricmat(\Bphase{},t)$ exhibits a fast exponential decay in $t$ and uniformly on the phase-space, so that the integrals involving the memory kernel may be approximated using an asymptotic expansion of integrals (see Ref.~\cite{bernardini1993Metodi,bleisteinAsExpInt,DiPasquale2019}). If the exponential characteristic time is much shorter than the characteristic time scale of the CG model, then the latter can be regarded as memoryless. This is the most common approximation used, which corresponds to assuming that the CG models satisfy the property that allows to predict the future with only the present information. This property is the so-called ``Markov property''.
+The validity of the Markovian assumption requires a clear separation of the time scales of the system under examination \cite{DiPasquale2019,Hijon2010,Hijon2006}.
 In particular, in the studied system the assumption is valid only if the time scale of variation of the CG variables is much larger than the time scale of decay of the memory matrix $\bffricmat(t)$ (i.e., the friction matrix), which is linked to the time scale of the autocorrelation of the fluctuating forces $\fprojbf_{\Bphase{}}(t,\cdot)$, defined in eq.~(\ref{Eq:RAndomForce}).
 
-Therefore, to simplify and numerically implement the eq.~(\ref{Eq:ZwanGLE}), we assume that the model under examination satisfies the Markovian property and that the friction matrix can be approximated as
-\begin{equation}
- \label{Eq:MarFric1}
- \bffricmat(\Bphase{},t) \approx \widetilde{\bffricmat}(\Bphase{})\delta(t)\,,
-\end{equation}
+Therefore, to simplify and numerically implement the eq.~(\ref{Eq:ZwanGLE}), we assume that the model under examination satisfies the Markov property and that the friction matrix can be approximated as
+\begin{equation*}
+  \bffricmat(\Bphase{},t) = \exp{-\lambda t}f(\Bphase{},t)
+\end{equation*}
+where $f$ is a continuous function in the interval of integration and parameter $\lambda$ should be viewed as a measure of the time scale separation, \textit{i.e.} $ \lambda \gg 1$. 
+Then neglecting the second integral in the RHS of the second eq.~(\ref{Eq:DevB}) since it is order $\beta$, we can rewrite the first integral as 
+\begin{multline}
+\label{Eq:TermIntMARapp}
+  \int_0^t\, \bffricmat(\Bphase{}(t-s),s) \cdot(M^{-1}\bfP) \,\diff s ={}\\
+   = \int_0^t\, \exp{-\lambda s}f(\Bphase{}(t-s),s) \cdot(M^{-1}\bfP) \,\diff s = \frac{1}{\lambda}\, f(\Bphase{}(t),0) \cdot (M^{-1}\bfP) 
+   + O(\lambda^{-1}) ={}\\ 
+   = \frac{1}{\lambda}\, \bffricmat(\Bphase{}(t),0) \cdot (M^{-1}\bfP) + O(\lambda^{-1}) 
+   =  \widetilde{\bffricmat}(\Bphase{}) \cdot (M^{-1}\bfP) + O(\lambda^{-1}).
+\end{multline}
 where $\widetilde{\bffricmat}$ is the time-independent friction matrix defined as
 \begin{equation}\label{Eq:MarDeltaFric}
-  \widetilde{\bffricmat}(\Bphase{}) \coloneqq \bffricmat(\Bphase{},0)
-  = \beta\,\aver{\fprojbf_{\Bphase{}}(0,\cdot)\otimes
-    \fprojbf_{\Bphase{}}(0,\cdot)}_{\Bphase{}}.
+  \widetilde{\bffricmat}(\Bphase{}) \coloneqq \frac{1}{\lambda}\,\bffricmat(\Bphase{}(t),0)
+  = \frac{1}{\lambda}\, \beta\aver{\fprojbf_{\Bphase{}}(0,\cdot)\otimes
+    \fprojbf_{\Bphase{}}(0,\cdot)}_{\Bphase{}}\,.
 \end{equation}
-Under these conditions, the second equation of the system (\ref{Eq:DevB}) becomes
-\begin{multline}	
+The equation \ref{Eq:TermIntMARapp} has been derived by integrating by parts and assuming that the absolute difference between the original integral and the border term is asymptotically limited by the integral term obtained by integrating by parts as $\lambda \gg 1$.
+Under these assumptions, the second equation of the system (\ref{Eq:DevB}) becomes
+\begin{equation}	
  \label{Eq:MarkovApprox}
   \pard{\bfP_{K}}{t} = -\omega_{\NA{}K} \, \pard{\pot^{AA}}{\bfr_{K}} 
-                       -\pard{\Veff}{\bfR_{K}} -{}\\
+                       -\pard{\Veff}{\bfR_{K}}
                        - \sum_{J=1}^{\ncg}\, \widetilde{\fricmat}_{KJ} \, \frac{\bfP_{J}}{M_{J}} 
-                       + \beta^{-1} \sum_{J=1}^{\ncg}\, \pard{\widetilde{\fricmat}_{KJ}}{\bfR_{J}} 
-                       + \fprojbf_{K}(t)\,,
-\end{multline}
-where the derivatives of $\widetilde{\bffricmat}$ with respect to $\bfP_{J}$ vanish because the time independent friction matrix is a function of $\Bphase{\bfR}$ alone, and it is a symmetric matrix, \textit{i.e.} $\widetilde{\fricmat}_{KJ}=\widetilde{\fricmat}_{JK}$. This is easy to verify, since by making the terms explicit in the definition (\ref{Eq:MarDeltaFric}) we obtain
+                       + \fprojbf_{K}(t)\,,         
+\end{equation}
+where the time independent friction matrix is a symmetric matrix, \textit{i.e.} $\widetilde{\fricmat}_{KJ}=\widetilde{\fricmat}_{JK}$. This is easy to verify, since by making the terms explicit in the definition (\ref{Eq:MarDeltaFric}) we obtain
 \begin{multline}
 \label{Eq:convFlucF}
   \aver{\fprojbf_K(0,\cdot) \otimes \fprojbf_J(0,\cdot)}_{\Bphase{}} = \aver{\Lio_\qproj\bfP_K \otimes \Lio_\qproj\bfP_J}_{\Bphase{}} ={}\\
@@ -790,7 +799,7 @@ we report the results for the fluctuating part of the force. Unlike the mean for
 Furthermore, the figure shows how these simple systems have a dependence of fluctuations on the inter-bead distance $R$, and consequently shows how a simple Langevin dynamics, with dissipation and white noise fluctuations having a magnitude independent of the state of the system, is not an adequate approximation.
 %\lr{questo è uno spunto interessante... puoi espandere secondo te? Mettere delle referenze?}
 
-The plots of the mean force and the fluctuating force (fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively) show that the majority of the points lies within the $[2.8,3.2]$ region, whereas distances outside of this range are rarely accessed. We will clearly show later, when we will discuss the distribution of the inter-bead distances for the various dynamics (FGD, CGD and MMZD, Sec.~\ref{Sec:Observables}) that this is indeed due to a lower probability of sampling.
+The plots of the mean force and the fluctuating force (fig.~\ref{Fig:meanForce} and fig.~\ref{Fig:FF}, respectively) show that the majority of the points lies within the $[2.8,3.2]$ region, whereas distances outside of this range are rarely accessed. We will clearly show later, when we will discuss the distribution of the inter-bead distances for the various dynamics (FGD, CGD and MMZD, Sec.~\ref{Sec:Observables}), that this is indeed due to a lower probability of sampling.
 
 Finally in fig.~\ref{Fig:EP}, we show the effective potential, obtained by integration of the mean force (fig.~\ref{Fig:meanForce}) with respect to the inter-bead distance $R$.
 \begin{figure}[!htb]
@@ -807,21 +816,20 @@ We observe that the effective potential has similar trends for the four systems,
 \section{Memory kernel approximation and numerical implementation}
 Until now, we have not yet shown how to implement the eq.~(\ref{Eq:MarkovApprox}) to determine MMZD, but only sketched the basic idea in section~\ref{Sec:TestCasesConsid}. We said that the MMZD is determined by the Langevin-type eq.~(\ref{Eq:Lang1Dp}), where the potential is given by the effective potential and the memory and fluctuating terms depends on the inter-bead distance. 
 
-For the sake of clarity, eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system is given by
+For the sake of clarity, we report below the system of equations for a coarse-grained system in the Markovian approximation obtained in the Chap.~\ref{Sec:MarkovApprox}:
 \begin{equation}
 \label{Eq:MarkovApproxCompact}
 \begin{cases}
  \partial_t\,\Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,, & \\
  \partial_t\,\Bphase{\bfP} = -\partial_{\bfR}\Veff 
                              - \widetilde{\bffricmat}(\Bphase{})\cdot \cip{M^{-1}\Bphase{\bfP}}
-                             + \beta^{-1}\, \boldsymbol{\nabla}_{\Bphase{\bfR}}\cdot\widetilde{\bffricmat}(\Bphase{})
                              + \fprojbf(t) \,. &  
 \end{cases}
 \end{equation}
 The components of the time independent friction matrix, \textit{i.e.}, eq.~(\ref{Eq:MarDeltaFric}) 
 \[
-  \widetilde{\bffricmat}(\Bphase{}) \coloneqq \bffricmat(\Bphase{},0) =  
-  \beta\, \cexpval{ \fprojbf_{\Bphase{}}(0,\cdot) \otimes \fprojbf_{\Bphase{}}(0,\cdot) }{ \Bphase{} }\,,
+  \widetilde{\bffricmat}(\Bphase{}) \coloneqq \frac{1}{\lambda}\,\bffricmat(\Bphase{},0) =  
+  \frac{1}{\lambda}\, \beta\, \cexpval{ \fprojbf_{\Bphase{}}(0,\cdot) \otimes \fprojbf_{\Bphase{}}(0,\cdot) }{ \Bphase{} }\,,
 \]
 can be computed by means of the fluctuating force (fig.~\ref{Fig:FF}).
 If we consider bead $I$, which interacts with bead $I-1$ and bead $I+1$, we can assume that the forces that act on it can be decomposed as the independent ``stress'' contributions $\sigma_{I+1,I}$ and $-\sigma_{I,I-1}$. Under these conditions we write the $\fricmat_{I,I}$ component of the time independent friction matrix as
@@ -862,7 +870,7 @@ We define the tridiagonal matrix
 where $I,J \in \bp{1,2,\dots,\ncg}$, and we can write the time independent friction matrix as 
 \begin{equation}
 \label{Eq:TridMat}
- \widetilde{\bffricmat}(\widetilde{\bfR})=\beta\,\Sigma(\widetilde{\bfR})\,.
+ \widetilde{\bffricmat}(\widetilde{\bfR}) = \frac{1}{\lambda}\,\beta\,\Sigma(\widetilde{\bfR})\,.
 \end{equation}
 So, we can rewrite the eq.~(\ref{Eq:MarkovApproxCompact}) as
 \begin{equation}
@@ -870,14 +878,14 @@ So, we can rewrite the eq.~(\ref{Eq:MarkovApproxCompact}) as
 \begin{cases}
  \partial_t\,\Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,, & \\
  \partial_t\,\Bphase{\bfP} = -\partial_{\widetilde{\bfR}}\Veff(\widetilde{\bfR}) 
-                             - \beta\,\Sigma(\widetilde{\bfR}) \cdot \cip{M^{-1}\Bphase{\bfP}}
+                             - \frac{1}{\lambda}\, \beta\,\Sigma(\widetilde{\bfR}) \cdot \cip{M^{-1}\Bphase{\bfP}}
                              + \fprojbf(t) \,. &  
 \end{cases}
 \end{equation} 
 \noindent
 The terms of the memory and fluctuating force may be generated together in a similar way to the thermal bath of Langevin equation (\ref{Eq:Lang1Dp}), where the diffusive parameter depends on the friction parameter in the stationary limit (see Sec.~\ref{Sec:SDE}). In fact, by placing
 \[
- \fprojbf(t) \equiv \sqrt{2\,\Sigma(\widetilde{\bfR})}\, \boldsymbol{\xi}(t)\,,
+ \fprojbf(t) \equiv \sqrt{2\,\lambda^{-1}\Sigma(\widetilde{\bfR})}\, \boldsymbol{\xi}(t)\,,
 \] 
 where $\boldsymbol{\xi}(t)$ is a white noise, we get from the eq.~(\ref{Eq:MApCompactTrMat})
 \begin{equation}
@@ -885,23 +893,22 @@ where $\boldsymbol{\xi}(t)$ is a white noise, we get from the eq.~(\ref{Eq:MApCo
 \begin{cases}
  \diff \Bphase{\bfR} = M^{-1}\Bphase{\bfP} \,\diff t \,, & \\
  \diff \Bphase{\bfP} = \sqp{ - \partial_{\widetilde{\bfR}}\Veff(\widetilde{\bfR}) 
-                     - \frac{\beta}{2}\, \Sigma(\widetilde{\bfR}) \cdot \cip{M^{-1}\Bphase{\bfP}} }\diff t 
-                     + \Sigma (\widetilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
+                     - \frac{\beta}{2}\, \widetilde{\Sigma}(\widetilde{\bfR}) \cdot \cip{M^{-1}\Bphase{\bfP}} }\diff t 
+                     + \widetilde{\Sigma} (\widetilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
 \end{cases}
 \end{equation}
-where $\Sigma(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W} \equiv \boldsymbol{\xi}(t) \,\diff t$ are independent increments of the Wiener process in $\real^{\ncg}$.
+where $\widetilde{\Sigma}(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\widetilde{\Sigma}=\lambda^{-1}\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W} \equiv \boldsymbol{\xi}(t) \,\diff t$ are independent increments of the Wiener process in $\real^{\ncg}$.
 
-The system of equations obtained allows to describe and implement the MMZD, as it is analogous to the eq.~(\ref{Eq:Lang1Dp}), which describes the Langevin dynamics. In fact, if we take $\gamma=\frac{\beta}{2}\, \Sigma(\widetilde{\bfR})$ in the eq.~(\ref{Eq:Lang1Dp}), we find the system of equations (\ref{Eq:MMZD}). As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
+The system of equations obtained allows to describe and implement the MMZD, as it is analogous to the eq.~(\ref{Eq:Lang1Dp}), which describes the Langevin dynamics. In fact, if we take $\gamma=\frac{\beta}{2}\, \widetilde{\Sigma}(\widetilde{\bfR})$ in the eq.~(\ref{Eq:Lang1Dp}), we find the system of equations (\ref{Eq:MMZD}). As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
 
-The mean force, the fluctuating force and therefore the memory terms can be determined through a Kriging-type interpolation algorithm \cite{Jones2001} from the values shown in the Section \ref{Sec:EP}. This interpolation algorithm, which we have implemented in the code, yields a polynomial approximation of the given function with Gaussian weights. It allows to determine the new values of the function, filtering the noise resulting from the sampling error (see the supplementary material of the work of Di Pasquale \textit{et al.}~\cite{DiPasquale2019}).
-
+The mean force, the fluctuating force and therefore the memory terms can be determined through a cubic spline interpolation from the values shown in the Section \ref{Sec:EP}, after these values have been filtered by noise through Kriging-type interpolation algorithm \cite{Jones2001}. This interpolation algorithm yields a polynomial approximation of the given function with Gaussian weights. It allows to determine the new values of the function, filtering the noise resulting from the sampling error (see the supplementary material of the work of Di Pasquale \textit{et al.}~\cite{DiPasquale2019}). We wanted to introduce a cubic spline interpolation in the code to speed up the simulations, in this way we use only once the Kriging-type interpolation algorithm.
 
 
 \subsection{Validity of the memory kernel approximation and timescale separation}
 
 As we said in Chap.~\ref{Sec:MarkovApprox}, the validity of the Markovian approximation has been repeatedly questioned, especially for a system with like the one under consideration where sound propagation plays a very important role, since it determines the time scale of the CG variables, \textit{i.e.} the time scale of the velocity ACF \cite{CommentCubero}. 
 
-In fact in 2005, Cubero and Yaliraki showed that the Markovian approximation is unreliable in systems in which sound plays is important. They first studied the general case and the conditions for the failure of the Markovian approximation due to sound propagation. Then, as an example to show the failure of Markovian application, they studied the coarse-grained dynamics of cubic harmonic lattices, where the elastic wave propagation is the only dissipation mechanism \cite{Cubero2005}.
+In fact in 2005, Cubero and Yaliraki showed that the Markovian approximation could be unreliable in systems in which sound plays is important, that is, in systems in which the time scale associated with sound propagation is comparable with the time scale of the relevant variables. They first studied the general case and the conditions for the failure of the Markovian approximation due to sound propagation. Then, as an example to show the failure of Markovian application, they studied the coarse-grained dynamics of cubic harmonic lattices, where the elastic wave propagation is the only dissipation mechanism \cite{Cubero2005}.
 A year later, Hij\'on \textit{et al.} verified and confirmed the results of Cubero and Yaliraki for a system with an harmonic potential, and also showed the validity of the Markovian approximation for a system interacting with non-linear potentials such as L-J potential \cite{Hijon2006}. The non-linear system studied was a one-dimensional chain of $N$ atoms of equal mass, enclosed between two fixed walls, that interact with a L-J potentials. This system is very similar to the one studied in this work.
 
 \noindent
@@ -1223,7 +1230,7 @@ So we have, applying Fubini's theorem see Ref.~\cite[p.~77-79]{Williams1991},
 
 
 \chapter{Elements of Stochastic Processes}
-
+\label{App:B}
 \section{It\^o Stochastic Differential Equation and the corresponding Fokker-Planck Equation}
 \label{Sec:SDE}
 An It\^o stochastic differential equation (SDE) can be written as
