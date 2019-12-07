@@ -84,13 +84,13 @@ FdataFF[:, 5] = FF_coeff2[1:end - 1];
 #########################################################################################
 # Write data to file
 
-open("Store_Trajectory/Outcomes/PApprox_MMZD_1e7(B1.096).csv", "w+") do x
+open("Store_Trajectory/Outcomes/PApprox_MMZD_1e7(B1.096)_CORRETTA.csv", "w+") do x
     writedlm(x, PApprox);
 end
-open("Store_Trajectory/Outcomes/QApprox_MMZD_1e7(B1.096).csv", "w+") do x
+open("Store_Trajectory/Outcomes/QApprox_MMZD_1e7(B1.096)_CORRETTA.csv", "w+") do x
     writedlm(x, QApprox);
 end
-open("Store_Trajectory/Outcomes/FApprox_MMZD_1e7(B1.096).csv", "w+") do x
+open("Store_Trajectory/Outcomes/FApprox_MMZD_1e7(B1.096)_CORRETTA.csv", "w+") do x
     writedlm(x, FApprox);
 end
 
