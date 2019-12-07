@@ -143,13 +143,8 @@ A \emph{bottom-up} CG model is a model of a particular system that is constructe
 \noindent
 There is a second common distinction for CG models of biomolecular systems, which distinguishes CG models between \emph{physics-based} and \emph{knowledge-based} approaches. The former use physical theories to deduce interactions in CG models, and comprise the approaches described above, \textit{i.e.} the \emph{bottom-up} approach and the \emph{top-down} approach. By contrast, the latter are constructed on the basis of information extracted from experimentally determined three-dimensional structures.
 In fig.~\ref{Fig:CGStrategies} the distinctions between the various approaches are shown in a schematic way. 
-\begin{figure}[htb]
-    \centering
-    \includegraphics[width=0.9\textwidth]{CGStrategies}
-    \caption{Sketch with strategies for CG distinguishing between top-down, bottom-up, and knowledge-based approaches. Figure taken from the Ref.~\cite{Noid2013}.}
-    \label{Fig:CGStrategies}
-\end{figure}
 
+\vspace{0.1cm}
 Typically, CG simulations can be three or four orders of magnitude more efficient than all-atom simulations for several reasons:
 \begin{enumerate}[(i)]
 \item CG models require fewer interacting sites to model the same system, so fewer interactions must be calculated at each time step;
@@ -157,6 +152,13 @@ Typically, CG simulations can be three or four orders of magnitude more efficien
 \item effective potentials can implicitly include entropic effects and greatly reduce the need to explicitly sample a large number of degenerate atomically detailed configurations \cite{Levitt1975};
 \item interactions between CG sites are usually ``softer'', (\textit{i.e.}, of lower frequency) which allows a larger integration time step for propagating dynamics \cite{Marrink2004}. In other words, we are saying that the fluctuations of the force that CG sites experience are generally smaller, leading to a smoother free energy profile \cite{Rudzinski2019}. As a result, we have a faster diffusive process allowing the system to reach greater time scales with fewer computations. This last aspect implies that one typically has to determine a rescaling factor between the simulation timescale (usually given in Lennard Jones units) and the corresponding timescale in all-atom system (or the corresponding real world time \cite{Fritz2011,Potestio2014}.
 \end{enumerate}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{CGStrategies}
+    \caption{Sketch with strategies for CG distinguishing between top-down, bottom-up, and knowledge-based approaches. Figure taken from the Ref.~\cite{Noid2013}.}
+    \label{Fig:CGStrategies}
+\end{figure}
 
 If we are interested in the dynamic properties of the system under consideration, what has been said in the last point is one of the main limits of most CG models. This difference in time scales between two resolution levels of the same system does not allow to preserve the dynamic properties. This artificial acceleration of the dynamics could be corrected by adding appropriate friction terms in order to obtain a better estimate of the dynamic observables \cite{Izvekov2006}. 
 
@@ -202,7 +204,7 @@ The mathematical equivalence of these two approaches is given by the duality bet
 
 \noindent
 In what follows, we choose to follow the second approach since this results in a more physically-intuitive derivation.
-Here, we will derive the GLE for the CG variables through the \emph{Zwanzig projection}.
+Here, we will derive the GLE for the CG variables through the \emph{Zwanzig projection}. We will not give a derivation of the eq.~(\ref{generalGLE}) since it can be found in various books (see Ref.~\cite{Berne:DynamicLightScatt,evans2008,hansen2006,tuckerman2010}) and is similar to the one that we will show through the \emph{Zwanzig projection}.
 
 We assume that, at the microscopic level, the system is well described by classical mechanics and is composed by $\nfg$ particles. We will refer to it as the \emph{fine-grained} (FG) system. The microscopic state is characterised by the function $\Aphase{}(t)$ in a $6\nfg$-dimensional phase-space. 
 
@@ -228,7 +230,7 @@ We also assume that the state of the system is described by the canonical equili
 % \qquad X=\real^{6\nfg}\,;
 \end{equation}
 
-The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables $\Bphase{}(\Aphase{})$ by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves, but as we will see the complexity of the computation of eq.~(\ref{Eq:MotionEqGamma}) will be shifted to the computation of the so-called \emph{orthogonal dynamics}.
+The Mori-Zwanzig formalism allows us to replace equation (\ref{Eq:MotionEqGamma}) for the observables $\Bphase{}(\Aphase{})$ by an equation of motion which depends on the microstate $\Aphase{}$ only through the CG variables themselves, but as we will see in the Sec.~\ref{Sec:GLE} the complexity of the computation of eq.~(\ref{Eq:MotionEqGamma}) will be shifted to the computation of the so-called \emph{orthogonal dynamics}.
 
 %For example, with the \emph{Zwanzig projection} this is done by projecting the equation for the observables $\Bphase{}(\Aphase{})$ onto the space of functions of the CG variables, which may be regarded as a subspace of the FG observable space\footnote{This is true as long as some very broad measurability assumptions on the CG variables chosen are met; in practice, choosing CG variables which are continuous and differentiable in the FG variables is already sufficient, and this particular choice is implicitly assumed in the derivation presented here. In theory however, much more general choices can be made.}.
 
@@ -244,7 +246,7 @@ where $F(\Aphase{})$ is a generic function acting on the space-phase $X=\real^{6
 \begin{equation}\label{eq:structurefunc}
 	\Omega(\Bphase{}) = \int_X\dirac{\Bphase{}(\Aphase{}')-\Bphase{}}\mathbb{P}(\diff\Aphase{}')\,.
 \end{equation}
-In other words, the \textit{structure function} represents the number of micro-states compatible with the macro-state $\Bphase{}(\Aphase{}')=\Bphase{}$ \cite{Hijon2010}. While, the projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary function $F(\Aphase{})$ the part, $\mathcal{P}_{\Bphase{}}F(\Aphase{})$, which depends on $\Aphase{}$ only through $\Bphase{}$.
+In other words, the \textit{structure function} represents the number of micro-states compatible with the macro-state $\Bphase{}(\Aphase{}')=\Bphase{}$ \cite{Hijon2010}, and the projection operator $\mathcal{P}_{\Bphase{}}$ selects from an arbitrary function $F(\Aphase{})$ the part, $\mathcal{P}_{\Bphase{}}F(\Aphase{})$, which depends on $\Aphase{}$ only through $\Bphase{}$.
 
 \noindent
 If we introduce a set of fixed values $\bfa$ such that for a given $\Aphase{}$ we have $\Bphase{}=\bfa$. The integral in the numerator represents the amount of $F(\Aphase{})$ contained in the correspondent surface $S(\bfa)$, while the \textit{structure function} in the denominator $\Omega(\Bphase{})=\Omega(\bfa)$ allows us to spread this amount on the surface $S(\bfa)$.
@@ -287,10 +289,11 @@ Therefore, the projection operator has a nice interpretation as a conditional ex
  \mathcal{P}_{\bfa}B(\Aphase{}) = \cexpval{B(\Aphase{})}{\,\bfA(\Aphase{})=\bfa}\,.
 \end{equation}
 For the mathematical details of the conditional expectation see theorem \ref{Th:CondExp}. 
-We stress here that the conditional expectation \ref{ConExp}, which we rewrite as  $\cexpval{B}{\,\bfa}$, is a function of $\bfa$, is a linear operator and represents the best approximation of $B$ compared to any function of $\bfa$, and therefore it is an orthogonal projection. For further details on the last property, see the definition \ref{Def:ExpOrthProj}.
+We stress here that the conditional expectation (\ref{ConExp}), which we rewrite as  $\cexpval{B}{\,\bfa}$, is a function of $\bfa$, is a linear operator and represents the best approximation of $B$ compared to any function of $\bfa$, and therefore it is an orthogonal projection. For further details on the last property, see the definition \ref{Def:ExpOrthProj}.
 
 
 \subsection{Generalized Langevin Equation}
+\label{Sec:GLE}
 We are now in the position to derive the GLE. We will make the derivation considering an ensemble of initial conditions $\Aphase{0}$ satisfying $\Bphase{}(\Aphase{0})=\bfa$ for some fixed $\bfa=\bfA(\Aphase{})$, where $\bfA(\Aphase{})$ is a set of phase functions defined in the previous section, and with $\Aphase{0}$ distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa$.  
 
 Differentiating both sides of the relation (\ref{Eq:SolLiouville}) with respect to time, we can rewrite the equation (\ref{Eq:MotionEqGamma}) as
@@ -414,7 +417,7 @@ where we have defined
  \fprojbf_{\Bphase{}}(t,\Aphase{0}) &\coloneqq \exp{\qproj_{\bfa}\Lio t}\qproj_{\bfa}\Lio\,\Bphase{0} = 
 	   \qproj_{\bfa}\exp{\qproj_{\bfa}\Lio t}\Lio\,\Bphase{0}\,.
 \end{align} 
-The quantity $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ still depends on the FG variables, and is given by the solution of an auxiliary set of equations called \emph{orthogonal dynamics equations} \cite{Givon2005}, which we will discuss in the following sections.  
+The quantity $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ still depends on the FG variables, and is given by the solution of an auxiliary set of equations called \emph{orthogonal dynamics equations} \cite{Givon2005}, which we will discuss briefly in the following sections.  
 We can now rewrite eq. (\ref{Eq:fricmatrix}) as
 \begin{align}\label{Eq:FRICmatrixRF}
  \nonumber
@@ -437,7 +440,7 @@ We can now rewrite eq. (\ref{Eq:fricmatrix}) as
 therefore, from eq.~(\ref{Eq:MZequation}), $\bffricmat$ is a friction matrix, whose components can be written in Green-Kubo form \cite{Kauzlaric2011}.
 
 Recall that we are not interested in solving the equation (\ref{Eq:MZequation}) for a specific initial condition $\Bphase{}(\Aphase{0})$, but rather for an ensemble of initial conditions $\Aphase{0}$ satisfying $\Bphase{}(\Aphase{0})=\bfa(0)$ for some fixed $\bfa(0)=\bfA(\Aphase{})$, where $\bfA(\Aphase{})$ is a generic set of CG variables, and with $\Aphase{0}$ distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa(0)$. It is important to highlight here that the complexity of the equation (\ref{Eq:MZequation}) is not reduced with respect the starting equation (\ref{Eq:MotionEqGamma}), it has simply been shifted into the calculation of the \emph{orthogonal dynamics}. However, close to equilibrium, the term $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ is uncorrelated with the projected variables $\Bphase{}$ and therefore approximated as random noise. 
-The proof of this statement is based on the scalar product defined in the Liouville space and the Mori projector $\pproj^{M}$ (see Tuckerman pp.594-595 Ref.~\cite{tuckerman2010}) which, as we said, is a special case of the Zwanzig projector when the system is near equilibrium \cite{Kauzlaric2011}. If we now consider eq.~(\ref{Eq:RAndomForce}), we can write:
+The proof of this statement is based on the scalar product defined in the Liouville space and the Mori projector $\pproj^{M}$ (see Berne and Pecora pp.280-285 Ref.~\cite{Berne:DynamicLightScatt} or Ref.~\cite{hansen2006,tuckerman2010}) which, as we said, is a special case of the Zwanzig projector under appropriate conditions \cite{Kauzlaric2011}. If we now consider eq.~(\ref{Eq:RAndomForce}), we can write:
 \begin{equation*}
 \begin{split}
  \cip{ \fprojbf_{\Bphase{}}(t,\Aphase{0}) ,\, \Bphase{}^*(\Aphase{0}) } &= 
@@ -507,7 +510,7 @@ $$\Psi,\Phi\colon  \real^{6\nfg}  \to  \real^{6\ncg}$$ such that
 \Aphase{}  &\mapsto \Psi(\Aphase{}) \eqqcolon \Bphase{\bfR}(\Aphase{})=\cip{\bfR_1,\ldots,\bfR_{\ncg}}\,,\\
 \Aphase{}  &\mapsto \Phi(\Aphase{}) \eqqcolon \Bphase{\bfP}(\Aphase{})=\cip{\bfP_1,\ldots,\bfP_{\ncg}}\,.
 \end{align*}
-We choose the mapping operator in the \emph{class of linear canonical coarse-graining operators} (see Ref.~\cite{DiPasquale2019}) With this choice, the centre of mass of a CG bead is the average position of its constituent beads, whereas its conjugate momentum is simply the sum of momenta of all ``atoms'' within the bead:
+We choose the mapping operator in the \emph{class of linear canonical coarse-graining operators} (see Ref.~\cite{DiPasquale2019}) With this choice, we define the mapping operator that select the the centre of mass of a CG particle as a positional coordinate, and the relevant conjugate momentum, which is simply the sum of momenta of all ``atoms'' within the bead:
 \begin{align}
 	\bfR_{I}=\Psi_{I} (\Aphase{}) & = \frac{1}{M_I}\sum_{k\in S_I} m_k\bfr_k \,, \label{Eq:constr1} \\
     \bfP_{I}=\Phi_{I} (\Aphase{}) & = \sum_{k\in S_I}{\bfp_k}\,. \label{Eq:constr2}
@@ -569,16 +572,19 @@ where $\Phi_J(\bfF)$ is the sum of the forces acting on the ``atoms'' within bea
 \label{sec:projcoor}
 We now explicitly write the projected dynamics using the definitions of $\Phi,\Psi$ given in Sec.~\ref{Sec:Mapping}. We report below the results obtained by Di Pasquale et al. in their work \cite{DiPasquale2019}. The dynamics of $\Bphase{}(\Aphase{})$, that is, the dynamics for the position and momenta of a particle $\{\bfR_{J},\bfP_{J}\}$ in the CG system is given by
 %
-\begin{align}
-	\Lio\bfR_{J} & = \sum_{k\in S_J}{\frac{\bfp_k}{m_k}\pard{\Psi_J(\Aphase{\bfr})}{\bfr_k}}  = \sum_{k\in S_J}{\frac{\bfp_k}{m_k}\frac{m_k}{M_J}}  = \frac{\bfP_J }{M_{J}}  \label{Eq:LPB}  \\
+\begin{align*}
+	\Lio\bfR_{J} & = \sum_{k\in S_J}{\frac{\bfp_k}{m_k}\pard{\Psi_J(\Aphase{\bfr})}{\bfr_k}}  = \sum_{k\in S_J}{\frac{\bfp_k}{m_k}\frac{m_k}{M_J}}  = \frac{\bfP_J }{M_{J}}  \\
 	\Lio\bfP_{J} & = -\sum_{k\in S_J}{\pard{\pot(\Aphase{\bfr})}{\bfr_k}}\pard{\Phi_J(\Aphase{\bfp})}{\bfp_k}  = -\sum_{k\in S_J}{\pard{\pot(\Aphase{\bfr})}{\bfr_k}}
-\end{align}
+\end{align*}
 %
+To simplify the notation we introduce the operators $\Lio_\pproj \equiv \pproj_{\Bphase{}}\Lio$ and $\Lio_{\qproj} \equiv \qproj_{\Bphase{}}\Lio$, respectively the operators of projection and the orthogonal projection of the Liouvillian.
+
+\noindent
 The projected dynamics for the CG positions is given by 
 \begin{equation*}
-    \Lio_\pproj\bfR_{J} = \frac{\bfP_J}{M_J} \quad\text{and}\quad \Lio_\pproj\bfR_{I} = 0\,. 
+    \Lio_\pproj\bfR_{J} = \frac{\bfP_J}{M_J} \quad\text{and}\quad \Lio_\qproj\bfR_{J} = 0\,. 
 \end{equation*}
-While for the CG momenta is given by
+While for the CG momenta, the projected dynamics are given by
 %
 \begin{equation*}
   \begin{aligned}
@@ -589,16 +595,20 @@ While for the CG momenta is given by
 % 
 and therefore the orthogonal projections are
 %
-\begin{equation}\label{eq:orthForces}
-\begin{aligned}
-  \Lio_\qproj\bfP_{I} & =  -\pard{\pot^{AB}}{\bfr_k}  + \pard{\Veff}{\bfR_I} &\quad&\text{for }I=1,\ldots,\NA{},\text{ with }S_I=\{k\},& \\
-  \Lio_\qproj\bfP_{J} & = -\sum_{k\in S_J}{\pard{}{\bfr_k}\cip{\pot^{AB}+\pot^{BB}} } + \pard{\Veff}{\bfR_J}	&\quad&\text{for }I=\NA{}+1,\ldots,\ncg.&
-\end{aligned}
-\end{equation}
+\begin{align*}
+  \Lio_\qproj\bfP_{I} &= -\pard{\pot^{AB}}{\bfr_k}  + \pard{\Veff}{\bfR_I} &  & \text{for }I=1,\dots,\NA{},\text{ with }S_I=\{k\}\,,\\
+  \Lio_\qproj\bfP_{J} &= -\sum_{k\in S_J}{\pard{}{\bfr_k}\cip{\pot^{AB}+\pot^{BB}} } + \pard{\Veff}{\bfR_J} &  & \text{for }I=N^A+1,\dots,\ncg\,.
+\end{align*}
 % 
+These functions are often referred to as \emph{fluctuating forces}. So we can rewrite the eq.~(\ref{Eq:RAndomForce}) for a generic $t$ as 
+\begin{equation}
+\label{Eq:StocFor}
+ \fprojbf_{I}(t,\cdot) = \exp{t\Lio_\qproj}\Lio_\qproj\bfP_I(\cdot) \quad \text{for } I=1,\dots,\ncg.
+\end{equation}
+
 
 \section{Final system of equations}
-Finally, we can rewrite eq.~(\ref{Eq:ZwanGLE}) as 
+Finally, we can rewrite the GLE (\ref{Eq:ZwanGLE}) as 
 \begin{align}
  \nonumber
  \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}} \\
@@ -625,7 +635,7 @@ the constraints are given by the mapping operators (see Sec.~\ref{Sec:Mapping}),
 The equation of motion for the constrained dynamics are given by:
 %
 \begin{align}
-	\totd{\bfr_k}{t} &= \frac{\bfp_k}{m_{k}} - \bfP_I \\
+	\totd{\bfr_k}{t} &= \frac{\bfp_k}{m_{k}} - \frac{\bfP_I}{M_I	} \\
 	\totd{\bfp_k}{t} &= - \pard{U(\Aphase{\bfr})}{\bfr_k} + \frac{m_k}{M_I}\sum_{i\in S_I}\pard{U(\Aphase{\bfr})}{\bfr_i}%\bfF_I\label{Eq:orth} 
 \end{align}
 %
@@ -665,7 +675,7 @@ which has been derived by integrating by parts and noting that the absolute diff
   = \frac{1}{\lambda}\, \beta\aver{\fprojbf_{\Bphase{}}(0,\cdot)\otimes
     \fprojbf_{\Bphase{}}(0,\cdot)}_{\Bphase{}}\,.
 \end{equation}
-Since $\widetilde{\bffricmat}$ does not depend on the momenta, its derivative with respect to ${\bf P}$ is zero, and therefore the second integral of the second equation of the system~(\ref{Eq:DevB}) vanishes.
+Since $\widetilde{\bffricmat}$ does not depend on the momenta (see eq.~(\ref{Eq:StocFor})), its derivative with respect to ${\bf P}$ is zero, and therefore the second integral in the RHS of the second equation of the system~(\ref{Eq:DevB}) vanishes.
 
 \noindent
 Under these assumptions, the second equation of the system (\ref{Eq:DevB}) becomes
@@ -706,7 +716,7 @@ Here, $R_i$ is an N-vector of normal random numbers with mean $0$ and variance $
 $c_1=e^{-\widetilde{\gamma}\,dt}$ and $c_2=\sqrt{\left(1-c_1^2\right)/\beta}$ are evaluated for a given friction parameter $\widetilde{\gamma}=\gamma\,M^{-1}$ and for a given temperature parameter $\beta=(K_BT)^{-1}$, where $K_B$ is the Boltzmann's constant.
 
 \subsection{Some more details about the work of B. Leimkuhler and C. Matthews}
-The methods that are considered are splitting integrators that decompose the stochastic vector field which drives the Langevin Dynamics into simpler vector fields which can be solved exactly. Nevertheless, the composition method that results cannot be directly related to a stochastic differential equation, but nonetheless the invariant measure associated to the numerical method can be derived, using the Baker-Campbell-Hausdorff (BCH) expansion, as an asymptotic series in two parameters: the stepsize and the coefficient $\gamma^{-1}$. 
+The methods that are considered are splitting integrators that decompose the stochastic vector field which drives the Langevin Dynamics into simpler vector fields which can be solved exactly. Nevertheless, the composition method that results cannot be directly related to a stochastic differential equation, but nonetheless the invariant measure associated to the numerical method can be derived, using the Baker-Campbell-Hausdorff (BCH) expansion \cite{bernardini1993Metodi,evans2008}, as an asymptotic series in two parameters: the stepsize and the coefficient $\gamma^{-1}$. 
 
 The authors stress that their approach focuses on the truncation error of the invariant distribution, so that the greatest benefit would be seen only when the statistical error is well controlled. Furthermore, they observe that the least biased scheme from the point of view of the error introduced in configurational sampling is also as efficient as the alternatives and the most robust with respect the variation of parameters (stepsize and $\gamma^{-1}$).
 
@@ -898,7 +908,7 @@ We observe that the effective potential has similar trends for the four systems,
 We note that the two pairs of systems $A$ and $C$ and $B$ and $D$ differ only in the mass of their constituents, meaning that all the structural observables, such as the effective force or the effective potential should be the same. While the $A$ and $C$ systems do display the same behaviour, with differences ascribable to numerical noise, the $B$ and $D$ systems are markedly different. This difference, which might be due to the poorer sampling caused by the large value of the inter-bead interaction, shows that the results obtained with these systems are most likely not completely reliable and hence we will focus on the $C$ system in the following sections. 
 
 \section{Memory kernel approximation and numerical implementation}
-Until now, we have not yet shown how to implement eq.~(\ref{Eq:MarkovApprox}) to determine MMZD, but only sketched the basic idea in section~\ref{Sec:TestCasesConsid}. We said that the MMZD is determined by the Langevin-type eq.~(\ref{Eq:Lang1Dp}), where the potential is given by the effective potential and the memory and fluctuating terms depends on the inter-bead distance. 
+Until now, we have not yet shown how to implement eq.~(\ref{Eq:MarkovApprox}) to determine MMZD, but only sketched the basic idea in Sec.~\ref{Sec:TestCasesConsid}. We said that the MMZD is determined by the Langevin-type eq.~(\ref{Eq:Lang1Dp}), where the potential is given by the effective potential and the memory and fluctuating terms depends on the inter-bead distance. 
 
 For the sake of clarity, we report below the system of equations for a coarse-grained system in the Markovian approximation obtained in the Chap.~\ref{Sec:MarkovApprox}:
 \begin{equation}
@@ -1002,17 +1012,19 @@ A few years later, Cubero contested the analysis of the simulation data, and sho
 Therefore, to verify the validity of the Markovian approximation, we must verify that the time scale of decay of the memory kernel eq.~(\ref{Eq:FRICmatrixRF}) is much shorter than the typical time scale of the CG variables. These two quantities can be computed by using the fluctuating force auto-correlation function (FFACF) and the velocity auto-correlation function (VACF) computed via a FGD simulation.
 
 \noindent
-These ACF are shown in fig.~\ref{Fig:ACFcomparison} for system C (see table \ref{Tab:Cases}). We can see how there is a separation of the time scales, but it is not as marked and clear  as in the work of Hij\'on \textit{et al.}~\cite{Hijon2006}, being less than one order of magnitude far apart.
+These ACF are shown in fig.~\ref{Fig:ACFcomparison} for system C (see table \ref{Tab:Cases}). 
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=\textwidth]{ACF_comparison}
  \caption{Comparison of the Time Autocorrelation Functions (ACF) between the fluctuating force (purple dot-dashed line), \textit{i.e.} the ``orthogonal'' component of the force, and the momenta (green solid line), in the \emph{Fine-Grained Dynamics} (FGD). All calculations refer to the system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
  \label{Fig:ACFcomparison}
 \end{figure}
+We can see how there is a separation of the time scales, but it is not as marked and clear  as in the work of Hij\'on \textit{et al.}~\cite{Hijon2006}, being less than one order of magnitude far apart.
 Remarkably, this result does not seem to fully justify the Markovian approximation.
 
 As mentioned above, we have studied a system very similar to the one studied by Hij\'on \textit{et al.}~\cite{Hijon2006}. A possible explanation for the lack of separation of scales is that the system analysed here is much smaller than the system studied by them, and that the size of the beads (\textit{i.e.}, the number of atoms in the beads) is much smaller than what they have considered.
 
+\vspace{0.3cm}
 For the sake of completeness, we also report in fig.~\ref{Fig:ACF} the ACF for the moments and the forces for the different dynamics, relative to the system C.
 \begin{figure}[!htb]
  \begin{subfigure}[b]{0.9\textwidth}
@@ -1039,7 +1051,7 @@ We compare the observables of the considered system, determined by means of the 
 The observables chosen for comparison are
 \begin{itemize}
 \item[-] linear spatial statistics: the momenta distribution of a single bead and the distribution of inter-bead distance;
-\item[-] a dynamics property of the system: the evolution of the mean-square displacement (MSD) of a single bead over time.
+\item[-] a dynamics property of the system: the evolution of the mean-square displacement (MSD) of a single bead and of inter-bead distance over time.
 \end{itemize}
 We would expect that the results of the first observables to be consistent with the reference results determined by the FGD, and in the case of the momenta distribution are consistent with the theoretical trend determined by the Maxwell-Boltzmann distribution. 
 While from the results of the MSD we would expect an initial trend with non-trivial differences for the various dynamics and subsequently for long times we would expect a plateau since at long times the beads should oscillate around the equilibrium positions with the same amplitude, regardless of the dynamics employed.
@@ -1088,7 +1100,7 @@ We observe a qualitatively similar result for the MSD of the inter-bead distance
 \begin{figure}[!htb]
  \centering
  \includegraphics[width=0.9\textwidth]{INT_MSD_CORRETTAmd}
- \caption{Comparison of the plateau of the Mean Square Displacement (MSD) of the inter-bead distance between the \emph{Fine-Grained Dynamics} (FGD, green solid line), the \emph{Coarse-Grained Dynamics} (CGD, black dashed line), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). All calculations refer to system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
+ \caption{Comparison of the Mean Square Displacement (MSD) of the inter-bead distance between the \emph{Fine-Grained Dynamics} (FGD, green solid line), the \emph{Coarse-Grained Dynamics} (CGD, black dashed line), and the \emph{Markovian Mori-Zwanzig Dynamics} (MMZD, red square points). All calculations refer to system C (see table \ref{Tab:Cases}) and are averaged in time and over all beads.}
  \label{Fig:MSDint}
 \end{figure}
 %
@@ -1320,6 +1332,7 @@ So we have, applying Fubini's theorem see Ref.~\cite[p.~77-79]{Williams1991},
 
 \chapter{Elements of Stochastic Processes}
 \label{App:B}
+We introduce some basic definition and results from theory of Stochastic Processes. This material can be found in Ref.~\cite{Gardiner2009,Pavliotis2014,Risk:TheFPeq}. 
 \section{It\^o Stochastic Differential Equation and the corresponding Fokker-Planck Equation}
 \label{Sec:SDE}
 An It\^o stochastic differential equation (SDE) can be written as
