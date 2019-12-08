@@ -635,7 +635,9 @@ the constraints are given by the mapping operators (see Sec.~\ref{Sec:Mapping}),
 The equation of motion for the constrained dynamics are given by:
 %
 \begin{align}
-	\totd{\bfr_k}{t} &= \frac{\bfp_k}{m_{k}} - \frac{\bfP_I}{M_I	} \\
+	\nonumber
+	\totd{\bfr_k}{t} &= \frac{\bfp_k}{m_{k}} - \frac{\bfP_I}{M_I} \\
+	\label{Eq:orth}
 	\totd{\bfp_k}{t} &= - \pard{U(\Aphase{\bfr})}{\bfr_k} + \frac{m_k}{M_I}\sum_{i\in S_I}\pard{U(\Aphase{\bfr})}{\bfr_i}%\bfF_I\label{Eq:orth} 
 \end{align}
 %
@@ -816,9 +818,9 @@ Below, we will show the results and analysis of the simulations of different dyn
  \[
  \totd{\Aphase{}(t)}{t} = \bp{\Aphase{},\Ham^X} = iL\,\Aphase{}\,;
  \]
-\item[(OD)] the \emph{Orthogonal Dynamics} when solving eq.~(\ref{Eq:orth}):
+\item[(OD)] the \emph{Orthogonal Dynamics} when solving the system of eq.~(\ref{Eq:orth}):
  \[
-  \totd{\bfr_k}{t} = \frac{\bfp_k}{m_{k}}\,;\qquad
+  \totd{\bfr_k}{t} = \frac{\bfp_k}{m_{k}}- \frac{\bfP_I}{M_I} \,;\qquad
   \totd{\bfp_k}{t} = - \pard{\pot^X(\Aphase{\bfr})}{\bfr_k} + \frac{m_k}{M_I}\sum_{i\in S_I}\pard{\pot^X(\Aphase{\bfr})}{\bfr_i}\,; 
  \]
 \item[(CGD)] the \emph{Coarse-Grained Dynamics} when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, neglecting the dissipative and fluctuating terms:
@@ -1128,7 +1130,7 @@ We said in Chap.~\ref{Sec:MarkovApprox} that the validity of the Markovian appro
 
 Remarkably in Sec.~\ref{Sec:Observables}, the observables, both static and dynamic, of the FGD system are reproduced quite well both by the CGD with a simple thermal bath with constant parameters, and by the MMZD with a thermal bath dependent on the inter-bead position. The difference of the statical observables are ascribe to sampling issues. While the differences in the short-time part of the dynamical observables are due to the approximations considered here, instead  the (small) difference in the long-time behaviour is more puzzling and will require additional work to be properly understood.
 
-We wan to to stress here that, thanks to the formalism of MZ, we have obtained a CG model that reproduces the static distributions of the atomistic system without requiring any optimization of the CG potential (see the Iterative Boltzmann Inversion (IBI) method, Ref.~\cite{Reith2003}) and without scaling the dynamic quantities obtained by CG simulations by a suitable parameter that measure how faster the CG dynamics is with respect the underlying FG system \cite{Fritz2009}.
+We wan to stress here that, thanks to the formalism of MZ, we have obtained a CG model that reproduces the static distributions of the atomistic system without requiring any optimization of the CG potential (see the Iterative Boltzmann Inversion (IBI) method, Ref.~\cite{Reith2003}) and without scaling the dynamic quantities obtained by CG simulations by a suitable parameter that measure how faster the CG dynamics is with respect the underlying FG system \cite{Fritz2009}.
 
 The results presented here, which are based on the system studied in Ref.~\cite{DiPasquale2019}, will require additional simulations to evaluate the effect of the size of the system and of the beads considered. Possible future developments of this work are the extension of the code to study systems in two and three spatial dimensions, the evaluation of the transferability of the derived CG model and the development of a better approximation for the memory kernel.
 
