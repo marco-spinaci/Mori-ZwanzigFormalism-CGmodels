@@ -660,7 +660,8 @@ Therefore, to simplify and numerically implement the eq.~(\ref{Eq:ZwanGLE}), we 
 \begin{equation*}
   \bffricmat(\Bphase{},t) = \exp{-\lambda t}f(\Bphase{},t)
 \end{equation*}
-where $f$ is a slowly-varying continuous function in the interval of integration and the parameter $\lambda$ is the inverse of a mesoscopic time-scale that is larger than the microscopic characteristic time but much smaller than the macroscopic one~\cite{Hijon2010}. We can rewrite the first integral of the second equation of the system~(\ref{Eq:DevB}) as
+where $f$ is a slowly-varying continuous function in the interval of integration and the parameter $\lambda$ is the inverse of a mesoscopic time-scale that is larger than the microscopic characteristic time but much smaller than the macroscopic one~\cite{Berne:DynamicLightScatt,Hijon2010}. 
+We can rewrite the first integral of the second equation of the system~(\ref{Eq:DevB}) as
 \begin{multline}
 \label{Eq:TermIntMARapp}
   \int_0^t\, \bffricmat(\Bphase{}(t-s),s) \cdot(M^{-1}\bfP) \,\diff s ={}\\
@@ -966,7 +967,7 @@ where $I,J \in \bp{1,2,\dots,\ncg}$, and we can write the time-independent frict
 \label{Eq:TridMat}
  \widetilde{\bffricmat}(\widetilde{\bfR}) = \frac{1}{\lambda}\,\beta\,\Sigma(\widetilde{\bfR})\,.
 \end{equation}
-where we choose $\lambda = 1$. We can now rewrite eq.~(\ref{Eq:MarkovApproxCompact}) as
+We can now rewrite eq.~(\ref{Eq:MarkovApproxCompact}) as
 \begin{equation}
 \label{Eq:MApCompactTrMat}
 \begin{cases}
@@ -991,7 +992,7 @@ where $\boldsymbol{\xi}(t)$ is a white noise, we get from the eq.~(\ref{Eq:MApCo
                      + \widetilde{\Sigma} (\widetilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
 \end{cases}
 \end{equation}
-where $\widetilde{\Sigma}(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\widetilde{\Sigma}=\lambda^{-1}\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W} \equiv \boldsymbol{\xi}(t) \,\diff t$ are independent increments of the Wiener process in $\real^{\ncg}$.
+where $\widetilde{\Sigma}(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\widetilde{\Sigma}=\lambda^{-1}\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W} \equiv \boldsymbol{\xi}(t) \,\diff t$ are independent increments of the Wiener process in $\real^{\ncg}$. In numerical implementation we have chosen to fix $\lambda^{-1}=1$, since it must be large compared to the correlation time of orthogonal dynamics, that is the one we have called microscopic time in the Chap.~\ref{Sec:MarkovApprox}.
 
 The system of equations obtained allows to describe and implement the MMZD, as it is analogous to the eq.~(\ref{Eq:Lang1Dp}), which describes the Langevin dynamics. In fact, if we take $\gamma=\frac{\beta}{2}\, \widetilde{\Sigma}(\widetilde{\bfR})$ in eq.~(\ref{Eq:Lang1Dp}), we find the system of equations (\ref{Eq:MMZD}). As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
 
