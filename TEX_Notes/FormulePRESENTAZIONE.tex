@@ -1,0 +1,74 @@
+\documentclass[10pt,a4paper]{book}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+%\usepackage{fancyhdr}
+%\pagestyle{fancy}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+\usepackage{paralist}
+
+\usepackage{scrextend}
+\addtokomafont{labelinglabel}{\sffamily}
+
+\usepackage{cases}
+
+\usepackage[colorlinks]{hyperref}
+\hypersetup{hidelinks}
+
+\theoremstyle{definition}
+\newtheorem{defin}{Definition}[chapter]
+\newtheorem{prop}[defin]{Proposition}
+\newtheorem{theorem}[defin]{Theorem}
+
+\DeclareMathAlphabet\mathbfcal{OMS}{cmsy}{b}{n}
+\usepackage{mymacrosTESI}
+
+\usepackage{graphicx}
+\usepackage[margin=10pt,font=small,labelfont=bf]{caption}
+\usepackage[labelfont=bf,list=true]{subcaption}
+\graphicspath{ {Figure/} }
+
+\usepackage{booktabs}
+
+\usepackage[titletoc,page]{appendix}
+
+\usepackage{algorithmicx}
+\usepackage[chapter]{algorithm}
+\usepackage{algpseudocode}
+
+\usepackage{pdfpages}
+
+\newcommand{\lr}[1]{\textcolor[rgb]{0.8,0,0}{LR: \textbf{\textit{#1}}}}
+
+
+\begin{document}
+
+\begin{equation*}
+  \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\Bphase{}(\Aphase{}(t))
+  \quad\Bphase{}(\Aphase{}(0)) \equiv \Bphase{}(\Aphase{0})
+  \quad \Lio\equiv iL \coloneqq \bp{ \ldots,\Ham}
+  \quad \Aphase{} \in X=\real^{6\nfg}
+\end{equation*}
+
+$$
+\bfA(\Aphase{})=\bp{ A_I\in L^2\cip{X,\mathbb{P}}\,,\;\;\mathrm{where}\;\; I=1,\ldots,\ncg \;\;\mathrm{and}\;\; \ncg\le\nfg }\, \in V=\real^{\ncg}
+$$
+
+\begin{equation*}
+	\mathcal{P}_{\bfa}F(\Aphase{}) = \frac{1}{\Omega(\bfa)} \int_X F(\Aphase{}')\,\dirac{\Bphase{}(\Aphase{}')-\bfa}\rho^{eq}(\Aphase{}')\diff\Aphase{}'\,,
+	\qquad 	\Omega(\bfa) = \int_X\dirac{\Bphase{}(\Aphase{}')-\bfa}\mathbb{P}(\diff\Aphase{}')
+\end{equation*}
+\[
+\mathcal{P}_{\bfa}^+ = \mathcal{P}_{\bfa}
+\]
+
+
+
+\end{document}

@@ -33,7 +33,7 @@ S = Simulator(
     MacroSamples = 50,
 );
 
-CG = readdlm("../../ABCD_Systems/Outcomes/sC_2000.csv", Float64);
+CG = readdlm("../../ABCD_Systems/Outcomes/sC_20_300p.csv", Float64);
 RR = CG[:, 1];
 Fmean = CG[:, 4];
 Fstd = CG[:, 5];
@@ -54,18 +54,18 @@ for i in 1:length(dQ)
         m = (- 9620.78 + 11462.61) / (1.09-0.95);
         q = -9620.78 - m * 1.09;
         Sigma[i] = m * dQ[i] + q;
-    elseif dQ[i] > 3.78
-        W = spdiagm(0 => exp.(-(RR .- 3.78) .^2 ./ σ^2));
+    elseif dQ[i] > 3.01
+        W = spdiagm(0 => exp.(-(RR .- 3.01) .^2 ./ σ^2));
         J = ones(3, length(RR));
         for j = 1:2
-            J[j+1, :] = (3.78 .- RR).^j;
+            J[j+1, :] = (3.01 .- RR).^j;
         end
         K = J * W;
         c = (K * J') \ (K * Fmean);
         Sigma[i] = c[1];
     else
         W = spdiagm(0 => exp.(-(RR .- dQ[i]) .^2 ./ σ^2));
-        
+
         J = ones(3, length(RR));
         for j = 1:2
             J[j+1, :] = (dQ[i] .- RR).^j;
@@ -83,18 +83,18 @@ for i=1:length(dQ)
         m = (6464.26 - 8859.34) / (1.2-0.90);
         q = 8859.34 - m * 0.90;
         Gvec[i] = m * dQ[i] + q;
-    elseif dQ[i] > 3.78
-        W = spdiagm(0 => exp.(-(RR .- 3.78) .^2 ./ σ^2));
+    elseif dQ[i] > 3.01
+        W = spdiagm(0 => exp.(-(RR .- 3.01) .^2 ./ σ^2));
         J = ones(3, length(RR));
         for j = 1:2
-            J[j+1, :] = (3.78 .- RR).^j;
+            J[j+1, :] = (3.01 .- RR).^j;
         end
         K = J * W;
         coeffs = (K * J') \ (K * Fstd);
         Gvec[i] = coeffs[1];
     else
         W = spdiagm(0 => exp.(-(RR .- dQ[i]) .^2 ./ σ^2));
-        
+
         J = ones(3, length(RR));
         for j=1:2
             J[j+1,:] = (dQ[i] .- RR).^j;
@@ -122,11 +122,11 @@ Gvec1 = Gvec1[i];
 # println("FF = ", Gvec1);
 
 #open("./Code_Tests/Interpolation/Outcomes/RFmean_algInt_test.csv", "w+") do x
-open("force.dat", "w+") do x
+open("force_300p.dat", "w+") do x
     writedlm(x, [RB Sigma1])
 end
 
-open("flucts.dat", "w+") do x
+open("flucts_300p.dat", "w+") do x
     writedlm(x, [RB Gvec1])
 end
 
