@@ -47,6 +47,12 @@
 
 \newcommand{\lr}[1]{\textcolor[rgb]{0.8,0,0}{LR: \textbf{\textit{#1}}}}
 
+\addtolength{\hoffset}{-2.5cm}
+\addtolength{\textwidth}{5.4cm}
+\addtolength{\voffset}{-2.5cm}
+\addtolength{\textheight}{5cm}
+
+
 
 \begin{document}
 
@@ -65,9 +71,53 @@ $$
 	\mathcal{P}_{\bfa}F(\Aphase{}) = \frac{1}{\Omega(\bfa)} \int_X F(\Aphase{}')\,\dirac{\Bphase{}(\Aphase{}')-\bfa}\rho^{eq}(\Aphase{}')\diff\Aphase{}'\,,
 	\qquad 	\Omega(\bfa) = \int_X\dirac{\Bphase{}(\Aphase{}')-\bfa}\mathbb{P}(\diff\Aphase{}')
 \end{equation*}
+
 \[
 \mathcal{P}_{\bfa}^+ = \mathcal{P}_{\bfa}
 \]
+
+\begin{align*}
+ \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}} \\
+ \pard{\bfP_{K}}{t} &= -\omega_{\NA{} K} \pard{\pot^{AA}}{\bfR_{K}} - \pard{\Veff}{\bfR_{K}} 
+ - \sum_{J=1}^{\ncg}\,\int_{0}^{t}\,\fricmat_{KJ}(t-s,s)\,M_J^{-1}\,\bfP_J(t-s) \,\diff s + \beta^{-1} \sum_{J=1}^{\ncg} \,\int_{0}^{t} \pard{\fricmat_{KJ}(s)}{\bfP_{J}} \,\diff s + \fprojbf_{K}(t) 
+\end{align*}
+
+
+\begin{equation*}
+ \nonumber
+ \fricmat_{KJ}\cip{\Bphase{},t} = \,\beta\, \aver{ \fprojbf_{K}(0) \otimes \fprojbf_{J}(t) }_{\Bphase{}}
+\end{equation*}
+
+
+\begin{equation*}
+ \fprojbf_{K}(t) = \exp{t\Lio_\qproj}\Lio_\qproj\bfP_K
+\end{equation*}
+
+\begin{equation*}
+  \Ham^X(\bfr,\bfp) = \frac12 \, \bfp^T\,(M^X)^{-1}\,\bfp\,+\sum_{i=1}^{\nfg-1}\pot^X_{i,i+1}\cip{\bfr_{i+1}-\bfr_i}\,+ \pot^X_{\nfg,1}\cip{\bfr_1-\bfr_\nfg+r^*\nfg},
+\end{equation*}
+
+\begin{equation*}
+  	\pot^X_{i,i+1}(r) = \epsilon_{i,i+1} \sqp{\cip{\frac{r^*_{i,i+1}}{r}}^{12} - 2\cip{\frac{r^*_{i,i+1}}{r}}^6}\,, 
+	\quad
+	\epsilon_{i,i+1} = \begin{cases}
+    \sqrt{\epsilon_\alpha\epsilon_\beta} & i = 1,\, 2,\, 4,\, 5,\, \dots,\, \nfg-2,\, \nfg-1; \\
+    \epsilon_\alpha\;\;(\mbox{or}\,\,\epsilon_\beta) & i = 3,\, 6,\, \dots,\, \nfg;
+  \end{cases}
+\end{equation*}
+
+\begin{equation*}
+\widetilde{\Sigma}=\lambda^{-1}\Sigma(\widetilde{\bfR})\,,
+\quad
+ \Sigma_{IJ} = \begin{cases}
+    -\gamma_{I+1,I} & I=J-1 \mod \ncg \,, \\
+    \gamma_{I+1,I} + \gamma_{I,I-1} & I=J \,, \\
+    -\gamma_{I,I-1} & I=J+1 \mod \ncg,
+ \end{cases}
+ \quad
+ \gamma_{I+1,I} \coloneqq \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{ \widetilde{\bfR} }\,.
+\end{equation*}
+
 
 
 

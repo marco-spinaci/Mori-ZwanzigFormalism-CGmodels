@@ -533,7 +533,7 @@ So we can write the potential part as
 
 To write explicitly for a hybrid system eq.~(\ref{Eq:ZwanGLE}) we begin to write explicitly the term relating to the entropic contribution to the Helmholtz free energy,  eq.~(\ref{Eq:Entropy(FreeE)}). Considering a separable Hamiltonian and a CG mapping of the form chosen in eq.~(\ref{Eq:constr1}) and eq.~(\ref{Eq:constr2}), the integral given by the \emph{structure function} eq.~(\ref{eq:structurefunc}) can be factorised into contributions arising from the momenta of CG particles and their positions, which results in the decomposition
 \begin{align*}
-  \entropy(\Bphase{}) &= -\frac{1}{\beta}\log{}\biggl(
+  \entropy(\Bphase{}) &= -\frac{1}{\beta}\ln{}\biggl(
   \int{\frac{1}{\mathcal{Z}} \exp{{-\beta \Ham(\Aphase{})}}} 
     \dirac{\Psi\cip{\Aphase{}}-\Bphase{\bfR}}\dirac{\Phi\cip{\Aphase{}}-\Bphase{\bfP}}\diff\Aphase{}
     \biggr) = \\ 
@@ -548,7 +548,7 @@ These terms were determined by Di Pasquale \textit{et al.} in their work \cite{D
 \end{align}
 where the first term is the kinetic energy of the CG particles, while the second one is the potential energy of the CG particles, with $\Veff$ being given by
 \begin{equation*}
- \Veff = - \frac{1}{\beta} \log{}  \cip{\int{\diff\Aphase{\bfr}' \frac{1}{\mathcal{\mathcal{Z}_{\bfR}}}
+ \Veff = - \frac{1}{\beta} \ln{}  \cip{\int{\diff\Aphase{\bfr}' \frac{1}{\mathcal{\mathcal{Z}_{\bfR}}}
     \exp{\big[{{-\beta \big(\pot^{AB}(\{\bfR_I\}_{I=1}^{\NA{}},\bfr') +\pot^{BB}(\bfr') \big)}\big]}}}
     \prod_{J=\NA{}+1}^{\NB{}}\dirac{\Psi_{J}(\bfr')-\bfR_{J}}}
 \end{equation*}
@@ -672,7 +672,7 @@ We can rewrite the first integral of the second equation of the system~(\ref{Eq:
    = \frac{1}{\lambda}\, \bffricmat(\Bphase{}(t),0) \cdot (M^{-1}\bfP) + O(\lambda^{-2}) 
    =  \widetilde{\bffricmat}(\Bphase{}) \cdot (M^{-1}\bfP) + O(\lambda^{-2}).
 \end{multline}
-which has been derived by integrating by parts and noting that the absolute difference between the original integral and the border term is asymptotically limited by the integral term obtained by integrating by parts, which is of the order of $\lambda^{-2}$ and hence, since $1 / \lambda$ is much smaller than the macroscopic timescale, can be neglected. This can be verified by applying the Watson lemma (see pp.199-203 Ref.~\cite{bernardini1993Metodi}). In Equation \ref{Eq:TermIntMARapp} $\widetilde{\bffricmat}$ is the time-independent friction matrix defined as	
+which has been derived by integrating by parts and noting that the absolute difference between the original integral and the border term is asymptotically limited by the integral term obtained by integrating by parts, which is of the order of $\lambda^{-2}$ and hence, since $1 / \lambda$ is much smaller than the macroscopic timescale, can be neglected. This can be verified by applying the Watson lemma (see pp.199-203 Ref.~\cite{bernardini1993Metodi}). In eq.~(\ref{Eq:TermIntMARapp}) $\widetilde{\bffricmat}$ is the time-independent friction matrix defined as	
 \begin{equation}\label{Eq:MarDeltaFric}
   \widetilde{\bffricmat}(\Bphase{}) \coloneqq \frac{1}{\lambda}\,\bffricmat(\Bphase{}(t),0)
   = \frac{1}{\lambda}\, \beta\aver{\fprojbf_{\Bphase{}}(0,\cdot)\otimes
