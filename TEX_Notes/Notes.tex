@@ -273,11 +273,11 @@ We now focus our attention on the set of functions
 $$
 \bfA(\Aphase{})=\bp{ A_I\in L^2\cip{X,\mathbb{P}}\,,\;\;\mathrm{where}\;\; I=1,\ldots,\ncg \;\;\mathrm{and}\;\; \ncg\le\nfg }\,,
 $$
-i.e. on the set of CG variables $\Bphase{}$, which define a space $V=\real^{\ncg}$. Given a phase function $B(\Aphase{})$, we define the projection operator over the CG space $V$ as
+i.e. on the set of CG variables $\Bphase{}$, which define a space $V=\real^{6\ncg}$. Given a phase function $B(\Aphase{})$, we define the projection operator over the CG space $V$ as
 \begin{equation*}
  \mathcal{P}_{\bfa}B(\Aphase{}) = \int_{A^{-1}\cip{\bp{\bfa}}}B(\Aphase{})\mathbb{P}_{\bfa}(\diff\Aphase{})\,,
 \end{equation*}
-where $A^{-1}\cip{\bp{\bfa}}=\bp{\Aphase{} \in X:\;\bfA(\Aphase{})= \bfa}$ is the preimage of $\Bphase{}\in \real^{\ncg}$ for some fixed $\bfa$ and $\mathbb{P}_{\bfa}\cip{\diff \Aphase{}}$ is the measure which satisfies
+where $A^{-1}\cip{\bp{\bfa}}=\bp{\Aphase{} \in X:\;\bfA(\Aphase{})= \bfa}$ is the preimage of $\Bphase{}\in \real^{6\ncg}$ for some fixed $\bfa$ and $\mathbb{P}_{\bfa}\cip{\diff \Aphase{}}$ is the measure which satisfies
 $$
 \int_V\cip{\int_{A^{-1}\cip{\bp{\bfa}}}B(\Aphase{})\mathbb{P}_{\bfa}(\diff\Aphase{})}\diff \bfa = \int_X B\cip{\Aphase{}}\mathbb{P}\cip{\diff\Aphase{}}\,,
 $$
@@ -994,7 +994,7 @@ where $\boldsymbol{\xi}(t)$ is a white noise, we get from the eq.~(\ref{Eq:MApCo
                      + \widetilde{\Sigma} (\widetilde{\bfR})^{1/2} \,\diff \mathbf{W} \,, &  
 \end{cases}
 \end{equation}
-where $\widetilde{\Sigma}(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\widetilde{\Sigma}=\lambda^{-1}\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W} \equiv \boldsymbol{\xi}(t) \,\diff t$ are independent increments of the Wiener process in $\real^{\ncg}$. In numerical implementation we have chosen to fix $\lambda^{-1}=1$, since it must be large compared to the correlation time of orthogonal dynamics, that is the one we have called microscopic time in the Chap.~\ref{Sec:MarkovApprox}.
+where $\widetilde{\Sigma}(\widetilde{\bfR})^{1/2}$ is the positive definite square root of the matrix $\widetilde{\Sigma}=\lambda^{-1}\Sigma(\widetilde{\bfR})$, $M$ is the matrix of bead masses and $\diff \mathbf{W} \equiv \boldsymbol{\xi}(t) \,\diff t$ are independent increments of the Wiener process in $\real^{6\ncg}$. In numerical implementation we have chosen to fix $\lambda^{-1}=1$, since it must be large compared to the correlation time of orthogonal dynamics, that is the one we have called microscopic time in the Chap.~\ref{Sec:MarkovApprox}.
 
 The system of equations obtained allows to describe and implement the MMZD, as it is analogous to the eq.~(\ref{Eq:Lang1Dp}), which describes the Langevin dynamics. In fact, if we take $\gamma=\frac{\beta}{2}\, \widetilde{\Sigma}(\widetilde{\bfR})$ in eq.~(\ref{Eq:Lang1Dp}), we find the system of equations (\ref{Eq:MMZD}). As we said, this system of equations can be implemented numerically through a version of the BAOAB integrator (see Chapter \ref{Sec:NumMet}) adapted to the case of non-constant diffusion, since in this system of equations the memory and fluctuating terms depends on the inter-bead distance $\widetilde{\bfR}$. 
 
