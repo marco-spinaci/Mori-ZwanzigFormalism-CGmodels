@@ -430,13 +430,6 @@ We can now rewrite eq. (\ref{Eq:fricmatrix}) as
  \equiv& \,\beta\, \aver{ \fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(s,\Aphase{0}) }_{\bfa} \equiv{}\\
  \equiv& \,\beta\, \cexpval{ \fprojbf_{\Bphase{}}(0,\Aphase{0}) \otimes \fprojbf_{\Bphase{}}(s,\Aphase{0}) }{ \,\bfA(\Aphase{})=\bfa }\,,
 \end{align}
-%\begin{align*}
-% \fricmat\cip{\bfa,s} &\coloneqq 
-%   \beta\,\pproj_{\bfa}\sqp{ \cip{ \qproj_{\bfa}\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } } \\  
-%   &\equiv
-%   \beta\,\cexpval{\fprojbf_{\Bphase{}}(0,\Aphase{0})\otimes\fprojbf_{\Bphase{}}(t,\Aphase{0})}{\,\bfa}
-%   \equiv \beta\,\aver{\fprojbf_{\Bphase{}}(0,\Aphase{0})\otimes\fprojbf_{\Bphase{}}(t,\Aphase{0})}_{\bfa}  
-%\end{align*}
 therefore, from eq.~(\ref{Eq:MZequation}), $\bffricmat$ is a friction matrix, whose components can be written in Green-Kubo form \cite{Kauzlaric2011}.
 
 Recall that we are not interested in solving the equation (\ref{Eq:MZequation}) for a specific initial condition $\Bphase{}(\Aphase{0})$, but rather for an ensemble of initial conditions $\Aphase{0}$ satisfying $\Bphase{}(\Aphase{0})=\bfa(0)$ for some fixed $\bfa(0)=\bfA(\Aphase{})$, where $\bfA(\Aphase{})$ is a generic set of CG variables, and with $\Aphase{0}$ distributed according to the equilibrium density $\rho^{eq}(\Aphase{0})$ conditional on $\Bphase{}(\Aphase{0})=\bfa(0)$. It is important to highlight here that the complexity of the equation (\ref{Eq:MZequation}) is not reduced with respect the starting equation (\ref{Eq:MotionEqGamma}), it has simply been shifted into the calculation of the \emph{orthogonal dynamics}. However, close to equilibrium, the term $\fprojbf_{\Bphase{}}(t,\Aphase{0})$ is uncorrelated with the projected variables $\Bphase{}$ and therefore approximated as random noise. 

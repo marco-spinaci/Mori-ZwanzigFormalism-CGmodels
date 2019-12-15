@@ -76,6 +76,14 @@ $$
 \mathcal{P}_{\bfa}^+ = \mathcal{P}_{\bfa}
 \]
 
+\begin{equation*}
+ \fricmat\cip{\bfa,s} \coloneqq 
+   \beta\,\pproj_{\bfa}\sqp{ \cip{ \qproj_{\bfa}\Lio\,\Bphase{0}} \otimes \cip{ \exp{\qproj_{\bfa}\Lio s}\,\qproj_{\bfa}\Lio\Bphase{0} } }  
+   \equiv
+   \beta\,\cexpval{\fprojbf_{\Bphase{}}(0,\Aphase{0})\otimes\fprojbf_{\Bphase{}}(s,\Aphase{0})}{\,\bfa}  
+\end{equation*}
+
+
 \begin{align*}
  \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}} \\
  \pard{\bfP_{K}}{t} &= -\omega_{\NA{} K} \pard{\pot^{AA}}{\bfR_{K}} - \pard{\Veff}{\bfR_{K}} 
@@ -85,13 +93,29 @@ $$
 
 \begin{equation*}
  \nonumber
- \fricmat_{KJ}\cip{\Bphase{},t} = \,\beta\, \aver{ \fprojbf_{K}(0) \otimes \fprojbf_{J}(t) }_{\Bphase{}}
+ \fricmat_{KJ}\cip{\Bphase{},t} = \,\beta\, \cexpval{ \fprojbf_{K}(0) \otimes \fprojbf_{J}(t) }{ \,\Bphase{}}
 \end{equation*}
 
 
 \begin{equation*}
  \fprojbf_{K}(t) = \exp{t\Lio_\qproj}\Lio_\qproj\bfP_K
 \end{equation*}
+
+
+\begin{align*}
+ \pard{\bfR_{K}}{t} &= \frac{\bfP_{K}}{M_{K}} \\
+ \pard{\bfP_{K}}{t} &= -\omega_{\NA{} K} \pard{\pot^{AA}}{\bfR_{K}} - \pard{\Veff}{\bfR_{K}} 
+ - \sum_{J=1}^{\ncg}\,\widetilde{\fricmat}_{KJ}\,M_J^{-1}\,\bfP_J + \fprojbf_{K}(t) 
+\end{align*}
+\begin{equation*}
+ \widetilde{\fricmat}_{KJ}\cip{\Bphase{}} = \frac{1}{\lambda}\,\fricmat_{KJ}\cip{\Bphase{},0} = 
+ \frac{1}{\lambda}\,\beta\, \cexpval{ \fprojbf_{K}(0) \otimes \fprojbf_{J}(0) }{ \,\Bphase{}}
+\end{equation*}
+
+
+
+
+
 
 \begin{equation*}
   \Ham^X(\bfr,\bfp) = \frac12 \, \bfp^T\,(M^X)^{-1}\,\bfp\,+\sum_{i=1}^{\nfg-1}\pot^X_{i,i+1}\cip{\bfr_{i+1}-\bfr_i}\,+ \pot^X_{\nfg,1}\cip{\bfr_1-\bfr_\nfg+r^*\nfg},
@@ -106,17 +130,22 @@ $$
   \end{cases}
 \end{equation*}
 
+
 \begin{equation*}
-\widetilde{\Sigma}=\lambda^{-1}\Sigma(\widetilde{\bfR})\,,
-\quad
- \Sigma_{IJ} = \begin{cases}
-    -\gamma_{I+1,I} & I=J-1 \mod \ncg \,, \\
-    \gamma_{I+1,I} + \gamma_{I,I-1} & I=J \,, \\
-    -\gamma_{I,I-1} & I=J+1 \mod \ncg,
- \end{cases}
+ \pard{R_{K}}{t} = \frac{P_{K}}{M_{K}}\,;
  \quad
- \gamma_{I+1,I} \coloneqq \cexpval{ \sigma_{I+1,I} \otimes \sigma_{I+1,I} }{ \widetilde{\bfR} }\,.
+ \pard{P_{K}}{t} = - \pard{\Veff}{R_{K}}\,;
 \end{equation*}
+\begin{align*}
+ \pard{R_{K}}{t} &= \frac{P_{K}}{M_{K}} \\
+ \pard{P_{K}}{t} &= - \pard{\Veff}{R_{K}} 
+                       - \sum_{J=1}^{\ncg}\, \frac{\beta}{2}\, \widetilde{\Sigma}_{KJ}(\widetilde{\bfR}) \,M_J^{-1}\,P_J 
+                       + \widetilde{\Sigma}_{KJ}(\widetilde{\bfR})^{1/2} \,\diff W_J
+\end{align*}
+\begin{equation*}
+\widetilde{\Sigma}_{KJ}(\widetilde{\bfR})=\lambda^{-1}\, \Sigma_{KJ}(\widetilde{\bfR})
+\end{equation*}
+
 
 
 
