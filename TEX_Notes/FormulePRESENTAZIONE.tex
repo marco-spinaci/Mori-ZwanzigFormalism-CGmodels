@@ -131,15 +131,16 @@ $$
 \end{equation*}
 
 
-\begin{equation*}
- \pard{R_{K}}{t} = \frac{P_{K}}{M_{K}}\,;
- \quad
- \pard{P_{K}}{t} = - \pard{\Veff}{R_{K}}\,;
-\end{equation*}
 \begin{align*}
- \pard{R_{K}}{t} &= \frac{P_{K}}{M_{K}} \\
- \pard{P_{K}}{t} &= - \pard{\Veff}{R_{K}} 
-                       - \sum_{J=1}^{\ncg}\, \frac{\beta}{2}\, \widetilde{\Sigma}_{KJ}(\widetilde{\bfR}) \,M_J^{-1}\,P_J 
+ \diff R_{K} &= \frac{P_{K}}{M_{K}} \,\diff t \\
+ \diff P_{K} &= - \pard{\Veff}{R_{K}} \,\diff t
+                    - \widetilde{\gamma}\, \frac{P_{K}}{M_{K}} \,\diff t
+                    +\cip{\frac{2\widetilde{\gamma}}{\beta}}^{1/2} \diff W_K
+\end{align*}
+\begin{align*}
+ \diff R_{K} &= \frac{P_{K}}{M_{K}} \,\diff t \\
+ \diff P_{K} &= - \pard{\Veff}{R_{K}} \,\diff t
+                       - \sum_{J=1}^{\ncg}\, \frac{\beta}{2}\, \widetilde{\Sigma}_{KJ}(\widetilde{\bfR}) \,M_J^{-1}P_J \,\diff t
                        + \widetilde{\Sigma}_{KJ}(\widetilde{\bfR})^{1/2} \,\diff W_J
 \end{align*}
 \begin{equation*}

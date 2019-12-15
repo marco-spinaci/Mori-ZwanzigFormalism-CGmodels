@@ -25,7 +25,7 @@ set grid
 # plot "./ABCD_Systems/Outcomes/sD_4000.csv" u 1:3
 # minD = GPVAL_DATA_Y_MIN
 plot "./ABCD_Systems/Outcomes/sC_20_300p.csv" u 1:3
-minD = GPVAL_DATA_Y_MIN
+minC300 = GPVAL_DATA_Y_MIN
 
 
 ## system A
@@ -80,11 +80,12 @@ set multiplot layout 2,2 title "System C, Constrained beds 2, Beta=1, Gamma=1,\n
  dt=10^{-3}, FullSteps=10^6, OrthoSamples=10^6, MacroSamples=20, Nbeads=100, Time required for execution = 9gg" font ",14" margins 0.12, 1, 0.09, 0.88 spacing 0.1
 
 set ylabel "{{/RomanOblique Mean Force}}"
-p "./ABCD_Systems/Outcomes/sC_20_300p.csv" u 1:4 w l lw 2 lc rgb "red"
-set ylabel "{{/RomanOblique Fluctuating Force}}"
-p "./ABCD_Systems/Outcomes/sC_20_300p.csv" u 1:5 w l lw 2 lc rgb "blue"
+p "./ABCD_Systems/Outcomes/sC_20_300p.csv" u 1:($4*(-1)) w lp lw 2 lc rgb "red"
 set ylabel "{{/RomanOblique Effective Potential}}"
-p "./ABCD_Systems/Outcomes/sC_20_300p.csv" u 1:3 w l lw 2 lc rgb "green"
+p "./ABCD_Systems/Outcomes/sC_20_300p.csv" u 1:($3-minC300) w lp lw 2 lc rgb "green"
+set ylabel "{{/RomanOblique Fluctuating Force}}"
+p "./ABCD_Systems/Outcomes/sC_20_300p.csv" u 1:5 w lp lw 2 lc rgb "blue"
+
 
 unset multiplot
 set output
