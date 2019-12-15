@@ -554,10 +554,10 @@ This term can be interpreted as an \emph{effective potential} due to the propert
 where $\bfF_k$ is the force acting on atom $k$ in FG system, which corresponds to particle $I$ in the CG system.
 A similar result can be obtained for beads:
 %
-\begin{align}\label{Eq:VeffB}
+\begin{equation}\label{Eq:VeffB}
 	-\pard{\Veff}{\bfR_{J}} = \aver{-\sum_{k\in S_J}\frac{M_J}{m_k s_J}\pard{}{\bfr_k}\cip{\pot^{AB}+\pot^{BB}}}_{\Bphase{}} 
 	= \aver{\Phi_J(\bfF)}_{\Bphase{}}
-\end{align}
+\end{equation}
 %
 where $\Phi_J(\bfF)$ is the sum of the forces acting on the ``atoms'' within bead $J$. We stress that this definition of $\Veff$ is still formal and, in general, cannot be calculated analytically as it depends on all the coarse-grained variables. In order to make this definition implementable in numerical simulations, further approximations and assumptions will be necessary.
 

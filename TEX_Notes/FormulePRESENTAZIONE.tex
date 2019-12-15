@@ -56,10 +56,12 @@
 
 \begin{document}
 
+\begin{align*}
+  \totd{\Bphase{}(\Aphase{}(t))}{t} &= \Lio\,\Bphase{}(\Aphase{}(t)) \\
+  \Bphase{}(\Aphase{}(0)) &= \Bphase{}(\Aphase{0})
+\end{align*}
 \begin{equation*}
-  \totd{\Bphase{}(\Aphase{}(t))}{t} = \Lio\,\Bphase{}(\Aphase{}(t))
-  \quad\Bphase{}(\Aphase{}(0)) \equiv \Bphase{}(\Aphase{0})
-  \quad \Lio\equiv iL \coloneqq \bp{ \ldots,\Ham}
+  \Lio\equiv iL \coloneqq \bp{ \ldots,\Ham}
   \quad \Aphase{} \in X=\real^{6\nfg}
 \end{equation*}
 
@@ -90,12 +92,14 @@ $$
  - \sum_{J=1}^{\ncg}\,\int_{0}^{t}\,\fricmat_{KJ}(t-s,s)\,M_J^{-1}\,\bfP_J(t-s) \,\diff s + \beta^{-1} \sum_{J=1}^{\ncg} \,\int_{0}^{t} \pard{\fricmat_{KJ}(s)}{\bfP_{J}} \,\diff s + \fprojbf_{K}(t) 
 \end{align*}
 
+\begin{equation*}
+	-\pard{\Veff}{\bfR_{J}} = \cexpval{-\sum_{k\in S_J}\frac{M_J}{m_k s_J}\pard{}{\bfr_k}\cip{\pot^{AB}+\pot^{BB}}}{ \,\Bphase{}} 
+\end{equation*}
 
 \begin{equation*}
  \nonumber
  \fricmat_{KJ}\cip{\Bphase{},t} = \,\beta\, \cexpval{ \fprojbf_{K}(0) \otimes \fprojbf_{J}(t) }{ \,\Bphase{}}
 \end{equation*}
-
 
 \begin{equation*}
  \fprojbf_{K}(t) = \exp{t\Lio_\qproj}\Lio_\qproj\bfP_K
