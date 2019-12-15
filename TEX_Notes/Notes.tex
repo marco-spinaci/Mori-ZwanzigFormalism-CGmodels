@@ -772,8 +772,8 @@ where $\epsilon_\alpha$ and $\epsilon_\beta$ are two different values for the pa
 The Hamiltonian is given by
 \begin{equation}
  \begin{split}
-  	\Ham^X(\bfr,\bfp) &= \frac12 \, \bfp^T\,(M^X)^{-1}\,\bfp\,+\sum_{i=1}^{\nfg-1}\pot^X_{i,i+1}\cip{\bfr_{i+1}-\bfr_i}\,+ \\
-	&+ \pot^X_{\nfg,1}\cip{\bfr_1-\bfr_\nfg+r^*\nfg},
+  	\Ham^X(\bfr,\bfp) &= \frac12 \, \bfp^T\,(M^X)^{-1}\,\bfp\,+\sum_{i=1}^{\nfg-1}\pot^X_{i,i+1}\cip{r_{i+1}-r_i}\,+ \\
+	&+ \pot^X_{\nfg,1}\cip{r_1-r_\nfg+r^*\nfg},
  \end{split}
  \label{eq:1DHamiltonian}
 \end{equation}
@@ -813,13 +813,13 @@ Below, we will show the results and analysis of the simulations of different dyn
  \]
 \item[(OD)] the \emph{Orthogonal Dynamics} when solving the system of eq.~(\ref{Eq:orth}):
  \[
-  \totd{\bfr_k}{t} = \frac{\bfp_k}{m_{k}}- \frac{\bfP_I}{M_I} \,;\qquad
-  \totd{\bfp_k}{t} = - \pard{\pot^X(\Aphase{\bfr})}{\bfr_k} + \frac{m_k}{M_I}\sum_{i\in S_I}\pard{\pot^X(\Aphase{\bfr})}{\bfr_i}\,; 
+  \totd{r_k}{t} = \frac{p_k}{m_{k}}- \frac{P_I}{M_I} \,;\qquad
+  \totd{p_k}{t} = - \pard{\pot^X(\Aphase{\bfr})}{r_k} + \frac{m_k}{M_I}\sum_{i\in S_I}\pard{\pot^X(\Aphase{\bfr})}{r_i}\,; 
  \]
 \item[(CGD)] the \emph{Coarse-Grained Dynamics} when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, neglecting the dissipative and fluctuating terms:
  \[
- \pard{\bfR_{K}}{t} = \frac{\bfP_{K}}{M_{K}}\,; \qquad
- \pard{\bfP_{K}}{t} = -\pard{\Veff}{\bfR_{K}}\,;  
+ \pard{R_{K}}{t} = \frac{P_{K}}{M_{K}}\,; \qquad
+ \pard{P_{K}}{t} = -\pard{\Veff}{R_{K}}\,;  
  \]
 \item[(MMZD)] the \emph{Markovian Mori-Zwanzig Dynamics} when solving eq.~(\ref{Eq:MarkovApprox}) for a fully coarse-grained system, with the memory and fluctuating terms replaced by a position-dependent Langevin dynamics, \textit{i.e.}, memory and fluctuating terms that depend on the inter-particle distance.
 \end{labeling}
