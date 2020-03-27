@@ -25,15 +25,15 @@ set grid
 # plot "./ABCD_Systems/Outcomes/sD_M2.csv" u 1:3
 # minD = GPVAL_DATA_Y_MIN
 
-set output "| epstopdf -f -o=./ABCD_Systems/Plots/sBD_M_10_confr_2.pdf"
+set output "| epstopdf -f -o=./ABCD_Systems/Plots/sBD_M.pdf"
  set key right top #font ",30"
 
  set ylabel "{{/Roman Mean Force}}" #font ",30"
- p "./ABCD_Systems/Outcomes/sB_2000.csv" u 1:(-1*$4) w l lw 2 lc rgb "olive" t "m=1 M=10 system B", \
+ p "./ABCD_Systems/Outcomes/sB_2000.csv" u 1:(-1*$4) w l lw 2 lc rgb "red" t "m=1 M=10 system B", \
    "./ABCD_Systems/Outcomes/sB_M2.csv" u 1:(-1*$4) w p lw 2 lc rgb "green" t "m=1 M=2 system B", \
-   "./ABCD_Systems/Outcomes/sB_M5.csv" u 1:(-1*$4) w p lw 2 lc rgb "blue" t "m=1 M=5 system B", \
-   "./ABCD_Systems/Outcomes/sD_2000.csv" u 1:(-1*$4) w l lw 2 lc rgb "brown" t "m=1 M=10 system D", \
+   "./ABCD_Systems/Outcomes/sB_M5.csv" u 1:(-1*$4) w p lw 2 lc rgb "olive" t "m=1 M=5 system B", \
+   "./ABCD_Systems/Outcomes/sD_2000.csv" u 1:(-1*$4) w l lw 2 lc rgb "violet" t "m=1 M=10 system D", \
    "./ABCD_Systems/Outcomes/sD_M2.csv" u 1:(-1*$4) w p lw 2 lc rgb "black" t "m=1 M=2 system D",\
-   "./ABCD_Systems/Outcomes/sD_M5.csv" u 1:(-1*$4) w p lw 2 lc rgb "violet" t "m=1 M=5 system D",\
+   "./ABCD_Systems/Outcomes/sD_M5.csv" u 1:(-1*$4) w p lw 2 lc rgb "blue" t "m=1 M=5 system D",\
 
 set output

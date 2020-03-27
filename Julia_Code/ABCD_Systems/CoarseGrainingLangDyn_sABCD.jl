@@ -54,7 +54,7 @@ S = Simulator(dt=1e-3, FullSteps=Int(1e5), OrthoSamples=Int(1e5), check=Int(5e3)
 ## system B
 ## ( [0,1,0], SM (mass of particles 0), LM (mass of particles 1), γ=1, β=1 )
 
-C = Chain(SM=1, LM=2, SEps=10, LEps=.1, NBeads = 10);
+C = Chain(SM=1, LM=5, SEps=10, LEps=.1, NBeads = 10);
 (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
 # Write data to file
@@ -105,7 +105,7 @@ end
 
 # C = Chain(SM=5, LM=1, SEps=10, LEps=.1, NBeads = 10);
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-# 
+#
 # # Write data to file
 # open("./ABCD_Systems/Outcomes/RR_sD.csv","w+") do x
 #    writedlm(x,RR);
