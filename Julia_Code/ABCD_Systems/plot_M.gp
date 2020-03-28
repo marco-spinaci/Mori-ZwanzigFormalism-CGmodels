@@ -31,9 +31,11 @@ set output "| epstopdf -f -o=./ABCD_Systems/Plots/sBD_M.pdf"
  set ylabel "{{/Roman Mean Force}}" #font ",30"
  p "./ABCD_Systems/Outcomes/sB_2000.csv" u 1:(-1*$4) w l lw 2 lc rgb "red" t "m=1 M=10 system B", \
    "./ABCD_Systems/Outcomes/sB_M2.csv" u 1:(-1*$4) w p lw 2 lc rgb "green" t "m=1 M=2 system B", \
-   "./ABCD_Systems/Outcomes/sB_M5.csv" u 1:(-1*$4) w p lw 2 lc rgb "olive" t "m=1 M=5 system B", \
+   "./ABCD_Systems/Outcomes/sB_M5.csv" u 1:(-1*$4) w p lw 2 lc rgb "orange" t "m=1 M=5 system B", \
+   "./ABCD_Systems/Outcomes/sB_M20.csv" u 1:(-1*$4) w p lw 2 lc rgb "yellow" t "m=1 M=20 system B", \
    "./ABCD_Systems/Outcomes/sD_2000.csv" u 1:(-1*$4) w l lw 2 lc rgb "violet" t "m=1 M=10 system D", \
    "./ABCD_Systems/Outcomes/sD_M2.csv" u 1:(-1*$4) w p lw 2 lc rgb "black" t "m=1 M=2 system D",\
    "./ABCD_Systems/Outcomes/sD_M5.csv" u 1:(-1*$4) w p lw 2 lc rgb "blue" t "m=1 M=5 system D",\
+   "./ABCD_Systems/Outcomes/sD_M20.csv" u 1:(-1*$4) w p lw 2 lc rgb "brown" t "m=1 M=20 system D",\
 
 set output

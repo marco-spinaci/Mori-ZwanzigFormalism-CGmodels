@@ -54,25 +54,25 @@ S = Simulator(dt=1e-3, FullSteps=Int(1e5), OrthoSamples=Int(1e5), check=Int(5e3)
 ## system B
 ## ( [0,1,0], SM (mass of particles 0), LM (mass of particles 1), γ=1, β=1 )
 
-C = Chain(SM=1, LM=5, SEps=10, LEps=.1, NBeads = 10);
-(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-
-# Write data to file
-open("./ABCD_Systems/Outcomes/RR_sB.csv","w+") do x
-   writedlm(x,RR);
-end
-open("./ABCD_Systems/Outcomes/PP_sB.csv","w+") do x
-   writedlm(x,PP);
-end
-open("./ABCD_Systems/Outcomes/Veff_sB.csv","w+") do x
-   writedlm(x,Veff);
-end
-open("./ABCD_Systems/Outcomes/Fmean_sB.csv","w+") do x
-   writedlm(x,Fmean);
-end
-open("./ABCD_Systems/Outcomes/Fstd_sB.csv","w+") do x
-   writedlm(x,Fstd);
-end
+# C = Chain(SM=1, LM=20, SEps=10, LEps=.1, NBeads = 10);
+# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+# 
+# # Write data to file
+# open("./ABCD_Systems/Outcomes/RR_sB.csv","w+") do x
+#    writedlm(x,RR);
+# end
+# open("./ABCD_Systems/Outcomes/PP_sB.csv","w+") do x
+#    writedlm(x,PP);
+# end
+# open("./ABCD_Systems/Outcomes/Veff_sB.csv","w+") do x
+#    writedlm(x,Veff);
+# end
+# open("./ABCD_Systems/Outcomes/Fmean_sB.csv","w+") do x
+#    writedlm(x,Fmean);
+# end
+# open("./ABCD_Systems/Outcomes/Fstd_sB.csv","w+") do x
+#    writedlm(x,Fstd);
+# end
 
 
 ######################################################################################################
@@ -103,25 +103,25 @@ end
 ## system D
 ## ( [0,1,0], SM (mass of particles 0) = 10, LM (mass of particles 1) = 1, γ=1, β=1 )
 
-# C = Chain(SM=5, LM=1, SEps=10, LEps=.1, NBeads = 10);
-# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-#
-# # Write data to file
-# open("./ABCD_Systems/Outcomes/RR_sD.csv","w+") do x
-#    writedlm(x,RR);
-# end
-# open("./ABCD_Systems/Outcomes/PP_sD.csv","w+") do x
-#    writedlm(x,PP);
-# end
-# open("./ABCD_Systems/Outcomes/Veff_sD.csv","w+") do x
-#    writedlm(x,Veff);
-# end
-# open("./ABCD_Systems/Outcomes/Fmean_sD.csv","w+") do x
-#    writedlm(x,Fmean);
-# end
-# open("./ABCD_Systems/Outcomes/Fstd_sD.csv","w+") do x
-#    writedlm(x,Fstd);
-# end
+C = Chain(SM=20, LM=1, SEps=10, LEps=.1, NBeads = 10);
+(RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
+
+# Write data to file
+open("./ABCD_Systems/Outcomes/RR_sD.csv","w+") do x
+   writedlm(x,RR);
+end
+open("./ABCD_Systems/Outcomes/PP_sD.csv","w+") do x
+   writedlm(x,PP);
+end
+open("./ABCD_Systems/Outcomes/Veff_sD.csv","w+") do x
+   writedlm(x,Veff);
+end
+open("./ABCD_Systems/Outcomes/Fmean_sD.csv","w+") do x
+   writedlm(x,Fmean);
+end
+open("./ABCD_Systems/Outcomes/Fstd_sD.csv","w+") do x
+   writedlm(x,Fstd);
+end
 
 
 #################################################################################
