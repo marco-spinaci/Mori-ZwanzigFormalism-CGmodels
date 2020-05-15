@@ -13,12 +13,12 @@ module LJChain
 using Parameters,Statistics,LinearAlgebra
 
 # Physics functions
-export Chain, LennardJones, LennardJonesPrime, Potential, Forces, Stresses,
-  KineticEnergy
+export Chain, LennardJones, LennardJonesPrime, Potential, Forces, Stresses, KineticEnergy
 export InitConds, CGDists
 # Time stepping functions
-export LeapfrogStep, ConstrainedStep, ApproxDynStep, LangDynIntegrators, LangDynConstrainedStep, OrnUhlenbeckPart,
-  DetCGDynNVTStep, OrnUhlenbeckPartDCG
+export LeapfrogStep, ConstrainedStep, DetCGDynNVEStep,
+       LangDynIntegrators, LangDynConstrainedStep, OrnUhlenbeckPart, DetCGDynNVTStep, OrnUhlenbeckPartDCG,
+	   ApproxDynStep
 
 """
     Chain(Patt,NBeads,SM,LM,SEps,LEps,Dist,Beta,Gamma)
@@ -41,45 +41,43 @@ pattern Patt.
   Gamma::Float64        = 1.0     # Friction parameter
 
   # The following are inherited from the previous parameters: changing them may break the code.
-  NPart::Int 				= length(Patt)*NBeads
-  Period::Float64 			= NPart*Dist
-  BeadsDist 				= length(Patt)*Dist
-  LTotPatt::Array{Int,1} 	= repeat(Patt,NBeads)
+  NPart::Int 				= length(Patt) *NBeads
+  Period::Float64 			= NPart *Dist
+  BeadsDist 				= length(Patt) *Dist
+  LTotPatt::Array{Int,1} 	= repeat(Patt, NBeads)
   STotPatt::Array{Int,1}	= 1 .-LTotPatt
 
   # Mass parameters
-  MassPatt::Array{Float64,1} 	= LM*Patt+SM*(1 .-Patt)
-  MassTotPatt::Array{Float64,1} = repeat(MassPatt,NBeads)
+  MassPatt::Array{Float64,1} 	= LM*Patt + SM*(1 .-Patt)
+  MassTotPatt::Array{Float64,1} = repeat(MassPatt, NBeads)
   MInv::Array{Float64,2}		= Diagonal(1 ./MassTotPatt)
   MHalf::Array{Float64,2}		= Diagonal(sqrt.(MassTotPatt))
-  BeadMass::Float64				= LM*sum(Patt.==1)+SM*sum(Patt.==0)
-  EpsPatt::Array{Float64,1} 	= (sqrt.(LEps)*LTotPatt+sqrt.(SEps)*STotPatt).*circshift(sqrt.(LEps)*LTotPatt+sqrt.(SEps)*STotPatt,-1)
+  BeadMass::Float64				= LM *sum(Patt.==1) + SM *sum(Patt.==0)
+  EpsPatt::Array{Float64,1} 	= (sqrt.(LEps) *LTotPatt + sqrt.(SEps) *STotPatt) .*circshift( sqrt.(LEps) *LTotPatt + sqrt.(SEps) *STotPatt, -1)
+
   # Friction coefficient for Langevin dynamics
-  GammaTilde::Array{Float64,2}  = Diagonal(ones(NPart))*MInv*Gamma
-  GammaTildeCG::Array{Float64,2}  = Diagonal(ones(NBeads))/BeadMass*Gamma
+  GammaTilde::Array{Float64,2}  = Diagonal(ones(NPart)) *MInv *Gamma
+  GammaTildeCG::Array{Float64,2}  = Diagonal(ones(NBeads)) /BeadMass *Gamma
+
   # Full CG Projections
-  Phi::Array{Float64,2}	= kron(Diagonal(ones(NBeads)),ones(Float64,length(Patt))')
-  Psi 				    = kron(Diagonal(ones(NBeads)),MassPatt'./BeadMass)
-  #useless? ##Xi 					= MInv\(Diagonal(ones(NPart))-Phi'Psi)*MInv;
-  #useless? ##Zeta 					= Diagonal(ones(NPart))-Psi'Phi;
+  Phi::Array{Float64,2}	= kron(Diagonal(ones(NBeads)), ones(Float64, length(Patt))')
+  Psi 				    = kron(Diagonal(ones(NBeads)), MassPatt' ./BeadMass)
 
   # Constrained versions of CG Projections
-  PhiConstr::Array{Float64,2}	= kron(Diagonal(ones(NBeads))[1:ConstrainedBeads,:],ones(Float64,length(Patt))')
-  PsiConstr 					= kron(Diagonal(ones(NBeads))[1:ConstrainedBeads,:],MassPatt'./BeadMass)
-  #useless? ##XiConstr 						= MInv\(Diagonal(ones(NPart))-PhiConstr'PsiConstr)*MInv;
-  #useless? ##ZetaConstr 					= Diagonal(ones(NPart))-PsiConstr'PhiConstr;
+  PhiConstr::Array{Float64,2}	= kron(Diagonal(ones(NBeads))[1:ConstrainedBeads, :], ones(Float64,length(Patt))')
+  PsiConstr 					= kron(Diagonal(ones(NBeads))[1:ConstrainedBeads, :], MassPatt' ./BeadMass)
   MomProj 						= I - PsiConstr'*PhiConstr # this is correct up to a constant pinv(Matrix(PsiConstr))*PhiConstr
-  NetMomProj					= I - ones(NPart)*pinv(ones(NPart))
-  NetMomProjCG					= I - ones(NBeads)*pinv(ones(NBeads))
+  NetMomProj					= I - ones(NPart) *pinv(ones(NPart))
+  NetMomProjCG					= I - ones(NBeads) *pinv(ones(NBeads))
 
   # Relative CG projections between identical beads (full and constrained)
-  PhiF::Array{Float64,2} 		= kron(Diagonal(ones(NBeads)),[zeros(Float64,length(Patt)-1);1.0])'  # Forces between beads
-  PhiFConstr::Array{Float64,2} 	= kron(Diagonal(ones(NBeads))[1:ConstrainedBeads-1,:],[zeros(Float64,length(Patt)-1);1.0]')  # Forces between constrained beads
-  PsiF			        		= (circshift(Phi,(0,length(Patt)))-Phi)/2.;  # Relative momenta
-  PsiFConstr					= (circshift(PhiConstr[1:ConstrainedBeads-1,:],(0,length(Patt)))-PhiConstr[1:ConstrainedBeads-1,:])/2.;  # Relative momenta
+  PhiF::Array{Float64,2} 		= kron(Diagonal(ones(NBeads)), [zeros(Float64, length(Patt)-1) ;1.0])'  # Forces between beads
+  PhiFConstr::Array{Float64,2} 	= kron(Diagonal(ones(NBeads))[1:ConstrainedBeads-1, :], [zeros(Float64, length(Patt)-1); 1.0]')  # Forces between constrained beads
+  PsiF			        		= (circshift(Phi, (0,length(Patt))) -Phi) /2.;  # Relative momenta
+  PsiFConstr					= (circshift(PhiConstr[1:ConstrainedBeads-1, :], (0,length(Patt))) -PhiConstr[1:ConstrainedBeads-1, :]) /2.;  # Relative momenta
 
   # to compute the CdM of the chain
-  vectorCdM = BeadMass * ones(NBeads) / (NBeads * BeadMass)
+  vectorCdM = BeadMass * ones(NBeads) / (NBeads * BeadMass) # NB: unless at the moment
 end
 
 
@@ -176,10 +174,23 @@ Computes forward step of Leapfrog scheme for one-dimensional arrays of momentum 
 positions Q, forces F and chain parameters C, with timestep dt.
 """
 function LeapfrogStep(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Float64,1},C::Chain,dt::Float64)
-  PNext = P + 0.5.*F.*dt 	   # B
+  PNext = P + 0.5.*F.*dt 	       # B
   QNext = Q + dt.*C.MInv*PNext;    # A
   FNext = Forces(QNext,C);         # Force evaluation
   PNext = PNext + 0.5.*FNext.*dt;  # B
+  return PNext,QNext,FNext
+end
+
+"""
+    (PNext,QNext,FNext) = DetCGDynNVEStep(P,Q,F,MeanForce,C::Chain,dt)
+
+Computes forward step of Deterministic CG Dynamics in the Microcanonical ensemble with timestep dt.
+"""
+function DetCGDynNVEStep(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Float64,1},MeanForce,C::Chain,dt::Float64)
+  PNext = P + 0.5.*F.*dt				# B
+  QNext = Q + dt./C.BeadMass.*PNext;    # A
+  FNext = MeanForce(QNext);             # Force evaluation
+  PNext = PNext + 0.5.*FNext.*dt;       # B
   return PNext,QNext,FNext
 end
 
@@ -250,14 +261,14 @@ function ApproxDynStep(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Float64,
     # println("  P (input) = ",P);
     # println("  Q (input) = ",Q);
     # println("  F (input) = ",F);
-    PNext = P + 0.5.*F.*dt;			            # B
+    PNext = P + 0.5.*F.*dt;			              # B
     QNext = Q + 0.5.*dt/C.BeadMass.*PNext;        # A
     # println("     PNExt = ",PNext);
     # println("     QNext = ",QNext);
     PNext = FlucStep(PNext,QNext);
     QNext = QNext + 0.5.*dt/C.BeadMass.*PNext;    # A
     # println("   Q = ",QNext);
-    FNext = MeanForce(QNext);	  			        # Force evaluation
+    FNext = MeanForce(QNext);	  			      # Force evaluation
     # println("  F (output) = ",FNext);
     # println(" ...end");
     PNext = PNext + 0.5.*FNext.*dt;               # B
@@ -273,7 +284,7 @@ Computes forward step of Deterministic CG Dynamics in the Canonical ensemble wit
 function DetCGDynNVTStep(P::Array{Float64,1},Q::Array{Float64,1},F::Array{Float64,1},MeanForce,C::Chain,dt::Float64)
   PNext = P + 0.5.*F.*dt 	                      		    # B
   QNext = Q + 0.5.*dt./C.BeadMass.*PNext;                   # A
-  # PNext = C.NetMomProjCG*OrnUhlenbeckPartDCG(PNext,C,dt);     # O
+  # PNext = C.NetMomProjCG*OrnUhlenbeckPartDCG(PNext,C,dt);   # O
   PNext = OrnUhlenbeckPartDCG(PNext,C,dt);                  # O
   QNext = QNext+0.5.*dt/C.BeadMass.*PNext;            		# A
   FNext = MeanForce(QNext);                       		    # Force evaluation

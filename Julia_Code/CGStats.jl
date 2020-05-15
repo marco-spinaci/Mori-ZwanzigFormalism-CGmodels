@@ -9,14 +9,17 @@ using Main.LJChain, Distributed, SharedArrays, Parameters, Statistics, Dates, Sp
 # Parameter object
 export Simulator
 # Functions to output raw trajectory data
-export FullTraj, LangevinFullTraj, ConstrainedTraj, LangConstrainedTraj, ApproximateTraj, ApproximateTraj_NEW, DetCGCanEnsTraj
+export FullTraj_NVE, ConstrainedTraj_NVE, DetCGTraj_NVE,
+       LangFullTraj_NVT, LangConstrainedTraj_NVT, DetCGTraj_NVT,
+	   ApproximateTraj_MMZD
 # High-level function to extract data
-export VEffConstrained, VEffConstrainedLangDyn, ConstrainedAutocorr, ConstrainedAutocorrLangDyn, FullAutocorr, FullAutocorrLangDyn, ApproximateAutocorr,
-  ConstrainedAutocorrPar, ConstrainedAutocorrLangDynPar, FullAutocorrPar, FullAutocorrLangDynPar, ApproximateAutocorrPar
+export VEffConstrained_NVE, VEffConstrainedLangDyn_NVT,
+       FullAutocorr, ConstrainedAutocorr, FullAutocorrLangDyn, ConstrainedAutocorrLangDyn, ApproximateAutocorr,
+	   FullAutocorrPar, ConstrainedAutocorrPar,  FullAutocorrLangDynPar, ConstrainedAutocorrLangDynPar, ApproximateAutocorrPar
 # Orthogonal dynamics sampling
 export ConstrainedSample, ConstrSampleLangDyn
 # Functions to extract approximate dynamics
-export ApproxMeanForce, ApproxMeanForce_NEW, ApproxMeanStresses, ApproxMeanStresses_NEW, ApproxFlucStep, ApproxFlucStep_NEW, ComputeVEff
+export InterpolationAlgorithm_Kriging, ApproxMeanForce, ApproxMeanStresses, ApproxFlucStep, ComputeVEff
 
 #######################################
 # Simulator type, encoding parameters #
@@ -27,25 +30,41 @@ export ApproxMeanForce, ApproxMeanForce_NEW, ApproxMeanStresses, ApproxMeanStres
   FullSteps::Int	  = Int(1e5)
   OrthoSteps::Int 	  = 1
   ApproxSteps::Int	  = Int(1e5)
-  FullTime::Float64	  = FullSteps*dt
-  ApproxTime::Float64 = ApproxSteps*Stochdt
-  LagStep			  = 400
-  NumLags			  = 30
+  FullTime::Float64	  = FullSteps *dt
+  ApproxTime::Float64 = ApproxSteps *Stochdt
+  LagStep			  = 400       # spacing of lag times for autocorrelation
+  NumLags			  = 30        # number of lag times to compute
   MacroSamples::Int	  = 50
   OrthoSamples::Int	  = Int(1e5)
   Moments::Int		  = 2
-  check::Int          = Int(5e3) # to print the number of iteration in a loop
+  check::Int          = Int(5e3)  # to print the number of iteration in a loop
+
+  #NB: the below coeffcients must be checked and entered every time a new look-up table of Mean and Fluctuating Force is generated.
+  #NB: the following values were generated for the look-up tables in the folder Julia_Code/Store_Trajectory for the system C (M-m-M) with masses M=10 and M=1
+  #    consisting of 30 particles.
+
+  # Coeff. of line (y = m*x + q) in the ApproxMeanStresses function
+  m_MF::Float64       = 537.59;   # gradient of the line
+  q_MF::Float64       = -1567.1;  #  y-intercept of the line
+
+  # Coeff. of line (y = m*x + q) in the ApproxFlucStep function
+  m_FF::Float64       = -135.21;  # gradient of the line
+  q_FF::Float64       = 403.79;   #  y-intercept of the line
+
+  # Coeff. of exponential function (y = A*exp(-B*x)) in the ApproxFlucStep function
+  coeffEXP_A::Float64 = 3.3199e6;
+  coeffEXP_B::Float64 = 4.8887;
 end
 
 #############################################
 # Functions to generate raw trajectory data #
 #############################################
 """
-    (Pstore,Qstore,Fstore) = FullTraj(P0,Q0,C::Chain,S::Simulator)
+    (Pstore,Qstore,Fstore) = FullTraj_NVE(P0,Q0,C::Chain,S::Simulator)
 
     Outputs full trajectory data in matrices (Pstore,Qstore,Fstore).
 """
-function FullTraj(P0,Q0,C::Chain,S::Simulator)
+function FullTraj_NVE(P0,Q0,C::Chain,S::Simulator)
   # Report to user.
   println(Dates.now());
   println("Running full simulation and storing trajectory.");
@@ -74,12 +93,12 @@ function FullTraj(P0,Q0,C::Chain,S::Simulator)
 end
 
 """
-    (Pstore,Qstore,Fstore,Kmean,Hmean) = LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
+    (Pstore,Qstore,Fstore,Kmean,Hmean) = LangFullTraj_NVT(P0,Q0,C::Chain,S::Simulator)
 
     Outputs full trajectory data in matrices (Pstore,Qstore,Fstore) and the mean values of
 	the kinetic energy and the total energy.
 """
-function LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
+function LangFullTraj_NVT(P0,Q0,C::Chain,S::Simulator)
   # Report to user.
   println(Dates.now());
   println("Running full simulation of Langevin dynamics, storing trajectory and computing");
@@ -128,11 +147,11 @@ function LangevinFullTraj(P0,Q0,C::Chain,S::Simulator)
 end
 
 """
-    (Pstore,Qstore,Fstore) = ConstrainedTraj(P0,Q0,C::Chain,S::Simulator)
+    (Pstore,Qstore,Fstore) = ConstrainedTraj_NVE(P0,Q0,C::Chain,S::Simulator)
 
     Outputs full trajectory data in matrices (Pstore,Qstore,Fstore).
 """
-function ConstrainedTraj(P0,Q0,C::Chain,S::Simulator)
+function ConstrainedTraj_NVE(P0,Q0,C::Chain,S::Simulator)
   # Report to user.
   println(now());
   println("Running full simulation and storing trajectory.");
@@ -161,11 +180,11 @@ function ConstrainedTraj(P0,Q0,C::Chain,S::Simulator)
 end
 
 """
-    (Pstore,Qstore,Fstore) = LangConstrainedTraj(P0,Q0,C::Chain,S::Simulator)
+    (Pstore,Qstore,Fstore) = LangConstrainedTraj_NVT(P0,Q0,C::Chain,S::Simulator)
 
     Outputs full trajectory data in matrices (Pstore,Qstore,Fstore).
 """
-function LangConstrainedTraj(P0,Q0,C::Chain,S::Simulator)
+function LangConstrainedTraj_NVT(P0,Q0,C::Chain,S::Simulator)
   # Report to user.
   println(Dates.now());
   println("Running full simulation of constrained Langevin dynamics and storing trajectory");
@@ -205,75 +224,15 @@ function LangConstrainedTraj(P0,Q0,C::Chain,S::Simulator)
 end
 
 """
-    (Pstore,Qstore,Fstore) = ApproximateTraj(P0,Q0,dQData,FmeanData,FstdData,
-    							S::Simulator,C::Chain)
-
-    Outputs full trajectory data for approximate Langevin dynamics, using
-    approximate potentials generated from data encoded in 3 vectors
-    (dQData,FmeanData,FstdData).
-"""
-function ApproximateTraj(P0,Q0,dQData::Array{Float64,1},FmeanData::Array{Float64,1},FstdData::Array{Float64,1},C::Chain,S::Simulator)
- # Report to user.
- println(Dates.now());
- if sum(FstdData) == 0
-	 println("Running full simulation of DCGD in NVE ensemble and storing trajectory.");
- else
-	 println("Running full simulation of MMZD and storing trajectory.");
- end
- println("  NPart, number of particles simulated = ",C.NPart);
- println("  Beta, temperature parameter = ",C.Beta);
- println("  Gamma, friction coefficient = ",C.Gamma);
- println("  dt, time step size = ",S.Stochdt);
- println("  Total simulation time = ",S.ApproxTime);
-
-  # Set up initial conditions
-  P = P0; Q = Q0;
-
-  # Generate mean force function
-  MeanForce = X -> ApproxMeanForce(X,dQData,FmeanData,C)[1];
-  F = MeanForce(Q0);
-
-  # Set up approximate fluctuation generator
-  FlucStep = (X,Y) -> ApproxFlucStep(X,Y,dQData,FstdData,C,S.Stochdt)[1];
-
-  # Set up storage
-  r = Int(S.ApproxSteps/100) + 1;
-  Pstore = zeros(r,length(P0));
-  Qstore = zeros(r,length(P0));
-  Fstore = zeros(r,length(P0));
-  Pstore[1,:] = P;
-  Qstore[1,:] = Q;
-  Fstore[1,:] = F;
-
-  # Do simulation.
-  j =2;
-  for i = 2:S.ApproxSteps
-	if i % S.check == 0
-		@printf "    ITERATION %0.3e OF %0.3e\n" i S.ApproxSteps
-	end
-    (P,Q,F) = ApproxDynStep(P,Q,F,MeanForce,FlucStep,C,S.Stochdt);
-	if i % 100 == 0
-		Pstore[j,:] = P;
-	    Qstore[j,:] = Q;
-	    Fstore[j,:] = F;
-		j += 1;
-	end
-  end
-
-  return Pstore,Qstore,Fstore
-end
-
-"""
-    (Pstore,Qstore,Fstore) = ApproximateTraj_NEW(P0,Q0,FmeanData,FstdData,C::Chain,S::Simulator)
+    (Pstore,Qstore,Fstore) = ApproximateTraj_MMZD(P0,Q0,FmeanData,FstdData,C::Chain,S::Simulator)
 
 	Outputs full trajectory data for approximate Langevin dynamics, using approximate potentials generated by the data encoded
 	in FmeanData and FstdData. Where this data are the coefficients for the cubic spline interpolation. These coefficients are
 	generated from kriging interpolation data, generated separately to eliminate noise from the original Mean Force and Fluctuating
-	force data. (Kriging interpolation is done in the folder Julia_Code/Code_Tests/Interpolation by the script TestMeanForce_weights.jl)
-	We do all this to speed up the code, because the cubic spline interpolation is much faster than the Kriging interpolation.
+	force data.
 """
 
-function ApproximateTraj_NEW(P0,Q0,FmeanData::Array{Float64,2},FstdData::Array{Float64,2},C::Chain,S::Simulator)
+function ApproximateTraj_MMZD(P0,Q0,FmeanData::Array{Float64,2},FstdData::Array{Float64,2},C::Chain,S::Simulator)
  # Report to user.
  println(Dates.now());
  println("Running full simulation of MMZD and storing trajectory.");
@@ -287,11 +246,11 @@ function ApproximateTraj_NEW(P0,Q0,FmeanData::Array{Float64,2},FstdData::Array{F
   P = P0; Q = Q0;
 
   # Generate mean force function
-  MeanForce = X -> ApproxMeanForce_NEW(X,FmeanData,C)[1];
+  MeanForce = X -> ApproxMeanForce(X,FmeanData,C,S)[1];
   F = MeanForce(Q0);
 
   # Set up approximate fluctuation generator
-  FlucStep = (X,Y) -> ApproxFlucStep_NEW(X,Y,FstdData,C,S.Stochdt)[1];
+  FlucStep = (X,Y) -> ApproxFlucStep(X,Y,FstdData,C,S)[1];
 
   # Set up storage
   r = Int(S.ApproxSteps/100) + 1;
@@ -329,17 +288,65 @@ function ApproximateTraj_NEW(P0,Q0,FmeanData::Array{Float64,2},FstdData::Array{F
   return Pstore, Qstore, Fstore
 end
 
+"""
+    (Pstore,Qstore,Fstore) = DetCGTraj_NVE(P0,Q0,FmeanData,C::Chain,S::Simulator)
+
+    Outputs full trajectory data for Deterministi CG dynamics in the Microcanonical ensemble, using approximate potential generated
+    by the data encoded in FmeanData. Where Fmeandata are the coefficients for the cubic spline interpolation. These coefficients
+	are generated from kriging interpolation data, generated separately to eliminate noise from the original Mean Force data.
+	We do all this to speed up the DCGD, because the cubic spline interpolation is much faster than the Kriging interpolation.
+"""
+function DetCGTraj_NVE(P0,Q0,FmeanData::Array{Float64,2},C::Chain,S::Simulator)
+ # Report to user.
+ println(Dates.now());
+ println("Running full simulation of DCGD in NVE ensemble and storing trajectory.");
+ println("  NPart, number of particles simulated = ",C.NPart);
+ println("  dt, time step size = ",S.dt);
+ println("  Total simulation time = ",S.FullTime);
+
+  # Set up initial conditions
+  P = P0; Q = Q0;
+
+  # Generate mean force function
+  MeanForce = X -> ApproxMeanForce(X,FmeanData,C,S)[1];
+  F = MeanForce(Q0);
+
+  # Set up storage
+  r = Int(S.FullSteps/100) + 1;
+  Pstore = zeros(r,length(P0));
+  Qstore = zeros(r,length(P0));
+  Fstore = zeros(r,length(P0));
+  Pstore[1,:] = P;
+  Qstore[1,:] = Q;
+  Fstore[1,:] = F;
+
+  # Do simulation.
+  j = 2;
+  for i = 2:S.FullSteps
+	  if i % S.check == 0
+		  @printf "    ITERATION %0.2e OF %0.2e\n" i S.FullSteps
+	  end
+	  (P,Q,F) = DetCGDynNVEStep(P,Q,F,MeanForce,C,S.dt);
+	  if i % 100 == 0
+		  Pstore[j,:] = P;
+		  Qstore[j,:] = Q;
+		  Fstore[j,:] = F;
+		  j += 1;
+	  end
+  end
+
+  return Pstore,Qstore,Fstore
+end
 
 """
-    (Pstore,Qstore,Fstore) = DetCGCanEnsTraj(P0,Q0,FmeanData,C::Chain,S::Simulator)
+    (Pstore,Qstore,Fstore) = DetCGTraj_NVT(P0,Q0,FmeanData,C::Chain,S::Simulator)
 
     Outputs full trajectory data for Deterministi CG dynamics in the canonical ensemble, using approximate potential generated
     by the data encoded in FmeanData. Where Fmeandata are the coefficients for the cubic spline interpolation. These coefficients
 	are generated from kriging interpolation data, generated separately to eliminate noise from the original Mean Force data.
-	(Kriging interpolation is done in the folder Julia_Code/Code_Tests/Interpolation by the script TestMeanForce_weights.jl)
 	We do all this to speed up the DCGD, because the cubic spline interpolation is much faster than the Kriging interpolation.
 """
-function DetCGCanEnsTraj(P0,Q0,FmeanData::Array{Float64,2},C::Chain,S::Simulator)
+function DetCGTraj_NVT(P0,Q0,FmeanData::Array{Float64,2},C::Chain,S::Simulator)
  # Report to user.
  println(Dates.now());
  println("Running full simulation of DCGD in NVT ensemble and storing trajectory.");
@@ -353,11 +360,11 @@ function DetCGCanEnsTraj(P0,Q0,FmeanData::Array{Float64,2},C::Chain,S::Simulator
   P = P0; Q = Q0;
 
   # Generate mean force function
-  MeanForce = X -> ApproxMeanForce_NEW(X,FmeanData,C)[1];
+  MeanForce = X -> ApproxMeanForce(X,FmeanData,C,S)[1];
   F = MeanForce(Q0);
 
   # Set up storage
-  r = Int(S.FullSteps/100) + 1
+  r = Int(S.FullSteps/100) + 1;
   Pstore = zeros(r,length(P0));
   Qstore = zeros(r,length(P0));
   Fstore = zeros(r,length(P0));
@@ -843,16 +850,14 @@ function FullAutocorrLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S:
     return StressStats,StressMean,StressSqMean,MomStats,MomMean,MomSqMean
 end
 
-# function ApproximateAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
-							# C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanData::Array{Float64,1},FstdData::Array{Float64,1})
 function ApproximateAutocorr(P::Array{Float64,1},Q::Array{Float64,1},
 	                           C::Chain,S::Simulator,FmeanData::Array{Float64,2},FstdData::Array{Float64,2})
   # Generate mean force function
-  MeanForce = X -> ApproxMeanForce_NEW(X,FmeanData,C)[1];
+  MeanForce = X -> ApproxMeanForce(X,FmeanData,C,S)[1];
   F = MeanForce(Q);
 
   # Set up approximate fluctuation generator
-  FlucStep = (X,Y) -> ApproxFlucStep_NEW(X,Y,FstdData,C,S.Stochdt)[1];
+  FlucStep = (X,Y) -> ApproxFlucStep(X,Y,FstdData,C,S)[1];
 
   # Mean Forces
   StressStats 	= zeros(S.NumLags,C.NBeads);
@@ -946,7 +951,6 @@ end
 """
     Observables(P,Q,C::Chain)
 
-
 """
 function Observables(P,Q,C::Chain)
 
@@ -958,7 +962,6 @@ end
 
 """
     CGObservables(P,Q,C::Chain)
-
 
 """
 function CGObservables(P,Q,C::Chain)
@@ -972,7 +975,7 @@ end
 ###################################
 # High-level simulation functions #
 ###################################
-function VEffConstrained(C::Chain,S::Simulator)
+function VEffConstrained_NVE(C::Chain,S::Simulator)
   println("Computing coarse graining through constrained dynamics ...");
   if S.dt > 0.1*sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt));
     warn("Timestep = ",S.dt,
@@ -1025,10 +1028,10 @@ function VEffConstrained(C::Chain,S::Simulator)
   end
   println(" ...ComputeVEff done!");
 
-  return ComputeVEff(RSamples,PSamples,MomentSamples)
+  return ComputeVEff(RSamples,PSamples,MomentSamples,C)
 end
 
-function VEffConstrainedLangDyn(C::Chain,S::Simulator)
+function VEffConstrainedLangDyn_NVT(C::Chain,S::Simulator)
   println("Computing coarse graining through constrained Langevin dynamics ...")
   if S.dt > 0.1*sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt));
     warn("Timestep = ",S.dt,
@@ -1084,9 +1087,8 @@ function VEffConstrainedLangDyn(C::Chain,S::Simulator)
   end
   println(" ...ComputeVEff done!")
 
-  return ComputeVEff(RSamples,PSamples,MomentSamples)
+  return ComputeVEff(RSamples,PSamples,MomentSamples,C)
 end
-
 
 function ConstrainedAutocorrPar(C::Chain,S::Simulator)
   if S.dt > 0.1*sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt));
@@ -1266,7 +1268,7 @@ function FullAutocorrPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanDat
   (P,Q,F,H,PCG,QCG) = InitConds(C);
 
   # Generate mean force function
-  MeanForce = X -> ApproxMeanStresses(X,dQData,FmeanData,C)[1];
+  MeanForce = X -> ApproxMeanStresses(X,FmeanData,C,S)[1];
 
   println("Equilibration ");
   # Run in to equilibrate
@@ -1343,8 +1345,7 @@ function FullAutocorrPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanDat
   return StressAutocorr, MomAutocorr
 end
 
-function FullAutocorrLangDynPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanData::Array{Float64,1})
-# function FullAutocorrLangDynPar(C::Chain,S::Simulator,FmeanData::Array{Float64,2})
+function FullAutocorrLangDynPar(C::Chain,S::Simulator,FmeanData::Array{Float64,2})
   if S.dt > 0.1*sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt));
     warn("Timestep = ",S.dt,
       " not ≪ shortest timescale = ",sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt)));
@@ -1354,8 +1355,7 @@ function FullAutocorrLangDynPar(C::Chain,S::Simulator,dQData::Array{Float64,1},F
   (P,Q,F,H,PCG,QCG) = InitConds(C);
 
   # Generate mean force function
-  MeanForce = X -> ApproxMeanStresses(X,dQData,FmeanData,C)[1];
-  # MeanForce = X -> ApproxMeanStresses_NEW(X,FmeanData,C)[1];
+  MeanForce = X -> ApproxMeanStresses(X,FmeanData,C,S)[1];
 
   println("Equilibration ");
   # Run in to equilibrate
@@ -1435,7 +1435,6 @@ function FullAutocorrLangDynPar(C::Chain,S::Simulator,dQData::Array{Float64,1},F
   return StressAutocorr, MomAutocorr
 end
 
-# function ApproximateAutocorrPar(C::Chain,S::Simulator,dQData::Array{Float64,1},FmeanData::Array{Float64,1},FstdData::Array{Float64,1})
 function ApproximateAutocorrPar(C::Chain,S::Simulator,FmeanData::Array{Float64,2},FstdData::Array{Float64,2})
   if S.dt > 0.1*sqrt.(minimum(C.MassPatt)/maximum(C.EpsPatt));
     warn("Timestep = ",S.dt,
@@ -1475,7 +1474,6 @@ function ApproximateAutocorrPar(C::Chain,S::Simulator,FmeanData::Array{Float64,2
             QQ = Q;
             # Get distances between CG particles
             println("      Sample ",ii,"  over fine-grained variables...");
-            # (StressStats[ii,:,:],StressMean[ii,:],StressSqMean[ii,:],MomStats[ii,:,:],MomMean[ii,:],MomSqMean[ii,:]) = remotecall_fetch(ApproximateAutocorr,p,PP,QQ,C,S,dQData,FmeanData,FstdData);
 			(StressStats[ii,:,:],StressMean[ii,:],StressSqMean[ii,:],MomStats[ii,:,:],MomMean[ii,:],MomSqMean[ii,:]) = remotecall_fetch(ApproximateAutocorr,p,PP,QQ,C,S,FmeanData,FstdData);
             println("      Sample ",ii," complete!");
           end
@@ -1508,7 +1506,7 @@ end
 ###################
 # Data processing #
 ###################
-function ComputeVEff(R,P,M)
+function ComputeVEff(R,P,M,C)
   l = length(R)
 
   RR = reshape(R[:,:],l)
@@ -1522,82 +1520,107 @@ function ComputeVEff(R,P,M)
   Fm = reshape(M[:,:,1],l);
   Fm = Fm[i];
 
-  V = cumsum(0.5*(Fm+circshift(Fm,-1)).*dR);
+  V = cumsum(0.5*(Fm+circshift(Fm,-1)).*dR); #trapezoidal rule
   V = circshift(V,1);
   V[1] = 0.0;
 
   Fstd = reshape(sqrt.(M[:,:,2]-M[:,:,1].^2),l)
   Fstd = Fstd[i];
-  return RR,PP,V,Fm,Fstd
+
+  ## Kriging-type interpolation
+
+  # N = 500;
+  # Rmin = 1.5;
+  # Rmax = 4.5;
+  # range = Rmax - Rmin;
+  # delta = range / N;
+  Rmin = 2.802; #NB: with these values the Kriging-type interpolation algorithm does not give problems
+  Rmax = 3.504;
+  delta = 0.006;
+
+  dQ = [Rmin:delta:Rmax;]
+
+  FmINT = InterpolationAlgorithm_Kriging(dQ,RR,Fm,C)[1];
+  FmINT_D = (circshift(FmINT,-1) - circshift(FmINT,1)) ./(2*delta);
+
+  FstdINT = InterpolationAlgorithm_Kriging(dQ,RR,Fstd,C)[1];
+  FstdINT_D = (circshift(FstdINT,-1) - circshift(FstdINT,1)) ./(2*delta);
+
+
+  ## to generate the COEFFICIENTS for the cubic spline interpolation from the kriging-type interpolation of the MEAN FORCE DATA
+  ## NB: the grid points dQ *must* be equally spaced
+
+  Fmean = FmINT[2:end-1];
+  Fmean_d = FmINT_D[2:end-1];
+
+  Fmean_coeff1 = (2. * (Fmean - circshift(Fmean, -1)) + (Fmean_d + circshift(Fmean_d, -1)) * delta) / delta;
+  Fmean_coeff2 = circshift(Fmean, -1) - Fmean + (-Fmean_d - Fmean_coeff1) * delta;
+
+  # Generate look-up table for Mean Force
+  FdataMF = zeros(length(Fmean) - 1, 5);
+  FdataMF[:, 1] = dQ[2:end - 2];
+  FdataMF[:, 2] = Fmean[1:end - 1];
+  FdataMF[:, 3] = Fmean_d[1:end - 1];
+  FdataMF[:, 4] = Fmean_coeff1[1:end - 1];
+  FdataMF[:, 5] = Fmean_coeff2[1:end - 1];
+
+  ## to generate the COEFFICIENTS for the cubic spline interpolation from the kriging-type interpolation of the FLUCTUATING FORCE DATA
+  ## NB: the grid points dQ *must* be equally spaced
+
+  FF = FstdINT[2:end-1];
+  FF_d = FstdINT_D[2:end-1];
+
+  FF_coeff1 = (2. * (FF - circshift(FF, -1)) + (FF_d + circshift(FF_d, -1)) * delta) / delta;
+  FF_coeff2 = circshift(FF, -1) - FF + (-FF_d - FF_coeff1) * delta;
+
+  # Generate look-up table for Fluctuating Force
+  FdataFF = zeros(length(FF) - 1, 5);
+  FdataFF[:, 1] = dQ[2:end - 2];
+  FdataFF[:, 2] = FF[1:end - 1];
+  FdataFF[:, 3] = FF_d[1:end - 1];
+  FdataFF[:, 4] = FF_coeff1[1:end - 1];
+  FdataFF[:, 5] = FF_coeff2[1:end - 1];
+
+
+  return RR, PP, V, Fm, Fstd, FdataMF, FdataFF
 end
 
 ##################################
 # Potential generation functions #
 ##################################
 """
-    F = ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain)
+    Sigma, dQ = InterpolationAlgorithm_Kriging(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain)
 
-	Generates approximate mean stresses based on precomputed data dQvals, Fvals and Chain parameters.
+	Generates approximate mean and fluctuating stresses based on precomputed data dQvals, Fvals and Chain parameters via a Kriging-type interpolation algorithm.
 """
-function ApproxMeanStresses(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain,σ::Float64=0.1,N::Int=2)
+function InterpolationAlgorithm_Kriging(dQ::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain,σ::Float64=0.1,N::Int=2)
 
-  Sigma = zeros(size(Q));
+  Sigma = zeros(size(dQ));
 
-  ### First compute inter-bead distances.
-  dQ = circshift(Q, -1) - Q;
-  dQ[C.NBeads] += C.Period;
-  # println("");
-  # println("       INTER-BEAD DISTANCES COMPUTED IN ApproxMeanStresses");
-  # println("       dQ = ",dQ);
-  # println("");
-
-  ### Next, for each inter-bead distance, compute the stress
   for i=1:length(dQ)
-	  if dQ[i] < 0.9
-		  m = (- 9620.78 + 11462.61) / (1.09-0.95);
-		  q = -9620.78 - m * 1.09;
 
-		  Sigma[i] = m * dQ[i] + q;
-	  elseif dQ[i] > 3.78
-		  ### Define (diagonal) weight matrix
-		  # W = spdiagm(0 => exp.(-(dQvals .- 3.78) .^2 ./ σ^2));
+	  W = spdiagm(0 => exp.(-(dQvals .- dQ[i]) .^2 ./ σ^2));
 
-		  ### Form Jacobian matrix
-		  # J = ones(N+1, length(dQvals));
-		  # for j = 1:N
-			  # J[j+1, :] = (3.78 .- dQvals).^j;
-		  # end
-
-		  # K = J * W;
-		  # c = (K * J') \ (K * Fvals);
-
-		  Sigma[i] = 0; #c[1];
-	  else
-		  ### Define (diagonal) weight matrix
-		  W = spdiagm(0 => exp.(-(dQvals .- dQ[i]) .^2 ./ σ^2));
-		  # println(" ITERATION =",i," ; dQ = ",dQ[i]);
-		  # println(" dQvals =",dQvals);
-	  	  # println(" EXP = ",exp.(-(dQvals .- dQ[i]).^2 ./ σ^2));
-
-	      ### Form Jacobian matrix
-      	  J = ones(N+1, length(dQvals));
-      	  for j = 1:N
-			  J[j+1, :] = (dQ[i] .- dQvals).^j;
-		  end
-
-		  # println("       JACOBIAN MATRIX IN 	ApproxMeanStresses");
-	  	  # println("       J = ",J);
-	      K = J * W;
-	  	  c = (K * J') \ (K * Fvals);
-
-	      Sigma[i] = c[1];
+	  # Form Jacobian matrix
+      J = ones(N+1, length(dQvals));
+      for j = 1:N
+		  J[j+1, :] = (dQ[i] .- dQvals).^j;
 	  end
+	  K = J * W;
+	  c = (K * J') \ (K * Fvals);
+
+	  Sigma[i] = c[1];
   end
 
   return Sigma, dQ
 end
 
-function ApproxMeanStresses_NEW(Q::Array{Float64,1},Fdata::Array{Float64,2},C::Chain,σ::Float64=0.1,N::Int=2)
+"""
+    Sigma, dQ = ApproxMeanStresses(Q::Array{Float64,1},Fdata::Array{Float64,2},C::Chain,S::Simulator)
+
+	Generates approximate mean stresses based on precomputed data dQvals, Fvals and Chain parameters via a Cubic Spline interpolation algorithm.
+"""
+function ApproxMeanStresses(Q::Array{Float64,1},Fdata::Array{Float64,2},C::Chain,S::Simulator,σ::Float64=0.1,N::Int=2)
 	if sum(Fdata) == 0
 		dQ = circshift(Q, -1) - Q;
 		dQ[C.NBeads] += C.Period;
@@ -1618,9 +1641,7 @@ function ApproxMeanStresses_NEW(Q::Array{Float64,1},Fdata::Array{Float64,2},C::C
   		### Next, for each inter-bead distance, compute the stress
   		for i=1:length(dQ)
     		if dQ[i] < Rmin
-        		m = 537.59;
-        		q = -1567.1;
-        		Sigma[i] = m * dQ[i] + q;
+        		Sigma[i] = S.m_MF * dQ[i] + S.q_MF;
     		elseif dQ[i] > Rmax
         		Sigma[i] = 0.;
     		else
@@ -1635,123 +1656,26 @@ function ApproxMeanStresses_NEW(Q::Array{Float64,1},Fdata::Array{Float64,2},C::C
 end
 
 """
-    F, Sigma, dQ = ApproxMeanForce(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain)
+    F, Sigma, dQ = ApproxMeanForce(Q::Array{Float64,1},Fvals::Array{Float64,2},C::Chain,S::Simulator)
 
-	Generates approximate mean forces F based on precomputed data dQvals, Fvals and Chain parameters.
+	Generates approximate mean forces F based on precomputed data dQvals, Fvals and Chain parameters via a Cubic Spline interpolation algorithm.
 """
-function ApproxMeanForce(Q::Array{Float64,1},dQvals::Array{Float64,1},Fvals::Array{Float64,1},C::Chain,σ::Float64=0.1,N::Int=2)
+function ApproxMeanForce(Q::Array{Float64,1},Fvals::Array{Float64,2},C::Chain,S::Simulator,σ::Float64=0.1,N::Int=2)
 
   F = zeros(size(Q));
-  (Sigma, dQ) = ApproxMeanStresses(Q, dQvals, Fvals, C, σ, N);
+  (Sigma, dQ) = ApproxMeanStresses(Q, Fvals, C, S, σ, N);
   F = Sigma - circshift(Sigma, 1);
 
   return F, Sigma, dQ
 end
 
-function ApproxMeanForce_NEW(Q::Array{Float64,1},Fvals::Array{Float64,2},C::Chain,σ::Float64=0.1,N::Int=2)
+"""
+    Thermal_bath_step, Gvec, dQ = ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},StressSqvals::Array{Float64,2},C::Chain,S::Simulator)
 
-  F = zeros(size(Q));
-  (Sigma, dQ) = ApproxMeanStresses_NEW(Q, Fvals, C, σ, N);
-  F = Sigma - circshift(Sigma, 1);
-
-  return F, Sigma, dQ
-end
-
-function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},dQvals::Array{Float64,1},
-	StressSqvals::Array{Float64,1},C::Chain,dt::Float64,σ::Float64=0.1,N::Int=2)
-
-  if sum(StressSqvals) == 0
-	  ### Set up storage for diffusivity
-	  Gvec = zeros(size(Q,1));
-	  ### Compute inter-bead distances
-	  dQ = circshift(Q, -1) - Q;
-	  dQ[C.NBeads] += C.Period;
-
-	  return zeros(size(P,1)), Gvec, dQ
-  else
-	  ### Set up storage for diffusivity
-      Gvec = zeros(size(Q,1));
-
-      ### Compute inter-bead distances
-      dQ = circshift(Q, -1) - Q;
-      dQ[C.NBeads] += C.Period;
-      # println("");
-      # println("       INTER-BEAD DISTANCES COMPUTED IN ApproxFlucStep");
-      # println("       dQ = ",dQ);
-
-      ### For each inter-bead distance, compute diffusivity
-      for i=1:length(dQ)
-	      if dQ[i] < 0.9
-		      m = (6464.26 - 8859.34) / (1.2-0.90);
-		      q = 8859.34 - m * 0.90;
-		      Gvec[i] = m * dQ[i] + q;
-	      elseif dQ[i] > 3.78
-		      ### Define (diagonal) weight matrix
-		      # W = spdiagm(0 => exp.(-(dQvals .- 3.78) .^2 ./ σ^2));
-
-		      ### Form Jacobian matrix
-		      # J = ones(N+1, length(dQvals));
-		      # for j = 1:N
-			  #    J[j+1, :] = (3.78 .- dQvals).^j;
-		      # end
-
-		      ### Least squares approximation of interpolant coefficients
-		      # K = J * W;
-		      # coeffs = (K * J') \ (K * StressSqvals);
-
-		      ### Extract value of interpolant
-		      Gvec[i] = 0; #coeffs[1];
-	      else
-		      ### Define (diagonal) weight matrix
-	          W = spdiagm(0 => exp.(-(dQvals .- dQ[i]).^2/σ^2));
-
-			  ### Form Jacobian matrix
-        	  J = ones(N+1, length(dQvals));
-    		  for j = 1:N
-				  J[j+1,:] = (dQ[i] .- dQvals).^j;
-			  end
-
-			  ### Least squares approximation of interpolant coefficients
-			  K = J * W;
-			  # println("       Product between Jacobian matrix and diagonal weight matrix");
-			  # println("       K = ",K);
-			  coeffs = (K * J') \ (K * StressSqvals);
-
-			  ### Extract value of interpolant
-			  Gvec[i] = coeffs[1];
-		  end
-	  end
-
-  	  ### Set diffusivity to zero if negative.
-      Gvec = max.(Gvec, 0); #This function return the maximum of the arguments.
-
-  	  ### Form memory matrix (that is a tridiagonal matrix)
-      Gamma = diagm(0 => Gvec) - circshift(diagm(0 => Gvec), -1);
-  	  Gamma = (Gamma - circshift(Gamma,1));
-	  # println("GAMMA = ", Gamma)
-
-      ### Perform eigenvalue decomposition
-  	  F = eigen(Gamma); # Computes the eigenvalue decomposition, returning an Eigen factorization object F
-	                    # which contains the eigenvalues in F.values and the eigenvectors in the columns of the matrix F.vectors.
-	  # println("EIGENVALUES = ", F.values)
-	  # println("EIGENVECTOR = ", F.vectors)
-      F.values[1] = 0;
-
-  	  ### Calculate exact Ornstein-Uhlenbeck step using decomposition
-      c1 = exp.(-F.values / (2 * C.BeadMass) * dt);
-	  # c1 = F.vectors * exp.(-F.values / (2 * C.BeadMass) * dt) .* F.vectors';
-	  # c3 = sqrt(C.BeadMass) * sqrt.(abs.(1.0 .- c1^2)) * randn(C.NBeads);
-	  c3 = sqrt(C.BeadMass) * sqrt.(1.0 .- c1.^2) .* randn(C.NBeads);
-
-      ### Generate new momenta and return
-	  # println("PNext = ", c1 * P + c3 )
-	  # return c1 * P + c3, Gvec, dQ
-      return F.vectors * (c1 .* (F.vectors' * P) + c3), Gvec, dQ
-  end
-end
-
-function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},
-	StressSqvals::Array{Float64,2},C::Chain,dt::Float64,σ::Float64=0.1,N::Int=2)
+	Generates thermal bath intergration step and approximate fluctuating forces Gvec based on precomputed data StressSqvals and Chain parameters
+	via a Kriging-type interpolation algorithm.
+"""
+function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},StressSqvals::Array{Float64,2},C::Chain,S::Simulator,σ::Float64=0.1,N::Int=2)
 
 	P = P .- mean(P);
 
@@ -1769,13 +1693,9 @@ function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},
     ### Next, for each inter-bead distance, compute the stress
     for i=1:length(dQ)
         if dQ[i] < Rmin
-            m = -135.21;
-            q = 403.79;
-            Gvec[i] = m * dQ[i] + q;
+            Gvec[i] = S.m_FF * dQ[i] + S.q_FF;
         elseif dQ[i] > Rmax
-            A = 3.3199e6;
-            B = 4.8887;
-            Gvec[i] = A * exp(-B * dQ[i]);
+            Gvec[i] = S.coeffEXP_A * exp(-S.coeffEXP_B * dQ[i]);
         else
             index = trunc(Int, (dQ[i] - Rmin) / dx) + 1;
             distance = dQ[i] - (Rmin + (index - 1) * dx);
@@ -1803,7 +1723,7 @@ function ApproxFlucStep_NEW(P::Array{Float64,1},Q::Array{Float64,1},
     vectors = real.(F.vectors);
 
     ### Calculate exact Ornstein-Uhlenbeck step using decomposition
-    exp_part = exp.(-values * C.Beta * dt / (2.0 * C.BeadMass));
+    exp_part = exp.(-values * C.Beta * S.Stochdt / (2.0 * C.BeadMass));
     c1 = diagm(0 => exp_part);
 
     # we want to avoid numerical issues and thus enforce the positiveness of the sqrt argument
