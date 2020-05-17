@@ -1,5 +1,5 @@
 ## NB: to run this script from the terminal is not necessary to give the following command "julia -p n scritpt.jl"
-##     because I explicitly added in the script the command-line option "-p n".
+#      because I explicitly added in the script the command-line option "-p n".
 
 using Distributed
 
@@ -14,7 +14,7 @@ addprocs(Sys.CPU_THREADS);
 using Main.LJChain, Main.CGStats, SharedArrays, Parameters, Statistics, LinearAlgebra, StatsBase, DelimitedFiles # add PyPlot if necessary
 
 #############################################################################################
-## Set up simulation parameters.
+# Set up simulation parameters.
 
 # C = Chain(SM=1,LM=10);                    ## system A ≣ [Patt=[0,1,0], SM(mass of particles 0), LM(mass of particles 1), SEps=1.0, LEps=100.0, γ=1, β=1]
 C = Chain(SM=1,LM=10,SEps=10,LEps=.1);    ## system B ≣ [Patt=[0,1,0], SM(mass of particles 0), LM(mass of particles 1), γ=1, β=1]
@@ -22,14 +22,14 @@ C = Chain(SM=1,LM=10,SEps=10,LEps=.1);    ## system B ≣ [Patt=[0,1,0], SM(mass
 # C = Chain(SEps=10,LEps=.1);               ## system D ≣ [Patt=[0,1,0], SM=10, LM= 1, γ=1, β=1]
 
 S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e6), ApproxSteps=Int(1e6), OrthoSamples=Int(1e6), MacroSamples=100, LagStep=10, NumLags=Int(1e4));
-## [dt=1e-4,Stochdt=1e-4,FullSteps=Int(1e5),OrthoSteps=1,ApproxSteps=Int(1e5),OrthoSamples=Int(1e5),MacroSamples=50,LagStep=400,NumLags=30]
+    # [dt=1e-4,Stochdt=1e-4,FullSteps=Int(1e5),OrthoSteps=1,ApproxSteps=Int(1e5),OrthoSamples=Int(1e5),MacroSamples=50,LagStep=400,NumLags=30]
 
-## LagStep = spacing of lag times for autocorrelation
-## NumLags = number of lag times to compute
-## NB: play with MacroSamples and OrthoSamples
+    # LagStep = spacing of lag times for autocorrelation
+    # NumLags = number of lag times to compute
+    # NB: play with MacroSamples and OrthoSamples
 
 #############################################################################################
-## Generate data
+# Generate data
 
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
@@ -39,7 +39,7 @@ Fmean = CG[:,4];
 Fstd = CG[:,5];
 
 ## data extracted from the Kriging interpolation of the original Mean Force data
-## Mean Force
+# Mean Force
 # force_data = readdlm("Data_Analysis/ACF/force_to_interpolate.dat", Float64);
 #
 # # we generate the coefficients for the cubic spline interpolation
@@ -81,10 +81,10 @@ Fstd = CG[:,5];
 # FdataFF[:, 5] = FF_coeff2[1:end - 1];
 
 #####################################################################################
-## Compute autocorrelation stats for FULL DYNAMICS
+# Compute autocorrelation stats for FULL DYNAMICS
 
-(StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,RR,Fmean*0);
-# (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,Fdata*0);
+# (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,RR,Fmean*0);
+(StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,Fdata*0);
 
 open("./Data_Analysis/ACF/Outcomes/sB_FullcorrP.csv","w+") do x
     writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
@@ -109,7 +109,7 @@ end
 #     writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
 # end
 
-## Use PyPlot to plot autocorrelation
+# Use PyPlot to plot autocorrelation
 # plot(S.dt*S.LagStep*[0:S.NumLags-1;],MomAutocorr);
 # savefig("./Data_Analysis/ACF_FullAndConstrainedTraj/Plots/FullcorrP.svg");
 # plot(S.dt*S.LagStep*[0:S.NumLags-1;],StressAutocorr);
@@ -129,8 +129,8 @@ end
 #     writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
 # end
 
-## NB: Don't plot autocorrelation of momenta (as it's not well-defined)
-## Use PyPlot to plot autocorrelation
+# NB: Don't plot autocorrelation of momenta (as it's not well-defined)
+# Use PyPlot to plot autocorrelation
 # plot(S.dt*S.LagStep*[0:S.NumLags-1;],StressAutocorr);
 # savefig("./Data_Analysis/AC_FullAndConstrainedTraj/Plots/OrthocorrF.svg");
 
