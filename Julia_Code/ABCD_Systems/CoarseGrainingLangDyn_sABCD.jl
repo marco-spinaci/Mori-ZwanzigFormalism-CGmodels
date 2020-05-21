@@ -6,8 +6,8 @@ using Distributed
 @time begin
 
 # Set up parallel computing
-# addprocs(Sys.CPU_THREADS);
-addprocs(4);
+addprocs(Sys.CPU_THREADS);
+# addprocs(4);
 
 @everywhere include("LJChain.jl")
 @everywhere include("CGStats.jl")
@@ -24,7 +24,7 @@ using Main.LJChain,Main.CGStats,SharedArrays,Parameters,Statistics,LinearAlgebra
 
 #####################################################################################################
 
-S = Simulator(dt=1e-3, FullSteps=Int(1e5), OrthoSamples=Int(1e5), check=Int(5e3), MacroSamples=50);
+S = Simulator(dt=1e-3, FullSteps=Int(1e6), OrthoSamples=Int(1e6), check=Int(5e3), MacroSamples=100);
 
 ######################################################################################################
 # system A
@@ -83,7 +83,7 @@ S = Simulator(dt=1e-3, FullSteps=Int(1e5), OrthoSamples=Int(1e5), check=Int(5e3)
 
 ######################################################################################################
 # system C
-# ( [0,1,0], SM (mass of particles 0) = 10, LM (mass of particles 1) = 1, SEps=1.0, LEps=100.0, γ=1, β=1 )
+# ( [0,1,0], SM (mass of particles 0) = 10, LM (mass of particles 1) = 1, SEps=1.0, LEps=100.0, γ=1, β=1.096 )
 
 C = Chain(SM=1, LM=1);
 (RR,PP,Veff,Fmean,Fstd,FdataMF,FdataFF) = VEffConstrainedLangDyn_NVT(C,S);
