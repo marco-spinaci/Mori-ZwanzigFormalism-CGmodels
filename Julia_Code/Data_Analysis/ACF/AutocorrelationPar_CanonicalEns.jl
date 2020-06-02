@@ -93,30 +93,30 @@ Fdata = readdlm("Data_Analysis/ACF/Flucs_Force_to_interpolate/Coeff_MF_SplineI_s
 # Compute autocorrelation stats for FULL DYNAMICS
 
 # (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,RR,Fmean*0);
-(StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,Fdata*0);
-
-open("./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrP(B1.096).csv","w+") do x
-    writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
-end
-
-open("./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrF(B1.096).csv","w+") do x
-    writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
-end
+# (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,Fdata*0);
+#
+# open("./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrP(B1.096).csv","w+") do x
+#     writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
+# end
+#
+# open("./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrF(B1.096).csv","w+") do x
+#     writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
+# end
 
 
 
 ## Compute autocorrelation stats for FULL DYNAMICS (ORTHOGONAL COMPONENT)
 
 # (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,RR,Fmean);
-# # (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,Fdata);
-#
-# open("./Data_Analysis/ACF/Outcomes/sB_FullcorrP_OC.csv","w+") do x
-#     writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
-# end
-#
-# open("./Data_Analysis/ACF/Outcomes/sB_FullcorrF_OC.csv","w+") do x
-#     writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
-# end
+(StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,Fdata);
+
+open("./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrP_OC(B1.096).csv","w+") do x
+    writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
+end
+
+open("./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrF_OC(B1.096).csv","w+") do x
+    writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
+end
 
 # Use PyPlot to plot autocorrelation
 # plot(S.dt*S.LagStep*[0:S.NumLags-1;],MomAutocorr);
