@@ -4,11 +4,11 @@
 # paste RR_sB.csv PP_sB.csv Veff_sB.csv Fmean_sB.csv Fstd_sB.csv > sB_M20.csv
 # rm RR_sB.csv PP_sB.csv Veff_sB.csv Fmean_sB.csv Fstd_sB.csv
 
-paste RR_sC.csv PP_sC.csv Veff_sC.csv Fmean_sC.csv Fstd_sC.csv > sC_B1.096.csv
+paste RR_sC.csv PP_sC.csv Veff_sC.csv Fmean_sC.csv Fstd_sC.csv > sC_M5m1.csv
 rm RR_sC.csv PP_sC.csv Veff_sC.csv Fmean_sC.csv Fstd_sC.csv
 
-paste RR_sC_B1.csv PP_sC_B1.csv Veff_sC_B1.csv Fmean_sC_B1.csv Fstd_sC_B1.csv > sC_B1.csv
-rm RR_sC_B1.csv PP_sC_B1.csv Veff_sC_B1.csv Fmean_sC_B1.csv Fstd_sC_B1.csv
+# paste RR_sC_B1.csv PP_sC_B1.csv Veff_sC_B1.csv Fmean_sC_B1.csv Fstd_sC_B1.csv > sC_B1.csv
+# rm RR_sC_B1.csv PP_sC_B1.csv Veff_sC_B1.csv Fmean_sC_B1.csv Fstd_sC_B1.csv
 
 # paste RR_sD.csv PP_sD.csv Veff_sD.csv Fmean_sD.csv Fstd_sD.csv > sD_M20.csv
 # rm RR_sD.csv PP_sD.csv Veff_sD.csv Fmean_sD.csv Fstd_sD.csv

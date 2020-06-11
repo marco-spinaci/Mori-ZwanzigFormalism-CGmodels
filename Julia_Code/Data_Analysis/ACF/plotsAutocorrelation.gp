@@ -51,7 +51,9 @@ set output "| epstopdf -f -o=./Data_Analysis/ACF/Plots/ACF_comparison_sC_M1m1.pd
 set multiplot layout 2,2 title "System C - FGD"
 # set title "{{/Roman System C}}"
 p "./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrF_OC(B1.096).csv" u 1:2 w l lw 2 lc 1 dt 4 t " ACF of the FF - M=1 m=1", \
-  "./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrP(B1.096).csv" u 1:2 w l lw 2 lc 2 dt 1 t "ACF of P - M=1 m=1"
+  "./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrP(B1.096).csv" u 1:2 w l lw 2 lc 2 dt 1 t "ACF of P - M=1 m=1" #, \
+  # "./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrF_OC(B1).csv" u 1:2 w l lw 2 lc 4 dt 4 t " ACF of the FF - M=1 m=1", \
+  # "./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrP(B1).csv" u 1:2 w l lw 2 lc 5 dt 1 t "ACF of P - M=1 m=1"
 
 p "./Data_Analysis/ACF/Outcomes/sC_FullcorrF_OC.csv" u 1:2 w l lw 2 lc 1 dt 4 t " ACF of the FF - M=10 m=1", \
   "./Data_Analysis/ACF/Outcomes/sC_FullcorrP.csv" u 1:2 w l lw 2 lc 2 dt 1 t "ACF of P - M=10 m=1"
