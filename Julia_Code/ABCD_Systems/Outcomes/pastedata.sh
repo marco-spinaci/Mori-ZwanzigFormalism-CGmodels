@@ -4,7 +4,7 @@
 # paste RR_sB.csv PP_sB.csv Veff_sB.csv Fmean_sB.csv Fstd_sB.csv > sB_M20.csv
 # rm RR_sB.csv PP_sB.csv Veff_sB.csv Fmean_sB.csv Fstd_sB.csv
 
-paste RR_sC.csv PP_sC.csv Veff_sC.csv Fmean_sC.csv Fstd_sC.csv > sC_M5m1.csv
+paste RR_sC.csv PP_sC.csv Veff_sC.csv Fmean_sC.csv Fstd_sC.csv > sC_M100m1.csv
 rm RR_sC.csv PP_sC.csv Veff_sC.csv Fmean_sC.csv Fstd_sC.csv
 
 # paste RR_sC_B1.csv PP_sC_B1.csv Veff_sC_B1.csv Fmean_sC_B1.csv Fstd_sC_B1.csv > sC_B1.csv
