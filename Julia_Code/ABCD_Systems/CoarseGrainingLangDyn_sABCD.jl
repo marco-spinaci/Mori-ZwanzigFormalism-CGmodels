@@ -85,7 +85,7 @@ S = Simulator(dt=1e-3, FullSteps=Int(1e6), OrthoSamples=Int(1e6), check=Int(5e3)
 # system C
 # ( [0,1,0], SM (mass of particles 0) = 10, LM (mass of particles 1) = 1, SEps=1.0, LEps=100.0, γ=1, β=1.096 )
 
-C = Chain(SM=100, LM=1, Beta=1.096);
+C = Chain(SM=0.1, LM=1, Beta=1.096);
 (RR,PP,Veff,Fmean,Fstd,FdataMF,FdataFF) = VEffConstrainedLangDyn_NVT(C,S);
 
 # Write data to file
@@ -104,10 +104,10 @@ end
 open("./ABCD_Systems/Outcomes/Fstd_sC.csv","w+") do x
    writedlm(x,Fstd);
 end
-open("./ABCD_Systems/Outcomes/Coeff_MF_SplineI_sC_M100m1.csv","w+") do x
+open("./ABCD_Systems/Outcomes/Coeff_MF_SplineI_sC_M0.1m1.csv","w+") do x
    writedlm(x, FdataMF);
 end
-open("./ABCD_Systems/Outcomes/Coeff_FF_SplineI_sC_M100m1.csv","w+") do x
+open("./ABCD_Systems/Outcomes/Coeff_FF_SplineI_sC_M0.1m1.csv","w+") do x
    writedlm(x, FdataFF);
 end
 
