@@ -6,8 +6,8 @@ using Distributed
 @time begin
 
 ## Set up parallel computing
-# addprocs(Sys.CPU_THREADS);
-addprocs(4);
+addprocs(Sys.CPU_THREADS);
+# addprocs(4);
 
 @everywhere include("LJChain.jl")
 @everywhere include("CGStats.jl")
