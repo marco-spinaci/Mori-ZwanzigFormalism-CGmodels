@@ -8,7 +8,7 @@ using Main.LJChain, Main.CGStats, DelimitedFiles, Random
 # Random.seed!(1234)
 
 ####################################################################################################################
-# Set up simulation parameters.
+## Set up simulation parameters.
 
 C = Chain(Beta=1.096); # system C ≣ [Patt=[0,1,0],NBeads=10,ConstrainedBeads=2,SEps=1,LEps=100,SM=10,LM=1,Dist=1,Beta=1,Gamma=1]
 
@@ -17,12 +17,12 @@ C = Chain(Beta=1.096); # system C ≣ [Patt=[0,1,0],NBeads=10,ConstrainedBeads=2
 S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e5), ApproxSteps=Int(1e5));
 
 #####################################################################################################################
-# Generate initial data
+## Generate initial data
 
 (P0, Q0, F0, H0, P0CG, Q0CG) = InitConds(C);
 
 #####################################################################################################################
-# Generate effective potential data
+## Generate effective potential data
 
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
@@ -77,12 +77,12 @@ FdataFF[:, 4] = FF_coeff1[1:end - 1];
 FdataFF[:, 5] = FF_coeff2[1:end - 1];
 
 #########################################################################################
-# Generate a random trajectory, using data-generated potentials
+## Generate a random trajectory, using data-generated potentials
 
 (PApprox, QApprox, FApprox) = ApproximateTraj_MMZD(P0CG, Q0CG, FdataMF, FdataFF, C, S);
 
 #########################################################################################
-# Write data to file
+## Write data to file
 
 open("Store_Trajectory/Outcomes/PApprox_MMZD_1e7(B1.096)_CORRETTA.csv", "w+") do x
     writedlm(x, PApprox);

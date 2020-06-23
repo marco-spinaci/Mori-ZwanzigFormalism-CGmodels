@@ -14,7 +14,7 @@ addprocs(4);
 using Main.LJChain, Main.CGStats, SharedArrays, Parameters, Statistics, LinearAlgebra, StatsBase, DelimitedFiles # add PyPlot if necessary
 
 #############################################################################################
-# Set up simulation parameters.
+## Set up simulation parameters.
 
 # C = Chain(SM=1,LM=10);                    ## system A ≣ [Patt=[0,1,0], SM(mass of particles 0), LM(mass of particles 1), SEps=1.0, LEps=100.0, γ=1, β=1]
 # C = Chain(SM=1,LM=10,SEps=10,LEps=.1);    ## system B ≣ [Patt=[0,1,0], SM(mass of particles 0), LM(mass of particles 1), γ=1, β=1]
@@ -29,9 +29,9 @@ S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e5), ApproxSteps=Int(1e5), O
     # NB: play with MacroSamples and OrthoSamples
 
 #############################################################################################
-# Generate data for Mean and Fluctuating Force
+## Generate data for Mean and Fluctuating Force
 
-#NB: thesis data
+# ## NB: thesis data
 
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 
@@ -84,8 +84,7 @@ S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e5), ApproxSteps=Int(1e5), O
 # FdataFF[:, 4] = FF_coeff1[1:end - 1];
 # FdataFF[:, 5] = FF_coeff2[1:end - 1];
 
-#NB: paper data
-
+## NB: paper data
 Fdata = readdlm("ABCD_Systems/Outcomes/Coeff_MF_SplineI_sC_M100m1.csv", Float64);
 # FdataFF = readdlm("ABCD_Systems/Outcomes/Coeff_FF_SplineI_sC_M100m1.csv", Float64);
 
