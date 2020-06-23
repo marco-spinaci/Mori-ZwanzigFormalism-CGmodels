@@ -50,30 +50,37 @@ set ylabel "{{/Roman ACF}}"
 set output "| epstopdf -f -o=./Data_Analysis/ACF/Plots/ACF_comparison_sC_Mdiff.pdf"
 set multiplot layout 3,2 title "System C - FGD"
 
+set title "{{/Roman {/Symbol D}t = 0.10}}"
+set xrange [0.01:1]
+p "./Data_Analysis/ACF/Outcomes/sC_M0.1m1_FullcorrF_OC(B1.096).csv" u 1:2 w l lw 2 lc 1 dt 4 t " ACF of the FF - M=0.1 m=1", \
+  "./Data_Analysis/ACF/Outcomes/sC_M0.1m1_FullcorrP(B1.096).csv" u 1:2 w l lw 2 lc 2 dt 1 t "ACF of P - M=0.1 m=1"
+
 set title "{{/Roman {/Symbol D}t = 0.16}}"
 p "./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrF_OC(B1.096).csv" u 1:2 w l lw 2 lc 1 dt 4 t " ACF of the FF - M=1 m=1", \
   "./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrP(B1.096).csv" u 1:2 w l lw 2 lc 2 dt 1 t "ACF of P - M=1 m=1"
 
-set title "{{/Roman ACF of the FF}}"
-p "./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrF_OC(B1.096).csv" u 1:2 w l lw 2 lc 7 dt 1 t "M=1 m=1", \
-  "./Data_Analysis/ACF/Outcomes/sC_FullcorrF_OC.csv" u 1:2 w l lw 2 lc 4 dt 1 t "M=10 m=1", \
-  "./Data_Analysis/ACF/Outcomes/sC_M100m1_FullcorrF_OC(B1.096).csv" u 1:2 w l lw 2 lc 2 dt 1 t "M=100 m=1"
-
+unset xrange
 set title "{{/Roman {/Symbol D}t = 0.35}}"
 p "./Data_Analysis/ACF/Outcomes/sC_FullcorrF_OC.csv" u 1:2 w l lw 2 lc 1 dt 4 t " ACF of the FF - M=10 m=1", \
   "./Data_Analysis/ACF/Outcomes/sC_FullcorrP.csv" u 1:2 w l lw 2 lc 2 dt 1 t "ACF of P - M=10 m=1"
 
-set title "{{/Roman ACF of the P}}"
-p "./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrP(B1.096).csv" u 1:2 w l lw 2 lc 7 dt 1 t "M=1 m=1", \
-  "./Data_Analysis/ACF/Outcomes/sC_FullcorrP.csv" u 1:2 w l lw 2 lc 4 dt 1 t "M=10 m=1", \
-  "./Data_Analysis/ACF/Outcomes/sC_M100m1_FullcorrP(B1.096).csv" u 1:2 w l lw 2 lc 2 dt 1 t " M=100 m=1"#, \
-  # "./Data_Analysis/ACF/Outcomes/sC_M100m1_FullcorrP(B1.096)_1.csv" u 1:2 w d lw 2 lc 1 dt 1 t "ACF of P - M=100 m=1"
-
 set title "{{/Roman {/Symbol D}t = 1.27}}"
 p "./Data_Analysis/ACF/Outcomes/sC_M100m1_FullcorrF_OC(B1.096).csv" u 1:2 w l lw 2 lc 1 dt 4 t " ACF of the FF - M=100 m=1", \
   "./Data_Analysis/ACF/Outcomes/sC_M100m1_FullcorrP(B1.096).csv" u 1:2 w l lw 2 lc 2 dt 1 t "ACF of P - M=100 m=1"#, \
-  # "./Data_Analysis/ACF/Outcomes/sC_M100m1_FullcorrP(B1.096)_1.csv" u 1:2 w d lw 2 lc 1 dt 1 t "ACF of P - M=100 m=1"
+  # "./Data_Analysis/ACF/Outcomes/sC_M100m1_FullcorrP(B1.096)_1.csv" u 1:2 w l lw 2 lc 1 dt 1 t "ACF of P - M=100 m=1"
 
+set title "{{/Roman ACF of the FF}}"
+p "./Data_Analysis/ACF/Outcomes/sC_M0.1m1_FullcorrF_OC(B1.096).csv" u 1:2 w l lw 2 lc 1 dt 1 t "M=0.1 m=1", \
+  "./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrF_OC(B1.096).csv" u 1:2 w l lw 2 lc 7 dt 1 t "M=1 m=1", \
+  "./Data_Analysis/ACF/Outcomes/sC_FullcorrF_OC.csv" u 1:2 w l lw 2 lc 4 dt 1 t "M=10 m=1", \
+  "./Data_Analysis/ACF/Outcomes/sC_M100m1_FullcorrF_OC(B1.096).csv" u 1:2 w l lw 2 lc 2 dt 1 t "M=100 m=1"
+
+set title "{{/Roman ACF of the P}}"
+p "./Data_Analysis/ACF/Outcomes/sC_M0.1m1_FullcorrP(B1.096).csv" u 1:2 w l lw 2 lc 1 dt 1 t "M=0.1 m=1", \
+  "./Data_Analysis/ACF/Outcomes/sC_M1m1_FullcorrP(B1.096).csv" u 1:2 w l lw 2 lc 7 dt 1 t "M=1 m=1", \
+  "./Data_Analysis/ACF/Outcomes/sC_FullcorrP.csv" u 1:2 w l lw 2 lc 4 dt 1 t "M=10 m=1", \
+  "./Data_Analysis/ACF/Outcomes/sC_M100m1_FullcorrP(B1.096).csv" u 1:2 w l lw 2 lc 2 dt 1 t " M=100 m=1"#, \
+  # "./Data_Analysis/ACF/Outcomes/sC_M100m1_FullcorrP(B1.096)_1.csv" u 1:2 w l lw 2 lc 1 dt 1 t "ACF of P - M=100 m=1"
 
 unset multiplot
 set output
