@@ -11,8 +11,8 @@ S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
 ################################################################################
 
 # Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Q_FGD_1e7(B1.096)_CORRETTA.csv", Float64);
-Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Q_FGD_1e7.csv", Float64);
-# Q_FGD = readdlm("Store_Trajectory/Outcomes/Q_FGD_1e5.csv", Float64);
+# Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Q_FGD_1e7.csv", Float64);
+Q_FGD = readdlm("Store_Trajectory/Outcomes/Q_FGD_M1m1_1e7(B1.096).csv", Float64);
 
 CdM = Q_FGD * C.vectorCdM;
 Q_FGD = Q_FGD .- CdM;
@@ -47,7 +47,7 @@ end
 v = findall(msd1 .!= 0);
 msd1 = msd1[v];
 
-open("Data_Analysis/MSD/Outcomes/msd_FGD_1e7_NEW.csv", "w+") do x
+open("Data_Analysis/MSD/Outcomes/msd_FGD_M1m1_1e7(B1.096).csv", "w+") do x
     writedlm(x, [ S.dt*100*v msd1 ]);
 end
 
@@ -59,7 +59,7 @@ end
 ################################################################################
 
 # Q_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_DCGD_1e7(B1.096)_CORRETTA.csv", Float64);
-Q_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_DCGD_1e7.csv", Float64);
+Q_DCGD = readdlm("Store_Trajectory/Outcomes/QApprox_DCGD_M1m1_1e7(B1.096)_CORRETTA.csv", Float64);
 # Q_DCGD = readdlm("Store_Trajectory/Outcomes/QApprox_DCGD_1e5.csv", Float64);
 
 CdM = Q_DCGD * C.vectorCdM;
@@ -95,7 +95,7 @@ end
 v = findall(msd2 .!= 0);
 msd2 = msd2[v];
 
-open("Data_Analysis/MSD/Outcomes/msd_DCGD_1e7_NEW.csv", "w+") do x
+open("Data_Analysis/MSD/Outcomes/msd_DCGD_M1m1_1e7(B1.096).csv", "w+") do x
     writedlm(x, [ S.dt*100*v msd2 ]);
 end
 
@@ -108,7 +108,7 @@ end
 ################################################################################
 
 # Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD_1e7(B1.096)_CORRETTA.csv", Float64);
-Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD_1e7(B1.096).csv", Float64);
+Q_MMZD = readdlm("Store_Trajectory/Outcomes/QApprox_MMZD_M1m1_1e7(B1.096)_CORRETTA.csv", Float64);
 # Q_MMZD = readdlm("Store_Trajectory/Outcomes/QApprox_MMZD_1e5(B1.096).csv", Float64);
 
 CdM = Q_MMZD * C.vectorCdM;
@@ -144,7 +144,7 @@ end
 v = findall(msd3 .!= 0);
 msd3 = msd3[v];
 
-open("Data_Analysis/MSD/Outcomes/msd_MMZD_1e7(B1.096)_NEW.csv", "w+") do x
+open("Data_Analysis/MSD/Outcomes/msd_MMZD_M1m1_1e7(B1.096).csv", "w+") do x
     writedlm(x, [ S.Stochdt*100*v msd3 ]);
 end
 

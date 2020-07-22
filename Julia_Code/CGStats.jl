@@ -39,9 +39,9 @@ export InterpolationAlgorithm_Kriging, ApproxMeanForce, ApproxMeanStresses, Appr
   Moments::Int		  = 2
   check::Int          = Int(5e3)  # to print the number of iteration in a loop
 
-  #NB: the below coeffcients must be checked and entered every time a new look-up table of Mean and Fluctuating Force is generated.
-  #NB: the following values were generated for the look-up tables in the folder Julia_Code/Store_Trajectory for the system C (M-m-M) with masses M=10 and M=1
-  #    consisting of 30 particles.
+  # NB: the below coeffcients must be checked and entered every time a new look-up table of Mean and Fluctuating Force is generated.
+  # NB: the following values were generated for the look-up tables in the folder Julia_Code/Store_Trajectory for the system C (M-m-M) with masses M=10 and M=1
+  #     consisting of 30 particles.
 
   # Coeff. of line (y = m*x + q) in the ApproxMeanStresses function
   m_MF::Float64       = 537.59;   # gradient of the line
