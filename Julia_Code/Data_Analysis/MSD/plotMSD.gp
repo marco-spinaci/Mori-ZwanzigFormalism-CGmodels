@@ -24,7 +24,7 @@ set key bottom right
 #   "./Data_Analysis/MSD/Outcomes/INT_msd_MMZD_1e7(B1.096).csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
 # set output
 set yrange[4e-3:3e-2]
-set title "{{/RomanOblique MSD of the inter-bead distance (M-m-M, M=1, m=1)}}"
+# set title "{{/RomanOblique MSD of the inter-bead distance (M-m-M, M=1, m=1)}}"
 set output "| epstopdf -f -o=Data_Analysis/MSD/Plots/INT_msd_M1m1_1e7_B1.096.pdf"
 # set output "| epstopdf -f -o=../TEX_Notes/Figure/INT_MSD_CORRETTAmd.pdf"
 p "./Data_Analysis/MSD/Outcomes/INT_msd_FGD_M1m1_1e7(B1.096).csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
@@ -35,7 +35,7 @@ set output
 
 # set xrange[1e-1:1e2]
 set yrange[2e-3:4e-2]
-set title "{{/RomanOblique MSD of a sigle bead (M-m-M, M=1, m=1)}}"
+# set title "{{/RomanOblique MSD of a sigle bead (M-m-M, M=1, m=1)}}"
 set output "| epstopdf -f -o=Data_Analysis/MSD/Plots/msd_M1m1_1e7_B1.096.pdf"
 # set output "| epstopdf -f -o=../TEX_Notes/Figure/MSD_CORRETTAmd.pdf"
 p "./Data_Analysis/MSD/Outcomes/msd_FGD_M1m1_1e7(B1.096).csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
