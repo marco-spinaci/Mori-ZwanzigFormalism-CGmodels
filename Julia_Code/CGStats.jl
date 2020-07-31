@@ -51,9 +51,12 @@ export InterpolationAlgorithm_Kriging, ApproxMeanForce, ApproxMeanStresses, Appr
   m_FF::Float64       = -135.21;  # gradient of the line
   q_FF::Float64       = 403.79;   #  y-intercept of the line
 
-  # Coeff. of exponential function (y = A*exp(-B*x)) in the ApproxFlucStep function
-  coeffEXP_A::Float64 = 3.3199e6;
-  coeffEXP_B::Float64 = 4.8887;
+  # Coeff. of exponential function (y = A*exp(-B*x)) in the ApproxMeanStresses/ApproxFlucStep function
+  coeffEXP_MF_A::Float64 = 4.0552e5;
+  coeffEXP_MF_B::Float64 = 3.8192;
+
+  coeffEXP_FF_A::Float64 = 3.3199e6;
+  coeffEXP_FF_B::Float64 = 4.8887;
 end
 
 #############################################
@@ -1643,7 +1646,7 @@ function ApproxMeanStresses(Q::Array{Float64,1},Fdata::Array{Float64,2},C::Chain
     		if dQ[i] < Rmin
         		Sigma[i] = S.m_MF * dQ[i] + S.q_MF;
     		elseif dQ[i] > Rmax
-        		Sigma[i] = 0.;
+        		Sigma[i] = S.coeffEXP_MF_A * exp(-S.coeffEXP_MF_B * dQ[i]);
     		else
         		index = trunc(Int, (dQ[i] - Rmin) / dx) + 1;
         		distance = dQ[i] - (Rmin + (index - 1) * dx);
@@ -1695,7 +1698,7 @@ function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},StressSqvals::Ar
         if dQ[i] < Rmin
             Gvec[i] = S.m_FF * dQ[i] + S.q_FF;
         elseif dQ[i] > Rmax
-            Gvec[i] = S.coeffEXP_A * exp(-S.coeffEXP_B * dQ[i]);
+            Gvec[i] = S.coeffEXP_FF_A * exp(-S.coeffEXP_FF_B * dQ[i]);
         else
             index = trunc(Int, (dQ[i] - Rmin) / dx) + 1;
             distance = dQ[i] - (Rmin + (index - 1) * dx);

@@ -3,16 +3,21 @@
 
 include("../LJChain.jl")
 include("../CGStats.jl")
-using Main.LJChain,Main.CGStats,DelimitedFiles
+using Main.LJChain,Main.CGStats,DelimitedFiles,Random
 
 #####################################################################################################################
 ## Set up simulation parameters.
 
-C = Chain(SM=1, LM=1, Beta=1.096); # system C ≣ [Patt=[0,1,0],NBeads=10,ConstrainedBeads=2,SEps=1,LEps=100,SM=10,LM=1,Dist=1,Beta=1,Gamma=1]
+C = Chain(SM=1, LM=1, Beta=1.096, Gamma=1); # system C ≣ [Patt=[0,1,0],NBeads=10,ConstrainedBeads=2,SEps=1,LEps=100,SM=10,LM=1,Dist=1,Beta=1,Gamma=1]
 
-# S = Simulator(); # [dt=1e-4,Stochdt=1e-4,FullSteps=Int(1e5),OrthoSteps=1,ApproxSteps=Int(1e5),OrthoSamples=Int(1e5),MacroSamples=50,LagStep=400,NumLags=30]
-S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7), m_MF=421.52, q_MF=-1237.5);
+# S = Simulator(); # [dt=1e-4,Stochdt=1e-4,FullSteps=Int(1e5),OrthoSteps=1,ApproxStep=Int(1e5),OrthoSamples=Int(1e5),MacroSamples=50,LagStep=400,NumLags=30]
+S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7), m_MF=759.19, q_MF=-2180.4, coeffEXP_MF_A=9.1801e7, coeffEXP_MF_B=14.935);
+# m_MF=685.46, q_MF=-1975.00
+# m_MF=421.52, q_MF=-1237.5 # Coeff_MF_SplineI_sC_M1m1.csv
 # S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e5), ApproxSteps=Int(1e5));
+
+# Random.seed!(2134)
+# Random.seed!(121)
 
 ######################################################################################################################
 ## Generate initial data
@@ -45,7 +50,29 @@ S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7), m
 # Fdata[:, 5] = Fmean_coeff2[1:end - 1];
 
 ## NB: paper data
-Fdata = readdlm("ABCD_Systems/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
+# Fdata = readdlm("ABCD_Systems/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
+
+force_data = readdlm("Store_Trajectory/force_1_1_new.dat", Float64);
+
+# i punti della griglia *devono* essere equispaziati
+RR = force_data[:, 1];
+dx = RR[2] - RR[1];
+
+#
+Fm = force_data[:, 2] ./ C.Beta;
+FmINT_D = (circshift(Fm,-1) - circshift(Fm,1)) ./(2*dx);
+Fmean = Fm[2:end-1];
+Fmean_d = FmINT_D[2:end-1];
+#
+Fmean_coeff1 = (2. * (Fmean - circshift(Fmean, -1)) + (Fmean_d + circshift(Fmean_d, -1)) * dx) / dx;
+Fmean_coeff2 = circshift(Fmean, -1) - Fmean + (-Fmean_d - Fmean_coeff1) * dx;
+#
+Fdata = zeros(length(Fmean) - 1, 5);
+Fdata[:, 1] = RR[2:end - 2];
+Fdata[:, 2] = Fmean[1:end - 1];
+Fdata[:, 3] = Fmean_d[1:end - 1];
+Fdata[:, 4] = Fmean_coeff1[1:end - 1];
+Fdata[:, 5] = Fmean_coeff2[1:end - 1];
 
 
 ########################################################################################
@@ -56,13 +83,13 @@ Fdata = readdlm("ABCD_Systems/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
 #########################################################################################
 ## Write data to file
 
-open("Store_Trajectory/Outcomes/PApprox_DCGD_M1m1_1e7(B1.096)_CORRETTA.csv", "w+") do x
+open("Store_Trajectory/Outcomes/PApprox_DCGD_M1m1_1e7(B1.096)_prova_1.csv", "w+") do x
     writedlm(x, PApprox2);
 end
-open("Store_Trajectory/Outcomes/QApprox_DCGD_M1m1_1e7(B1.096)_CORRETTA.csv", "w+") do x
+open("Store_Trajectory/Outcomes/QApprox_DCGD_M1m1_1e7(B1.096)_prova_1.csv", "w+") do x
     writedlm(x, QApprox2);
 end
-open("Store_Trajectory/Outcomes/FApprox_DCGD_M1m1_1e7(B1.096)_CORRETTA.csv", "w+") do x
+open("Store_Trajectory/Outcomes/FApprox_DCGD_M1m1_1e7(B1.096)_prova_1.csv", "w+") do x
     writedlm(x, FApprox2);
 end
 

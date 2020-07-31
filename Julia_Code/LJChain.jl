@@ -10,7 +10,7 @@ __precompile__()
 """
 module LJChain
 
-using Parameters,Statistics,LinearAlgebra
+using Parameters,Statistics,LinearAlgebra,Random
 
 # Physics functions
 export Chain, LennardJones, LennardJonesPrime, Potential, Forces, Stresses, KineticEnergy
