@@ -16,6 +16,22 @@ set format y "10^{%L}"
 
 set key bottom right
 
+set yrange[2e-3:4e-2]
+# set title "{{/RomanOblique MSD of a sigle bead (M-m-M, M=1, m=1)}}"
+set output "| epstopdf -f -o=Data_Analysis/MSD/Plots/msd_M1m1_1e7_B1.pdf"
+p "./Data_Analysis/MSD/Outcomes/msd_FGD_M1m1_1e7_B1.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+  "./Data_Analysis/MSD/Outcomes/msd_DCGD_M1m1_1e7_B1_corretta.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
+  "./Data_Analysis/MSD/Outcomes/msd_MMZD_M1m1_1e7_B1_corretta.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
+set output
+
+set yrange[4e-3:3e-2]
+set output "| epstopdf -f -o=Data_Analysis/MSD/Plots/INT_msd_M1m1_1e7_B1.pdf"
+p "./Data_Analysis/MSD/Outcomes/INT_msd_FGD_M1m1_1e7_B1.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+  "./Data_Analysis/MSD/Outcomes/INT_msd_DCGD_M1m1_1e7_B1_corretta.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
+  "./Data_Analysis/MSD/Outcomes/INT_msd_MMZD_M1m1_1e7_B1_corretta.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
+set output
+
+
 
 # set output "| epstopdf -f -o=Data_Analysis/MSD/Plots/INT_msd_1e7.pdf"
 # # set output "| epstopdf -f -o=../TEX_Notes/Figure/MSD.pdf"
@@ -34,19 +50,19 @@ set key bottom right
 # set output
 
 # set xrange[1e-1:1e2]
-set yrange[2e-3:4e-2]
-# set title "{{/RomanOblique MSD of a sigle bead (M-m-M, M=1, m=1)}}"
-set output "| epstopdf -f -o=Data_Analysis/MSD/Plots/msd_M1m1_1e7_B1.096.pdf"
-# set output "| epstopdf -f -o=../TEX_Notes/Figure/MSD_CORRETTAmd.pdf"
-p "./Data_Analysis/MSD/Outcomes/msd_FGD_M1m1_1e7(B1.096).csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
-  "./Data_Analysis/MSD/Outcomes/msd_DCGD_M1m1_1e7(B1.096).csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
-  "./Data_Analysis/MSD/Outcomes/msd_DCGD_M1m1_1e7(B1.096)_prova.csv" u 1:2 w l lw 5 lc 1 dt 3 t "CGD - prova" , \
-  "./Data_Analysis/MSD/Outcomes/msd_DCGD_M1m1_1e7(B1)_prova.csv" u 1:2 w l lw 5 lc 6 dt 3 t "CGD - prova - Beta=1" , \
-  "./Data_Analysis/MSD/Outcomes/msd_DCGD_M1m1_1e7(B1.096)_prova_1.csv" u 1:2 w l lw 5 lc 4 dt 3 t "CGD - prova 1" , \
-  "./Data_Analysis/MSD/Outcomes/msd_MMZD_M1m1_1e7(B1.096).csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD" , \
-  "./Data_Analysis/MSD/Outcomes/msd_MMZD_M1m1_1e7(B1.096)_prova_1.csv" u 1:2 w p lw 1 ps 1 lc 5 pt 4 t "MMZD - prova 1" , \
-  "./Data_Analysis/MSD/Outcomes/msd_MMZD_M1m1_1e7(B1.096)_prova_2.csv" u 1:2 w p lw 1 ps 1 lc 9 pt 4 t "MMZD - prova 2" 
-set output
+# set yrange[2e-3:4e-2]
+# # set title "{{/RomanOblique MSD of a sigle bead (M-m-M, M=1, m=1)}}"
+# set output "| epstopdf -f -o=Data_Analysis/MSD/Plots/msd_M1m1_1e7_B1.096.pdf"
+# # set output "| epstopdf -f -o=../TEX_Notes/Figure/MSD_CORRETTAmd.pdf"
+# p "./Data_Analysis/MSD/Outcomes/msd_FGD_M1m1_1e7(B1.096).csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+#   "./Data_Analysis/MSD/Outcomes/msd_DCGD_M1m1_1e7(B1.096).csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
+#   "./Data_Analysis/MSD/Outcomes/msd_DCGD_M1m1_1e7(B1.096)_prova.csv" u 1:2 w l lw 5 lc 1 dt 3 t "CGD - prova" , \
+#   "./Data_Analysis/MSD/Outcomes/msd_DCGD_M1m1_1e7(B1)_prova.csv" u 1:2 w l lw 5 lc 6 dt 3 t "CGD - prova - Beta=1" , \
+#   "./Data_Analysis/MSD/Outcomes/msd_DCGD_M1m1_1e7(B1.096)_prova_1.csv" u 1:2 w l lw 5 lc 4 dt 3 t "CGD - prova 1" , \
+#   "./Data_Analysis/MSD/Outcomes/msd_MMZD_M1m1_1e7(B1.096).csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD" , \
+#   "./Data_Analysis/MSD/Outcomes/msd_MMZD_M1m1_1e7(B1.096)_prova_1.csv" u 1:2 w p lw 1 ps 1 lc 5 pt 4 t "MMZD - prova 1" , \
+#   "./Data_Analysis/MSD/Outcomes/msd_MMZD_M1m1_1e7(B1.096)_prova_2.csv" u 1:2 w p lw 1 ps 1 lc 9 pt 4 t "MMZD - prova 2"
+# set output
   # "./Data_Analysis/MSD/Outcomes/msd_DCGD_M1m1_1e7(B1.096)_NEW_TEST_3.csv" u 1:2 w l lw 5 lc 6 dt 3 t "CGD - NEW - seed 1" , \
   # "./Data_Analysis/MSD/Outcomes/msd_DCGD_M1m1_1e7(B1.096)_NEW_TEST.csv" u 1:2 w l lw 5 lc 3 dt 3 t "CGD - NEW" , \
   # "./Data_Analysis/MSD/Outcomes/msd_DCGD_M1m1_1e7(B1.096)_NEW_TEST_1.csv" u 1:2 w l lw 5 lc 4 dt 3 t "CGD - NEW - seed" , \
