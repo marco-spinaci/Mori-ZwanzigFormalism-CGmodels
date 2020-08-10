@@ -6,7 +6,7 @@ Marco Spinaci's Masters project
   * [Compiler Requirements](#compiler-requirements)
   * [Scripts to Compute the Trajectories](#scripts-to-compute-the-trajectories)
     + [Parameters of `LJChain.jl` and `CGStats.jl` Modules](#parameters-of-ljchainjl-and-cgstatsjl-modules)
-    + [Effective Potential and Look-Up Table of Mean and Fluctuating Force](#effective-potential-and-look-up-table-of-mean-and-fluctuating-force)
+    + [Effective Potential and Look-Up Table of Mean Force and Fluctuating Force](#effective-potential-and-look-up-table-of-mean-force-and-fluctuating-force)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -138,7 +138,7 @@ They can be modified in a generic script `*.jl` by
 S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7))
 ```
 
-### Effective Potential and Look-Up Table of Mean and Fluctuating Force
+### Effective Potential and Look-Up Table of Mean Force and Fluctuating Force
 In this work the **Effective Potential** to compute the CG and MMZD dynamics is determined via a **bottom-up approach**, i.e. through Fine-Grained (or atomistic) simulations. More specifically, it is determined through the integration of the **Mean Force** with respect to the distance between the CG particles.
 
 The **look-up table of the Mean Force and Fluctuating Force** with respect to the distance between the CG particles in the (NVT) ensemble are computed by the script: [ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl) by means of the function
