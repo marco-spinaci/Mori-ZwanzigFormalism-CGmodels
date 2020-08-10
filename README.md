@@ -107,7 +107,7 @@ OrthoSteps::Int     = 1
 ApproxSteps::Int    = Int(1e5)
 LagStep             = 400       # spacing of lag times for autocorrelation
 NumLags             = 30        # number of lag times to compute
-MacroSamples::Int   = 50
+MacroSamples::Int   = 50        # number of values in the look-up tables of the Mean Force and Fluctuating Force
 OrthoSamples::Int   = Int(1e5)
 Moments::Int        = 2
 check::Int          = Int(5e3)  # to print the number of iteration in a loop
@@ -141,6 +141,7 @@ S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7))
 ### Effective Potential and Look-Up Table of Mean and Fluctuating Force
 In this work the **Effective Potential** to compute the CG and MMZD dynamics is determined via a **bottom-up approach**, i.e. through Fine-Grained (or atomistic) simulations. More specifically, it is determined through the integration of the **Mean Force** with respect to the distance between the CG particles.
 
-The **look-up table of the Mean Force and Fluctuating Force** with respect to the distance between the CG particles in the (NVT) ensemble are computed by the script: [ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl).
-
-
+The **look-up table of the Mean Force and Fluctuating Force** with respect to the distance between the CG particles in the (NVT) ensemble are computed by the script: [ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl) by means of the function
+```julia
+(RR,PP,Veff,Fmean,Fstd,FdataMF,FdataFF) = VEffConstrainedLangDyn_NVT(C,S)
+```
