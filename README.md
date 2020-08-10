@@ -4,8 +4,8 @@ Marco Spinaci's Masters project
 - [MarcoMasterProject](#marcomasterproject)
   * [Introduction](#introduction)
   * [Compiler Requirements](#compiler-requirements)
+    + [Parameters of `LJChain.jl` Module and `CGStats.jl` Module](#parameters-of-ljchainjl-module-and-cgstatsjl-module)
   * [Scripts to Compute the Trajectories](#scripts-to-compute-the-trajectories)
-    + [Parameters of `LJChain.jl` and `CGStats.jl` Modules](#parameters-of-ljchainjl-and-cgstatsjl-modules)
     + [Effective Potential and Look-Up Table of Mean Force and Fluctuating Force](#effective-potential-and-look-up-table-of-mean-force-and-fluctuating-force)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -13,10 +13,10 @@ Marco Spinaci's Masters project
 ## Introduction
 The code in the folder `Julia_Code` allows to implement Molecular Dynamics simulations (both atomistic and Coarse-Grained) and to analyze the results.
 We have implemented **four different dynamics** in **(NVE) ensemble** and **(NVT) ensemble**:
-* the **Fine-Grained Dynamics** or the All-Atom Dynamics
-* the **Orthogonal Dynamics** or the Constrained Dynamics, where the constraints are given by the mapping operators of the Coarse-Grained Dynamics
-* the **Coarse-Grained Dynamics**
-* the **Markovian Mori-Zwanzig Dynamics**
+* the **Fine-Grained Dynamics (FGD)** or the All-Atom Dynamics
+* the **Orthogonal Dynamics (OD)** or the Constrained Dynamics, where the constraints are given by the mapping operators of the Coarse-Grained Dynamics
+* the **Coarse-Grained Dynamics (CGD)**
+* the **Markovian Mori-Zwanzig Dynamics (MMZD)**
 
 ## Compiler Requirements
 
@@ -32,50 +32,7 @@ The modules to be loaded to determine and analyze the trajectories are
 * [LJChain.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/LJChain.jl), this module providing physics functions and a parameter object for a 1D chain of 2 species of particle
 * [CGStats.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/CGStats.jl), in this module there are all the functions needed to determine the various dynamics and to determine the autocorrelation functions 
 
-## Scripts to Compute the Trajectories
-The scripts to determine or to analyze trajectories are divided into four parts, for example see [Store_Trajectory/compareTraj_FGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_FGD.jl):
-1. In the first part, we load the necessary packages and modules:
-
-```julia
-include("../LJChain.jl")
-include("../CGStats.jl")
-using Main.LJChain,Main.CGStats,DelimitedFiles
-```
-
-2. In the second part, we can set up the parameters for the simulation present in the loaded modules `LJChain.jl` and `CGStats.jl`:
-
-```julia
-C = Chain(SM=1, LM=1, Beta=1);
-S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
-```
-
-3. In the third part, we call the functions of module `CGStats.jl` (or `LJChain.jl`) to determine the trajectories of the atomistic system 
-
-```julia
-# Generate initial data
-
-(P0, Q0, F0, H0, P0CG, Q0CG) = InitConds(C);
-
-# Generate a random trajectory, using data-generated potentials
-
-(PFull, QFull, FFull, Kmean, Hmean) = LangFullTraj_NVT(P0, Q0, C, S);
-```
-
-4. Finally, we save the data to files
-
-```julia
-open("Store_Trajectory/Outcomes/P_FGD_M1m1_1e7_B1.csv", "w+") do x
-    writedlm(x, (C.Phi*PFull)');
-end
-open("Store_Trajectory/Outcomes/Q_FGD_M1m1_1e7_B1.csv", "w+") do x
-    writedlm(x, (C.Psi*QFull)');
-end
-open("Store_Trajectory/Outcomes/F_FGD_M1m1_1e7_B1.csv", "w+") do x
-    writedlm(x, (C.PhiF*FFull)');
-end
-```
-
-### Parameters of `LJChain.jl` and `CGStats.jl` Modules
+### Parameters of `LJChain.jl` Module and `CGStats.jl` Module
 The default values of the parameters in the LJChain.jl module are
 
 ```julia
@@ -138,10 +95,67 @@ They can be modified in a generic script `*.jl` by
 S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7))
 ```
 
+## Scripts to Compute the Trajectories
+The scripts to determine (or to analyze) trajectories are divided into four parts, for example see [Store_Trajectory/compareTraj_FGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_FGD.jl):
+1. In the first part, we load the necessary packages and modules:
+
+```julia
+include("../LJChain.jl")
+include("../CGStats.jl")
+using Main.LJChain,Main.CGStats,DelimitedFiles
+```
+
+2. In the second part, we can set up the parameters for the simulation present in the loaded modules `LJChain.jl` and `CGStats.jl`:
+
+```julia
+C = Chain(SM=1, LM=1, Beta=1);
+S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
+```
+
+3. In the third part, we call the functions of module `CGStats.jl` (or `LJChain.jl`) to determine the trajectories of the Fine-grained (or atomistic) system 
+
+```julia
+# Generate initial data
+
+(P0, Q0, F0, H0, P0CG, Q0CG) = InitConds(C);
+
+# Generate a random trajectory, using data-generated potentials
+
+(PFull, QFull, FFull, Kmean, Hmean) = LangFullTraj_NVT(P0, Q0, C, S);
+```
+
+4. Finally, we save the data to files
+
+```julia
+open("Store_Trajectory/Outcomes/P_FGD_M1m1_1e7_B1.csv", "w+") do x
+    writedlm(x, (C.Phi*PFull)');
+end
+open("Store_Trajectory/Outcomes/Q_FGD_M1m1_1e7_B1.csv", "w+") do x
+    writedlm(x, (C.Psi*QFull)');
+end
+open("Store_Trajectory/Outcomes/F_FGD_M1m1_1e7_B1.csv", "w+") do x
+    writedlm(x, (C.PhiF*FFull)');
+end
+```
+
+The scripts in the (NVT) ensemble can be found in the folder `Store_Trajectory` and they are
+* [Store_Trajectory/compareTraj_FGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_FGD.jl)
+* [Store_Trajectory/compareTraj_DCGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_DCGD.jl)
+* [Store_Trajectory/compareTraj_MMZD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_MMZD.jl)
+
 ### Effective Potential and Look-Up Table of Mean Force and Fluctuating Force
 In this work the **Effective Potential** to compute the CG and MMZD dynamics is determined via a **bottom-up approach**, i.e. through Fine-Grained (or atomistic) simulations. More specifically, it is determined through the integration of the **Mean Force** with respect to the distance between the CG particles.
 
 The **look-up table of the Mean Force and Fluctuating Force** with respect to the distance between the CG particles in the (NVT) ensemble are computed by the script: [ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl) by means of the function
+
 ```julia
 (RR,PP,Veff,Fmean,Fstd,FdataMF,FdataFF) = VEffConstrainedLangDyn_NVT(C,S)
 ```
+
+where 
+* `RR` is the distance between the CG particles
+* `PP` is the momenta of the CG particles
+* `Veff` is the Effective Potential
+* `Fmean` is the Mean Force
+* `Fstd` is the Fluctuating Force
+* `FdataMF` and `FdataFF` are the coefficients for the cubic spline interpolation. These coefficients are	generated from kriging interpolation data and, they are generated separately to eliminate noise from the original Mean Force and Fluctuating	Force data.
