@@ -14,7 +14,7 @@ Marco Spinaci's Masters project
 The code in the folder `Julia_Code` allows to implement Molecular Dynamics simulations (both atomistic and Coarse-Grained) and to analyze the results.
 We have implemented **four different dynamics** in **(NVE) ensemble** and **(NVT) ensemble**:
 * the **Fine-Grained Dynamics (FGD)** or the All-Atom Dynamics
-* the **Orthogonal Dynamics (OD)** or the Constrained Dynamics, where the constraints are given by the mapping operators of the Coarse-Grained Dynamics
+* the **Orthogonal Dynamics (OD)** or the Constrained Dynamics, where the constraints are given by the mapping operators of the Coarse-Grained system
 * the **Coarse-Grained Dynamics (CGD)**
 * the **Markovian Mori-Zwanzig Dynamics (MMZD)**
 
@@ -137,6 +137,8 @@ open("Store_Trajectory/Outcomes/F_FGD_M1m1_1e7_B1.csv", "w+") do x
     writedlm(x, (C.PhiF*FFull)');
 end
 ```
+
+where `C.Phi` and `C.Psi` are the mapping operators of the CG system and, `C.PhiF` is the projection operator of the Forces in the CG system. We are projecting the obtained data so that we can easily compare them with those obtained from CG systems.
 
 The scripts in the (NVT) ensemble can be found in the folder `Store_Trajectory` and they are
 * [Store_Trajectory/compareTraj_FGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_FGD.jl)
