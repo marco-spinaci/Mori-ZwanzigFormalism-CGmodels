@@ -1,6 +1,14 @@
 # MarcoMasterProject
 Marco Spinaci's Masters project
 
+- [MarcoMasterProject](#marcomasterproject)
+  * [Introduction](#introduction)
+  * [Compiler Requirements](#compiler-requirements)
+  * [Scripts to compute the trajectories](#scripts-to-compute-the-trajectories)
+    + [Parameters of LJChain.jl and CGStats.jl modules](#parameters-of-ljchainjl-and-cgstatsjl-modules)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
 ## Introduction
 The code in the folder `Julia_Code` allows to implement Molecular Dynamics simulations (both atomistic and Coarse-Grained) and to analyze the results.
 We have implemented **four different dynamics** in **(NVE) ensemble** and **(NVT) ensemble**:
@@ -67,18 +75,64 @@ end
 ```
 
 ### Parameters of `LJChain.jl` and `CGStats.jl` modules
-The settable parameters of the LJChain.jl module are
+The default values of the parameters in the LJChain.jl module are
 
 ```julia
-Patt::Array{Int,1} 	   = [0,1,0] # Pattern of particles
-NBeads::Int			       = 10	     # Number of beads
-ConstrainedBeads::Int  = 2	  	 # Number of beads to constrain
-SM::Float64 			     = 10.0	   # Mass of 0 particles
-LM::Float64 			     = 1.0	   # Mass of 1 particles
-SEps::Float64			     = 1.0     # Scaling of LJ potential for 0 particles
-LEps::Float64 		     = 100.0   # Scaling of LJ potential for 1 particles
-Dist::Float64 		     = 1.0     # Equilibrium distance for all LJ potentials
-Beta::Float64 		     = 1.0	   # Inverse temperature
+Patt::Array{Int,1}     = [0,1,0] # Pattern of particles
+NBeads::Int            = 10      # Number of beads
+ConstrainedBeads::Int  = 2       # Number of beads to constrain
+SM::Float64            = 10.0    # Mass of 0 particles
+LM::Float64            = 1.0     # Mass of 1 particles
+SEps::Float64          = 1.0     # Scaling of LJ potential for 0 particles
+LEps::Float64          = 100.0   # Scaling of LJ potential for 1 particles
+Dist::Float64          = 1.0     # Equilibrium distance for all LJ potentials
+Beta::Float64          = 1.0     # Inverse temperature
 Gamma::Float64         = 1.0     # Friction parameter
 ```
 
+They can be modified in a generic script `*.jl` by 
+
+```julia
+C = Chain(SM=1, LM=1, Beta=1)
+```
+
+Instead, the default values of the parameters in the CGStats.jl module are
+
+```julia
+dt::Float64         = 1e-4
+Stochdt::Float64    = 1e-4
+FullSteps::Int      = Int(1e5)
+OrthoSteps::Int     = 1
+ApproxSteps::Int    = Int(1e5)
+LagStep             = 400       # spacing of lag times for autocorrelation
+NumLags             = 30        # number of lag times to compute
+MacroSamples::Int   = 50
+OrthoSamples::Int   = Int(1e5)
+Moments::Int        = 2
+check::Int          = Int(5e3)  # to print the number of iteration in a loop
+
+# NB: the below coeffcients must be checked and entered every time a new look-up table of Mean and Fluctuating Force is generated.
+# NB: the following values were generated for the look-up tables in the folder Julia_Code/Store_Trajectory for the system C (M-m-M) with masses M=10 and M=1
+#     consisting of 30 particles.
+
+# Coeff. of line (y = m*x + q) in the ApproxMeanStresses function
+m_MF::Float64       = 537.59;   # gradient of the line
+q_MF::Float64       = -1567.1;  #  y-intercept of the line
+
+# Coeff. of line (y = m*x + q) in the ApproxFlucStep function
+m_FF::Float64       = -135.21;  # gradient of the line
+q_FF::Float64       = 403.79;   #  y-intercept of the line
+
+# Coeff. of exponential function (y = A*exp(-B*x)) in the ApproxMeanStresses/ApproxFlucStep function
+coeffEXP_MF_A::Float64 = 4.0552e5;
+coeffEXP_MF_B::Float64 = 3.8192;
+
+coeffEXP_FF_A::Float64 = 3.3199e6;
+coeffEXP_FF_B::Float64 = 4.8887;
+```
+
+They can be modified in a generic script `*.jl` by 
+
+```julia
+S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7))
+```
