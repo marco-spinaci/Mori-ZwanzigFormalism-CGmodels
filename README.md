@@ -146,7 +146,7 @@ The scripts in the (NVT) ensemble can be found in the folder `Store_Trajectory` 
 * [Store_Trajectory/compareTraj_MMZD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_MMZD.jl)
 
 ### Effective Potential and Look-Up Table of Mean Force and Fluctuating Force
-In this work the **Effective Potential** to compute the CG and MMZD dynamics is determined via a **bottom-up approach**, i.e. through Fine-Grained (or atomistic) simulations. More specifically, it is determined through the integration of the **Mean Force** with respect to the distance between the CG particles.
+To compute the CG and MMZD dynamics, the **Effective Potential** is determined via a **bottom-up approach**, i.e. through Fine-Grained (or atomistic) simulations. More specifically, it is determined through the integration of the **Mean Force** with respect to the distance between the CG particles.
 
 The **look-up table of the Mean Force and Fluctuating Force** with respect to the distance between the CG particles in the (NVT) ensemble are computed by the script: [ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl) by means of the function
 
