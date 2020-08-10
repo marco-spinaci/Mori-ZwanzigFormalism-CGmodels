@@ -4,8 +4,9 @@ Marco Spinaci's Masters project
 - [MarcoMasterProject](#marcomasterproject)
   * [Introduction](#introduction)
   * [Compiler Requirements](#compiler-requirements)
-  * [Scripts to compute the trajectories](#scripts-to-compute-the-trajectories)
-    + [Parameters of LJChain.jl and CGStats.jl modules](#parameters-of-ljchainjl-and-cgstatsjl-modules)
+  * [Scripts to Compute the Trajectories](#scripts-to-compute-the-trajectories)
+    + [Parameters of `LJChain.jl` and `CGStats.jl` Modules](#parameters-of--ljchainjl--and--cgstatsjl--modules)
+    + [Effective Potential and Look-Up Table of Mean and Fluctuating Force](#effective-potential-and-look-up-table-of-mean-and-fluctuating-force)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -31,7 +32,7 @@ The modules to be loaded to determine and analyze the trajectories are
 * [LJChain.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/LJChain.jl), this module providing physics functions and a parameter object for a 1D chain of 2 species of particle
 * [CGStats.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/CGStats.jl), in this module there are all the functions needed to determine the various dynamics and to determine the autocorrelation functions 
 
-## Scripts to compute the trajectories
+## Scripts to Compute the Trajectories
 The scripts to determine or to analyze trajectories are divided into four parts, for example see [Store_Trajectory/compareTraj_FGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_FGD.jl):
 1. In the first part, we load the necessary packages and modules:
 
@@ -74,7 +75,7 @@ open("Store_Trajectory/Outcomes/F_FGD_M1m1_1e7_B1.csv", "w+") do x
 end
 ```
 
-### Parameters of `LJChain.jl` and `CGStats.jl` modules
+### Parameters of `LJChain.jl` and `CGStats.jl` Modules
 The default values of the parameters in the LJChain.jl module are
 
 ```julia
@@ -136,3 +137,10 @@ They can be modified in a generic script `*.jl` by
 ```julia
 S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7))
 ```
+
+### Effective Potential and Look-Up Table of Mean and Fluctuating Force
+In this work the **Effective Potential** to compute the CG and MMZD dynamics is determined via a **bottom-up approach**, i.e. through Fine-Grained (or atomistic) simulations. More specifically, it is determined through the integration of the **Mean Force** with respect to the distance between the CG particles.
+
+The **look-up table of the Mean Force and Fluctuating Force** with respect to the distance between the CG particles in the (NVT) ensemble are computed by the script: [ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl).
+
+
