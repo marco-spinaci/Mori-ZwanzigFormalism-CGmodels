@@ -5,7 +5,7 @@ Marco Spinaci's Masters project
   * [Introduction](#introduction)
   * [Compiler Requirements](#compiler-requirements)
   * [Scripts to Compute the Trajectories](#scripts-to-compute-the-trajectories)
-    + [Parameters of `LJChain.jl` and `CGStats.jl` Modules](#parameters-of--ljchainjl--and--cgstatsjl--modules)
+    + [Parameters of `LJChain.jl` and `CGStats.jl` Modules](#parameters-of-ljchainjl-and-cgstatsjl-modules)
     + [Effective Potential and Look-Up Table of Mean and Fluctuating Force](#effective-potential-and-look-up-table-of-mean-and-fluctuating-force)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
