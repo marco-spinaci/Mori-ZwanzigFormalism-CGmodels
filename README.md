@@ -74,13 +74,12 @@ check::Int          = Int(5e3)  # to print the number of iteration in a loop
 # NB: the following values were generated for the look-up tables in the folder Julia_Code/Store_Trajectory for the system C (M-m-M) with masses M=10 and M=1
 #     consisting of 30 particles.
 
-# Coeff. of line (y = m*x + q) in the ApproxMeanStresses function
+# Coeff. of line (y = m*x + q) in the ApproxMeanStresses/ApproxFlucStep function
 m_MF::Float64       = 537.59;   # gradient of the line
-q_MF::Float64       = -1567.1;  #  y-intercept of the line
+q_MF::Float64       = -1567.1;  # y-intercept of the line
 
-# Coeff. of line (y = m*x + q) in the ApproxFlucStep function
 m_FF::Float64       = -135.21;  # gradient of the line
-q_FF::Float64       = 403.79;   #  y-intercept of the line
+q_FF::Float64       = 403.79;   # y-intercept of the line
 
 # Coeff. of exponential function (y = A*exp(-B*x)) in the ApproxMeanStresses/ApproxFlucStep function
 coeffEXP_MF_A::Float64 = 4.0552e5;
