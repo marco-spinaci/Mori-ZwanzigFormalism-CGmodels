@@ -144,7 +144,7 @@ open("Store_Trajectory/Outcomes/F_FGD_M1m1_1e7_B1.csv", "w+") do x
 end
 ```
 
-where `C.Phi` and `C.Psi` are the mapping operators of the CG system and, `C.PhiF` is the projection operator of the Forces in the CG system. We are projecting the obtained data so that we can easily compare them with those obtained from CG systems.
+where `C.Phi` and `C.Psi` are the mapping operators of the CG system and, `C.PhiF` is the projection operator of the Forces in the CG system. We are projecting the obtained data so that we can easily compare them with those obtained from CGD and MMZD.
 
 ### Effective Potential and Look-Up Table of Mean Force and Fluctuating Force
 To compute the CG and MMZD dynamics, the **Effective Potential** is determined via a **bottom-up approach**, i.e. through Fine-Grained (or atomistic) simulations. More specifically, it is determined through the integration of the **Mean Force** with respect to the distance between the CG particles.
