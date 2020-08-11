@@ -15,12 +15,11 @@ S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
 # S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e5), ApproxSteps=Int(1e5));
 
 ######################################################################################################################
-## Generate initial data
+# Generate initial data
 
 (P0, Q0, F0, H0, P0CG, Q0CG) = InitConds(C);
 
-########################################################################################
-## Generate a random trajectory, using data-generated potentials
+# Generate a random trajectory, using data-generated potentials
 
 (PFull, QFull, FFull, Kmean, Hmean) = LangFullTraj_NVT(P0, Q0, C, S);
 

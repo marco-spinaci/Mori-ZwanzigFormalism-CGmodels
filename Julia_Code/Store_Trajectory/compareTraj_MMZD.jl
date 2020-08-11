@@ -89,22 +89,21 @@ S = Simulator(dt=1e-3, Stochdt=1e-3,
 # FdataMF = readdlm("ABCD_Systems/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
 # FdataFF = readdlm("ABCD_Systems/Outcomes/Coeff_FF_SplineI_sC_M1m1.csv", Float64);
 
-
+# to generate the coefficients for the cubic spline interpolation for mean force and fluctuating force
+# NB: the grid points *must* be equally spaced
 force_data = readdlm("Store_Trajectory/force_1_1_Beta1.dat", Float64);
 
-# i punti della griglia *devono* essere equispaziati
 RR = force_data[:, 1];
 dx = RR[2] - RR[1];
 
-#
 Fm = force_data[:, 2] ./ C.Beta;
 FmINT_D = (circshift(Fm,-1) - circshift(Fm,1)) ./(2*dx);
 Fmean = Fm[2:end-1];
 Fmean_d = FmINT_D[2:end-1];
-#
+
 Fmean_coeff1 = (2. * (Fmean - circshift(Fmean, -1)) + (Fmean_d + circshift(Fmean_d, -1)) * dx) / dx;
 Fmean_coeff2 = circshift(Fmean, -1) - Fmean + (-Fmean_d - Fmean_coeff1) * dx;
-#
+
 FdataMF = zeros(length(Fmean) - 1, 5);
 FdataMF[:, 1] = RR[2:end - 2];
 FdataMF[:, 2] = Fmean[1:end - 1];
@@ -115,7 +114,6 @@ FdataMF[:, 5] = Fmean_coeff2[1:end - 1];
 
 flucts_data = readdlm("Store_Trajectory/flucts_1_1_Beta1.dat", Float64);
 
-# i punti della griglia *devono* essere equispaziati
 RR = flucts_data[:, 1];
 dx = RR[2] - RR[1];
 
