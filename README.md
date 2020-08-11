@@ -7,6 +7,7 @@ Marco Spinaci's Masters project
     + [Parameters of `LJChain.jl` Module and `CGStats.jl` Module](#parameters-of-ljchainjl-module-and-cgstatsjl-module)
   * [Scripts to Compute the Trajectories](#scripts-to-compute-the-trajectories)
     + [Effective Potential and Look-Up Table of Mean Force and Fluctuating Force](#effective-potential-and-look-up-table-of-mean-force-and-fluctuating-force)
+    + [How to Use Look-Up Tables in Trajectory Scripts](#how-to-use-look-up-tables-in-trajectory-scripts)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -161,3 +162,61 @@ where
 * `Fmean` is the Mean Force
 * `Fstd` is the Fluctuating Force
 * `FdataMF` and `FdataFF` are the coefficients for the cubic spline interpolation. These coefficients are	generated from kriging interpolation data and, they are generated separately to eliminate noise from the original Mean Force and Fluctuating	Force data.
+
+### How to Use Look-Up Tables in Trajectory Scripts
+The scripts [Store_Trajectory/compareTraj_DCGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_DCGD.jl) and [Store_Trajectory/compareTraj_MMZD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_MMZD.jl) need look-up tables to determine the Mean Force and also to determine the thermal bath in the case of the second script.
+
+Looking at the second script, there are two ways:
+1. use the raw data if equally spaced or data obtained from a polynomial regression of the raw data and determine from these data the coefficients for cubic spline interpolation
+
+```julia
+# to generate the coefficients for the cubic spline interpolation for mean force and fluctuating force
+# NB: the grid points *must* be equally spaced
+force_data = readdlm("Store_Trajectory/force_1_1_Beta1.dat", Float64);
+
+RR = force_data[:, 1];
+dx = RR[2] - RR[1];
+
+Fm = force_data[:, 2] ./ C.Beta;
+FmINT_D = (circshift(Fm,-1) - circshift(Fm,1)) ./(2*dx);
+Fmean = Fm[2:end-1];
+Fmean_d = FmINT_D[2:end-1];
+
+Fmean_coeff1 = (2. * (Fmean - circshift(Fmean, -1)) + (Fmean_d + circshift(Fmean_d, -1)) * dx) / dx;
+Fmean_coeff2 = circshift(Fmean, -1) - Fmean + (-Fmean_d - Fmean_coeff1) * dx;
+
+FdataMF = zeros(length(Fmean) - 1, 5);
+FdataMF[:, 1] = RR[2:end - 2];
+FdataMF[:, 2] = Fmean[1:end - 1];
+FdataMF[:, 3] = Fmean_d[1:end - 1];
+FdataMF[:, 4] = Fmean_coeff1[1:end - 1];
+FdataMF[:, 5] = Fmean_coeff2[1:end - 1];
+
+
+flucts_data = readdlm("Store_Trajectory/flucts_1_1_Beta1.dat", Float64);
+
+RR = flucts_data[:, 1];
+dx = RR[2] - RR[1];
+
+Fluct = flucts_data[:, 2];
+FluctINT_D = (circshift(Fluct,-1) - circshift(Fluct,1)) ./(2*dx);
+FF = Fluct[2:end-1];
+FF_d = FluctINT_D[2:end-1];
+
+FF_coeff1 = (2. * (FF - circshift(FF, -1)) + (FF_d + circshift(FF_d, -1)) * dx) / dx;
+FF_coeff2 = circshift(FF, -1) - FF + (-FF_d - FF_coeff1) * dx;
+
+FdataFF = zeros(length(FF) - 1, 5);
+FdataFF[:, 1] = RR[2:end - 2];
+FdataFF[:, 2] = FF[1:end - 1];
+FdataFF[:, 3] = FF_d[1:end - 1];
+FdataFF[:, 4] = FF_coeff1[1:end - 1];
+FdataFF[:, 5] = FF_coeff2[1:end - 1];
+```
+
+2. use the data `FdataMF` and `FdataFF` obtained from the script [ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl)
+
+```julia
+FdataMF = readdlm("ABCD_Systems/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
+FdataFF = readdlm("ABCD_Systems/Outcomes/Coeff_FF_SplineI_sC_M1m1.csv", Float64);
+```
