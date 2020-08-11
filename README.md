@@ -8,6 +8,7 @@ Marco Spinaci's Masters project
   * [Scripts to Compute the Trajectories](#scripts-to-compute-the-trajectories)
     + [Effective Potential and Look-Up Table of Mean Force and Fluctuating Force](#effective-potential-and-look-up-table-of-mean-force-and-fluctuating-force)
     + [How to Use Look-Up Tables in Trajectory Scripts](#how-to-use-look-up-tables-in-trajectory-scripts)
+  * [Scripts to Analyse the Trajectories](#scripts-to-analyse-the-trajectories)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -220,3 +221,5 @@ FdataFF[:, 5] = FF_coeff2[1:end - 1];
 FdataMF = readdlm("ABCD_Systems/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
 FdataFF = readdlm("ABCD_Systems/Outcomes/Coeff_FF_SplineI_sC_M1m1.csv", Float64);
 ```
+
+## Scripts to Analyse the Trajectories
