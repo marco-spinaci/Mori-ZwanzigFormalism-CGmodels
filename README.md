@@ -214,7 +214,7 @@ FdataFF[:, 4] = FF_coeff1[1:end - 1];
 FdataFF[:, 5] = FF_coeff2[1:end - 1];
 ```
 
-2. use the data `FdataMF` and `FdataFF` obtained from the script [ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl)
+2. use the data `FdataMF` and `FdataFF` obtained from the script [ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl) (see previous section)
 
 ```julia
 FdataMF = readdlm("ABCD_Systems/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
