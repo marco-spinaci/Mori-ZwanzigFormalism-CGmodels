@@ -98,7 +98,7 @@ S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7))
 ```
 
 ## Scripts to Compute the Trajectories
-The scripts to compute the trajectories in the (NVT) ensemble can be found in the folder `Store_Trajectory` and they are
+The scripts to compute the trajectories in the (NVT) ensemble can be found in the folder `Julia_Code/Store_Trajectory` and they are
 * [Store_Trajectory/compareTraj_FGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_FGD.jl)
 * [Store_Trajectory/compareTraj_DCGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_DCGD.jl)
 * [Store_Trajectory/compareTraj_MMZD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_MMZD.jl)
