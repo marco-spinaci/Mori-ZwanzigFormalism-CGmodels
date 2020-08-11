@@ -10,6 +10,7 @@ This project aims at studying the Mori-Zwanzig (MZ) formalism to systematically 
     + [Effective Potential and Look-Up Table of Mean Force and Fluctuating Force](#effective-potential-and-look-up-table-of-mean-force-and-fluctuating-force)
     + [How to Use Look-Up Tables in Trajectory Scripts](#how-to-use-look-up-tables-in-trajectory-scripts)
   * [Scripts to Analyse the Trajectories](#scripts-to-analyse-the-trajectories)
+  * [To Do](#to-do)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
@@ -229,3 +230,5 @@ FdataFF = readdlm("ABCD_Systems/Outcomes/Coeff_FF_SplineI_sC_M1m1.csv", Float64)
 ```
 
 ## Scripts to Analyse the Trajectories
+
+## To Do
