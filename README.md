@@ -29,7 +29,7 @@ julia> Pkg.add("NAME_PACKAGE")
 ```
 
 The modules to be loaded to determine and analyze the trajectories are 
-* [LJChain.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/LJChain.jl), this module providing the physics functions and a parameter object for a 1D periodic chain of 2 species of particles, which differ in mass and bond stiffness. The inter-atomic potential is a simple 12-6 Lennard-Jones potential and the interaction between two different species of particles is set by the so-called Lorentz-Berthelot mixing rule.
+* [LJChain.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/LJChain.jl), this module providing the physics functions and a parameter object for a 1D periodic chain of 2 species of particles, which differ in mass and bond stiffness. The particles are arranged in a repeating pattern, and the Coarse-Grained (CG) model is obtained by combining the single repeated units into CG interaction site (called beads). The CG variables are given by the center of mass of each bead and by the corresponding momenta. The inter-atomic potential is a simple 12-6 Lennard-Jones potential and the interaction between two different species of particles is set by the so-called Lorentz-Berthelot mixing rule. 
 * [CGStats.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/CGStats.jl), in this module there are all the functions needed to determine the various dynamics and to determine the autocorrelation functions 
 
 ### Parameters of `LJChain.jl` Module and `CGStats.jl` Module
