@@ -105,7 +105,7 @@ S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7))
 ## Scripts to Compute the Trajectories
 The scripts to compute the trajectories in the (NVT) ensemble can be found in the folder `Julia_Code/Store_Trajectory` and they are
 * [Store_Trajectory/compareTraj_FGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_FGD.jl)
-* [Store_Trajectory/compareTraj_DCGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_DCGD.jl)
+* [Store_Trajectory/compareTraj_CGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_CGD.jl)
 * [Store_Trajectory/compareTraj_MMZD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_MMZD.jl)
 
 These scripts are divided into four parts, for example see [Store_Trajectory/compareTraj_FGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_FGD.jl):
@@ -172,7 +172,7 @@ where
 * `FdataMF` and `FdataFF` are the coefficients for the cubic spline interpolation. These coefficients are	generated from kriging interpolation data and, they are generated separately to eliminate noise from the original Mean Force and Fluctuating	Force data.
 
 ### How to Use Look-Up Tables in Trajectory Scripts
-As we said, the scripts [Store_Trajectory/compareTraj_DCGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_DCGD.jl) and [Store_Trajectory/compareTraj_MMZD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_MMZD.jl) need look-up tables to determine the Mean Force and also to determine the thermal bath in the case of the second script.
+As we said, the scripts [Store_Trajectory/compareTraj_CGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_CGD.jl) and [Store_Trajectory/compareTraj_MMZD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_MMZD.jl) need look-up tables to determine the Mean Force and also to determine the thermal bath in the case of the second script.
 
 Looking at the second script, there are two ways:
 1. use the raw data if equally spaced or data obtained from a polynomial regression of the raw data and determine from these data the coefficients for cubic spline interpolation
