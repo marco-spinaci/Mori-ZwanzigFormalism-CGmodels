@@ -97,7 +97,12 @@ S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7))
 ```
 
 ## Scripts to Compute the Trajectories
-The scripts to determine (or to analyze) trajectories are divided into four parts, for example see [Store_Trajectory/compareTraj_FGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_FGD.jl):
+The scripts to compute the trajectories in the (NVT) ensemble can be found in the folder `Store_Trajectory` and they are
+* [Store_Trajectory/compareTraj_FGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_FGD.jl)
+* [Store_Trajectory/compareTraj_DCGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_DCGD.jl)
+* [Store_Trajectory/compareTraj_MMZD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_MMZD.jl)
+
+These scripts are divided into four parts, for example see [Store_Trajectory/compareTraj_FGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_FGD.jl):
 1. In the first part, we load the necessary packages and modules:
 
 ```julia
@@ -140,11 +145,6 @@ end
 ```
 
 where `C.Phi` and `C.Psi` are the mapping operators of the CG system and, `C.PhiF` is the projection operator of the Forces in the CG system. We are projecting the obtained data so that we can easily compare them with those obtained from CG systems.
-
-The scripts in the (NVT) ensemble can be found in the folder `Store_Trajectory` and they are
-* [Store_Trajectory/compareTraj_FGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_FGD.jl)
-* [Store_Trajectory/compareTraj_DCGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_DCGD.jl)
-* [Store_Trajectory/compareTraj_MMZD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_MMZD.jl)
 
 ### Effective Potential and Look-Up Table of Mean Force and Fluctuating Force
 To compute the CG and MMZD dynamics, the **Effective Potential** is determined via a **bottom-up approach**, i.e. through Fine-Grained (or atomistic) simulations. More specifically, it is determined through the integration of the **Mean Force** with respect to the distance between the CG particles.
