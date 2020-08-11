@@ -1,5 +1,6 @@
 # MarcoMasterProject
-Marco Spinaci's Masters project
+(Marco Spinaci's Masters project) 
+This project aims at studying the Mori-Zwanzig (MZ) formalism to systematically derive hybrid Coarse-Grained (CG) models. This formalism allows to study the evolution of a dynamical system through the projection on a subset of its degrees of freedom. While, the hybrid CG models ideally combine a cheaper computational cost than the atomistic simulations, and a greater accuracy than pure CG simulations. 
 
 - [MarcoMasterProject](#marcomasterproject)
   * [Introduction](#introduction)
@@ -13,12 +14,15 @@ Marco Spinaci's Masters project
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 ## Introduction
-The code in the folder `Julia_Code` allows to implement Molecular Dynamics simulations (both atomistic and Coarse-Grained) and to analyze the results.
+The code in the folder `Julia_Code` has not yet been developed for a hybrid system but it aims to verify the accuracy and effectiveness of a systematic MZ projection approach. It allows to implement Molecular Dynamics simulations (both atomistic and Coarse-Grained) and to analyze the results.
+
 We have implemented **four different dynamics** in **(NVE) ensemble** and **(NVT) ensemble**:
 * the **Fine-Grained Dynamics (FGD)** or the All-Atom Dynamics
 * the **Orthogonal Dynamics (OD)** or the Constrained Dynamics, where the constraints are given by the mapping operators of the Coarse-Grained system
 * the **Coarse-Grained Dynamics (CGD)**
 * the **Markovian Mori-Zwanzig Dynamics (MMZD)**
+
+
 
 ## Compiler Requirements
 
