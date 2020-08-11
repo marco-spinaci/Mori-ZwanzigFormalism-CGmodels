@@ -150,7 +150,7 @@ where `C.Phi` and `C.Psi` are the mapping operators of the CG system and, `C.Phi
 To determine CGD and MMZD, the scripts have an additional part where we can insert the look-up tables to determine the Effective potential and, the thermal bath in the case of MMZD. 
 
 ### Effective Potential and Look-Up Table of Mean Force and Fluctuating Force
-The **Effective Potential** is determined via a **bottom-up approach**, i.e. through Fine-Grained (or atomistic) simulations. More specifically, it is determined through the integration of the **Mean Force** with respect to the distance between the CG particles.
+The **Effective Potential** is determined via a **bottom-up approach**, _i.e._ through Fine-Grained (or atomistic) simulations. More specifically, it is determined through the integration of the **Mean Force** with respect to the distance between the CG particles.
 
 The **look-up table of the Mean Force and Fluctuating Force** with respect to the distance between the CG particles in the (NVT) ensemble are computed by the script: [ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl) by means of the function
 
