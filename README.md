@@ -230,5 +230,9 @@ FdataFF = readdlm("ABCD_Systems/Outcomes/Coeff_FF_SplineI_sC_M1m1.csv", Float64)
 ```
 
 ## Scripts to Analyse the Trajectories
+In folder `Julia_Code/Data_Analysis` we can find scripts to determine
+* Time Autocorrelation Functions (ACF), in the folder `Julia_Code/Data_Analysis/ACF`
+* Probability Distribution Functions (PDF), in the folder `Julia_Code/Data_Analysis/PDF`
+* Mean Square Displacement (MSD), in the folder `Julia_Code/Data_Analysis/MSD`
 
 ## To Do
