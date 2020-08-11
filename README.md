@@ -29,7 +29,7 @@ julia> Pkg.add("NAME_PACKAGE")
 ```
 
 The modules to be loaded to determine and analyze the trajectories are 
-* [LJChain.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/LJChain.jl), this module providing physics functions and a parameter object for a 1D chain of 2 species of particle
+* [LJChain.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/LJChain.jl), this module providing the physics functions and a parameter object for a 1D periodic chain of 2 species of particles, which differ in mass and bond stiffness. The inter-atomic potential is a simple 12-6 Lennard-Jones potential and the interaction between two different species of particles is set by the so-called Lorentz-Berthelot mixing rule.
 * [CGStats.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/CGStats.jl), in this module there are all the functions needed to determine the various dynamics and to determine the autocorrelation functions 
 
 ### Parameters of `LJChain.jl` Module and `CGStats.jl` Module
@@ -47,8 +47,9 @@ Dist::Float64          = 1.0     # Equilibrium distance for all LJ potentials
 Beta::Float64          = 1.0     # Inverse temperature
 Gamma::Float64         = 1.0     # Friction parameter
 ```
+where `SEps` and `LEps` are the depths of the potential well that can be varied to analyse the effect of the stiffness of the interactions.
 
-They can be modified in a generic script `*.jl` by 
+These values can be modified in a generic script `*.jl` by 
 
 ```julia
 C = Chain(SM=1, LM=1, Beta=1)
