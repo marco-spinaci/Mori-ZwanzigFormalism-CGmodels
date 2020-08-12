@@ -1,0 +1,33 @@
+#############################################################################
+Inter-bead distance, Mean Force, Fluctuating Force and Effective Potential
+                              file: "s*_*.csv"
+#############################################################################
+num.col.     valori
+
+  1     ->    RR
+  2     ->    PP
+  3     ->    Veff
+  4     ->    Fmean
+  5     ->    Fstd
+
+#####################################
+             interactions
+            m-M  inter-bead
+
+A  m-M-m     10      1
+B  m-M-m      1     10
+
+C  M-m-M     10      1
+D  M-m-M      1     10
+
+#############################################################################
+Look-up table for Mean and Fluctuating Force for cubic spline interpolation
+                  file: "Coeff_MF_SplineI_s*.csv"/"Coeff_FF_SplineI_s*.csv"
+#############################################################################
+num.col.     valori
+
+  1     ->    dQ
+  2     ->    MF/FF (from Kriging interpolation)
+  3     ->    MF_d/FF_d (derivative of MF/FF)
+  4     ->    MF/FF coeff1
+  5     ->    MF/FF coeff2

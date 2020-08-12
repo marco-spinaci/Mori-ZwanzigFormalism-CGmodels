@@ -1,0 +1,104 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+\usepackage{paralist}
+
+\usepackage{cases}
+
+\usepackage[colorlinks]{hyperref}
+
+%\usepackage{multicol}
+
+%\theoremstyle{definition}
+%\newtheorem{defin}{Definition}[chapter]
+%\newtheorem{prop}[defin]{Proposition}
+%\newtheorem{theorem}[defin]{Theorem}
+
+\DeclareMathAlphabet\mathbfcal{OMS}{cmsy}{b}{n}
+\usepackage{mymacrosTESI}
+
+\usepackage{tablefootnote}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+%\usepackage{graphicx, sub figure}
+%\usepackage[margin=10pt,font=small,labelfont=bf]{caption}
+%\graphicspath{ {Figure/} }
+
+%\usepackage[titletoc,page]{appendix}
+
+\addtolength{\hoffset}{-2.5cm}
+\addtolength{\textwidth}{5.4cm}
+\addtolength{\voffset}{-2.5cm}
+\addtolength{\textheight}{5cm}
+
+\begin{document}
+
+\begin{center}
+\section*{RIASSUNTO TESI}
+\end{center}
+
+
+\begin{table}[ht] %\footnotesize
+\centering
+\begin{tabular}{@{}l@{}l@{}}
+ \hline
+ &\\
+ \textbf{Titolo:}&\;The Mori-Zwanzig formalism as a tool to systematically \\ 
+ &\ derive hybrid coarse-grained models\\ 
+ &\\
+ \textbf{Autore:}&\;Marco Spinaci\\
+ &\\
+ \textbf{Relatore interno:}&\;Lorenzo Rovigatti\\
+% &\\
+% \textbf{Relatori esterni\tablefootnote{Alphabetical order}:}&\;Nicodemo Di Pasquale\tablefootnote{Department of Mathematics, University of Leicester, University Rd, Leicester LE1 7RH, UK}, 
+% Thomas Hudson\tablefootnote{Warwick Mathematics Institute, University of Warwick, Coventry CV4 7AL, UK}, Matteo Icardi\tablefootnote{School of Mathematical Sciences, University of Nottingham, Nottingham NG7 2RD, UK}\\
+ &\\
+ \textbf{Data della sessione di laurea:}&\;16/12/2019\\
+ &\\ 
+ \hline
+\end{tabular}
+\end{table}
+
+%\begin{multicols}{2}
+
+My Master thesis project deals with the Mori-Zwanzig (MZ) formalism as a tool to systematically derive hybrid coarse-grained (CG) models. The MZ formalism allows to study the evolution of a dynamical system through the projection on a subset of its degrees of freedom. This operation can be done through various projection operator techniques \cite{Grabert:Projection}. 
+%
+%In particular, we consider two resolution levels for a given molecular system. The first one, at high resolution, is the fine-grained (FG), while the second one, at low resolution, is the CG system.
+%
+The project builds on the work of N. Di Pasquale \emph{et al.}~\cite{DiPasquale2019}, in which the authors derived a coarse-grained model for hybrid systems through the MZ projection, with a theoretical discussion supported by numerical simulations limited to the microcanonical (NVE) ensemble.
+%
+
+
+The first part of the thesis focusses on the derivation of the equations governing the coarse-grained dynamics, obtained through the MZ formalism.
+The equations of motion obtained are described by a Generalized Langevin Equation (GLE), which is an equation that allows to describe a particle, in a system in or close to equilibrium, subject to a potential and coupled to a general thermal bath in which memory effects are, in general, present.
+
+The second part of the thesis is focused on the study of numerical methods for Langevin dynamics and for the constrained Langevin dynamics. These methods are used to numerically implement the full and the constrained dynamics in the canonical (NVT) ensemble. The integrators we choose to integrate the equations of motions have been developed by Leimkuhler \emph{et al.} \cite{LeimMatt:LAnDynInt,Leimkuhler2016}. These methods are splitting integrators that decompose the stochastic vector field which drives the Langevin Dynamics into simpler vector fields which can be solved exactly. In particular, we used the BAOAB method to sample the full dynamics\cite{LeimMatt:LAnDynInt}, and the geodesic-BAOAB method to to sample the constrained dynamics \cite{Leimkuhler2016}.
+
+The third and final part of the thesis is on the numerical experiments in the canonical (NVT) ensemble by extending and improving the open-source parallel code, written in Julia 0.6, developed by Di Pasquale \emph{et al.} \cite{DiPasquale2019}, introducing the integrators studied in the previous part. This code allows to solve the full, constrained and coarse-grained dynamics, as well as all the components needed for the coarse-grained (CG) system.
+%
+The full-resolution (fine-grained, FG) system that we consider is a periodic chain of $\nfg$ ``atoms'' of two different species, which are assumed to have different masses and bond stiffness, in a repeating pattern. We assumed that the chemical structure of the molecular system is fixed, \textit{i.e.} no reactions occur. Each ``atom'' is mapped to a fixed (unique) particle in the CG system, called bead. 
+We performed the simulation for four different systems with different parameter and for different dynamics: the FG dynamics, the orthogonal dynamics (or constrained dynamics), the deterministic coarse-grained dynamics and the Markovian Mori-Zwanzig dynamics.
+
+In all the cases considered no significant scale separation between the dynamics of the beads and individual atoms was observed. Nevertheless, a comparison was made between the true and approximate dynamics, and as expected, systems with `more rigid' beads, having greater internal stiffness, showed much weaker memory effects. 
+%
+Furthermore we observed that the Langevin dynamics does not appear to be appropriate for generic CG systems, which is important since the preservation of more complex dynamical properties, such as the mean-square displacement of the inter bead distance in time, requires either the strict validity of this assumption or a correct parametrisation and implementation of the memory term.
+
+
+%\cleardoublepage
+%\phantomsection
+%\addcontentsline{toc}{chapter}{\bibname}
+\bibliographystyle{plain}
+\bibliography{biblioTESI}
+
+%\end{multicols}
+
+\end{document}

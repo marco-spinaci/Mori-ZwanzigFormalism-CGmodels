@@ -1,0 +1,283 @@
+%%\ProvidesPackage{mymacros}[2016/10/0 v1.0 My own macros]
+%
+%
+%% Requires \usepackage{mathtools} in the preamble of the main text
+%
+%\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+%\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+%% Swap the definition of \abs* and \norm*, so that \abs
+%% and \norm resizes the size of the brackets, and the 
+%% starred version does not.
+%\makeatletter
+%\let\oldabs\abs
+%\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%%
+%\let\oldnorm\norm
+%\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+%\makeatother
+%
+%% Command to redefine cite for track changes
+%\newcommand{\tcitep}[1]{\mbox{\citep{#1}}}
+%\newcommand{\tcref}[1]{\mbox{\cref{#1}}}
+%\newcommand{\tCitet}[1]{\mbox{\Citet{#1}}}
+%\newcommand{\tnorm}[1]{\left\lVert#1\right\rVert} %Norm
+
+\newcommand{\rxp}[4]{#1^{\frac{#2}{#3}#4}} % rational exponential
+\newcommand{\rxpN}[3]{#1^{\frac{#2}{#3}}} % rational exponential
+\newcommand{\cip}[1]{\left(#1\right)} % round parenthesis
+\newcommand{\sqp}[1]{\left[#1\right]} % square parenthesis
+\newcommand{\bp}[1]{\left\lbrace #1\right\rbrace} % brace parenthesis
+\newcommand{\aver}[1]{\left\langle#1\right\rangle} % average
+\newcommand{\totd}[2]{\frac{\mbox{d}#1}{\mbox{d}#2}} %total derivative
+\newcommand{\totnd}[3]{\frac{\mbox{d}^{#3}#1}{\mbox{d}#2^{#3}}} % n-th total derivative
+\newcommand{\pard}[2]{\frac{\partial#1}{\partial#2}} % partial derivative
+\newcommand{\pardn}[3]{\frac{\partial^#3 #1}{\partial#2^#3}} % n-th partial derivative
+\newcommand{\pardmix}[3]{\frac{\partial^2 #1}{\partial#2\partial#3}} % 2-mixed partial derivative
+\newcommand{\diff}{\mbox{d}} % differential symbol
+\newcommand{\abs}[1]{\left| #1\right|} %absolute value
+\newcommand{\ctheta}{\cos{\theta}}
+\newcommand{\stheta}{\sin{\theta}}
+\newcommand{\cphi}{\cos{\phi}}
+\newcommand{\sphi}{\sin{\phi}}
+\newcommand{\yp}{y^{\prime}}
+\newcommand{\ypp}{y^{\prime\prime}}
+\newcommand{\Obig}[2]{\mathcal{O}\left(#1^{#2}\right)}
+\newcommand\at[2]{\left.#1\right|_{#2}}
+%\newcommand{\abs}[1]{\left|#1\right|}
+%\newcommand{\}[1]{\left\lVert#1\right\rVert}
+% Operators
+
+\newcommand{\proj}[1]{\mathcal{P}_{#1}}
+%\newcommand{\lio}{\mathcal{L}}
+\newcommand{\projQ}[1]{\mathcal{Q}_{#1}}
+\newcommand{\fluc}{{\mathcal{R}}}
+
+
+\newcommand{\transp}[1]{\left(#1\right)^T}
+\newcommand\Dpartial[2]{\frac{\partial{#1}}{\partial #2}}
+\newcommand\Dsecpartial[2]{\frac{\partial^2{#1}}{\partial #2^2}}
+\newcommand\Dnpartial[3]{\frac{\partial^{#3}{#1}}{\partial #2^{#3}}}
+\newcommand\Dsmixpartial[3]{\frac{\partial^{2}{#1}}{\partial #2 \partial #3}}
+\renewcommand{\exp}[1]{\mathbf{e}^{#1}}
+
+% Bold numbers/letters
+\newcommand{\bfA}{\mathbf{A}}
+\newcommand{\bfC}{\mathbf{C}}
+\newcommand{\bfD}{\mathbf{D}}
+\newcommand{\bfF}{\mathbf{F}}
+\newcommand{\bfJ}{\mathbf{J}}
+\newcommand{\bfK}{\mathbf{K}}
+\newcommand{\bfI}{\mathbf{I}}
+\newcommand{\bfM}{\mathbf{M}}
+\newcommand{\bfP}{\mathbf{P}}
+\newcommand{\bfQ}{\mathbf{Q}}
+\newcommand{\bfR}{\mathbf{R}}
+\newcommand{\bfU}{\mathbf{U}}
+\newcommand{\bfV}{\mathbf{V}}
+\newcommand{\bfY}{\mathbf{Y}}
+\newcommand{\bfX}{\mathbf{X}}
+\newcommand{\bfZ}{\mathbf{Z}}
+
+
+\newcommand{\bfFt}{\mathbf{{F}}}
+\newcommand{\bfa}{\mathbf{a}}
+\newcommand{\bfb}{\mathbf{b}}
+\newcommand{\bfc}{\mathbf{c}}
+\newcommand{\bff}{\mathbf{f}}
+\newcommand{\bfk}{\mathbf{k}}
+\newcommand{\bfp}{\mathbf{p}}
+\newcommand{\bfq}{\mathbf{q}}
+\newcommand{\bfr}{\mathbf{r}}
+\newcommand{\bft}{\mathbf{t}}
+\newcommand{\bfu}{\mathbf{u}}
+\newcommand{\bfv}{\mathbf{v}}
+\newcommand{\bfx}{\mathbf{x}}
+\newcommand{\bfy}{\mathbf{y}}
+\newcommand{\bfz}{\mathbf{z}}
+
+% Hat
+\newcommand{\hbfP}{\hat{\mathbf{P}}}
+\newcommand{\hbfR}{\hat{\mathbf{R}}}
+\newcommand{\hbfp}{\hat{\mathbf{p}}}
+\newcommand{\hbfr}{\hat{\mathbf{r}}}
+\newcommand{\hp}{\hat{{p}}}
+\newcommand{\hr}{\hat{{r}}}
+\newcommand{\hbfA}{\hat{\mathbf{A}}}
+
+
+% Capital case tau
+
+
+\newcommand{\dirac}[1]{\delta\left({#1}\right)}
+
+\newcommand{\bfUno}{\mathbf{1}}
+\newcommand{\bfcov}{\mathbf{\mbox{Cov}}}
+\newcommand{\bfvar}{\mathbf{\mbox{Var}}}
+\newcommand{\mse}{\mbox{MSE}}
+\newcommand{\bfzero}{\boldsymbol 0}
+
+% normal letters
+\newcommand{\E}[1]{\mbox{E}\left[#1\right]} %expectation
+\newcommand{\var}{\mbox{Var}}
+\newcommand{\cor}{\mbox{Cor}}
+\newcommand{\cov}{\mbox{Cov}}
+
+\newcommand{\id}[1]{\iota\cip{#1}}
+\newcommand{\idp}[1]{\iota^\mathbf{p}\cip{#1}}
+\newcommand{\idr}[1]{\iota^\mathbf{r}\cip{#1}}
+\newcommand{\idsr}[1]{\iota^\mathbf{r}_{#1}}
+\newcommand{\idsp}[1]{\iota^\mathbf{p}_{#1}}
+
+
+% Number of elements (atoms/beads/whatever)
+
+\newcommand{\NB}[1]{N_{#1}^B}
+\newcommand{\NA}[1]{N_{#1}^A}
+\newcommand{\nfg}{M^{FG}}
+\newcommand{\ncg}{M^{CG}}
+\newcommand{\nvs}{M^{VS}}
+
+% Sets
+\newcommand{\dx}{\mbox{d}\mathbf{x}}
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\meas}{\mu_\beta}
+\newcommand{\partf}{\mathcal{Z}} % Partition Function Z of the Gibbs ensemble
+
+% masses
+
+\newcommand{\massa}{m^A}
+\newcommand{\massb}{m^B}
+
+
+
+\newcommand{\etal}{\textit{et al.}}
+
+\newcommand{\HAr}{\bar{\mathbf{R}}}
+\newcommand{\HBr}{\hat{\mathbf{R}}}
+\newcommand{\HAp}{\bar{\mathbf{P}}}
+\newcommand{\HBp}{\hat{\mathbf{P}}}
+\newcommand{\Veff}{V^{\mathrm{eff}}}
+\newcommand{\Veffs}[1]{V^{\mbox{eff}}_{#1}}
+\newcommand{\kb}{k_B}
+\newcommand{\fprojbf}{{\mathbfcal{F}}}
+\newcommand{\fprojbfA}{{\textit{\textbf{f}}}}
+\newcommand{\fproj}{{\mathcal{F}}}
+\newcommand{\fprojA}{{\textit{{f}}}}
+\newcommand{\fprojc}{{\mathcal{F}}} %force projected component
+\newcommand{\fricmat}{\mathcal{M}} %friction projected component
+\newcommand{\bffricmat}{\boldsymbol{\mathcal{M}}}
+\newcommand{\flucterm}{\mathcal{R}}
+\newcommand{\bfflucterm}{\boldsymbol{\flucterm}}
+%\newcommand{\pfm}[1]{w(\bfr)^{(#1)}}%{w^{(#1)}{\bfr}}
+\newcommand{\pfm}[1]{w^{(#1)}}%{w^{(#1)}{\bfr}}
+
+
+% Greek letters
+
+\newcommand{\bfalpha}{\boldsymbol\alpha}
+\newcommand{\bftheta}{\boldsymbol\theta}
+\newcommand{\bflambda}{\boldsymbol\lambda}
+\newcommand{\bfphi}{\boldsymbol\phi}
+\newcommand{\bfrho}{\boldsymbol\rho}
+\newcommand{\bfzeta}{\boldsymbol\zeta}
+\newcommand{\bfpsi}{\boldsymbol\psi}
+\newcommand{\bfeta}{\boldsymbol\eta}
+\newcommand{\bfLambda}{\boldsymbol\Lambda}
+\newcommand{\bfGamma}{\boldsymbol\Gamma}
+\newcommand{\bfSigma}{\boldsymbol\Sigma}
+\newcommand{\bfOmega}{\boldsymbol\Omega}
+\newcommand{\Tau}{\mathrm{T}}
+
+% Operators
+
+\newcommand{\Lio}{\mathfrak{L}} % liouvillian
+\newcommand{\pproj}{\mathcal{P}}
+\newcommand{\qproj}{\mathcal{Q}}
+\newcommand{\idproj}{\mathcal{I}}
+\newcommand{\entropy}{\mathcal{S}}
+\newcommand{\lagr}{\mathcal{L}}
+\newcommand{\action}{\mathfrak{S}}
+\newcommand{\cexp}[1]{\mathbb{E}\left[ #1 \right]} % expected value
+\newcommand{\cexpval}[2]{\mathbb{E}\left[ {#1} \middle\vert {#2} \right]} % conditional expectation
+
+% Specific Symbols
+
+\newcommand{\Aphase}[1]{\boldsymbol\gamma_{#1}}
+\newcommand{\Bphase}[1]{\boldsymbol\Gamma_{#1}}
+\newcommand{\compBphase}[1]{\Gamma_{#1}}
+\newcommand{\compphasef}{A}          % Cambiare questo per cambiare il nome della funzione nello spazio delle fasi
+\newcommand{\phasef}{\mathbf{\compphasef}}
+\newcommand{\pot}{U}
+\newcommand{\lsum}{\mathcal{L}}
+\newcommand{\Ham}{\mathcal{H}}
+\newcommand{\mapop}{\mathcal{M}}
+% dotted letters
+
+\newcommand{\dbfX}{\dot{\mathbf{X}}}
+\newcommand{\dbfr}{\dot{\mathbf{r}}}
+
+%%% Redefine section into subsection for placein package
+%\makeatletter
+%\AtBeginDocument{%
+%  \expandafter\renewcommand\expandafter\subsection\expandafter{%
+%    \expandafter\@fb@secFB\subsection
+%  }%
+%}
+%\makeatother
+
+%% MATRICES
+%%%% column vector
+\newcount\colveccount
+\newcommand*\colvec[1]{
+        \global\colveccount#1
+        \begin{pmatrix}
+        \colvecnext
+}
+\def\colvecnext#1{
+        #1
+        \global\advance\colveccount-1
+        \ifnum\colveccount>0
+                \\
+                \expandafter\colvecnext
+        \else
+                \end{pmatrix}
+        \fi
+}
+
+\newcount\rowveccount
+\newcommand*\rowvec[1]{
+        \global\rowveccount#1
+        \begin{pmatrix}
+        \rowvecnext
+}
+\def\rowvecnext#1{
+        #1
+        \global\advance\rowveccount-1
+        \ifnum\rowveccount>0
+                &
+                \expandafter\rowvecnext
+        \else
+                \end{pmatrix}
+        \fi
+}
+
+% amsmath MATRICES
+% matrix, pmatrix, bmatrix, vmatrix, Vmatrix, smallmatrix
+
+\renewcommand{\matrix}[1]{\begin{pmatrix}#1\end{pmatrix}}
+
+
+
+
+%%% COMMENTS
+%%\usepackage{xargs}                      % Use more than one optional parameter in a new commands
+%%\usepackage[colorinlistoftodos,prependcaption,textsize=small,obeyFinal]{todonotes}
+%%\newcommandx{\mat}[2][1=]{\todo[inline,linecolor=red,backgroundcolor=blue!25,bordercolor=red,#1]{MATTEO: #2}}
+%%\newcommandx{\nico}[2][1=]{\todo[inline,linecolor=blue,backgroundcolor=green!25,bordercolor=blue,#1]{NICO: #2}}
+%%\newcommandx{\tom}[2][1=]{\todo[inline,linecolor=blue,backgroundcolor=red!25,bordercolor=green,#1]{TOM: #2}}
+%%
+%%\newcommand{\red}[1]{\textcolor{red}{#1}}
+%%\newcommand{\green}[1]{\textcolor{OliveGreen}{#1}}
+%%\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+%
+%
