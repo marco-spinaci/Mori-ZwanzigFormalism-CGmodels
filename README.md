@@ -14,7 +14,7 @@ This project aims at studying the Mori-Zwanzig (MZ) formalism to systematically 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 ## Introduction
-The code in the folder `Julia_Code` has not yet been developed for a hybrid system but it aims to verify the accuracy and effectiveness of a systematic MZ projection approach. It allows to implement Molecular Dynamics simulations (both atomistic and Coarse-Grained) and to analyze the results.
+The code has not yet been developed for a hybrid system but it aims to verify the accuracy and effectiveness of a systematic MZ projection approach. It allows to implement Molecular Dynamics simulations (both atomistic and Coarse-Grained) and to analyze the results.
 
 We have implemented **four different dynamics** in **(NVE) ensemble** and **(NVT) ensemble**:
 * the **Fine-Grained Dynamics (FGD)** or the All-Atom Dynamics
@@ -35,8 +35,8 @@ julia> Pkg.add("NAME_PACKAGE")
 ```
 
 The modules to be loaded to determine and analyze the trajectories are 
-* [LJChain.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/LJChain.jl), this module providing the physics functions and a parameter object for a 1D periodic chain of 2 species of particles, which differ in mass and bond stiffness. The particles are arranged in a repeating pattern, and the Coarse-Grained (CG) model is obtained by combining the single repeated units into CG interaction site (called beads). The CG variables are given by the center of mass of each bead and by the corresponding momenta. The inter-atomic potential is a simple 12-6 Lennard-Jones potential and the interaction between two different species of particles is set by the so-called Lorentz-Berthelot mixing rule. 
-* [CGStats.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/CGStats.jl), in this module there are all the functions needed to determine the various dynamics and to determine the autocorrelation functions 
+* [LJChain.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/LJChain.jl), this module providing the physics functions and a parameter object for a 1D periodic chain of 2 species of particles, which differ in mass and bond stiffness. The particles are arranged in a repeating pattern, and the Coarse-Grained (CG) model is obtained by combining the single repeated units into CG interaction site (called beads). The CG variables are given by the center of mass of each bead and by the corresponding momenta. The inter-atomic potential is a simple 12-6 Lennard-Jones potential and the interaction between two different species of particles is set by the so-called Lorentz-Berthelot mixing rule. 
+* [CGStats.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/CGStats.jl), in this module there are all the functions needed to determine the various dynamics and to determine the autocorrelation functions 
 
 ### Parameters of `LJChain.jl` Module and `CGStats.jl` Module
 The default values of the parameters in the LJChain.jl module are
@@ -102,12 +102,12 @@ S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7))
 ```
 
 ## Scripts to Compute the Trajectories
-The scripts to compute the trajectories in the (NVT) ensemble can be found in the folder `Julia_Code/Store_Trajectory` and they are
-* [Store_Trajectory/compareTraj_FGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_FGD.jl)
-* [Store_Trajectory/compareTraj_CGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_CGD.jl)
-* [Store_Trajectory/compareTraj_MMZD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_MMZD.jl)
+The scripts to compute the trajectories in the (NVT) ensemble can be found in the folder `Store_Trajectory` and they are
+* [Store_Trajectory/compareTraj_FGD.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Store_Trajectory/compareTraj_FGD.jl)
+* [Store_Trajectory/compareTraj_CGD.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Store_Trajectory/compareTraj_CGD.jl)
+* [Store_Trajectory/compareTraj_MMZD.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Store_Trajectory/compareTraj_MMZD.jl)
 
-These scripts are divided into four parts, for example see [Store_Trajectory/compareTraj_FGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_FGD.jl):
+These scripts are divided into four parts, for example see [Store_Trajectory/compareTraj_FGD.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Store_Trajectory/compareTraj_FGD.jl):
 1. In the first part, we load the necessary packages and modules:
 
 ```julia
@@ -156,7 +156,7 @@ To determine CGD and MMZD, the scripts have an additional part where we can inse
 ### Effective Potential and Look-Up Table of Mean Force and Fluctuating Force
 The **Effective Potential** is determined via a **bottom-up approach**, _i.e._ through Fine-Grained (or atomistic) simulations. More specifically, it is determined through the integration of the **Mean Force** with respect to the distance between the CG particles.
 
-The **look-up table of the Mean Force and Fluctuating Force** with respect to the distance between the CG particles in the (NVT) ensemble can be found in the folder `Julia_Code/ABCD_Systems`. They are computed by the script: [ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl) by means of the function
+The **look-up table of the Mean Force and Fluctuating Force** with respect to the distance between the CG particles in the (NVT) ensemble can be found in the folder `Eff_Potential`. They are computed by the script: [Eff_Potential/CoarseGrainingLangDyn_sABCD.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Eff_Potential/CoarseGrainingLangDyn_sABCD.jl) by means of the function
 
 ```julia
 (RR,PP,Veff,Fmean,Fstd,FdataMF,FdataFF) = VEffConstrainedLangDyn_NVT(C,S)
@@ -171,7 +171,7 @@ where
 * `FdataMF` and `FdataFF` are the coefficients for the cubic spline interpolation. These coefficients are	generated from kriging interpolation data and, they are generated separately to eliminate noise from the original Mean Force and Fluctuating	Force data.
 
 ### How to Use Look-Up Tables in Trajectory Scripts
-As we said, the scripts [Store_Trajectory/compareTraj_CGD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_CGD.jl) and [Store_Trajectory/compareTraj_MMZD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/Store_Trajectory/compareTraj_MMZD.jl) need look-up tables to determine the Mean Force and also to determine the thermal bath in the case of the second script.
+As we said, the scripts [Store_Trajectory/compareTraj_CGD.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Store_Trajectory/compareTraj_CGD.jl) and [Store_Trajectory/compareTraj_MMZD.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Store_Trajectory/compareTraj_MMZD.jl) need look-up tables to determine the Mean Force and also to determine the thermal bath in the case of the second script.
 
 Looking at the second script, there are two ways:
 1. use the raw data if equally spaced or data obtained from a polynomial regression of the raw data and determine from these data the coefficients for cubic spline interpolation
@@ -221,17 +221,17 @@ FdataFF[:, 4] = FF_coeff1[1:end - 1];
 FdataFF[:, 5] = FF_coeff2[1:end - 1];
 ```
 
-2. use the data `FdataMF` and `FdataFF` obtained from the script [ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl](https://github.com/thudso/MarcoMasterProject/blob/Marco_JobsAndNotes/Julia_Code/ABCD_Systems/CoarseGrainingLangDyn_sABCD.jl) (see previous section)
+2. use the data `FdataMF` and `FdataFF` obtained from the script [Eff_Potential/CoarseGrainingLangDyn_sABCD.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Eff_Potential/CoarseGrainingLangDyn_sABCD.jl) (see previous section)
 
 ```julia
-FdataMF = readdlm("ABCD_Systems/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
-FdataFF = readdlm("ABCD_Systems/Outcomes/Coeff_FF_SplineI_sC_M1m1.csv", Float64);
+FdataMF = readdlm("Eff_Potential/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
+FdataFF = readdlm("Eff_Potential/Outcomes/Coeff_FF_SplineI_sC_M1m1.csv", Float64);
 ```
 
 ## Scripts to Analyse the Trajectories
-In folder `Julia_Code/Data_Analysis` we can find scripts to determine
-* Time Autocorrelation Functions (ACF), in the folder `Julia_Code/Data_Analysis/ACF`
-* Probability Distribution Functions (PDF), in the folder `Julia_Code/Data_Analysis/PDF`
-* Mean Square Displacement (MSD), in the folder `Julia_Code/Data_Analysis/MSD`
+In folder `Data_Analysis` we can find scripts to determine
+* Time Autocorrelation Functions (ACF), in the folder `Data_Analysis/ACF`
+* Probability Distribution Functions (PDF), in the folder `Data_Analysis/PDF`
+* Mean Square Displacement (MSD), in the folder `Data_Analysis/MSD`
 
 ## To Do
