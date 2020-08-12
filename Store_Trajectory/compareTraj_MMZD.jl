@@ -35,7 +35,7 @@ S = Simulator(dt=1e-3, Stochdt=1e-3,
 # ## NB: thesis data
 # # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
 #
-# # CG = readdlm("ABCD_Systems/Outcomes/sC_2000.csv", Float64);
+# # CG = readdlm("Eff_Potential/Outcomes/sC_2000.csv", Float64);
 # # RR = CG[:, 1];
 # # Fmean = CG[:, 4];
 # # Fstd = CG[:, 5];
@@ -86,8 +86,8 @@ S = Simulator(dt=1e-3, Stochdt=1e-3,
 # FdataFF[:, 5] = FF_coeff2[1:end - 1];
 
 ## NB: paper data
-# FdataMF = readdlm("ABCD_Systems/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
-# FdataFF = readdlm("ABCD_Systems/Outcomes/Coeff_FF_SplineI_sC_M1m1.csv", Float64);
+# FdataMF = readdlm("Eff_Potential/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
+# FdataFF = readdlm("Eff_Potential/Outcomes/Coeff_FF_SplineI_sC_M1m1.csv", Float64);
 
 # to generate the coefficients for the cubic spline interpolation for mean force and fluctuating force
 # NB: the grid points *must* be equally spaced

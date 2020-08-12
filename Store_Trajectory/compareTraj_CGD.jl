@@ -55,7 +55,7 @@ S = Simulator(dt=1e-3, Stochdt=1e-3,
 # Fdata[:, 5] = Fmean_coeff2[1:end - 1];
 
 ## NB: paper data
-# Fdata = readdlm("ABCD_Systems/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
+# Fdata = readdlm("Eff_Potential/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
 
 force_data = readdlm("Store_Trajectory/force_1_1_Beta1.dat", Float64);
 

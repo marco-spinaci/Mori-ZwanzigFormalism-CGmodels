@@ -29,7 +29,7 @@ S = Simulator(dt=1e-3, Stochdt=1e-4, FullSteps=Int(1e6), ApproxSteps=Int(1e5));
 # Generate effective potential data
 
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn(C,S);
-CG = readdlm("ABCD_Systems/Outcomes/sC_2000.csv", Float64);
+CG = readdlm("Eff_Potential/Outcomes/sC_2000.csv", Float64);
 RR = CG[:, 1];
 Fmean = CG[:, 4];
 Fstd = CG[:, 5];

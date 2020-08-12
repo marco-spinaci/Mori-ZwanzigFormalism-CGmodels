@@ -34,19 +34,19 @@ S = Simulator(dt=1e-3, FullSteps=Int(1e6), OrthoSamples=Int(1e6), check=Int(5e3)
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn_NVT(C,S);
 #
 # # Write data to file
-# open("./ABCD_Systems/Outcomes/RR_sA.csv","w+") do x
+# open("./Eff_Potential/Outcomes/RR_sA.csv","w+") do x
 #    writedlm(x,RR);
 # end
-# open("./ABCD_Systems/Outcomes/PP_sA.csv","w+") do x
+# open("./Eff_Potential/Outcomes/PP_sA.csv","w+") do x
 #    writedlm(x,PP);
 # end
-# open("./ABCD_Systems/Outcomes/Veff_sA.csv","w+") do x
+# open("./Eff_Potential/Outcomes/Veff_sA.csv","w+") do x
 #    writedlm(x,Veff);
 # end
-# open("./ABCD_Systems/Outcomes/Fmean_sA.csv","w+") do x
+# open("./Eff_Potential/Outcomes/Fmean_sA.csv","w+") do x
 #    writedlm(x,Fmean);
 # end
-# open("./ABCD_Systems/Outcomes/Fstd_sA.csv","w+") do x
+# open("./Eff_Potential/Outcomes/Fstd_sA.csv","w+") do x
 #    writedlm(x,Fstd);
 # end
 
@@ -58,25 +58,25 @@ S = Simulator(dt=1e-3, FullSteps=Int(1e6), OrthoSamples=Int(1e6), check=Int(5e3)
 # (RR, PP, Veff, Fmean, Fstd, FdataMF, FdataFF) = VEffConstrainedLangDyn_NVT(C, S);
 #
 # # Write data to file
-# open("./ABCD_Systems/Outcomes/RR_sB.csv","w+") do x
+# open("./Eff_Potential/Outcomes/RR_sB.csv","w+") do x
 #    writedlm(x, RR);
 # end
-# open("./ABCD_Systems/Outcomes/PP_sB.csv","w+") do x
+# open("./Eff_Potential/Outcomes/PP_sB.csv","w+") do x
 #    writedlm(x, PP);
 # end
-# open("./ABCD_Systems/Outcomes/Veff_sB.csv","w+") do x
+# open("./Eff_Potential/Outcomes/Veff_sB.csv","w+") do x
 #    writedlm(x, Veff);
 # end
-# open("./ABCD_Systems/Outcomes/Fmean_sB.csv","w+") do x
+# open("./Eff_Potential/Outcomes/Fmean_sB.csv","w+") do x
 #    writedlm(x, Fmean);
 # end
-# open("./ABCD_Systems/Outcomes/Fstd_sB.csv","w+") do x
+# open("./Eff_Potential/Outcomes/Fstd_sB.csv","w+") do x
 #    writedlm(x, Fstd);
 # end
-# open("./ABCD_Systems/Outcomes/Coeff_MF_SplineI_sB.csv","w+") do x
+# open("./Eff_Potential/Outcomes/Coeff_MF_SplineI_sB.csv","w+") do x
 #    writedlm(x, FdataMF);
 # end
-# open("./ABCD_Systems/Outcomes/Coeff_FF_SplineI_sB.csv","w+") do x
+# open("./Eff_Potential/Outcomes/Coeff_FF_SplineI_sB.csv","w+") do x
 #    writedlm(x, FdataFF);
 # end
 
@@ -89,25 +89,25 @@ C = Chain(SM=1, LM=1, Beta=1);
 (RR,PP,Veff,Fmean,Fstd,FdataMF,FdataFF) = VEffConstrainedLangDyn_NVT(C,S);
 
 # Write data to file
-open("./ABCD_Systems/Outcomes/RR_sC.csv","w+") do x
+open("./Eff_Potential/Outcomes/RR_sC.csv","w+") do x
    writedlm(x,RR);
 end
-open("./ABCD_Systems/Outcomes/PP_sC.csv","w+") do x
+open("./Eff_Potential/Outcomes/PP_sC.csv","w+") do x
    writedlm(x,PP);
 end
-open("./ABCD_Systems/Outcomes/Veff_sC.csv","w+") do x
+open("./Eff_Potential/Outcomes/Veff_sC.csv","w+") do x
    writedlm(x,Veff);
 end
-open("./ABCD_Systems/Outcomes/Fmean_sC.csv","w+") do x
+open("./Eff_Potential/Outcomes/Fmean_sC.csv","w+") do x
    writedlm(x,Fmean);
 end
-open("./ABCD_Systems/Outcomes/Fstd_sC.csv","w+") do x
+open("./Eff_Potential/Outcomes/Fstd_sC.csv","w+") do x
    writedlm(x,Fstd);
 end
-open("./ABCD_Systems/Outcomes/Coeff_MF_SplineI_sC_M1m1_Beta1.csv","w+") do x
+open("./Eff_Potential/Outcomes/Coeff_MF_SplineI_sC_M1m1_Beta1.csv","w+") do x
    writedlm(x, FdataMF);
 end
-open("./ABCD_Systems/Outcomes/Coeff_FF_SplineI_sC_M1m1_Beta1.csv","w+") do x
+open("./Eff_Potential/Outcomes/Coeff_FF_SplineI_sC_M1m1_Beta1.csv","w+") do x
    writedlm(x, FdataFF);
 end
 
@@ -121,19 +121,19 @@ end
 # (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn_NVT(C,S);
 #
 # # Write data to file
-# open("./ABCD_Systems/Outcomes/RR_sD.csv","w+") do x
+# open("./Eff_Potential/Outcomes/RR_sD.csv","w+") do x
 #    writedlm(x,RR);
 # end
-# open("./ABCD_Systems/Outcomes/PP_sD.csv","w+") do x
+# open("./Eff_Potential/Outcomes/PP_sD.csv","w+") do x
 #    writedlm(x,PP);
 # end
-# open("./ABCD_Systems/Outcomes/Veff_sD.csv","w+") do x
+# open("./Eff_Potential/Outcomes/Veff_sD.csv","w+") do x
 #    writedlm(x,Veff);
 # end
-# open("./ABCD_Systems/Outcomes/Fmean_sD.csv","w+") do x
+# open("./Eff_Potential/Outcomes/Fmean_sD.csv","w+") do x
 #    writedlm(x,Fmean);
 # end
-# open("./ABCD_Systems/Outcomes/Fstd_sD.csv","w+") do x
+# open("./Eff_Potential/Outcomes/Fstd_sD.csv","w+") do x
 #    writedlm(x,Fstd);
 # end
 
