@@ -5,8 +5,17 @@ include("../../CGStats.jl")
 
 using Main.LJChain, Main.CGStats, Statistics, DelimitedFiles, Printf
 
+################################################################################
+## Set up simulation parameters.
+
 C = Chain(SM=1, LM=1, Beta=1.096);
 S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
+
+################################################################################
+
+if isdir("Outcomes/M$(Int(C.SM))_m$(Int(Int(C.LM)))/MSD") == 0
+    mkdir("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/MSD");
+end
 
 ################################################################################
 
@@ -48,7 +57,7 @@ end
 v = findall(msd1 .!= 0);
 msd1 = msd1[v];
 
-open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/msd_FGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
+open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/MSD/msd_FGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
     writedlm(x, [ S.dt*100*v msd1 ]);
 end
 
@@ -97,7 +106,7 @@ end
 v = findall(msd2 .!= 0);
 msd2 = msd2[v];
 
-open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/msd_DCGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
+open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/MSD/msd_DCGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
     writedlm(x, [ S.dt*100*v msd2 ]);
 end
 
@@ -147,7 +156,7 @@ end
 v = findall(msd3 .!= 0);
 msd3 = msd3[v];
 
-open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/msd_MMZD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
+open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/MSD/msd_MMZD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
     writedlm(x, [ S.Stochdt*100*v msd3 ]);
 end
 

@@ -61,7 +61,7 @@ RR = force_data[:, 1];
 dx = RR[2] - RR[1];
 
 #
-Fm = force_data[:, 2] ./ C.Beta;
+Fm = force_data[:, 2];
 FmINT_D = (circshift(Fm,-1) - circshift(Fm,1)) ./(2*dx);
 Fmean = Fm[2:end-1];
 Fmean_d = FmINT_D[2:end-1];

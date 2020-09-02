@@ -5,8 +5,17 @@ include("../../CGStats.jl")
 
 using Main.LJChain, Main.CGStats, StatsBase, DelimitedFiles, Statistics, Printf
 
+################################################################################
+## Set up simulation parameters.
+
 C = Chain(SM=1, LM=1, Beta=1.096);
 S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
+
+################################################################################
+
+if isdir("Outcomes/M$(Int(C.SM))_m$(Int(Int(C.LM)))/PDF") == 0
+    mkdir("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/PDF");
+end
 
 ################################################ pdf(P) ################################################################
 
@@ -24,7 +33,7 @@ H1[:, 1] = (x01[2:end] + x01[1:end-1]) / 2;
 bin_size = x01[2] - x01[1];
 H1[:, 2] = h1.weights ./ (length(P_FGD[:, 1]) * bin_size)
 # open("Data_Analysis/PDF/Outcomes/HistP_FGD_1e7(B1.096)_CORRETTA.csv", "w+") do x
-open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/HistP_FGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
+open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/PDF/HistP_FGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
    writedlm(x, H1);
 end
 
@@ -41,7 +50,7 @@ H2 = zeros(length(h2.weights), 2);
 H2[:, 1] = (x02[2:end] + x02[1:end-1]) / 2;
 bin_size = x02[2] - x02[1];
 H2[:, 2] = h2.weights ./ (length(P_DCGD[:, 1]) * bin_size);
-open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/HistP_DCGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
+open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/PDF/HistP_DCGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
     writedlm(x, H2);
 end
 
@@ -62,7 +71,7 @@ H3 = zeros(length(h3.weights), 2);
 H3[:, 1] = (x03[2:end] + x03[1:end-1]) / 2;
 bin_size = x03[2] - x03[1];
 H3[:, 2] = h3.weights ./ (length(P_MMZD[:, 1]) * bin_size);
-open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/HistP_MMZD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
+open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/PDF/HistP_MMZD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
     writedlm(x, H3);
 end
 
@@ -87,7 +96,7 @@ H4 = zeros(length(h4.weights), 2);
 bin_size = x04[2] - x04[1];
 H4[:, 1] = (x04[2:end] +  x04[1:end-1]) / 2;
 H4[:, 2] = h4.weights ./ (length(dQ4[:, 1]) * bin_size);
-open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/HistQ_FGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
+open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/PDF/HistQ_FGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
     writedlm(x, H4);
 end
 
@@ -110,7 +119,7 @@ H5 = zeros(length(h5.weights), 2);
 bin_size = x05[2] - x05[1];
 H5[:, 1] = (x05[2:end] +  x05[1:end-1]) / 2;
 H5[:, 2] = h5.weights ./ (length(dQ5[:, 1]) * bin_size);
-open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/HistQ_DCGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
+open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/PDF/HistQ_DCGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
     writedlm(x, H5);
 end
 
@@ -134,6 +143,6 @@ H6 = zeros(length(h6.weights), 2);
 bin_size = x06[2] - x06[1];
 H6[:, 1] = (x06[2:end] +  x06[1:end-1]) / 2;
 H6[:, 2] = h6.weights ./ (length(dQ6[:, 1]) * bin_size);
-open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/HistQ_MMZD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
+open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/PDF/HistQ_MMZD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
     writedlm(x, H6);
 end
