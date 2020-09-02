@@ -1,25 +1,22 @@
+using Printf
 
 @time begin
 
 include("../LJChain.jl")
 include("../CGStats.jl")
-using Main.LJChain,Main.CGStats,DelimitedFiles,Random
+using Main.LJChain, Main.CGStats, DelimitedFiles, Random
 
 #####################################################################################################################
 ## Set up simulation parameters.
 
-C = Chain(SM=1, LM=1, Beta=1, Gamma=1); # system C ≣ [Patt=[0,1,0],NBeads=10,ConstrainedBeads=2,SEps=1,LEps=100,SM=10,LM=1,Dist=1,Beta=1,Gamma=1]
+C = Chain(SM=1, LM=1, Beta=1.096); # system C ≣ [Patt=[0,1,0],NBeads=10,ConstrainedBeads=2,SEps=1,LEps=100,SM=10,LM=1,Dist=1,Beta=1,Gamma=1]
 
 # S = Simulator(); # [dt=1e-4,Stochdt=1e-4,FullSteps=Int(1e5),OrthoSteps=1,ApproxStep=Int(1e5),OrthoSamples=Int(1e5),MacroSamples=50,LagStep=400,NumLags=30]
 S = Simulator(dt=1e-3, Stochdt=1e-3,
               FullSteps=Int(1e7),
               ApproxSteps=Int(1e7),
-              m_MF=481.77, q_MF=-1408.6,
-              coeffEXP_MF_A=15177, coeffEXP_MF_B=2.7507);
-
-# m_MF=685.46, q_MF=-1975.00
-# m_MF=421.52, q_MF=-1237.5 # Coeff_MF_SplineI_sC_M1m1.csv
-# S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e5), ApproxSteps=Int(1e5));
+              m_MF=486.11, q_MF=-1420.4,
+              coeffEXP_MF_A=7794.6, coeffEXP_MF_B=2.5456);
 
 # Random.seed!(2134)
 # Random.seed!(121)
@@ -57,7 +54,7 @@ S = Simulator(dt=1e-3, Stochdt=1e-3,
 ## NB: paper data
 # Fdata = readdlm("Eff_Potential/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
 
-force_data = readdlm("Store_Trajectory/force_1_1_Beta1.dat", Float64);
+force_data = readdlm("Store_Trajectory/force_1_1_new.dat", Float64);
 
 # i punti della griglia *devono* essere equispaziati
 RR = force_data[:, 1];
@@ -88,15 +85,20 @@ Fdata[:, 5] = Fmean_coeff2[1:end - 1];
 #########################################################################################
 ## Write data to file
 
-open("Store_Trajectory/Outcomes/PApprox_DCGD_M1m1_1e7_B1_corretta.csv", "w+") do x
+if isdir("Outcomes/M$(Int(C.SM))_m$(Int(Int(C.LM)))") == 0
+    mkpath("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))");
+end
+
+open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/P_DCGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
     writedlm(x, PApprox2);
 end
-open("Store_Trajectory/Outcomes/QApprox_DCGD_M1m1_1e7_B1_corretta.csv", "w+") do x
+open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/Q_DCGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
     writedlm(x, QApprox2);
 end
-open("Store_Trajectory/Outcomes/FApprox_DCGD_M1m1_1e7_B1_corretta.csv", "w+") do x
+open("Outcomes/M$(Int(C.SM))_m$(Int(C.LM))/F_DCGD_M$(Int(C.SM))m$(Int(C.LM))_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta).csv", "w+") do x
     writedlm(x, FApprox2);
 end
+
 
 #################################################################################
 end # @time
