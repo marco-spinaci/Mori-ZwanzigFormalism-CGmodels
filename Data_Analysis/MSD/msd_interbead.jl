@@ -8,8 +8,8 @@ using Main.LJChain, Main.CGStats, Statistics, DelimitedFiles, Printf
 ################################################################################
 ## Set up simulation parameters.
 
-C = Chain(SM=0.1, LM=1, Beta=1.096); # system C ≣ [Patt=[0,1,0],NBeads=10,ConstrainedBeads=2,SEps=1,LEps=100,SM=10,LM=1,Dist=1,Beta=1,Gamma=1]
-S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
+C = Chain(SM=10, LM=1, Beta=1.096); # system C ≣ [Patt=[0,1,0],NBeads=10,ConstrainedBeads=2,SEps=1,LEps=100,SM=10,LM=1,Dist=1,Beta=1,Gamma=1]
+S = Simulator(dt=1e-4, Stochdt=1e-4, FullSteps=Int(1e8), ApproxSteps=Int(1e8));
 
 ################################################################################
 
@@ -136,7 +136,7 @@ end
 # Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD_1e7(B1.096).csv", Float64); #NB: è calcolata con gli stessi parametri di quella sopra
 # Q_MMZD = readdlm("Store_Trajectory/Outcomes/QApprox_MMZD_M1m1_1e7_B1_corretta.csv", Float64);
 
-Q_MMZD = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Q_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", Float64);
+Q_MMZD = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Q_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", Float64);
 
 lm = size(Q_MMZD,1);
 dQ3 = zeros(lm, C.NBeads);
@@ -175,7 +175,7 @@ end
 v = findall(msd3 .!= 0);
 msd3 = msd3[v];
 
-open("Outcomes/M$(C.SM)_m$(C.LM)/MSD/INT_msd_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", "w+") do x
+open("Outcomes/M$(C.SM)_m$(C.LM)/MSD/INT_msd_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", "w+") do x
     writedlm(x, [ S.Stochdt*100*v msd3 ]);
 end
 
