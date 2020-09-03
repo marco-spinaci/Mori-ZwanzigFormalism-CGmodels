@@ -20,3 +20,5 @@ Transferability/
 
 # exclude file
 Julia_Code/Store_Trajectory/Outcomes/*.csv
+
+Outcomes/M*/*.csv
