@@ -35,7 +35,7 @@ julia> Pkg.add("NAME_PACKAGE")
 ```
 
 The modules to be loaded to determine and analyze the trajectories are 
-* [LJChain.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/LJChain.jl), this module providing the physics functions and a parameter object for a 1D periodic chain of 2 species of particles, which differ in mass and bond stiffness. The particles are arranged in a repeating pattern, and the Coarse-Grained (CG) model is obtained by combining the single repeated units into CG interaction site (called beads). The CG variables are given by the center of mass of each bead and by the corresponding momenta. The inter-atomic potential is a simple 12-6 Lennard-Jones potential and the interaction between two different species of particles is set by the so-called Lorentz-Berthelot mixing rule. 
+* [LJChain.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/LJChain.jl), this module providing the physics functions and a parameter object for a **1D periodic chain of 2 species of particles**, which differ in mass and bond stiffness. The particles are arranged in a repeating pattern, and the Coarse-Grained (CG) model is obtained by combining the single repeated units into CG interaction site (called **beads**). The CG variables are given by the center of mass of each bead and by the corresponding momenta. The inter-atomic potential is a simple 12-6 Lennard-Jones potential and the interaction between two different species of particles is set by the so-called Lorentz-Berthelot mixing rule. 
 * [CGStats.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/CGStats.jl), in this module there are all the functions needed to determine the various dynamics and to determine the autocorrelation functions 
 
 ### Parameters of `LJChain.jl` Module and `CGStats.jl` Module
@@ -111,9 +111,14 @@ These scripts are divided into four parts, for example see [Store_Trajectory/com
 1. In the first part, we load the necessary packages and modules:
 
 ```julia
+using Printf
+
+@time begin # to measure performance
+
 include("../LJChain.jl")
 include("../CGStats.jl")
-using Main.LJChain,Main.CGStats,DelimitedFiles
+
+using Main.LJChain, Main.CGStats, DelimitedFiles
 ```
 
 2. In the second part, we can set up the parameters for the simulation present in the loaded modules `LJChain.jl` and `CGStats.jl`:
@@ -138,15 +143,21 @@ S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
 4. Finally, we save the data to files
 
 ```julia
-open("Store_Trajectory/Outcomes/P_FGD_M1m1_1e7_B1.csv", "w+") do x
+if isdir("Outcomes/M$(C.SM)_m$(C.LM)") == 0    # to check if the folder to store data exists
+    mkpath("Outcomes/M$(C.SM)_m$(C.LM)");      # to create the folder to store the data
+end
+
+open("Outcomes/M$(C.SM)_m$(C.LM)/P_FGD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", "w+") do x
     writedlm(x, (C.Phi*PFull)');
 end
-open("Store_Trajectory/Outcomes/Q_FGD_M1m1_1e7_B1.csv", "w+") do x
+open("Outcomes/M$(C.SM)_m$(C.LM)/Q_FGD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", "w+") do x
     writedlm(x, (C.Psi*QFull)');
 end
-open("Store_Trajectory/Outcomes/F_FGD_M1m1_1e7_B1.csv", "w+") do x
+open("Outcomes/M$(C.SM)_m$(C.LM)/F_FGD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", "w+") do x
     writedlm(x, (C.PhiF*FFull)');
 end
+
+end # @time
 ```
 
 where `C.Phi` and `C.Psi` are the mapping operators of the CG system and, `C.PhiF` is the projection operator of the Forces in the CG system. We are projecting the obtained data so that we can easily compare them with those obtained from CGD and MMZD.
@@ -156,7 +167,7 @@ To determine CGD and MMZD, the scripts have an additional part where we can inse
 ### Effective Potential and Look-Up Table of Mean Force and Fluctuating Force
 The **Effective Potential** is determined via a **bottom-up approach**, _i.e._ through Fine-Grained (or atomistic) simulations. More specifically, it is determined through the integration of the **Mean Force** with respect to the distance between the CG particles.
 
-The **look-up table of the Mean Force and Fluctuating Force** with respect to the distance between the CG particles in the (NVT) ensemble can be found in the folder `Eff_Potential`. They are computed by the script: [Eff_Potential/CoarseGrainingLangDyn_sABCD.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Eff_Potential/CoarseGrainingLangDyn_sABCD.jl) by means of the function
+The **look-up table of the Mean Force and Fluctuating Force** with respect to the distance between the CG particles in the (NVT) ensemble can be found in the folder `Eff_Potential`. They are computed by the script [Eff_Potential/CoarseGrainingLangDyn_sABCD.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Eff_Potential/CoarseGrainingLangDyn_sABCD.jl) by means of the function
 
 ```julia
 (RR,PP,Veff,Fmean,Fstd,FdataMF,FdataFF) = VEffConstrainedLangDyn_NVT(C,S)
@@ -230,8 +241,21 @@ FdataFF = readdlm("Eff_Potential/Outcomes/Coeff_FF_SplineI_sC_M1m1.csv", Float64
 
 ## Scripts to Analyse the Trajectories
 In folder `Data_Analysis` we can find scripts to determine
-* Time Autocorrelation Functions (ACF), in the folder `Data_Analysis/ACF`
-* Probability Distribution Functions (PDF), in the folder `Data_Analysis/PDF`
+* Time Autocorrelation Functions (ACF), in the folder `Data_Analysis/ACF`:
+  * [Data_Analysis/ACF/AutocorrelationPar_CanonicalEns.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Data_Analysis/ACF/AutocorrelationPar_CanonicalEns.jl)
+* Probability Distribution Functions (PDF), in the folder `Data_Analysis/PDF`:
+  * [Data_Analysis/PDF/pdf.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Data_Analysis/PDF/pdf.jl), to compute the momenta distribution of a single bead and the distribution of inter-bead distance 
 * Mean Square Displacement (MSD), in the folder `Data_Analysis/MSD`
+  * [Data_Analysis/MSD/msd.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Data_Analysis/MSD/msd.jl), to compute the MSD of a single bead
+  * [Data_Analysis/MSD/msd_interbead.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Data_Analysis/MSD/msd_interbead.jl), to compute the MSD of inter-bead distance
+
+## How to compile the scritps
+
+The scripts to compute or to analyze the trajectories can be compiled in the main folder, for example by running
+```
+julia Store_Trajectory/compareTraj_FGD.jl
+```
+the output will be stored in the folder `Outcomes`.
+
 
 ## To Do
