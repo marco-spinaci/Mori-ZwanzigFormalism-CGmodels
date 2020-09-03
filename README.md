@@ -9,6 +9,7 @@ This project aims at studying the Mori-Zwanzig (MZ) formalism to systematically 
     + [Effective Potential and Look-Up Table of Mean Force and Fluctuating Force](#effective-potential-and-look-up-table-of-mean-force-and-fluctuating-force)
     + [How to Use Look-Up Tables in Trajectory Scripts](#how-to-use-look-up-tables-in-trajectory-scripts)
   * [Scripts to Analyse the Trajectories](#scripts-to-analyse-the-trajectories)
+  * [How to Compile the Scritps](#how-to-compile-the-scritps)
   * [To Do](#to-do)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
@@ -249,7 +250,7 @@ In folder `Data_Analysis` we can find scripts to determine
   * [Data_Analysis/MSD/msd.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Data_Analysis/MSD/msd.jl), to compute the MSD of a single bead
   * [Data_Analysis/MSD/msd_interbead.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Data_Analysis/MSD/msd_interbead.jl), to compute the MSD of inter-bead distance
 
-## How to compile the scritps
+## How to Compile the Scritps
 
 The scripts to compute or to analyze the trajectories can be compiled in the main folder, for example by running
 ```
