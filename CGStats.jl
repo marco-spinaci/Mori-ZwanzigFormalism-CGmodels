@@ -417,6 +417,9 @@ function ConstrainedSample(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S::S
 
     # Record successful sample.
     s+=1;
+	if s % S.check == 0
+		@printf "      ITERATION %0.3e OF %0.3e\n" s S.OrthoSamples
+	end
     SigmaCG = C.PhiFConstr*Stresses(Q,C);
     for j = 1:S.Moments
       StressMoments[:,j] += SigmaCG.^j;
@@ -460,6 +463,9 @@ function ConstrSampleLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S:
 
     # Record successful sample.
     s+=1;
+	if s % S.check == 0
+		@printf "      ITERATION %0.3e OF %0.3e\n" s S.OrthoSamples
+	end
     SigmaCG = C.PhiFConstr*Stresses(Q,C);
     for j = 1:S.Moments
       StressMoments[:,j] += SigmaCG.^j;
@@ -1062,9 +1068,6 @@ function VEffConstrainedLangDyn_NVT(C::Chain,S::Simulator)
           end
           println("    Starting macrosample ", ss+1);
           for i = 1:S.FullSteps
-			  if i % S.check == 0
-				  @printf "      ITERATION %0.3e OF %0.3e\n" i S.FullSteps
-			  end
 			  (P,Q,F) = LangDynIntegrators(P,Q,F,C,S.dt);
           end
 
