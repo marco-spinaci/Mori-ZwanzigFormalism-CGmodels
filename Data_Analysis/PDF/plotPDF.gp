@@ -17,9 +17,17 @@ set format y "10^{%L}"
 # unset yrange
 # set yrange[1e-7:1e0]
 
+# f(x) = a * exp(-b * (x**2))
+# a = sqrt(1.096 / (2*pi*21))
+# b = 1.096 / (2*21)
+
+# f(x) = a * exp(-b * (x**2))
+# a = sqrt(1.096 / (2*pi*3))
+# b = 1.096 / (2*3)
+
 f(x) = a * exp(-b * (x**2))
-a = sqrt(1.096 / (2*pi*21))
-b = 1.096 / (2*21)
+a = sqrt(1.096 / (2*pi*1.2))
+b = 1.096 / (2*1.2)
 
 # f(x) = a * exp(-b * (x**2))
 # a = sqrt(1. / (2*pi*3))
@@ -51,26 +59,26 @@ set ylabel "{{/Roman pdf (R)}}"
 
 # set output "| epstopdf -f -o=Data_Analysis/PDF/Plots/HistPDF_Q_1e7B1.096_CORRETTA.pdf"
 # set output "| epstopdf -f -o=../TEX_Notes/Figure/HistPDF_Q_CORRETTAmd.pdf"
-set output "| epstopdf -f -o=Outcomes/M10.0_m1.0/PDF/HistQ_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.pdf"
-p "Outcomes/M10.0_m1.0/PDF/HistQ_FGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
-  "Outcomes/M10.0_m1.0/PDF/HistQ_DCGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 8 pt 13 t "CGD" , \
-  "Outcomes/M10.0_m1.0/PDF/HistQ_MMZD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 7 pt 4 t "MMZD"
+set output "| epstopdf -f -o=Outcomes/M0.1_m1.0/PDF/HistQ__M0.1m1.0_1.0e+07_B1.096.pdf"
+p "Outcomes/M0.1_m1.0/PDF/HistQ_FGD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+  "Outcomes/M0.1_m1.0/PDF/HistQ_DCGD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w p lw 5 ps 2 lc 8 pt 13 t "CGD" , \
+  "Outcomes/M0.1_m1.0/PDF/HistQ_MMZD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w p lw 5 ps 2 lc 7 pt 4 t "MMZD"
 set output
 
 
 set xlabel "{{/RomanOblique P}}"
 set ylabel "{{/Roman pdf (P)}}"
 
-set xrange [-25:25]
-set xtics 5
-set yrange[1e-8:1e0]
+# set xrange [-25:25]
+# set xtics 5
+# set yrange[1e-8:1e0]
 
 # set output "| epstopdf -f -o=Data_Analysis/PDF/Plots/HistPDF_P.pdf"
 # set output "| epstopdf -f -o=../TEX_Notes/Figure/HistPDF_P.pdf"
-set output "| epstopdf -f -o=Outcomes/M10.0_m1.0/PDF/HistP_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.pdf"
-p "Outcomes/M10.0_m1.0/PDF/HistP_FGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 2 pt 5 t "FGD" , \
-  "Outcomes/M10.0_m1.0/PDF/HistP_DCGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 8 pt 13 t "CGD" , \
-  "Outcomes/M10.0_m1.0/PDF/HistP_MMZD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 7 pt 4 t "MMZD" , \
+set output "| epstopdf -f -o=Outcomes/M0.1_m1.0/PDF/HistP_M0.1m1.0_1.0e+07_B1.096.pdf"
+p "Outcomes/M0.1_m1.0/PDF/HistP_FGD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w p lw 5 ps 2 lc 2 pt 5 t "FGD" , \
+  "Outcomes/M0.1_m1.0/PDF/HistP_DCGD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w p lw 5 ps 2 lc 8 pt 13 t "CGD" , \
+  "Outcomes/M0.1_m1.0/PDF/HistP_MMZD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w p lw 5 ps 2 lc 7 pt 4 t "MMZD" , \
   f(x) w l lc 4 lw 2 t "Theoretical pdf"
 set output
 

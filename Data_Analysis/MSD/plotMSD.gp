@@ -18,19 +18,30 @@ set key bottom right
 
 # set yrange[2e-3:4e-2]
 # set title "{{/RomanOblique MSD of a sigle bead (M-m-M, M=1, m=1)}}"
-set output "| epstopdf -f -o=Outcomes/M10.0_m1.0/MSD/msd_M10.0m1.0_B1.096_dt1.0e-04.pdf"
-p "Outcomes/M10.0_m1.0/MSD/msd_FGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
-  "Outcomes/M10.0_m1.0/MSD/msd_DCGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
-  "Outcomes/M10.0_m1.0/MSD/msd_MMZD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
+# set output "| epstopdf -f -o=Outcomes/M1.0_m1.0/MSD/INT_msd_M1m1_1.0e+07_B1.0.pdf"
+# p "Outcomes/M1.0_m1.0/MSD/INT_msd_FGD_M1m1_1.0e+07_B1.0.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+#   "Outcomes/M1.0_m1.0/MSD/INT_msd_DCGD_M1m1_1.0e+07_B1.0.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
+#   "Outcomes/M1.0_m1.0/MSD/INT_msd_MMZD_M1m1_1.0e+07_B1.0.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
+# set output
+
+set output "| epstopdf -f -o=Outcomes/M0.1_m1.0/MSD/INT_msd_M0.1m1.0_1.0e+07_B1.096.pdf"
+p "Outcomes/M0.1_m1.0/MSD/INT_msd_FGD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+  "Outcomes/M0.1_m1.0/MSD/INT_msd_DCGD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
+  "Outcomes/M0.1_m1.0/MSD/INT_msd_MMZD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
 set output
 
 # set yrange[4e-3:3e-2]
-set output "| epstopdf -f -o=Outcomes/M10.0_m1.0/MSD/INT_msd_M10.0m1.0_B1.096_dt1.0e-04.pdf"
-p "Outcomes/M10.0_m1.0/MSD/INT_msd_FGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
-  "Outcomes/M10.0_m1.0/MSD/INT_msd_DCGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
-  "Outcomes/M10.0_m1.0/MSD/INT_msd_MMZD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
-set output
+# set output "| epstopdf -f -o=Outcomes/M1.0_m1.0/MSD/msd_M1m1_1.0e+07_B1.0.pdf"
+# p "Outcomes/M1.0_m1.0/MSD/msd_FGD_M1m1_1.0e+07_B1.0.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+#   "Outcomes/M1.0_m1.0/MSD/msd_DCGD_M1m1_1.0e+07_B1.0.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
+#   "Outcomes/M1.0_m1.0/MSD/msd_MMZD_M1m1_1.0e+07_B1.0.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
+# set output
 
+set output "| epstopdf -f -o=Outcomes/M0.1_m1.0/MSD/msd_M0.1m1.0_1.0e+07_B1.096.pdf"
+p "Outcomes/M0.1_m1.0/MSD/msd_FGD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+  "Outcomes/M0.1_m1.0/MSD/msd_DCGD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
+  "Outcomes/M0.1_m1.0/MSD/msd_MMZD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
+set output
 
 
 # set output "| epstopdf -f -o=Data_Analysis/MSD/Plots/INT_msd_1e7.pdf"
