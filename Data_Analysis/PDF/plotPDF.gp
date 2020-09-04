@@ -61,9 +61,9 @@ set output
 set xlabel "{{/RomanOblique P}}"
 set ylabel "{{/Roman pdf (P)}}"
 
-# set xrange [-25:25]
-# set xtics 5
-# set yrange[1e-8:1e0]
+set xrange [-25:25]
+set xtics 5
+set yrange[1e-8:1e0]
 
 # set output "| epstopdf -f -o=Data_Analysis/PDF/Plots/HistPDF_P.pdf"
 # set output "| epstopdf -f -o=../TEX_Notes/Figure/HistPDF_P.pdf"
