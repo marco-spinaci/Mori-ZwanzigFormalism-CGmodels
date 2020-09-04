@@ -24,10 +24,10 @@ set key bottom right
 #   "Outcomes/M1.0_m1.0/MSD/INT_msd_MMZD_M1m1_1.0e+07_B1.0.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
 # set output
 
-set output "| epstopdf -f -o=Outcomes/M0.1_m1.0/MSD/INT_msd_M0.1m1.0_1.0e+07_B1.096.pdf"
-p "Outcomes/M0.1_m1.0/MSD/INT_msd_FGD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
-  "Outcomes/M0.1_m1.0/MSD/INT_msd_DCGD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
-  "Outcomes/M0.1_m1.0/MSD/INT_msd_MMZD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
+set output "| epstopdf -f -o=Outcomes/M1.0_m1.0/MSD/INT_msd_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.pdf"
+p "Outcomes/M1.0_m1.0/MSD/INT_msd_FGD_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+  "Outcomes/M1.0_m1.0/MSD/INT_msd_DCGD_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
+  "Outcomes/M1.0_m1.0/MSD/INT_msd_MMZD_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
 set output
 
 # set yrange[4e-3:3e-2]
@@ -37,10 +37,10 @@ set output
 #   "Outcomes/M1.0_m1.0/MSD/msd_MMZD_M1m1_1.0e+07_B1.0.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
 # set output
 
-set output "| epstopdf -f -o=Outcomes/M0.1_m1.0/MSD/msd_M0.1m1.0_1.0e+07_B1.096.pdf"
-p "Outcomes/M0.1_m1.0/MSD/msd_FGD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
-  "Outcomes/M0.1_m1.0/MSD/msd_DCGD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
-  "Outcomes/M0.1_m1.0/MSD/msd_MMZD_M0.1m1.0_1.0e+07_B1.096.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
+set output "| epstopdf -f -o=Outcomes/M1.0_m1.0/MSD/msd_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.pdf"
+p "Outcomes/M1.0_m1.0/MSD/msd_FGD_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+  "Outcomes/M1.0_m1.0/MSD/msd_DCGD_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
+  "Outcomes/M1.0_m1.0/MSD/msd_MMZD_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
 set output
 
 
