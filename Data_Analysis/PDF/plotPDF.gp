@@ -61,16 +61,16 @@ set output
 set xlabel "{{/RomanOblique P}}"
 set ylabel "{{/Roman pdf (P)}}"
 
-set xrange [-25:25]
-set xtics 5
-set yrange[1e-8:1e0]
+# set xrange [-25:25]
+# set xtics 5
+# set yrange[1e-8:1e0]
 
 # set output "| epstopdf -f -o=Data_Analysis/PDF/Plots/HistPDF_P.pdf"
 # set output "| epstopdf -f -o=../TEX_Notes/Figure/HistPDF_P.pdf"
 set output "| epstopdf -f -o=Outcomes/M10.0_m1.0/PDF/HistP_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.pdf"
 p "Outcomes/M10.0_m1.0/PDF/HistP_FGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 2 pt 5 t "FGD" , \
-  "Outcomes/M10.0_m1.0/PDF/HistP_FGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 8 pt 13 t "CGD" , \
-  "Outcomes/M10.0_m1.0/PDF/HistP_FGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 7 pt 4 t "MMZD" , \
+  "Outcomes/M10.0_m1.0/PDF/HistP_DCGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 8 pt 13 t "CGD" , \
+  "Outcomes/M10.0_m1.0/PDF/HistP_MMZD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 7 pt 4 t "MMZD" , \
   f(x) w l lc 4 lw 2 t "Theoretical pdf"
 set output
 
