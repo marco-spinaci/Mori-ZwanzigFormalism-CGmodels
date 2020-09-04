@@ -1,7 +1,7 @@
 # NB: to run this script from the terminal is not necessary to give the following command "julia -p n scritpt.jl"
 #     because I explicitly added in the script the command-line option "-p n".
 
-using Distributed, Printf
+using Distributed, Printf, Parameters
 
 @time begin
 
@@ -11,7 +11,7 @@ addprocs(8);
 
 @everywhere include("LJChain.jl")
 @everywhere include("CGStats.jl")
-using Main.LJChain, Main.CGStats, SharedArrays, Parameters, Statistics, LinearAlgebra, StatsBase, DelimitedFiles
+using Main.LJChain, Main.CGStats, SharedArrays, Statistics, LinearAlgebra, StatsBase, DelimitedFiles
 
 ####################################################################################################
 # General system
