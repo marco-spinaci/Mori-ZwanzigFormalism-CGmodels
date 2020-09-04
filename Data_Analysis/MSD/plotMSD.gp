@@ -7,12 +7,8 @@ set key font ",18"
 set xlabel "{{/RomanOblique t}}"
 set logscale xy
 
-# system A-B-A
-A = 1 # mass particle A
-B = 1 # mass particle B
-
 # set xrange[0:1e2]
-set xrange[1e-1:1e2]
+# set xrange[1e-1:1e2]
 
 set ylabel "{{/RomanOblique MSD}}"
 set format y "10^{%L}"
@@ -20,19 +16,19 @@ set format y "10^{%L}"
 
 set key bottom right
 
-set yrange[2e-3:4e-2]
+# set yrange[2e-3:4e-2]
 # set title "{{/RomanOblique MSD of a sigle bead (M-m-M, M=1, m=1)}}"
-set output "| epstopdf -f -o=Data_Analysis/MSD/Plots/msd_M$(A)m$(B)_1e7_B1.pdf"
-p "Outcomes/M$(A)_m$(B)/MSD/msd_FGD_M1m1_1e7_B1.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
-  "./Data_Analysis/MSD/Outcomes/msd_DCGD_M1m1_1e7_B1_corretta.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
-  "./Data_Analysis/MSD/Outcomes/msd_MMZD_M1m1_1e7_B1_corretta.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
+set output "| epstopdf -f -o=Outcomes/M10.0_m1.0/MSD/msd_M10.0m1.0_B1.096_dt1.0e-04.pdf"
+p "Outcomes/M10.0_m1.0/MSD/msd_FGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+  "Outcomes/M10.0_m1.0/MSD/msd_DCGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
+  "Outcomes/M10.0_m1.0/MSD/msd_MMZD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
 set output
 
-set yrange[4e-3:3e-2]
-set output "| epstopdf -f -o=Data_Analysis/MSD/Plots/INT_msd_M1m1_1e7_B1.pdf"
-p "./Data_Analysis/MSD/Outcomes/INT_msd_FGD_M1m1_1e7_B1.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
-  "./Data_Analysis/MSD/Outcomes/INT_msd_DCGD_M1m1_1e7_B1_corretta.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
-  "./Data_Analysis/MSD/Outcomes/INT_msd_MMZD_M1m1_1e7_B1_corretta.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
+# set yrange[4e-3:3e-2]
+set output "| epstopdf -f -o=Outcomes/M10.0_m1.0/MSD/INT_msd_M10.0m1.0_B1.096_dt1.0e-04.pdf"
+p "Outcomes/M10.0_m1.0/MSD/INT_msd_FGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+  "Outcomes/M10.0_m1.0/MSD/INT_msd_DCGD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w l lw 5 lc 8 dt 3 t "CGD" , \
+  "Outcomes/M10.0_m1.0/MSD/INT_msd_MMZD_M10.0m1.0_1.0e+08_B1.096_dt1.0e-04.csv" u 1:2 w p lw 1 ps 1 lc 7 pt 4 t "MMZD"
 set output
 
 
