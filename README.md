@@ -240,8 +240,9 @@ FdataMF = readdlm("Eff_Potential/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64
 FdataFF = readdlm("Eff_Potential/Outcomes/Coeff_FF_SplineI_sC_M1m1.csv", Float64);
 ```
 
+
 ## Scripts to Analyse the Trajectories
-In folder `Data_Analysis` we can find scripts to determine
+In folder `Data_Analysis` there are the scripts to determine
 * Time Autocorrelation Functions (ACF), in the folder `Data_Analysis/ACF`:
   * [Data_Analysis/ACF/AutocorrelationPar_CanonicalEns.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Data_Analysis/ACF/AutocorrelationPar_CanonicalEns.jl)
 * Probability Distribution Functions (PDF), in the folder `Data_Analysis/PDF`:
@@ -250,13 +251,14 @@ In folder `Data_Analysis` we can find scripts to determine
   * [Data_Analysis/MSD/msd.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Data_Analysis/MSD/msd.jl), to compute the MSD of a single bead
   * [Data_Analysis/MSD/msd_interbead.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Data_Analysis/MSD/msd_interbead.jl), to compute the MSD of inter-bead distance
 
+
 ## How to Compile the Scritps
 
-The scripts to compute or to analyze the trajectories can be compiled in the main folder, for example by running
+The scripts to compute or to analyze the trajectories can be compiled in the main directory, for example in the case of the atomistic simulations by running
 ```
 julia Store_Trajectory/compareTraj_FGD.jl
 ```
-the output will be stored in the folder `Outcomes`.
+and the output will be stored in the folder `Outcomes`.
 
 
 ## To Do
