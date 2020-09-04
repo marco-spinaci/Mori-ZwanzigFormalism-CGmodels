@@ -136,7 +136,7 @@ end
 # Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD_1e7(B1.096).csv", Float64); #NB: è calcolata con gli stessi parametri di quella sopra
 # Q_MMZD = readdlm("Store_Trajectory/Outcomes/QApprox_MMZD_M1m1_1e7_B1_corretta.csv", Float64);
 
-Q_MMZD = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Q_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", Float64);
+Q_MMZD = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Q_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", Float64);
 
 lm = size(Q_MMZD,1);
 dQ3 = zeros(lm, C.NBeads);
@@ -175,7 +175,7 @@ end
 v = findall(msd3 .!= 0);
 msd3 = msd3[v];
 
-open("Outcomes/M$(C.SM)_m$(C.LM)/MSD/INT_msd_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", "w+") do x
+open("Outcomes/M$(C.SM)_m$(C.LM)/MSD/INT_msd_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", "w+") do x
     writedlm(x, [ S.Stochdt*100*v msd3 ]);
 end
 

@@ -124,7 +124,7 @@ end
 # Q_MMZD = readdlm("Store_Trajectory/Outcomes/QApprox_MMZD_M1m1_1e7(B1.096)_CORRETTA.csv", Float64);
 # # Q_MMZD = readdlm("Store_Trajectory/Outcomes/QApprox_MMZD_1e5(B1.096).csv", Float64);
 
-Q_MMZD = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Q_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", Float64);
+Q_MMZD = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Q_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", Float64);
 
 CdM = Q_MMZD * C.vectorCdM;
 Q_MMZD = Q_MMZD .- CdM;
@@ -159,7 +159,7 @@ end
 v = findall(msd3 .!= 0);
 msd3 = msd3[v];
 
-open("Outcomes/M$(C.SM)_m$(C.LM)/MSD/msd_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", "w+") do x
+open("Outcomes/M$(C.SM)_m$(C.LM)/MSD/msd_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", "w+") do x
     writedlm(x, [ S.Stochdt*100*v msd3 ]);
 end
 
