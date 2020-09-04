@@ -8,8 +8,8 @@ using Main.LJChain, Main.CGStats, StatsBase, DelimitedFiles, Statistics, Printf
 ################################################################################
 ## Set up simulation parameters.
 
-C = Chain(SM=10, LM=1, Beta=1.096);
-S = Simulator(dt=1e-4, Stochdt=1e-4, FullSteps=Int(1e8), ApproxSteps=Int(1e8));
+C = Chain(SM=1, LM=1, Beta=1);
+S = Simulator(dt=1e-4, Stochdt=1e-4, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
 
 ################################################################################
 
