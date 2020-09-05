@@ -442,7 +442,7 @@ function ConstrainedSample(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S::S
   return StressMoments,P,Q
 end
 
-function ConstrSampleLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S::Simulator,Obs=(P,Q,C) -> 0)
+function ConstrSampleLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S::Simulator,i,Obs=(P,Q,C) -> 0)
 
   # Mean Forces
   StressMoments = zeros(C.ConstrainedBeads-1,S.Moments);
@@ -470,6 +470,11 @@ function ConstrSampleLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S:
     for j = 1:S.Moments
       StressMoments[:,j] += SigmaCG.^j;
     end
+	if s % 100 == 0
+		open("StressMoments_$(i).csv","a+") do x
+			writedlm(x, StressMoments ./ S.OrthoSamples);
+		end
+	end
     # ObsMean += Obs(P,Q,C); ## TODO FIX THIS CALL
   end
 
@@ -1083,7 +1088,7 @@ function VEffConstrainedLangDyn_NVT(C::Chain,S::Simulator)
             PSamples[ii,:] = C.PsiFConstr*PP;
             # Print max: if it gets too large, the integrator becomes unstable.
             println("        Maximum distance = ",maximum(RSamples[ii,:]));
-            MomentSamples[ii,:,:] = remotecall_fetch(ConstrSampleLangDyn,p,PP,QQ,C,S,CGStats.Observables)[1];
+            MomentSamples[ii,:,:] = remotecall_fetch(ConstrSampleLangDyn,p,PP,QQ,C,S,ii,CGStats.Observables)[1];
 			# NB:the function "ConstrSampleLangDyn" returns a Tuple and "remotecall_fetch()[1]" returns the first value of this Tuple.
             println("      Sample ",ii," complete!");
           end
