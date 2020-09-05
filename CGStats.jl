@@ -466,15 +466,15 @@ function ConstrSampleLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S:
 	if s % S.check == 0
 		@printf "      \nITERATION %0.3e OF %0.3e\n" s S.OrthoSamples
 	end
-    SigmaCG = C.PhiFConstr*Stresses(Q,C);
+    SigmaCG = C.PhiFConstr*Stresses(Q,C); # selects from Stresses (that is made as (F_2_1, ... , F_30_1)) the force F_4_3
     for j = 1:S.Moments
       StressMoments[:,j] += SigmaCG.^j;
     end
-	if s % 100 == 0
-		open("StressMoments_$(i).csv","a+") do x
-			writedlm(x, StressMoments ./ s);
-		end
-	end
+	# if s % 100 == 0
+	# 	open("StressMoments_$(i).csv","a+") do x
+	# 		writedlm(x, StressMoments ./ s);
+	# 	end
+	# end
     # ObsMean += Obs(P,Q,C); ## TODO FIX THIS CALL
   end
 
