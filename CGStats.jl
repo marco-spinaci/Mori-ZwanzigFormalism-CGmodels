@@ -471,7 +471,7 @@ function ConstrSampleLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S:
       StressMoments[:,j] += SigmaCG.^j;
     end
 	if s % 100 == 0
-		open("StressMoments_$(i).csv","a+") do x
+		open("StressMoments_$(i)_$(S.OrthoSamples).csv","a+") do x
 			writedlm(x, StressMoments ./ s);
 		end
 	end
