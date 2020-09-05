@@ -24,7 +24,7 @@ using Main.LJChain, Main.CGStats, SharedArrays, Statistics, LinearAlgebra, Stats
 
 #####################################################################################################
 
-S = Simulator(dt=1e-4, FullSteps=Int(1e7), OrthoSamples=Int(1e6), check=Int(5e4), MacroSamples=100);
+S = Simulator(dt=1e-4, FullSteps=Int(1e7), OrthoSamples=Int(1e6), check=Int(5e4), MacroSamples=10);
 
 ######################################################################################################
 # system A
