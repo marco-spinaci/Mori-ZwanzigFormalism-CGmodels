@@ -464,7 +464,7 @@ function ConstrSampleLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S:
     # Record successful sample.
     s+=1;
 	if s % S.check == 0
-		@printf "      ITERATION %0.3e OF %0.3e\n" s S.OrthoSamples
+		@printf "      \nITERATION %0.3e OF %0.3e\n" s S.OrthoSamples
 	end
     SigmaCG = C.PhiFConstr*Stresses(Q,C);
     for j = 1:S.Moments
@@ -472,7 +472,7 @@ function ConstrSampleLangDyn(P::Array{Float64,1},Q::Array{Float64,1},C::Chain,S:
     end
 	if s % 100 == 0
 		open("StressMoments_$(i).csv","a+") do x
-			writedlm(x, StressMoments ./ S.OrthoSamples);
+			writedlm(x, StressMoments ./ s);
 		end
 	end
     # ObsMean += Obs(P,Q,C); ## TODO FIX THIS CALL
