@@ -14,7 +14,7 @@ using Main.LJChain, Main.CGStats, DelimitedFiles, Random
 C = Chain(SM=1, LM=1, Beta=1); # system C ≣ [Patt=[0,1,0],NBeads=10,ConstrainedBeads=2,SEps=1,LEps=100,SM=10,LM=1,Dist=1,Beta=1,Gamma=1]
 
 # S = Simulator(); # [dt=1e-4,Stochdt=1e-4,FullSteps=Int(1e5),OrthoSteps=1,ApproxSteps=Int(1e5),OrthoSamples=Int(1e5),MacroSamples=50,LagStep=400,NumLags=30]
-S = Simulator(Stochdt=1e-4, ApproxSteps=Int(1e7),
+S = Simulator(Stochdt=1e-4, ApproxSteps=Int(1e4),
               m_MF=481.77, q_MF=-1408.6,
               m_FF=-304.49, q_FF=880.6,
               coeffEXP_MF_A=15177, coeffEXP_MF_B=2.7507,
@@ -102,7 +102,8 @@ S = Simulator(Stochdt=1e-4, ApproxSteps=Int(1e7),
 # to generate the coefficients for the cubic spline interpolation for mean force and fluctuating force
 # NB: the grid points *must* be equally spaced
 
-force_data = readdlm("Store_Trajectory/force_1_1_Beta1.dat", Float64);
+# force_data = readdlm("Store_Trajectory/force_1_1_Beta1.dat", Float64);
+force_data = readdlm("Store_Trajectory/MF_A1_B1_DT0.0001.dat", Float64);
 
 RR = force_data[:, 1];
 dx = RR[2] - RR[1];
@@ -123,7 +124,8 @@ FdataMF[:, 4] = Fmean_coeff1[1:end - 1];
 FdataMF[:, 5] = Fmean_coeff2[1:end - 1];
 
 
-flucts_data = readdlm("Store_Trajectory/flucts_1_1_Beta1.dat", Float64);
+# flucts_data = readdlm("Store_Trajectory/flucts_1_1_Beta1.dat", Float64);
+flucts_data = readdlm("Store_Trajectory/FF_A1_B1_DT0.0001.dat", Float64);
 
 RR = flucts_data[:, 1];
 dx = RR[2] - RR[1];

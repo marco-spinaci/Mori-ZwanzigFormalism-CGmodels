@@ -35,7 +35,7 @@ export InterpolationAlgorithm_Kriging, ApproxMeanForce, ApproxMeanStresses, Appr
   LagStep			  = 400       # spacing of lag times for autocorrelation
   NumLags			  = 30        # number of lag times to compute
   MacroSamples::Int	  = 50
-  OrthoSamples::Int	  = Int(1e5)
+  OrthoSamples::Int	  = Int(1e6)
   Moments::Int		  = 2
   check::Int          = Int(5e3)  # to print the number of iteration in a loop
 

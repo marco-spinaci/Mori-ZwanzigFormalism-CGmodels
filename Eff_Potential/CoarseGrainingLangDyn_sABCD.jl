@@ -25,6 +25,7 @@ using Main.LJChain, Main.CGStats, SharedArrays, Statistics, LinearAlgebra, Stats
 #####################################################################################################
 
 S = Simulator(dt=1e-4, FullSteps=Int(1e7), OrthoSamples=Int(1e6), check=Int(5e4), MacroSamples=100);
+# NB: OrthoSamples must be set like this Int(1e6) or larger
 
 ######################################################################################################
 # system A
@@ -104,13 +105,13 @@ C = Chain(SM=0.1, LM=1, Beta=1);
 # open("./Eff_Potential/Outcomes/Fstd_sC.csv","w+") do x
 #    writedlm(x,Fstd);
 # end
-open("./Eff_Potential/Outcomes/sC_M$(C.SM)m$(C.LM)_Beta$(C.Beta)_$(@sprintf "%0.1e" S.FullSteps)_$(@sprintf "%0.1e" S.dt).csv","w+") do x
+open("./Eff_Potential/Outcomes/sC_M$(C.SM)m$(C.LM)_Beta$(C.Beta)_$(@sprintf "%0.1e" S.FullSteps)_dt$(@sprintf "%0.1e" S.dt).csv","w+") do x
    writedlm(x, [RR PP Veff Fmean Fstd]);
 end
-open("./Eff_Potential/Outcomes/Coeff_MF_SplineI_sC_M$(C.SM)m$(C.LM)_Beta$(C.Beta)_$(@sprintf "%0.1e" S.FullSteps)_$(@sprintf "%0.1e" S.dt).csv","w+") do x
+open("./Eff_Potential/Outcomes/Coeff_MF_SplineI_sC_M$(C.SM)m$(C.LM)_Beta$(C.Beta)_$(@sprintf "%0.1e" S.FullSteps)_dt$(@sprintf "%0.1e" S.dt).csv","w+") do x
    writedlm(x, FdataMF);
 end
-open("./Eff_Potential/Outcomes/Coeff_FF_SplineI_sC_M$(C.SM)m$(C.LM)_Beta$(C.Beta)_$(@sprintf "%0.1e" S.FullSteps)_$(@sprintf "%0.1e" S.dt).csv","w+") do x
+open("./Eff_Potential/Outcomes/Coeff_FF_SplineI_sC_M$(C.SM)m$(C.LM)_Beta$(C.Beta)_$(@sprintf "%0.1e" S.FullSteps)_dt$(@sprintf "%0.1e" S.dt).csv","w+") do x
    writedlm(x, FdataFF);
 end
 
