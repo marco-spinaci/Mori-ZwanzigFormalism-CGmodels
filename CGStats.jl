@@ -1724,7 +1724,7 @@ function ApproxFlucStep(P::Array{Float64,1},Q::Array{Float64,1},StressSqvals::Ar
     diagonal = Gvec + circshift(Gvec, 1);
 	upper_off_diagonal = -circshift(Gvec, 1);
 	lower_off_diagonal = -circshift(Gvec, 0);
-	Gamma = diagm(diagonal) + circshift(diagm(upper_off_diagonal), -1) + circshift(diagm(lower_off_diagonal), 1);
+	Gamma = diagm(0 => diagonal) + circshift(diagm(0 => upper_off_diagonal), -1) + circshift(diagm(0 => lower_off_diagonal), 1);
 
     ### Perform eigenvalue decomposition
 	# Computes the eigenvalue decomposition, returning an Eigen factorization object

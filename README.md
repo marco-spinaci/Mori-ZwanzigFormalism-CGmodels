@@ -1,5 +1,5 @@
 # Mori-Zwanzig Formalism: CG models
-This project aims at studying the Mori-Zwanzig (MZ) formalism to systematically derive hybrid Coarse-Grained (CG) models. This formalism allows to study the evolution of a dynamical system through the projection on a subset of its degrees of freedom. While, the hybrid CG models ideally combine a cheaper computational cost than the atomistic simulations, and a greater accuracy than pure CG simulations. 
+This project aims at studying the Mori-Zwanzig (MZ) formalism to systematically derive hybrid Coarse-Grained (CG) models. This formalism allows to study the evolution of a dynamical system through the projection on a subset of its degrees of freedom. While, the hybrid CG models ideally combine a cheaper computational cost than the atomistic simulations, and a greater accuracy than pure CG simulations.
 
 - [Mori-Zwanzig Formalism: CG models](#mori-zwanzig-formalism-cg-models)
   * [Introduction](#introduction)
@@ -30,14 +30,14 @@ We have implemented **four different dynamics** in **(NVE) ensemble** and **(NVT
 Additional used packages: `Parameters`, `StatsBase`, `Plots`, `PyPlot`. Install them explicitly via the julia REPL:
 
 ```
-julia> import Pkg 
+julia> import Pkg
 
 julia> Pkg.add("NAME_PACKAGE")
 ```
 
-The modules to be loaded to determine and analyze the trajectories are 
-* [LJChain.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/LJChain.jl), this module providing the physics functions and a parameter object for a **1D periodic chain of 2 species of particles**, which differ in mass and bond stiffness. The particles are arranged in a repeating pattern, and the Coarse-Grained (CG) model is obtained by combining the single repeated units into CG interaction site (called **beads**). The CG variables are given by the center of mass of each bead and by the corresponding momenta. The inter-atomic potential is a simple 12-6 Lennard-Jones potential and the interaction between two different species of particles is set by the so-called Lorentz-Berthelot mixing rule. 
-* [CGStats.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/CGStats.jl), in this module there are all the functions needed to determine the various dynamics and to determine the autocorrelation functions 
+The modules to be loaded to determine and analyze the trajectories are
+* [LJChain.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/LJChain.jl), this module providing the physics functions and a parameter object for a **1D periodic chain of 2 species of particles**, which differ in mass and bond stiffness. The particles are arranged in a repeating pattern, and the Coarse-Grained (CG) model is obtained by combining the single repeated units into CG interaction site (called **beads**). The CG variables are given by the center of mass of each bead and by the corresponding momenta. The inter-atomic potential is a simple 12-6 Lennard-Jones potential and the interaction between two different species of particles is set by the so-called Lorentz-Berthelot mixing rule.
+* [CGStats.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/CGStats.jl), in this module there are all the functions needed to determine the various dynamics and to determine the autocorrelation functions
 
 ### Parameters of `LJChain.jl` Module and `CGStats.jl` Module
 The default values of the parameters in the LJChain.jl module are
@@ -56,7 +56,7 @@ Gamma::Float64         = 1.0     # Friction parameter
 ```
 where `SEps` and `LEps` are the depths of the potential well that can be varied to analyse the effect of the stiffness of the interactions.
 
-These values can be modified in a generic script `*.jl` by 
+These values can be modified in a generic script `*.jl` by
 
 ```julia
 C = Chain(SM=1, LM=1, Beta=1)
@@ -96,7 +96,7 @@ coeffEXP_FF_A::Float64 = 3.3199e6;
 coeffEXP_FF_B::Float64 = 4.8887;
 ```
 
-They can be modified in a generic script `*.jl` by 
+They can be modified in a generic script `*.jl` by
 
 ```julia
 S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7))
@@ -129,7 +129,7 @@ C = Chain(SM=1, LM=1, Beta=1);
 S = Simulator(dt=1e-3, Stochdt=1e-3, FullSteps=Int(1e7), ApproxSteps=Int(1e7));
 ```
 
-3. In the third part, we call the functions of module `CGStats.jl` (or `LJChain.jl`) to determine the trajectories of the Fine-grained (or atomistic) system 
+3. In the third part, we call the functions of module `CGStats.jl` (or `LJChain.jl`) to determine the trajectories of the Fine-grained (or atomistic) system
 
 ```julia
 # Generate initial data
@@ -163,7 +163,7 @@ end # @time
 
 where `C.Phi` and `C.Psi` are the mapping operators of the CG system and, `C.PhiF` is the projection operator of the Forces in the CG system. We are projecting the obtained data so that we can easily compare them with those obtained from CGD and MMZD.
 
-To determine CGD and MMZD, the scripts have an additional part where we can insert the look-up tables to determine the Effective potential and, the thermal bath in the case of MMZD. 
+To determine CGD and MMZD, the scripts have an additional part where we can insert the look-up tables to determine the Effective potential and, the thermal bath in the case of MMZD.
 
 ### Effective Potential and Look-Up Table of Mean Force and Fluctuating Force
 The **Effective Potential** is determined via a **bottom-up approach**, _i.e._ through Fine-Grained (or atomistic) simulations. More specifically, it is determined through the integration of the **Mean Force** with respect to the distance between the CG particles.
@@ -174,7 +174,7 @@ The **look-up table of the Mean Force and Fluctuating Force** with respect to th
 (RR,PP,Veff,Fmean,Fstd,FdataMF,FdataFF) = VEffConstrainedLangDyn_NVT(C,S)
 ```
 
-where 
+where
 * `RR` is the distance between the CG particles
 * `PP` is the momenta of the CG particles
 * `Veff` is the Effective Potential
@@ -246,7 +246,7 @@ In folder `Data_Analysis` there are the scripts to determine
 * Time Autocorrelation Functions (ACF), in the folder `Data_Analysis/ACF`:
   * [Data_Analysis/ACF/AutocorrelationPar_CanonicalEns.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Data_Analysis/ACF/AutocorrelationPar_CanonicalEns.jl)
 * Probability Distribution Functions (PDF), in the folder `Data_Analysis/PDF`:
-  * [Data_Analysis/PDF/pdf.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Data_Analysis/PDF/pdf.jl), to compute the momenta distribution of a single bead and the distribution of inter-bead distance 
+  * [Data_Analysis/PDF/pdf.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Data_Analysis/PDF/pdf.jl), to compute the momenta distribution of a single bead and the distribution of inter-bead distance
 * Mean Square Displacement (MSD), in the folder `Data_Analysis/MSD`
   * [Data_Analysis/MSD/msd.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Data_Analysis/MSD/msd.jl), to compute the MSD of a single bead
   * [Data_Analysis/MSD/msd_interbead.jl](https://github.com/marco-spinaci/Mori-ZwanzigFormalism-CGmodels/blob/master/Data_Analysis/MSD/msd_interbead.jl), to compute the MSD of inter-bead distance
@@ -256,7 +256,7 @@ In folder `Data_Analysis` there are the scripts to determine
 
 The scripts to compute or to analyze the trajectories can be compiled in the main directory, for example in the case of the atomistic simulations by running
 ```
-julia Store_Trajectory/compareTraj_FGD.jl
+$ julia Store_Trajectory/compareTraj_FGD.jl
 ```
 and the output will be stored in the folder `Outcomes`.
 
