@@ -6,8 +6,8 @@ using Distributed, Printf, Parameters
 @time begin
 
 # Set up parallel computing
-# addprocs(Sys.CPU_THREADS);
-addprocs(8);
+addprocs(Sys.CPU_THREADS);
+# addprocs(8);
 
 @everywhere include("LJChain.jl")
 @everywhere include("CGStats.jl")
@@ -86,7 +86,7 @@ S = Simulator(dt=1e-4, FullSteps=Int(1e7), OrthoSamples=Int(1e6), check=Int(5e4)
 # system C
 # ( [0,1,0], SM (mass of particles 0) = 10, LM (mass of particles 1) = 1, SEps=1.0, LEps=100.0, γ=1, β=1.096 )
 
-C = Chain(SM=0.1, LM=1, Beta=1);
+C = Chain(SM=100, LM=1, Beta=1);
 (RR,PP,Veff,Fmean,Fstd,FdataMF,FdataFF) = VEffConstrainedLangDyn_NVT(C,S);
 
 # Write data to file
