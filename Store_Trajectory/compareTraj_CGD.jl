@@ -16,13 +16,13 @@ S = Simulator(dt=1e-4, FullSteps=Int(1e7),
               m_MF=481.77, q_MF=-1408.6,
               coeffEXP_MF_A=15177, coeffEXP_MF_B=2.7507);    # NB: force_1_1_Beta1.dat
 
+# S = Simulator(dt=1e-4, FullSteps=Int(1e7),
+#               m_MF=317.3, q_MF=-935.21,
+#               coeffEXP_MF_A=18096, coeffEXP_MF_B=2.8001);  # NB: force_0.1_1.dat
 
-              # m_MF=317.3, q_MF=-935.21,
-              # coeffEXP_MF_A=18096, coeffEXP_MF_B=2.8001);  # NB: force_0.1_1.dat
-
-
-              # m_MF=486.11, q_MF=-1420.4,
-              # coeffEXP_MF_A=7794.6, coeffEXP_MF_B=2.5456); # NB: force_1_1_new.dat
+# S = Simulator(dt=1e-4, FullSteps=Int(1e7),
+#               m_MF=486.11, q_MF=-1420.4,
+#               coeffEXP_MF_A=7794.6, coeffEXP_MF_B=2.5456); # NB: force_1_1_new.dat
 
 # Random.seed!(2134)
 # Random.seed!(121)

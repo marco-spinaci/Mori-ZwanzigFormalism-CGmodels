@@ -14,23 +14,28 @@ using Main.LJChain, Main.CGStats, DelimitedFiles, Random
 C = Chain(SM=1, LM=1, Beta=1); # system C ≣ [Patt=[0,1,0],NBeads=10,ConstrainedBeads=2,SEps=1,LEps=100,SM=10,LM=1,Dist=1,Beta=1,Gamma=1]
 
 # S = Simulator(); # [dt=1e-4,Stochdt=1e-4,FullSteps=Int(1e5),OrthoSteps=1,ApproxSteps=Int(1e5),OrthoSamples=Int(1e5),MacroSamples=50,LagStep=400,NumLags=30]
+
 S = Simulator(Stochdt=1e-4, ApproxSteps=Int(1e7),
               m_MF=481.77, q_MF=-1408.6,
               m_FF=-304.49, q_FF=880.6,
               coeffEXP_MF_A=15177, coeffEXP_MF_B=2.7507,
               coeffEXP_FF_A=6.8121e13, coeffEXP_FF_B=10.103); # NB: force_1_1_Beta1.dat and flucts_1_1_Beta1.dat
 
+# S = Simulator(Stochdt=1e-4, ApproxSteps=Int(1e7),
+#               m_MF=317.3, q_MF=-935.21,
+#               m_FF=-87.165, q_FF=265.31,
+#               coeffEXP_MF_A=18096, coeffEXP_MF_B=2.8001,
+#               coeffEXP_FF_A=2.9049e11, coeffEXP_FF_B=8.2458); # NB: force_0.1_1.dat and flucts_0.1_1.dat
 
-              # m_MF=317.3, q_MF=-935.21,
-              # m_FF=-87.165, q_FF=265.31,
-              # coeffEXP_MF_A=18096, coeffEXP_MF_B=2.8001,
-              # coeffEXP_FF_A=2.9049e11, coeffEXP_FF_B=8.2458); # NB: force_0.1_1.dat and flucts_0.1_1.dat
+# S = Simulator(Stochdt=1e-4, ApproxSteps=Int(1e7),
+#               m_MF=486.11, q_MF=-1420.4,
+#               m_FF=-128.74, q_FF=385.18,
+#               coeffEXP_MF_A=7794.6, coeffEXP_MF_B=2.5456,
+#               coeffEXP_FF_A=1.914e8, coeffEXP_FF_B=6.1628);  # NB: force_1_1_new.dat and flucts_1_1.dat
 
 
-              # m_MF=486.11, q_MF=-1420.4,
-              # m_FF=-128.74, q_FF=385.18,
-              # coeffEXP_MF_A=7794.6, coeffEXP_MF_B=2.5456,
-              # coeffEXP_FF_A=1.914e8, coeffEXP_FF_B=6.1628);  # NB: force_1_1_new.dat and flucts_1_1.dat
+
+
 
 #####################################################################################################################
 ## Generate initial data
