@@ -108,7 +108,7 @@ S = Simulator(Stochdt=1e-4, ApproxSteps=Int(1e7),
 # NB: the grid points *must* be equally spaced
 
 # force_data = readdlm("Store_Trajectory/force_1_1_Beta1.dat", Float64);
-force_data = readdlm("Store_Trajectory/MF_A1_B1_DT0.0001.dat", Float64);
+force_data = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Eff_Potential/MF_M$(C.SM)_m$(C.LM)_dt$(@sprintf "%0.1e" S.dt).dat", Float64);
 
 RR = force_data[:, 1];
 dx = RR[2] - RR[1];
@@ -130,7 +130,7 @@ FdataMF[:, 5] = Fmean_coeff2[1:end - 1];
 
 
 # flucts_data = readdlm("Store_Trajectory/flucts_1_1_Beta1.dat", Float64);
-flucts_data = readdlm("Store_Trajectory/FF_A1_B1_DT0.0001.dat", Float64);
+flucts_data = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Eff_Potential/FF_M$(C.SM)_m$(C.LM)_dt$(@sprintf "%0.1e" S.dt).dat", Float64);
 
 RR = flucts_data[:, 1];
 dx = RR[2] - RR[1];

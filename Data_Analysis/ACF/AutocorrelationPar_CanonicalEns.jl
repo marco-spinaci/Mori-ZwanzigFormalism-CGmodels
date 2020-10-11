@@ -22,7 +22,7 @@ C = Chain(SM=1, LM=1, Beta=1);            ## system C ≣ [Patt=[0,1,0], NBeads=
 # C = Chain(SEps=10,LEps=.1);               ## system D ≣ [Patt=[0,1,0], SM=10, LM= 1, γ=1, β=1]
 
 S = Simulator(dt=1e-4, Stochdt=1e-4, FullSteps=Int(1e5), ApproxSteps=Int(1e5),
-              OrthoSamples=Int(1e6), MacroSamples=100, LagStep=10, NumLags=Int(1e4),
+              OrthoSamples=Int(1e6), MacroSamples=100, LagStep=100, NumLags=Int(1e4),
               m_MF=481.77, q_MF=-1408.6,
               m_FF=-304.49, q_FF=880.6,
               coeffEXP_MF_A=15177, coeffEXP_MF_B=2.7507,
@@ -99,7 +99,7 @@ end
 # FdataMF = readdlm("Eff_Potential/Outcomes/Coeff_MF_SplineI_sC_M100m1.csv", Float64);
 # FdataFF = readdlm("Eff_Potential/Outcomes/Coeff_FF_SplineI_sC_M100m1.csv", Float64);
 
-force_data = readdlm("Store_Trajectory/MF_A1_B1_DT0.0001.dat", Float64);
+force_data = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Eff_Potential/MF_M$(C.SM)_m$(C.LM)_dt$(@sprintf "%0.1e" S.dt).dat", Float64);
 
 RR = force_data[:, 1];
 dx = RR[2] - RR[1];
@@ -120,7 +120,7 @@ FdataMF[:, 4] = Fmean_coeff1[1:end - 1];
 FdataMF[:, 5] = Fmean_coeff2[1:end - 1];
 
 
-# flucts_data = readdlm("Store_Trajectory/FF_A1_B1_DT0.0001.dat", Float64);
+# flucts_data = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Eff_Potential/MF_M$(C.SM)_m$(C.LM)_dt$(@sprintf "%0.1e" S.dt).dat", Float64);
 #
 # RR = flucts_data[:, 1];
 # dx = RR[2] - RR[1];
@@ -145,31 +145,30 @@ FdataMF[:, 5] = Fmean_coeff2[1:end - 1];
 ## Compute autocorrelation stats for FULL DYNAMICS
 
 # (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,RR,Fmean*0);
-(StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,FdataMF*0);
-
-open("Outcomes/M$(C.SM)_m$(C.LM)/ACF/sC_M$(C.SM)m$(C.LM)_FullcorrP_B$(C.Beta).csv","w+") do x
-   writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
-end
-
-open("Outcomes/M$(C.SM)_m$(C.LM)/ACF/sC_M$(C.SM)m$(C.LM)_FullcorrF_B$(C.Beta).csv","w+") do x
-   writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
-end
+# (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,FdataMF*0);
+#
+# open("Outcomes/M$(C.SM)_m$(C.LM)/ACF/sC_M$(C.SM)m$(C.LM)_FullcorrP_B$(C.Beta).csv","w+") do x
+#    writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
+# end
+#
+# open("Outcomes/M$(C.SM)_m$(C.LM)/ACF/sC_M$(C.SM)m$(C.LM)_FullcorrF_B$(C.Beta).csv","w+") do x
+#    writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
+# end
 
 
 
 ## Compute autocorrelation stats for FULL DYNAMICS (ORTHOGONAL COMPONENT)
 
 # (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,RR,Fmean);
+(StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,FdataMF);
 
-# (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,FdataMF);
-#
-# open("Outcomes/M$(C.SM)_m$(C.LM)/ACF/sC_M$(C.SM)m$(C.LM)_FullcorrP_OC_B$(C.Beta).csv","w+") do x
-#    writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
-# end
-#
-# open("Outcomes/M$(C.SM)_m$(C.LM)/ACF/sC_M$(C.SM)m$(C.LM)_FullcorrF_OC_B$(C.Beta).csv","w+") do x
-#    writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
-# end
+open("Outcomes/M$(C.SM)_m$(C.LM)/ACF/sC_M$(C.SM)m$(C.LM)_FullcorrP_OC_B$(C.Beta).csv","w+") do x
+   writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
+end
+
+open("Outcomes/M$(C.SM)_m$(C.LM)/ACF/sC_M$(C.SM)m$(C.LM)_FullcorrF_OC_B$(C.Beta).csv","w+") do x
+   writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
+end
 
 
 # Use PyPlot to plot autocorrelation

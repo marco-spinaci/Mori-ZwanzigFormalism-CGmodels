@@ -62,7 +62,7 @@ S = Simulator(dt=1e-4, FullSteps=Int(1e7),
 # Fdata = readdlm("Eff_Potential/Outcomes/Coeff_MF_SplineI_sC_M1m1.csv", Float64);
 
 # force_data = readdlm("Store_Trajectory/force_1_1_Beta1.dat", Float64);
-force_data = readdlm("Store_Trajectory/MF_A1_B1_DT0.0001.dat", Float64);
+force_data = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Eff_Potential/MF_M$(C.SM)_m$(C.LM)_dt$(@sprintf "%0.1e" S.dt).dat", Float64);
 
 # i punti della griglia *devono* essere equispaziati
 RR = force_data[:, 1];
