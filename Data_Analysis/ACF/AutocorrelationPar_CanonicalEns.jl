@@ -21,7 +21,7 @@ using Main.LJChain, Main.CGStats, SharedArrays, Parameters, Statistics, LinearAl
 C = Chain(SM=1, LM=1, Beta=1);            ## system C ≣ [Patt=[0,1,0], NBeads=10, ConstrainedBeads=2, SEps=1, LEps=100, SM=10, LM=1, Dist=1, γ=1, β=1]
 # C = Chain(SEps=10,LEps=.1);               ## system D ≣ [Patt=[0,1,0], SM=10, LM= 1, γ=1, β=1]
 
-S = Simulator(dt=1e-4, Stochdt=1e-4, FullSteps=Int(1e7), ApproxSteps=Int(1e7),
+S = Simulator(dt=1e-4, Stochdt=1e-4, FullSteps=Int(1e5), ApproxSteps=Int(1e5),
               OrthoSamples=Int(1e6), MacroSamples=100, LagStep=10, NumLags=Int(1e4),
               m_MF=481.77, q_MF=-1408.6,
               m_FF=-304.49, q_FF=880.6,
