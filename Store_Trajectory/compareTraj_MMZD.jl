@@ -162,13 +162,13 @@ if isdir("Outcomes/M$(C.SM)_m$(C.LM)") == 0
     mkpath("Outcomes/M$(C.SM)_m$(C.LM)");
 end
 
-open("Outcomes/M$(C.SM)_m$(C.LM)/P_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", "w+") do x
+open("Outcomes/M$(C.SM)_m$(C.LM)/P_MMZD_M$(C.SM)m$(C.LM)_Fs$(@sprintf "%0.1e" S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", "w+") do x
     writedlm(x, PApprox);
 end
-open("Outcomes/M$(C.SM)_m$(C.LM)/Q_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", "w+") do x
+open("Outcomes/M$(C.SM)_m$(C.LM)/Q_MMZD_M$(C.SM)m$(C.LM)_Fs$(@sprintf "%0.1e" S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", "w+") do x
     writedlm(x, QApprox);
 end
-open("Outcomes/M$(C.SM)_m$(C.LM)/F_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", "w+") do x
+open("Outcomes/M$(C.SM)_m$(C.LM)/F_MMZD_M$(C.SM)m$(C.LM)_Fs$(@sprintf "%0.1e" S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", "w+") do x
     writedlm(x, FApprox);
 end
 

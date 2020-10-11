@@ -14,18 +14,11 @@ addprocs(Sys.CPU_THREADS);
 using Main.LJChain, Main.CGStats, SharedArrays, Statistics, LinearAlgebra, StatsBase, DelimitedFiles
 
 ####################################################################################################
-# General system
 
-# C = Chain();     # system C ≣ [Patt=[0,1,0],NBeads=10,ConstrainedBeads=2,SEps=1,LEps=100,SM=10,LM=1,Dist=1,Beta=1,Gamma=1]
-# S = Simulator(); # [dt=1e-4,Stochdt=1e-4,FullSteps=Int(1e5),OrthoSteps=1,ApproxSteps=Int(1e5),OrthoSamples=Int(1e5),MacroSamples=50,LagStep=400,NumLags=30]
-
-# (RR,PP,Veff,Fmean,Fstd) = VEffConstrainedLangDyn_NVT(C,S);
-
-
-#####################################################################################################
 
 S = Simulator(dt=1e-4, FullSteps=Int(1e7), OrthoSamples=Int(1e6), check=Int(5e4), MacroSamples=100);
 # NB: OrthoSamples must be set like this Int(1e6) or larger
+
 
 ######################################################################################################
 # system A

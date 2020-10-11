@@ -31,13 +31,13 @@ if isdir("Outcomes/M$(C.SM)_m$(C.LM)") == 0
     mkpath("Outcomes/M$(C.SM)_m$(C.LM)");
 end
 
-open("Outcomes/M$(C.SM)_m$(C.LM)/P_FGD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", "w+") do x
+open("Outcomes/M$(C.SM)_m$(C.LM)/P_FGD_M$(C.SM)m$(C.LM)_Fs$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", "w+") do x
     writedlm(x, (C.Phi*PFull)');
 end
-open("Outcomes/M$(C.SM)_m$(C.LM)/Q_FGD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", "w+") do x
+open("Outcomes/M$(C.SM)_m$(C.LM)/Q_FGD_M$(C.SM)m$(C.LM)_Fs$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", "w+") do x
     writedlm(x, (C.Psi*QFull)');
 end
-open("Outcomes/M$(C.SM)_m$(C.LM)/F_FGD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", "w+") do x
+open("Outcomes/M$(C.SM)_m$(C.LM)/F_FGD_M$(C.SM)m$(C.LM)_Fs$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", "w+") do x
     writedlm(x, (C.PhiF*FFull)');
 end
 

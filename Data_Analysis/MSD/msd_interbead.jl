@@ -1,9 +1,10 @@
+using Printf
+
+@time begin
+
 include("../../LJChain.jl")
 include("../../CGStats.jl")
-# include("LJChain.jl")
-# include("CGStats.jl")
-
-using Main.LJChain, Main.CGStats, Statistics, DelimitedFiles, Printf
+using Main.LJChain, Main.CGStats, Statistics, DelimitedFiles
 
 ################################################################################
 ## Set up simulation parameters.
@@ -19,11 +20,7 @@ end
 
 ################################################################################
 
-# Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Q_FGD_1e7(B1.096)_CORRETTA.csv", Float64);
-# Q_FGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/Q_FGD_1e7.csv", Float64);
-# Q_FGD = readdlm("Store_Trajectory/Outcomes/Q_FGD_M1m1_1e7_B1.csv", Float64);
-
-Q_FGD = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Q_FGD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", Float64);
+Q_FGD = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Q_FGD_M$(C.SM)m$(C.LM)_Fs$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", Float64);
 
 lm = size(Q_FGD,1);
 dQ1 = zeros(lm, C.NBeads);
@@ -66,22 +63,14 @@ msd1 = msd1[v];
 #     writedlm(x, [ S.dt*100*(v.) msd1 ]);
 # end
 
-open("Outcomes/M$(C.SM)_m$(C.LM)/MSD/INT_msd_FGD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", "w+") do x
+open("Outcomes/M$(C.SM)_m$(C.LM)/MSD/INT_msd_FGD_M$(C.SM)m$(C.LM)_Fs$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", "w+") do x
     writedlm(x, [ S.dt*100*v msd1 ]);
 end
-
-# open("Data_Analysis/MSD/Outcomes/INT_msd_FGD_1e5.csv", "w+") do x
-#     writedlm(x, [ S.dt*100*v msd1 ]);
-# end
 
 
 ################################################################################
 
-# Q_DCGD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_DCGD_1e7(B1.096)_CORRETTA.csv", Float64);
-# Q_DCGD = readdlm("Store_Trajectory/Outcomes/QApprox_DCGD_M1m1_1e7_B1_corretta.csv", Float64);
-# Q_DCGD = readdlm("Store_Trajectory/Outcomes/QApprox_DCGD_1e5.csv", Float64);
-
-Q_DCGD = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Q_DCGD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", Float64);
+Q_DCGD = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Q_DCGD_M$(C.SM)m$(C.LM)_Fs$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", Float64);
 
 lm = size(Q_DCGD,1);
 dQ2 = zeros(lm, C.NBeads);
@@ -120,23 +109,14 @@ end
 v = findall(msd2 .!= 0);
 msd2 = msd2[v];
 
-open("Outcomes/M$(C.SM)_m$(C.LM)/MSD/INT_msd_DCGD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", "w+") do x
+open("Outcomes/M$(C.SM)_m$(C.LM)/MSD/INT_msd_DCGD_M$(C.SM)m$(C.LM)_Fs$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", "w+") do x
     writedlm(x, [ S.dt*100*v msd2 ]);
 end
 
 
-# open("Data_Analysis/MSD/Outcomes/INT_msd_DCGD_1e5.csv", "w+") do x
-#     writedlm(x, [ S.dt*100*v msd2 ]);
-# end
-
-
 ################################################################################
 
-# Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD_1e7(B1.096)_CORRETTA.csv", Float64);
-# Q_MMZD = readdlm("/home/mspino/MarcoMasterProject/Julia_Code/Store_Trajectory/Outcomes/QApprox_MMZD_1e7(B1.096).csv", Float64); #NB: è calcolata con gli stessi parametri di quella sopra
-# Q_MMZD = readdlm("Store_Trajectory/Outcomes/QApprox_MMZD_M1m1_1e7_B1_corretta.csv", Float64);
-
-Q_MMZD = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Q_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", Float64);
+Q_MMZD = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/Q_MMZD_M$(C.SM)m$(C.LM)_Fs$(@sprintf "%0.1e" S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", Float64);
 
 lm = size(Q_MMZD,1);
 dQ3 = zeros(lm, C.NBeads);
@@ -175,10 +155,10 @@ end
 v = findall(msd3 .!= 0);
 msd3 = msd3[v];
 
-open("Outcomes/M$(C.SM)_m$(C.LM)/MSD/INT_msd_MMZD_M$(C.SM)m$(C.LM)_$(@sprintf "%0.1e" S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", "w+") do x
+open("Outcomes/M$(C.SM)_m$(C.LM)/MSD/INT_msd_MMZD_M$(C.SM)m$(C.LM)_Fs$(@sprintf "%0.1e" S.ApproxSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.Stochdt).csv", "w+") do x
     writedlm(x, [ S.Stochdt*100*v msd3 ]);
 end
 
-# open("Data_Analysis/MSD/Outcomes/INT_msd_MMZD_1e5(B1.096).csv", "w+") do x
-#     writedlm(x, [ S.Stochdt*100*v msd3 ]);
-# end
+
+#################################################################################
+end # @time
