@@ -59,10 +59,10 @@ set ylabel "{{/Roman pdf (R)}}"
 
 # set output "| epstopdf -f -o=Data_Analysis/PDF/Plots/HistPDF_Q_1e7B1.096_CORRETTA.pdf"
 # set output "| epstopdf -f -o=../TEX_Notes/Figure/HistPDF_Q_CORRETTAmd.pdf"
-set output "| epstopdf -f -o=Outcomes/M1.0_m1.0/PDF/HistQ_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.pdf"
-p "Outcomes/M1.0_m1.0/PDF/HistQ_FGD_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
-  "Outcomes/M1.0_m1.0/PDF/HistQ_DCGD_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 8 pt 13 t "CGD" , \
-  "Outcomes/M1.0_m1.0/PDF/HistQ_MMZD_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 7 pt 4 t "MMZD"
+set output "| epstopdf -f -o=Outcomes/M1.0_m1.0/PDF/Plots/HistQ_M1.0m1.0_Fs1.0e+07_B1.0_dt1.0e-04.pdf"
+p "Outcomes/M1.0_m1.0/PDF/HistQ_FGD_M1.0m1.0_Fs1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w l lw 5 lc 2 dt 1 t "FGD" , \
+  "Outcomes/M1.0_m1.0/PDF/HistQ_DCGD_M1.0m1.0_Fs1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 8 pt 13 t "CGD" , \
+  "Outcomes/M1.0_m1.0/PDF/HistQ_MMZD_M1.0m1.0_Fs1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 7 pt 4 t "MMZD"
 set output
 
 
@@ -75,10 +75,10 @@ set ylabel "{{/Roman pdf (P)}}"
 
 # set output "| epstopdf -f -o=Data_Analysis/PDF/Plots/HistPDF_P.pdf"
 # set output "| epstopdf -f -o=../TEX_Notes/Figure/HistPDF_P.pdf"
-set output "| epstopdf -f -o=Outcomes/M1.0_m1.0/PDF/HistP_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.pdf"
-p "Outcomes/M1.0_m1.0/PDF/HistP_FGD_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 2 pt 5 t "FGD" , \
-  "Outcomes/M1.0_m1.0/PDF/HistP_DCGD_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 8 pt 13 t "CGD" , \
-  "Outcomes/M1.0_m1.0/PDF/HistP_MMZD_M1.0m1.0_1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 7 pt 4 t "MMZD" , \
+set output "| epstopdf -f -o=Outcomes/M1.0_m1.0/PDF/Plots/HistP_M1.0m1.0_Fs1.0e+07_B1.0_dt1.0e-04.pdf"
+p "Outcomes/M1.0_m1.0/PDF/HistP_FGD_M1.0m1.0_Fs1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 2 pt 5 t "FGD" , \
+  "Outcomes/M1.0_m1.0/PDF/HistP_DCGD_M1.0m1.0_Fs1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 8 pt 13 t "CGD" , \
+  "Outcomes/M1.0_m1.0/PDF/HistP_MMZD_M1.0m1.0_Fs1.0e+07_B1.0_dt1.0e-04.csv" u 1:2 w p lw 5 ps 2 lc 7 pt 4 t "MMZD" , \
   f(x) w l lc 4 lw 2 t "Theoretical pdf"
 set output
 
