@@ -18,6 +18,10 @@ if isdir("Outcomes/M$(C.SM)_m$(C.LM)/PDF") == 0
     mkdir("Outcomes/M$(C.SM)_m$(C.LM)/PDF");
 end
 
+if isdir("Outcomes/M$(C.SM)_m$(C.LM)/PDF/Plots") == 0
+    mkdir("Outcomes/M$(C.SM)_m$(C.LM)/PDF/Plots");
+end
+
 ################################################ pdf(P) ################################################################
 
 P_FGD = readdlm("Outcomes/M$(C.SM)_m$(C.LM)/P_FGD_M$(C.SM)m$(C.LM)_Fs$(@sprintf "%0.1e" S.FullSteps)_B$(C.Beta)_dt$(@sprintf "%0.1e" S.dt).csv", Float64);

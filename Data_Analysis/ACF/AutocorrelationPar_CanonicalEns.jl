@@ -18,11 +18,11 @@ using Main.LJChain, Main.CGStats, SharedArrays, Parameters, Statistics, LinearAl
 
 # C = Chain(SM=1,LM=10);                    ## system A ≣ [Patt=[0,1,0], SM(mass of particles 0), LM(mass of particles 1), SEps=1.0, LEps=100.0, γ=1, β=1]
 # C = Chain(SM=1,LM=10,SEps=10,LEps=.1);    ## system B ≣ [Patt=[0,1,0], SM(mass of particles 0), LM(mass of particles 1), γ=1, β=1]
-C = Chain(SM=1, LM=1, Beta=1);            ## system C ≣ [Patt=[0,1,0], NBeads=10, ConstrainedBeads=2, SEps=1, LEps=100, SM=10, LM=1, Dist=1, γ=1, β=1]
+C = Chain(SM=100, LM=1, Beta=1);            ## system C ≣ [Patt=[0,1,0], NBeads=10, ConstrainedBeads=2, SEps=1, LEps=100, SM=10, LM=1, Dist=1, γ=1, β=1]
 # C = Chain(SEps=10,LEps=.1);               ## system D ≣ [Patt=[0,1,0], SM=10, LM= 1, γ=1, β=1]
 
 S = Simulator(dt=1e-4, Stochdt=1e-4, FullSteps=Int(1e5), ApproxSteps=Int(1e5),
-              OrthoSamples=Int(1e6), MacroSamples=100, LagStep=100, NumLags=Int(1e4),
+              OrthoSamples=Int(1e5), MacroSamples=100, LagStep=100, NumLags=Int(1e4),
               m_MF=481.77, q_MF=-1408.6,
               m_FF=-304.49, q_FF=880.6,
               coeffEXP_MF_A=15177, coeffEXP_MF_B=2.7507,
@@ -37,6 +37,10 @@ S = Simulator(dt=1e-4, Stochdt=1e-4, FullSteps=Int(1e5), ApproxSteps=Int(1e5),
 
 if isdir("Outcomes/M$(C.SM)_m$(C.LM)/ACF") == 0
     mkdir("Outcomes/M$(C.SM)_m$(C.LM)/ACF");
+end
+
+if isdir("Outcomes/M$(C.SM)_m$(C.LM)/ACF/Plots") == 0
+    mkdir("Outcomes/M$(C.SM)_m$(C.LM)/ACF/Plots");
 end
 
 #############################################################################################
@@ -146,11 +150,11 @@ FdataMF[:, 5] = Fmean_coeff2[1:end - 1];
 
 # (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,RR,Fmean*0);
 # (StressAutocorr,MomAutocorr) = FullAutocorrLangDynPar(C,S,FdataMF*0);
-#
+# 
 # open("Outcomes/M$(C.SM)_m$(C.LM)/ACF/sC_M$(C.SM)m$(C.LM)_FullcorrP_B$(C.Beta).csv","w+") do x
 #    writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] MomAutocorr ] );
 # end
-#
+# 
 # open("Outcomes/M$(C.SM)_m$(C.LM)/ACF/sC_M$(C.SM)m$(C.LM)_FullcorrF_B$(C.Beta).csv","w+") do x
 #    writedlm(x,[ S.dt*S.LagStep*[0:S.NumLags-1;] StressAutocorr ] );
 # end
