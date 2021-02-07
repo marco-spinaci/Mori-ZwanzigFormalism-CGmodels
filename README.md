@@ -1,4 +1,7 @@
 # Mori-Zwanzig Formalism: CG models
+
+**This repository contains a new version of [HybridZwanzJulia](https://github.com/HybridZwanz)**
+
 This project aims at studying the Mori-Zwanzig (MZ) formalism to systematically derive hybrid Coarse-Grained (CG) models. This formalism allows to study the evolution of a dynamical system through the projection on a subset of its degrees of freedom. While, the hybrid CG models ideally combine a cheaper computational cost than the atomistic simulations, and a greater accuracy than pure CG simulations.
 
 - [Mori-Zwanzig Formalism: CG models](#mori-zwanzig-formalism-cg-models)
